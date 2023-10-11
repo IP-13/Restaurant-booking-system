@@ -1,0 +1,30 @@
+#spring:
+#  docker:
+#    compose:
+#      enabled: true
+#      file: docker-compose.yml
+#      lifecycle-management: start_and_stop
+#      host: localhost
+#      start:
+#        log-level: info
+#        command: up
+#      stop:
+#        timeout: 10s
+#        command: down
+#      skip:
+#        in-tests: true
+#      readiness:
+#        wait: only_if_started
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:6432/db
+    username: ip-13
+    password: 123
+#flyway:
+#  url: jdbc:postgresql://localhost:6432/db
+#  user: ip-13
+#  password: 123
+#  enabled: true
+#  locations:
+#    - 'filesystem:db/migration'

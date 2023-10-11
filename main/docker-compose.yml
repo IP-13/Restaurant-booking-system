@@ -1,0 +1,45 @@
+services:
+  app:
+    build: .
+    container_name: app
+    image: image
+    ports:
+      - "8000:8080"
+    depends_on:
+      - db
+      - flyway
+
+  db:
+    image: postgres:16.0
+    restart: always
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "9000:5432"
+    container_name: db
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+#  flyway:
+#    image: flyway/flyway:9
+#    command: -configFiles=/flyway.conf -locations=filesystem:/migrations -connectRetries=60 migrate -X
+#    volumes:
+#      - ${PWD}/src/main/resources/db/migration:/migrations
+#      - ${PWD}/src/main/resources/flyway.conf:/flyway.conf
+#    depends_on:
+#      - db
+#    container_name: flyway
+
+  flyway:
+    container_name: flyway
+    image: flyway/flyway:9
+    command: -url=jdbc:postgresql://localhost:9000/db -locations=filesystem:/migrations -user=postgres -password=postgres -connectRetries=60 migrate -X
+    volumes:
+      - ${PWD}/src/main/resources/db/migration:/migrations
+    depends_on:
+      db:
+        condition: service_healthy
