@@ -6,6 +6,6 @@ import jakarta.persistence.Id
 @Entity
 data class MyEntity(
     @Id
-    val a: Int,
-    val b: Int,
+    val a: Int = 10,
+    val b: Int = 20,
 )

@@ -1,1 +1,1 @@
-create table my_table(a int primary key, b int);
+create table my_entity(a int primary key, b int);
