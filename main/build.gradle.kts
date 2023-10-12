@@ -26,7 +26,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.4")
 	implementation("org.postgresql:postgresql:42.6.0")
 	implementation("org.flywaydb:flyway-core:9.22.2")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.withType<KotlinCompile> {
