@@ -1,4 +1,4 @@
-create table address (
+create table if not exists address (
     id serial primary key,
     country text not null,
     city text not null,
@@ -27,12 +27,12 @@ create table if not exists visitor (
     person_id int references person(id)
 );
 
-create table admin (
+create table if not exists admin (
     id serial primary key,
     person_id int references person(id)
 );
 
-create table manager (
+create table if not exists manager (
     id serial primary key,
     person_id int references person(id),
     restaurant_id int references restaurant(id)
@@ -72,7 +72,7 @@ create table if not exists add_restaurant_ticket (
     admin_comment text
 );
 
-create table black_list (
+create table if not exists black_list (
     bad_person_id int references visitor(id),
     reporter_id int references manager(id),
     from_date timestamp not null,
