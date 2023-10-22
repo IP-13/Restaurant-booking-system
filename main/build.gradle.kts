@@ -24,8 +24,14 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-web:3.1.4")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.4")
+	implementation("org.springframework.boot:spring-boot-starter-jdbc:3.1.4")
 	implementation("org.postgresql:postgresql:42.6.0")
-	implementation("org.flywaydb:flyway-core:9.22.2")
+	implementation("org.flywaydb:flyway-core:9.22.3")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.4")
+	testImplementation("org.testcontainers:testcontainers:1.19.1")
+	testImplementation("org.testcontainers:junit-jupiter:1.19.1")
+	testImplementation("org.testcontainers:postgresql:1.19.1")
 }
 
 tasks.withType<KotlinCompile> {

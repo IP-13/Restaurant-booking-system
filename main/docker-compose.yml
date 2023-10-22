@@ -26,7 +26,7 @@ services:
       retries: 2
 
   flyway:
-    image: flyway/flyway:9
+    image: flyway/flyway:9.22.3
     command: -configFiles=/flyway.conf -locations=filesystem:/migrations -connectRetries=60 migrate -X
     volumes:
       - ${PWD}/src/main/resources/db/migration:/migrations
