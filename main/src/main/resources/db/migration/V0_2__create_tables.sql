@@ -73,8 +73,9 @@ create table if not exists add_restaurant_ticket (
 );
 
 create table if not exists black_list (
-    bad_person_id int references visitor(id),
-    reporter_id int references manager(id),
+    id serial primary key,
+    visitor_id int references visitor(id),
+    manager_id int references manager(id),
     from_date timestamp not null,
     expiration_date timestamp not null,
     reason text not null
