@@ -1,4 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+gradle.startParameter.showStacktrace = ShowStacktrace.ALWAYS
 
 plugins {
 	id("org.springframework.boot") version "3.1.4"
@@ -24,9 +24,14 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.springframework.boot:spring-boot-starter-web:3.1.4")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.1.4")
+	implementation("org.springframework.boot:spring-boot-starter-security:3.1.4")
+	implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server:3.1.4")
 	implementation("org.springframework.boot:spring-boot-starter-jdbc:3.1.4")
 	implementation("org.postgresql:postgresql:42.6.0")
 	implementation("org.flywaydb:flyway-core:9.22.3")
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.4")
 	testImplementation("org.testcontainers:testcontainers:1.19.1")
@@ -34,7 +39,7 @@ dependencies {
 	testImplementation("org.testcontainers:postgresql:1.19.1")
 }
 
-tasks.withType<KotlinCompile> {
+tasks.compileKotlin {
 	kotlinOptions {
 		// support for nullable types
 		freeCompilerArgs += "-Xjsr305=strict"
@@ -42,7 +47,7 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-tasks.withType<Test> {
+tasks.test {
 	useJUnitPlatform()
 }
 
@@ -51,3 +56,15 @@ tasks.jar {
 		attributes["Main-Class"] = "com.ip13.main.MainApplication"
 	}
 }
+
+kotlin {
+	jvmToolchain {
+		languageVersion.set(JavaLanguageVersion.of(17))
+	}
+}
+
+//tasks.bootJar {
+//	archiveFileName.set("app.jar")
+//	enabled = true
+//	mainClass = "com.ip13.main.MainApplication"
+//}
