@@ -15,26 +15,32 @@ create table if not exists restaurant (
     description text
 );
 
-create table if not exists person (
+create table if not exists user_t (
     id serial primary key,
-    name char(50) not null,
-    role role,
-    rating float
+    username varchar(50) not null,
+    password text not null
+);
+
+create table if not exists user_role (
+    id serial primary key,
+    user_id int references user_t(id),
+    role role
 );
 
 create table if not exists visitor (
     id serial primary key,
-    person_id int references person(id)
+    user_id int references user_t(id),
+    rating float
 );
 
 create table if not exists admin (
     id serial primary key,
-    person_id int references person(id)
+    user_id int references user_t(id)
 );
 
 create table if not exists manager (
     id serial primary key,
-    person_id int references person(id),
+    user_id int references user_t(id),
     restaurant_id int references restaurant(id)
 );
 
