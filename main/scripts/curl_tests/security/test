@@ -1,2 +1,2 @@
 #!/bin/bash
-curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpcCIsImV4cCI6MTY5ODM0MDc3MiwiaWF0IjoxNjk4MzQwNzQyLCJ1c2VySWQiOjEzMiwicm9sZXMiOltdfQ.GZyxqyKUZRYJGuUhKNQ0iaq95lKV2UMOZbKNnwJp--M" http://localhost:8000/security/test
+curl -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJpcCIsImV4cCI6MTY5ODQwMjE0OSwiaWF0IjoxNjk4NDAyMTE5LCJ1c2VySWQiOjEzMiwicm9sZXMiOltdfQ.vBSjqd6NRAaoRRnKoTFNjfP_meH7ilV2UQM4SiD7ly0" http://localhost:8000/security/test
