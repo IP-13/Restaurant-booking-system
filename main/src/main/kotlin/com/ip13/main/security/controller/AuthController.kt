@@ -30,7 +30,13 @@ class AuthController(
     }
 
     @GetMapping("/test")
-    fun test(): ResponseEntity<String> {
-        return ResponseEntity.ok("you'd passed the security test")
+    fun test(
+        @RequestParam(required = false) shouldThrowException: Boolean,
+    ): ResponseEntity<String> {
+        if (shouldThrowException) {
+            throw Exception()
+        } else {
+            return ResponseEntity.ok("you'd passed the security test")
+        }
     }
 }
