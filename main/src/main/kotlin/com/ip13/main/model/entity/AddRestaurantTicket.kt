@@ -7,6 +7,7 @@ import java.time.LocalDateTime
 @Entity
 class AddRestaurantTicket(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")

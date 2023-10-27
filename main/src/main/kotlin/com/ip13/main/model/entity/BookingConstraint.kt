@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 @Entity
 class BookingConstraint(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")

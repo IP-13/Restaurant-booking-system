@@ -5,6 +5,7 @@ import jakarta.persistence.*
 @Entity
 class Restaurant(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
     val name: String,
     @OneToOne
