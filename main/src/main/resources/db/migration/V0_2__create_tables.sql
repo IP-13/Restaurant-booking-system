@@ -1,5 +1,5 @@
 create table if not exists address (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     country text not null,
     city text not null,
     street text not null,
@@ -9,43 +9,43 @@ create table if not exists address (
 );
 
 create table if not exists restaurant (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     name varchar(50) not null,
     address_id int references address(id),
     description text
 );
 
 create table if not exists user_t (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     username varchar(50) not null,
     password text not null
 );
 
 create table if not exists user_role (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
     role role
 );
 
 create table if not exists visitor (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
     rating float
 );
 
 create table if not exists admin (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id)
 );
 
 create table if not exists manager (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
     restaurant_id int references restaurant(id)
 );
 
 create table if not exists reserve_table_ticket (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_id int references restaurant(id),
     visitor_id int references visitor(id),
     manager_id int references manager(id),
@@ -57,7 +57,7 @@ create table if not exists reserve_table_ticket (
 );
 
 create table if not exists booking_constraint (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_id int references restaurant(id),
     manager_id int references manager(id),
     reserve_table_ticket_id int references reserve_table_ticket(id),
@@ -67,7 +67,7 @@ create table if not exists booking_constraint (
 );
 
 create table if not exists add_restaurant_ticket (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     manager_id int references manager(id),
     admin_id int references admin(id),
     restaurant_id int references restaurant(id),
@@ -79,7 +79,7 @@ create table if not exists add_restaurant_ticket (
 );
 
 create table if not exists black_list (
-    id serial primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
     visitor_id int references visitor(id),
     manager_id int references manager(id),
     from_date timestamp not null,
