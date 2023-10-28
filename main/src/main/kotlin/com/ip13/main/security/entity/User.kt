@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails
 @Table(name = "user_t")
 class User(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
     private val username: String = "username",
     private val password: String = "password",
