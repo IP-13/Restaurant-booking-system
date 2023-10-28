@@ -12,7 +12,7 @@ class Restaurant(
     @JoinColumn(name = "address_id")
     val address: Address = Address(),
     @OneToOne
-    @JoinColumn(name = "add_restaurant_ticket_id")
+    @JoinColumn(name = "restaurant_add_ticket_id")
     val restaurantAddTicket: RestaurantAddTicket = RestaurantAddTicket(),
     val description: String? = null,
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
