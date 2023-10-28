@@ -5,7 +5,4 @@ import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RestaurantRepository: CrudRepository<Restaurant, Int> {
-    fun findByNameOrNull(name: String): Restaurant?
-    fun deleteByName(name: String): Int
-}
+interface RestaurantRepository: CrudRepository<Restaurant, Int>
