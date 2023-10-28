@@ -25,16 +25,10 @@ class RestaurantController(
         restaurantAddTicketDto: RestaurantAddTicketDto,
     ): ResponseEntity<*> {
         // TODO() deduplication, validation
-        val restaurant = RestaurantMapper.restaurantFromRestaurantAddTicketDto(restaurantAddTicketDto)
-        val restaurantAddTicket = restaurant.restaurantAddTicket
-        val address = restaurant.address
-
-        // TODO() seems like transaction
-        addressRepository.save(address)
+        val restaurantAddTicket = RestaurantMapper.restaurantAddTicketDtoToRestaurantAddTicket(restaurantAddTicketDto)
         restaurantAddTicketRepository.save(restaurantAddTicket)
-        restaurantRepository.save(restaurant)
-        //
 
+        // TODO() answer
         return ResponseEntity("Ticket for adding restaurant successfully created", HttpStatus.OK)
     }
 
