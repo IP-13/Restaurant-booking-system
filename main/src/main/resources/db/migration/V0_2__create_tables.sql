@@ -65,12 +65,12 @@ create table if not exists manager (
 create table if not exists table_reserve_ticket (
     id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_id int references restaurant(id),
-    visitor_id int references visitor(id),
+    user_id int references user_t(id),
     manager_id int references manager(id),
     status reserve_table_status,
     creation_date timestamp not null,
     last_status_update timestamp not null,
-    visitor_comment text,
+    user_comment text,
     manager_comment text
 );
 
@@ -85,7 +85,7 @@ create table if not exists booking_constraint (
 
 create table if not exists black_list (
     id int generated always as identity(start with 100 increment by 100) primary key,
-    visitor_id int references visitor(id),
+    user_id int references user_t(id),
     manager_id int references manager(id),
     from_date timestamp not null,
     expiration_date timestamp not null,
