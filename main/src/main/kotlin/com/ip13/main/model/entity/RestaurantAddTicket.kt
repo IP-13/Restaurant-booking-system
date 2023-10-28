@@ -1,14 +1,11 @@
 package com.ip13.main.model.entity
 
-import com.ip13.main.model.entity.enums.AddRestaurantStatus
-import com.ip13.main.model.entity.enums.ReserveTableStatus
-import com.ip13.main.security.entity.User
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
 @Table(name = "add_restaurant_ticket")
-class AddRestaurantTicket(
+class RestaurantAddTicket(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,

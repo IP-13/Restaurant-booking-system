@@ -22,7 +22,7 @@ create table if not exists manager (
     restaurant_id int references restaurant(id)
 );
 
-create table if not exists reserve_table_ticket (
+create table if not exists table_reserve_ticket (
     id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_id int references restaurant(id),
     visitor_id int references visitor(id),
@@ -38,15 +38,14 @@ create table if not exists booking_constraint (
     id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_id int references restaurant(id),
     manager_id int references manager(id),
-    reserve_table_ticket_id int references reserve_table_ticket(id),
     reason text not null,
     creation_date timestamp not null,
     expiration_date timestamp not null
 );
 
-create table if not exists add_restaurant_ticket (
+create table if not exists restaurant_add_ticket (
     id int generated always as identity(start with 100 increment by 100) primary key,
-    restaurant_name varchar(50) not null,
+    name varchar(50) not null,
     country text not null,
     city text not null,
     street text not null,
@@ -55,11 +54,14 @@ create table if not exists add_restaurant_ticket (
     floor int,
     description text,
     user_id int references user_t(id),
+    create_date timestamp not null
+);
+
+create table if not exists restaurant_add_ticket_result (
+    id int generated always as identity(start with 100 increment by 100) primary key,
     admin_id int references admin(id),
-    status add_restaurant_status,
+    result add_restaurant_result,
     create_date timestamp not null,
-    last_status_update timestamp not null,
-    author_comment text,
     admin_comment text
 );
 
@@ -77,10 +79,9 @@ create table if not exists restaurant (
     id int generated always as identity(start with 100 increment by 100) primary key,
     name varchar(50) not null,
     address_id int references address(id),
-    add_restaurant_ticket_id int references add_restaurant_ticket(id),
+    restaurant_add_ticket_id int references restaurant_add_ticket(id),
     description text
 );
-
 
 create table if not exists black_list (
     id int generated always as identity(start with 100 increment by 100) primary key,
