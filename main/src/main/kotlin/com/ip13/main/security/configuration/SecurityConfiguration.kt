@@ -34,7 +34,6 @@ class SecurityConfiguration(
                 // TODO("configure authorize")
                 authorize("/admin/**", hasAnyAuthority(Role.ADMIN.code))
                 authorize("/manager/**", hasAnyAuthority(Role.MANAGER.code))
-                authorize("/visitor/**", hasAnyAuthority(Role.VISITOR.code))
                 authorize("/security/register/**", permitAll)
                 authorize("/security/login/**", permitAll)
                 authorize(anyRequest, authenticated)
