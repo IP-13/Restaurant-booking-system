@@ -1,13 +1,11 @@
 package com.ip13.main.model.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToOne
+import jakarta.persistence.*
 
 @Entity
 class Visitor (
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
     @OneToOne
     @JoinColumn(name = "person_id")

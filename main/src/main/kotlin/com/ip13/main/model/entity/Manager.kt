@@ -5,6 +5,7 @@ import jakarta.persistence.*
 @Entity
 class Manager(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
     @OneToOne
     @JoinColumn(name = "person_id")

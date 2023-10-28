@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 @Entity
 class BlackList(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
     // TODO()
     // можно ли одного человека несколько раз внести в черный список

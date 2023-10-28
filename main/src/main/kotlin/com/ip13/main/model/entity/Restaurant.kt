@@ -5,12 +5,16 @@ import jakarta.persistence.*
 @Entity
 class Restaurant(
     @Id
-    val id: Int,
-    val name: String,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int = 0,
+    val name: String = "",
     @OneToOne
     @JoinColumn(name = "address_id")
-    val address: Address,
-    val description: String?,
+    val address: Address = Address(),
+    @OneToOne
+    @JoinColumn(name = "restaurant_add_ticket_id")
+    val restaurantAddTicket: RestaurantAddTicket = RestaurantAddTicket(),
+    val description: String? = null,
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     val managers: List<Manager> = emptyList()
 )

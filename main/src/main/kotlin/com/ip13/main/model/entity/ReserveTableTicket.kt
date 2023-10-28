@@ -9,6 +9,7 @@ import java.time.LocalDateTime
 @Entity
 class ReserveTableTicket(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
     @ManyToOne
     @JoinColumn(name = "restaurant_id")

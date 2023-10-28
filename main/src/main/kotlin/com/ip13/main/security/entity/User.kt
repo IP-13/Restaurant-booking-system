@@ -9,9 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails
 @Table(name = "user_t")
 class User(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-    private val username: String = "username",
-    private val password: String = "password",
+    private val username: String = "",
+    private val password: String = "",
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     val roles: List<UserRole> = listOf(),
 ): UserDetails {

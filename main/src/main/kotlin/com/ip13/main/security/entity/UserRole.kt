@@ -7,6 +7,7 @@ import jakarta.persistence.*
 @Table(name = "user_role")
 class UserRole(
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
     @ManyToOne
     @JoinColumn(name = "user_id")
