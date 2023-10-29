@@ -14,7 +14,7 @@ class User(
     val id: Long = 0,
     private val username: String = "",
     private val password: String = "",
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @Enumerated(value = EnumType.STRING)
     val roles: List<Role> = listOf(),
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
