@@ -1,13 +1,12 @@
 package com.ip13.main.security.configuration
 
-import com.ip13.main.model.entity.enums.Role
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.invoke
@@ -22,9 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(
-    @Autowired val jwtRequestFilter: JwtRequestFilter,
+    val jwtRequestFilter: JwtRequestFilter,
+    val authenticationConfiguration: AuthenticationConfiguration,
 ) {
+    // TODO() вынести из хард-кода
     private val secret = "s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu"
 
     @Bean
@@ -32,42 +34,46 @@ class SecurityConfiguration(
         http {
             authorizeHttpRequests {
                 // TODO("configure authorize")
-                authorize("/admin/**", hasAnyAuthority(Role.ADMIN.code))
-                authorize("/manager/**", hasAnyAuthority(Role.MANAGER.code))
-                authorize("/security/register/**", permitAll)
-                authorize("/security/login/**", permitAll)
-                authorize(anyRequest, authenticated)
+//                authorize("/security/register/**", permitAll)
+//                authorize("/security/login/**", permitAll)
+//                authorize("/admin/get_authentication", permitAll)
+//                authorize("/admin/**", hasAuthority(Role.admin.code))
+//                authorize("/error/**", permitAll)
+//                authorize(anyRequest, authenticated)
+                authorize(anyRequest, permitAll)
+                authorize("/**", permitAll)
             }
-            oauth2ResourceServer {
-                jwt {
-                    jwtDecoder = jwtDecoder()
-                }
-            }
+//            oauth2ResourceServer {
+//                jwt {
+//                    jwtDecoder = jwtDecoder()
+//                }
+//            }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
             csrf {
                 disable()
             }
-            cors {
-                disable()
-            }
-            headers {
-                frameOptions {
-                    disable()
-                }
-                xssProtection {
-                    disable()
-                }
-            }
+//            cors {
+//                disable()
+//            }
+//            headers {
+//                frameOptions {
+//                    disable()
+//                }
+//                xssProtection {
+//                    disable()
+//                }
+//            }
             addFilterBefore<UsernamePasswordAuthenticationFilter>(jwtRequestFilter)
+//            authenticationManager = authenticationManager()
         }
 
         return http.build()
     }
 
     @Bean
-    fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager {
+    fun authenticationManager(): AuthenticationManager {
         return authenticationConfiguration.getAuthenticationManager()
     }
 

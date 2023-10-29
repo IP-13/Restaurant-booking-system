@@ -44,6 +44,7 @@ class AuthService(
         authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
                 loginDto.name,
+                // TODO() в фильтре credentials устанавливается в null
                 loginDto.password,
             )
         )
@@ -54,7 +55,7 @@ class AuthService(
         val encodedPassword = user.password
 
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
-            throw ResponseStatusException(400, "Login failed", null)
+            throw ResponseStatusException(400, "passwords don't match", null)
         }
 
         return LoginResponseDto(
