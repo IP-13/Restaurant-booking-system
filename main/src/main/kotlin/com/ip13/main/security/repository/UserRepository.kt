@@ -25,11 +25,17 @@ interface UserRepository : CrudRepository<User, Int> {
         newRole: String
     ): Int
 
-    @Query("select count(*) from user_t where user_t.id = :id and :role = ANY(roles)", nativeQuery = true)
+    @Query("select (select count(*) from user_t where user_t.id = :id and :role = ANY(roles)) > 0", nativeQuery = true)
     fun checkRole(
         @Param(value = "id")
         userId: Int,
         @Param(value = "role")
         role: String
-    ): Int
+    ): Boolean
+
+    @Query("select (select count(*) from user_t where id = :id) > 0")
+    fun checkUser(
+        @Param(value = "id")
+        userId: Int,
+    ): Boolean
 }

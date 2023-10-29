@@ -2,7 +2,7 @@ package com.ip13.main.controller
 
 import com.ip13.main.model.dto.RoleAddDto
 import com.ip13.main.model.entity.enums.Role
-import com.ip13.main.security.repository.UserRepository
+import com.ip13.main.security.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.context.SecurityContextHolder
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/admin")
 class AdminController(
-    val userRepository: UserRepository,
+    val userService: UserService,
 ) {
     @PostMapping("/add_role")
     fun addRole(
@@ -25,20 +25,19 @@ class AdminController(
             return ResponseEntity("No such role: ${roleAddDto.role}", HttpStatus.BAD_REQUEST)
         }
 
-        // TODO() checkUser(id: userId): Boolean. returns true if user with such id exists, otherwise false
-        val count = userRepository.checkRole(roleAddDto.userId, role.code)
+        // TODO() is it ok?
+        userService.checkUser(roleAddDto.userId)
 
-        println("_____________________________________________________________________________________________________")
-        println("count is $count")
-        println("_____________________________________________________________________________________________________")
-        return if (count == 1) {
+        val isAlreadyHasRole = userService.checkRole(roleAddDto.userId, role.code)
+
+        return if (isAlreadyHasRole) {
             ResponseEntity(
                 "User with id: ${roleAddDto.userId} already has role: ${role.code}",
                 HttpStatus.OK
             )
         } else {
-            val rolesAddedCounter = userRepository.addRole(roleAddDto.userId, role.code)
-            if (rolesAddedCounter == 1) {
+            val isRoleAdded = userService.addRole(roleAddDto.userId, role.code)
+            if (isRoleAdded) {
                 ResponseEntity(
                     "Role: ${role.code} successfully added to user with id: ${roleAddDto.userId}",
                     HttpStatus.OK
