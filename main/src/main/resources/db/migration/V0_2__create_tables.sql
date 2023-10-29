@@ -3,7 +3,7 @@ create table if not exists user_t (
     username varchar(50) not null,
     password text not null,
     rating float,
-    roles role[]
+    roles text[]
 );
 
 create table if not exists admin (
