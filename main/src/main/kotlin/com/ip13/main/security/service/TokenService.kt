@@ -3,13 +3,10 @@ package com.ip13.main.security.service
 import com.ip13.main.security.entity.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.oauth2.jwt.JwtClaimsSet
-import org.springframework.security.oauth2.jwt.JwtDecoder
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
 import org.springframework.stereotype.Service
 import java.security.Key
 import java.time.Instant
@@ -37,7 +34,7 @@ class TokenService {
             .setSubject(user.username)
             .setIssuedAt(Date(System.currentTimeMillis()))
             .setExpiration(Date(System.currentTimeMillis() + lifeTimeSeconds * 1000))
-            .signWith(createSignInKey(), SignatureAlgorithm.HS256)
+            .signWith(createSignInKey())
             .compact()
     }
 
@@ -50,7 +47,12 @@ class TokenService {
         return getAllClaims(token).get("roles", List::class.java) as List<String>
     }
 
-    fun isTokenExpired(token: String): Boolean {
+    fun isTokenValid(token: String, user: User): Boolean {
+        val username = getUsername(token)
+        return (username == user.username && !isTokenExpired(token))
+    }
+
+    private fun isTokenExpired(token: String): Boolean {
         return getAllClaims(token).expiration.before(Date())
     }
 

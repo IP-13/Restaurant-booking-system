@@ -1,5 +1,6 @@
 package com.ip13.main.security.entity
 
+import com.ip13.main.model.entity.enums.Role
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -13,11 +14,11 @@ class User(
     val id: Long = 0,
     private val username: String = "",
     private val password: String = "",
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val roles: List<UserRole> = listOf(),
-): UserDetails {
+    @Enumerated(value = EnumType.STRING)
+    val roles: List<Role> = listOf(),
+) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return roles.map { SimpleGrantedAuthority(it.role.code) }.toMutableList()
+        return roles.map { SimpleGrantedAuthority(it.code) }.toMutableList()
     }
 
     override fun getPassword(): String {
@@ -29,7 +30,7 @@ class User(
     }
 
     override fun isAccountNonExpired(): Boolean {
-        return  true
+        return true
     }
 
     override fun isAccountNonLocked(): Boolean {
