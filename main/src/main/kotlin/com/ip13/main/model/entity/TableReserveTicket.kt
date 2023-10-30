@@ -1,13 +1,12 @@
 package com.ip13.main.model.entity
 
 import com.ip13.main.model.entity.enums.ReserveTableStatus
+import com.ip13.main.security.entity.User
 import jakarta.persistence.*
-import org.springframework.data.jpa.repository.Temporal
-import java.sql.Timestamp
 import java.time.LocalDateTime
 
 @Entity
-class ReserveTableTicket(
+class TableReserveTicket(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int,
@@ -15,8 +14,8 @@ class ReserveTableTicket(
     @JoinColumn(name = "restaurant_id")
     val restaurant: Restaurant,
     @ManyToOne
-    @JoinColumn(name = "visitor_id")
-    val visitor: Visitor,
+    @JoinColumn(name = "user_id")
+    val user: User,
     @ManyToOne
     @JoinColumn(name = "manager_id")
     val manager: Manager,

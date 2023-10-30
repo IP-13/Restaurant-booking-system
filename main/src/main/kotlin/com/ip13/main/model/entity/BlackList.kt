@@ -1,5 +1,6 @@
 package com.ip13.main.model.entity
 
+import com.ip13.main.security.entity.User
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -11,8 +12,8 @@ class BlackList(
     // TODO()
     // можно ли одного человека несколько раз внести в черный список
     @OneToOne
-    @JoinColumn(name = "visitor_id")
-    val visitor: Visitor,
+    @JoinColumn(name = "user_id")
+    val user: User,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
     val manager: Manager,

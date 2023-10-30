@@ -18,7 +18,7 @@ class BookingConstraint(
     // может ли быть несколько ограничений на одну заявку бронирования столика
     @OneToOne
     @JoinColumn(name = "reserve_table_ticket_id")
-    val reserveTableTicket: ReserveTableTicket,
+    val tableReserveTicket: TableReserveTicket,
     val reason: String,
     @Column(name = "creation_date")
     val creationDate: LocalDateTime,
