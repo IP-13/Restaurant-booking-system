@@ -9,23 +9,22 @@ import java.time.LocalDateTime
 class TableReserveTicket(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Int = 0,
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
-    val restaurant: Restaurant,
+    val restaurant: Restaurant = Restaurant(),
     @ManyToOne
     @JoinColumn(name = "user_id")
-    val user: User,
+    val user: User = User(),
     @ManyToOne
     @JoinColumn(name = "manager_id")
-    val manager: Manager,
-    val status: ReserveTableStatus,
+    val manager: Manager = Manager(),
+    @Enumerated(value = EnumType.STRING)
+    val status: ReserveTableStatus = ReserveTableStatus.REJECTED,
     @Column(name = "creation_date")
-    val creationDate: LocalDateTime,
-    @Column(name = "last_status_update")
-    val lastStatusUpdate: LocalDateTime,
-    @Column(name = "visitor_comment")
-    val visitorComment: String?,
+    val creationDate: LocalDateTime = LocalDateTime.now(),
+    @Column(name = "user_comment")
+    val visitorComment: String? = null,
     @Column(name = "manager_comment")
-    val managerComment: String?,
+    val managerComment: String? = null,
 )

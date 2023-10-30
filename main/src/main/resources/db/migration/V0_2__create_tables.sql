@@ -64,7 +64,6 @@ create table if not exists table_reserve_ticket (
     manager_id int references manager(id),
     status reserve_table_status,
     creation_date timestamp not null,
-    last_status_update timestamp not null,
     user_comment text,
     manager_comment text
 );

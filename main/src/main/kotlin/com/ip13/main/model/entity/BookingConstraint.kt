@@ -7,21 +7,16 @@ import java.time.LocalDateTime
 class BookingConstraint(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Int = 0,
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
-    val restaurant: Restaurant,
+    val restaurant: Restaurant = Restaurant(),
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
-    val manager: Manager,
-    // TODO()
-    // может ли быть несколько ограничений на одну заявку бронирования столика
-    @OneToOne
-    @JoinColumn(name = "reserve_table_ticket_id")
-    val tableReserveTicket: TableReserveTicket,
-    val reason: String,
+    val manager: Manager = Manager(),
+    val reason: String = "",
     @Column(name = "creation_date")
-    val creationDate: LocalDateTime,
+    val creationDate: LocalDateTime = LocalDateTime.now(),
     @Column(name = "expiration_date")
-    val expirationDate: LocalDateTime,
+    val expirationDate: LocalDateTime = LocalDateTime.now(),
 )

@@ -7,11 +7,11 @@ import jakarta.persistence.*
 class Manager(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
+    val id: Int = 0,
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    val user: User,
+    val user: User = User(),
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
-    val restaurant: Restaurant,
+    val restaurant: Restaurant = Restaurant(),
 )
