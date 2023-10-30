@@ -18,49 +18,53 @@ class JwtRequestFilter(
     val tokenService: TokenService,
     val userService: UserService
 ) : OncePerRequestFilter() {
-    private val myLogger = getLogger(javaClass)
+    private val log = getLogger(javaClass)
 
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val header = request.getHeader("Authorization")
+        try {
+            val header = request.getHeader("Authorization")
 
-        val jwt = if (header != null && header.startsWith("Bearer ")) {
-            header.substring(7)
-        } else {
-            null
-        }
-
-        val username = if (jwt != null) {
-            try {
-                tokenService.getUsername(jwt)
-            } catch (ex: ExpiredJwtException) {
-                // TODO("add logger")
-            } catch (ex: SignatureException) {
-                // TODO("add logger")
+            val jwt = if (header != null && header.startsWith("Bearer ")) {
+                header.substring(7)
+            } else {
+                null
             }
-        } else {
-            null
-        }
 
-        if (jwt != null && username != null && SecurityContextHolder.getContext().authentication == null
-        ) {
-            val user = userService.loadUserByUsername(username as String)
-
-            val authentication = UsernamePasswordAuthenticationToken(
-                username,
-                null,
-                user.authorities,
-            )
-
-            if (tokenService.isTokenValid(jwt, user)) {
-                myLogger.debug(authentication.toString())
-                SecurityContextHolder.getContext().authentication = authentication
-
+            val username = if (jwt != null) {
+                try {
+                    tokenService.getUsername(jwt)
+                } catch (ex: ExpiredJwtException) {
+                    log.debug("Jwt token has expired")
+                } catch (ex: SignatureException) {
+                    log.debug("Wrong signature")
+                }
+            } else {
+                null
             }
+
+            if (username != null && SecurityContextHolder.getContext().authentication == null) {
+                val user = userService.loadUserByUsername(username as String)
+
+                val authentication = UsernamePasswordAuthenticationToken(
+                    username,
+                    null,
+                    user.authorities,
+                )
+
+                // username != null, if and only if jwt != null
+                if (tokenService.isTokenValid(jwt!!, user)) {
+                    log.debug(authentication.toString())
+                    SecurityContextHolder.getContext().authentication = authentication
+                }
+            }
+        } catch (_: Exception) {
+            log.debug("No \"Authorization\" header found")
         }
+
 
         filterChain.doFilter(request, response)
     }

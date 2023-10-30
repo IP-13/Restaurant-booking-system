@@ -28,7 +28,7 @@ create table if not exists restaurant_add_ticket (
 create table if not exists restaurant_add_ticket_result (
     id int generated always as identity(start with 100 increment by 100) primary key,
     admin_id int references admin(id),
-    result add_restaurant_result,
+    result restaurant_add_result,
     create_date timestamp not null,
     admin_comment text
 );
@@ -64,7 +64,6 @@ create table if not exists table_reserve_ticket (
     manager_id int references manager(id),
     status reserve_table_status,
     creation_date timestamp not null,
-    last_status_update timestamp not null,
     user_comment text,
     manager_comment text
 );

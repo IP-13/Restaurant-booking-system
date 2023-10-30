@@ -1,5 +1,6 @@
 package com.ip13.main.model.entity
 
+import com.ip13.main.security.entity.User
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -7,18 +8,16 @@ import java.time.LocalDateTime
 class BlackList(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int,
-    // TODO()
-    // можно ли одного человека несколько раз внести в черный список
+    val id: Int = 0,
     @OneToOne
-    @JoinColumn(name = "visitor_id")
-    val visitor: Visitor,
+    @JoinColumn(name = "user_id")
+    val user: User = User(),
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manager_id")
-    val manager: Manager,
+    val manager: Manager = Manager(),
     @Column(name = "from_date")
-    val fromDate: LocalDateTime,
+    val fromDate: LocalDateTime = LocalDateTime.now(),
     @Column(name = "expiration_date")
-    val expirationDate: LocalDateTime,
-    val reason: String?,
+    val expirationDate: LocalDateTime = LocalDateTime.now(),
+    val reason: String? = null,
 )
