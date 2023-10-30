@@ -25,12 +25,8 @@ class AuthService(
         }
 
         val user = User(
-            // TODO()
-            id = 132,
             username = registerDto.name,
             password = passwordEncoder.encode(registerDto.password),
-            // TODO()
-            listOf(),
         )
 
         val savedUser = userService.save(user)
