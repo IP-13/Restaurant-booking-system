@@ -1,6 +1,7 @@
 package com.ip13.main.exceptionHandling
 
 import com.ip13.main.exceptionHandling.dto.CommonResponse
+import com.ip13.main.exceptionHandling.exception.UserNotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
@@ -9,9 +10,9 @@ import java.time.LocalDateTime
 
 @ControllerAdvice
 class CommonControllerAdvice {
-    @ExceptionHandler
-    fun handleException(e: Exception): ResponseEntity<CommonResponse> {
-        val message = e.message ?: "${LocalDateTime.now()}: exception occurred"
-        return ResponseEntity(CommonResponse(message), HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(UserNotFoundException::class)
+    fun handleException(ex: UserNotFoundException): ResponseEntity<CommonResponse> {
+        val message = "${LocalDateTime.now()}: $ex.message"
+        return ResponseEntity(CommonResponse(message), HttpStatus.BAD_REQUEST)
     }
 }

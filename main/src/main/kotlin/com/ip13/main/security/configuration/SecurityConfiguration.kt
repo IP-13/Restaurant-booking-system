@@ -1,5 +1,6 @@
 package com.ip13.main.security.configuration
 
+import com.ip13.main.model.entity.enums.Role
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.context.annotation.Bean
@@ -33,40 +34,19 @@ class SecurityConfiguration(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeHttpRequests {
-                // TODO("configure authorize")
-//                authorize("/security/register/**", permitAll)
-//                authorize("/security/login/**", permitAll)
-//                authorize("/admin/get_authentication", permitAll)
-//                authorize("/admin/**", hasAuthority(Role.admin.code))
-//                authorize("/error/**", permitAll)
-//                authorize(anyRequest, authenticated)
-                authorize(anyRequest, permitAll)
-                authorize("/**", permitAll)
+                authorize("/security/register/**", permitAll)
+                authorize("/security/login/**", permitAll)
+                authorize("/admin/get_authentication", permitAll)
+                authorize("/admin/**", hasAuthority(Role.admin.code))
+                authorize(anyRequest, authenticated)
             }
-//            oauth2ResourceServer {
-//                jwt {
-//                    jwtDecoder = jwtDecoder()
-//                }
-//            }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
             }
             csrf {
                 disable()
             }
-//            cors {
-//                disable()
-//            }
-//            headers {
-//                frameOptions {
-//                    disable()
-//                }
-//                xssProtection {
-//                    disable()
-//                }
-//            }
             addFilterBefore<UsernamePasswordAuthenticationFilter>(jwtRequestFilter)
-//            authenticationManager = authenticationManager()
         }
 
         return http.build()
