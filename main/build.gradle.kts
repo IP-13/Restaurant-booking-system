@@ -37,6 +37,7 @@ dependencies {
 	testImplementation("org.testcontainers:testcontainers:1.19.1")
 	testImplementation("org.testcontainers:junit-jupiter:1.19.1")
 	testImplementation("org.testcontainers:postgresql:1.19.1")
+	testImplementation("org.springframework.security:spring-security-test:6.1.4")
 }
 
 tasks.compileKotlin {
