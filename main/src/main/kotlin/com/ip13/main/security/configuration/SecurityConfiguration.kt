@@ -3,6 +3,7 @@ package com.ip13.main.security.configuration
 import com.ip13.main.model.entity.enums.Role
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -23,6 +24,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
+@ConditionalOnProperty(
+    name = ["security.enabled"],
+    havingValue = "true",
+    matchIfMissing = true
+)
 class SecurityConfiguration(
     val jwtRequestFilter: JwtRequestFilter,
     val authenticationConfiguration: AuthenticationConfiguration,
