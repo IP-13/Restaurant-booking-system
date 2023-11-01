@@ -27,6 +27,7 @@ create table if not exists restaurant_add_ticket (
 
 create table if not exists restaurant_add_ticket_result (
     id int generated always as identity(start with 100 increment by 100) primary key,
+    restaurant_add_ticket_id int references restaurant_add_ticket(id),
     admin_id int references admin(id),
     result restaurant_add_result,
     create_date timestamp not null,
@@ -66,6 +67,17 @@ create table if not exists table_reserve_ticket (
     creation_date timestamp not null,
     user_comment text,
     manager_comment text
+);
+
+create table if not exists visit_result (
+    id int generated always as identity(start with 100 increment by 100) primary key,
+    table_reserve_ticket_id int references table_reserve_ticket(id),
+    manager_comment text,
+    visitor_comment text,
+    -- Оценка, которую менеджер поставил пользователю
+    manager_grade float,
+    -- Оценка, которую пользователь поставил ресторану
+    visitor_grade float
 );
 
 create table if not exists booking_constraint (

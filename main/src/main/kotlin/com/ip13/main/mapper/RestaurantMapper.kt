@@ -6,12 +6,12 @@ import com.ip13.main.model.entity.Restaurant
 import java.time.LocalDateTime
 
 object RestaurantMapper {
-    fun restaurantFromRestaurantAddTicketDto(dto: RestaurantAddTicketDto): Restaurant {
+    fun restaurantFromRestaurantAddTicket(ticket: RestaurantAddTicket): Restaurant {
         return Restaurant(
-            name = dto.name,
-            address = AddressMapper.addressFromRestaurantAddTicketDto(dto),
-            restaurantAddTicket = restaurantAddTicketDtoToRestaurantAddTicket(dto),
-            description = dto.description,
+            name = ticket.name,
+            address = AddressMapper.addressFromRestaurantAddTicket(ticket),
+            restaurantAddTicket = ticket,
+            description = ticket.description,
         )
     }
 

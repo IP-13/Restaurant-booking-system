@@ -20,7 +20,7 @@ class TableReserveTicket(
     @JoinColumn(name = "manager_id")
     val manager: Manager = Manager(),
     @Enumerated(value = EnumType.STRING)
-    val status: ReserveTableStatus = ReserveTableStatus.REJECTED,
+    val status: ReserveTableStatus = ReserveTableStatus.PROCESSING,
     @Column(name = "creation_date")
     val creationDate: LocalDateTime = LocalDateTime.now(),
     @Column(name = "user_comment")
