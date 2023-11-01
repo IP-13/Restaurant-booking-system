@@ -35,6 +35,16 @@ class EndPointsOnWholeSystemTest(
 ) {
     @AfterEach
     fun cleanUp() {
+        jdbc.execute("truncate table black_list cascade")
+        jdbc.execute("truncate table booking_constraint cascade")
+        jdbc.execute("truncate table table_reserve_ticket cascade")
+        jdbc.execute("truncate table manager cascade")
+        jdbc.execute("truncate table restaurant cascade")
+        jdbc.execute("truncate table address cascade")
+        jdbc.execute("truncate table restaurant_add_ticket_result cascade")
+        jdbc.execute("truncate table admin cascade")
+        // delete all users except mega_admin
+        jdbc.execute("delete from user_t where id != 100")
         // TODO()
     }
 
@@ -80,7 +90,6 @@ class EndPointsOnWholeSystemTest(
 
         assertThat(address).isEqualTo("RussiaSaint-PetersburgLenina1213")
     }
-
 
     @Autowired
     private lateinit var mockMvc: MockMvc
