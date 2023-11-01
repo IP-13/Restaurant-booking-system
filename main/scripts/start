@@ -1,4 +1,5 @@
 #!/bin/bash
 cd ..
 gradle build
+gradle jacocoTestReport
 docker compose up
