@@ -1,7 +1,9 @@
 package com.ip13.main.controller
 
+import com.ip13.main.mapper.RestaurantAddTicketResultMapper.restaurantAddTicketResultFromRestaurantAddTicketResultDto
 import com.ip13.main.mapper.RestaurantMapper
 import com.ip13.main.model.dto.RestaurantAddTicketDto
+import com.ip13.main.model.dto.RestaurantAddTicketResultDto
 import com.ip13.main.service.AddressService
 import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.service.RestaurantService
@@ -19,8 +21,8 @@ class RestaurantController(
     val restaurantAddTicketService: RestaurantAddTicketService,
     val restaurantService: RestaurantService,
 ) {
-    @PostMapping("/add_restaurant")
-    fun addRestaurant(
+    @PostMapping("/create_ticket")
+    fun createTicketToAddRestaurant(
         @RequestBody
         restaurantAddTicketDto: RestaurantAddTicketDto,
     ): ResponseEntity<*> {
@@ -30,6 +32,31 @@ class RestaurantController(
 
         // TODO() answer
         return ResponseEntity("Ticket for adding restaurant successfully created", HttpStatus.OK)
+    }
+
+    @PostMapping("/process_ticket")
+    fun approveTicketToAddRestaurant(
+        @RequestBody
+        dto: RestaurantAddTicketResultDto,
+    ): ResponseEntity<*> {
+        val restaurantAddTicket = restaurantAddTicketService.findByIdOrNull(dto.restaurantAddTicketId)
+            ?: return ResponseEntity(
+                "No restaurant add ticket with id ${dto.restaurantAddTicketId}",
+                HttpStatus.BAD_REQUEST
+            )
+
+        val restaurantAddTicketResult = restaurantAddTicketResultFromRestaurantAddTicketResultDto(dto)
+
+        val restaurantId = restaurantAddTicketService.processRestaurantAddTicket(
+            restaurantAddTicketResult,
+            restaurantAddTicket
+        )
+
+        return if (restaurantId != null) {
+            ResponseEntity("Restaurant successfully added. New restaurant id - $restaurantId", HttpStatus.OK)
+        } else {
+            ResponseEntity("You have rejected ticket with id ${dto.restaurantAddTicketId}", HttpStatus.OK)
+        }
     }
 
 //    @GetMapping("/get/{id}")
