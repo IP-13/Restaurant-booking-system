@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0,
+    val id: Int = 0,
     private val username: String = "",
     private val password: String = "",
     // TODO() default user rating
