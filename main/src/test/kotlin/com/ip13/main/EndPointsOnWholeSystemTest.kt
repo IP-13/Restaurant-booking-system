@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
@@ -31,20 +31,20 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @Testcontainers
 @AutoConfigureMockMvc
 class EndPointsOnWholeSystemTest(
-    @Autowired val jdbc: JdbcTemplate,
+    @Autowired val jdbc: NamedParameterJdbcTemplate,
 ) {
     @AfterEach
     fun cleanUp() {
-        jdbc.execute("truncate table black_list cascade")
-        jdbc.execute("truncate table booking_constraint cascade")
-        jdbc.execute("truncate table table_reserve_ticket cascade")
-        jdbc.execute("truncate table manager cascade")
-        jdbc.execute("truncate table restaurant cascade")
-        jdbc.execute("truncate table address cascade")
-        jdbc.execute("truncate table restaurant_add_ticket_result cascade")
-        jdbc.execute("truncate table admin cascade")
+        jdbc.execute("truncate table black_list cascade") { _ -> { } }
+        jdbc.execute("truncate table booking_constraint cascade") { _ -> { } }
+        jdbc.execute("truncate table table_reserve_ticket cascade") { _ -> { } }
+        jdbc.execute("truncate table manager cascade") { _ -> { } }
+        jdbc.execute("truncate table restaurant cascade") { _ -> { } }
+        jdbc.execute("truncate table address cascade") { _ -> { } }
+        jdbc.execute("truncate table restaurant_add_ticket_result cascade") { _ -> { } }
+        jdbc.execute("truncate table admin cascade") { _ -> { } }
         // delete all users except mega_admin
-        jdbc.execute("delete from user_t where id != 100")
+        jdbc.execute("delete from user_t where id != 100") { _ -> { } }
         // TODO()
     }
 
@@ -76,7 +76,8 @@ class EndPointsOnWholeSystemTest(
     fun `test successful insert and select with address table`() {
         jdbc.update(
             "insert into address(country, city, street, building, entrance, floor) " +
-                    "values('Russia', 'Saint-Petersburg', 'Lenina', 12, 1, 3)"
+                    "values('Russia', 'Saint-Petersburg', 'Lenina', 12, 1, 3)",
+            mapOf<String, Any>()
         )
 
         val address = jdbc.query("select * from address") { rs, _ ->
