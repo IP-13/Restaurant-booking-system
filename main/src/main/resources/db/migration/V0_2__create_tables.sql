@@ -27,6 +27,7 @@ create table if not exists restaurant_add_ticket (
 
 create table if not exists restaurant_add_ticket_result (
     id int generated always as identity(start with 100 increment by 100) primary key,
+    restaurant_add_ticket_id int references restaurant_add_ticket(id),
     admin_id int references admin(id),
     result restaurant_add_result,
     create_date timestamp not null,
