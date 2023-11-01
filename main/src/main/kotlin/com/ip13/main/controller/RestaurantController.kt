@@ -2,11 +2,9 @@ package com.ip13.main.controller
 
 import com.ip13.main.mapper.RestaurantMapper
 import com.ip13.main.model.dto.RestaurantAddTicketDto
-import com.ip13.main.repository.AddressRepository
-import com.ip13.main.repository.RestaurantAddTicketRepository
-import com.ip13.main.repository.RestaurantRepository
 import com.ip13.main.service.AddressService
 import com.ip13.main.service.RestaurantAddTicketService
+import com.ip13.main.service.RestaurantService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -19,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 class RestaurantController(
     val addressService: AddressService,
     val restaurantAddTicketService: RestaurantAddTicketService,
-    val restaurantRepository: RestaurantRepository,
+    val restaurantService: RestaurantService,
 ) {
     @PostMapping("/add_restaurant")
     fun addRestaurant(
