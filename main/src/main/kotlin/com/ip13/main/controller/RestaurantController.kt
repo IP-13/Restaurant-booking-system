@@ -5,6 +5,7 @@ import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.repository.AddressRepository
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.repository.RestaurantRepository
+import com.ip13.main.service.AddressService
 import com.ip13.main.service.RestaurantAddTicketService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/restaurant")
 class RestaurantController(
-    val addressRepository: AddressRepository,
+    val addressService: AddressService,
     val restaurantAddTicketService: RestaurantAddTicketService,
     val restaurantRepository: RestaurantRepository,
 ) {
