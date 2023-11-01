@@ -1,5 +1,6 @@
 package com.ip13.main
 
+import com.ip13.main.model.entity.enums.Role
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.AfterEach
@@ -48,25 +49,6 @@ class EndPointsOnWholeSystemTest(
         // TODO()
     }
 
-    companion object {
-        private const val POSTGRES_IMAGE = "postgres:16.0"
-
-        @Container
-        val container = PostgreSQLContainer(POSTGRES_IMAGE).apply {
-            withDatabaseName("test_db")
-            withUsername("test_user")
-            withPassword("test_password")
-        }
-
-        @JvmStatic
-        @DynamicPropertySource
-        fun datasourceConfig(registry: DynamicPropertyRegistry) {
-            registry.add("spring.datasource.url", container::getJdbcUrl)
-            registry.add("spring.datasource.username", container::getUsername)
-            registry.add("spring.datasource.password", container::getPassword)
-        }
-    }
-
     @Test
     fun `container is running test`() {
         println(container.databaseName)
@@ -96,9 +78,9 @@ class EndPointsOnWholeSystemTest(
     private lateinit var mockMvc: MockMvc
 
     @Test
-    @WithMockUser(authorities = ["ADMIN"])
+    @WithMockUser(authorities = [ADMIN])
     fun `test add role to non-existent user`() {
-        val body = "{ \"userId\": 10, \"role\": \"MANAGER\" }"
+        val body = "{ \"userId\": 10, \"role\": \"$MANAGER\" }"
         mockMvc.post("/admin/add_role") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
@@ -113,6 +95,28 @@ class EndPointsOnWholeSystemTest(
                     )
                 )
             }
+        }
+    }
+
+    companion object {
+        private const val POSTGRES_IMAGE = "postgres:16.0"
+
+        private const val ADMIN = "admin"
+        private const val MANAGER = "MANAGER"
+
+        @Container
+        val container = PostgreSQLContainer(POSTGRES_IMAGE).apply {
+            withDatabaseName("test_db")
+            withUsername("test_user")
+            withPassword("test_password")
+        }
+
+        @JvmStatic
+        @DynamicPropertySource
+        fun datasourceConfig(registry: DynamicPropertyRegistry) {
+            registry.add("spring.datasource.url", container::getJdbcUrl)
+            registry.add("spring.datasource.username", container::getUsername)
+            registry.add("spring.datasource.password", container::getPassword)
         }
     }
 }

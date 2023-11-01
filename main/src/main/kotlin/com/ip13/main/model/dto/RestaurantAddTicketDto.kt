@@ -10,6 +10,4 @@ data class RestaurantAddTicketDto(
     val floor: Int? = null,
     val description: String? = null,
     val userId: Int = 0,
-    val authorComment: String? = null,
-    val adminComment: String? = null,
 )
