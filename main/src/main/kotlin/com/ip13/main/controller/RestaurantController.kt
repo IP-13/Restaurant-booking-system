@@ -5,6 +5,7 @@ import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.repository.AddressRepository
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.repository.RestaurantRepository
+import com.ip13.main.service.RestaurantAddTicketService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 @RequestMapping("/restaurant")
 class RestaurantController(
     val addressRepository: AddressRepository,
-    val restaurantAddTicketRepository: RestaurantAddTicketRepository,
+    val restaurantAddTicketService: RestaurantAddTicketService,
     val restaurantRepository: RestaurantRepository,
 ) {
     @PostMapping("/add_restaurant")
@@ -26,7 +27,7 @@ class RestaurantController(
     ): ResponseEntity<*> {
         // TODO() deduplication, validation
         val restaurantAddTicket = RestaurantMapper.restaurantAddTicketDtoToRestaurantAddTicket(restaurantAddTicketDto)
-        restaurantAddTicketRepository.save(restaurantAddTicket)
+        restaurantAddTicketService.save(restaurantAddTicket)
 
         // TODO() answer
         return ResponseEntity("Ticket for adding restaurant successfully created", HttpStatus.OK)
