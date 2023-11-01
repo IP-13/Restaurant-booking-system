@@ -1,16 +1,23 @@
 package com.ip13.main
 
 import org.assertj.core.api.Assertions.assertThat
+import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.http.MediaType
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.context.junit4.SpringRunner
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
@@ -22,7 +29,8 @@ import org.testcontainers.junit.jupiter.Testcontainers
 )
 @ActiveProfiles("test-containers-flyway")
 @Testcontainers
-class IntegrationTests(
+@AutoConfigureMockMvc
+class EndPointsOnWholeSystemTest(
     @Autowired val jdbc: JdbcTemplate,
 ) {
     @AfterEach
@@ -71,5 +79,30 @@ class IntegrationTests(
         }.first()
 
         assertThat(address).isEqualTo("RussiaSaint-PetersburgLenina1213")
+    }
+
+
+    @Autowired
+    private lateinit var mockMvc: MockMvc
+
+    @Test
+    @WithMockUser(authorities = ["admin"])
+    fun `test add role to non-existent user`() {
+        val body = "{ \"userId\": 10, \"role\": \"manager\" }"
+        mockMvc.post("/admin/add_role") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(400)
+            content {
+                jsonPath(
+                    "message",
+                    containsString(
+                        "UserNotFoundException: User with id: 10 not found",
+                    )
+                )
+            }
+        }
     }
 }
