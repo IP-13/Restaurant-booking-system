@@ -43,7 +43,8 @@ class SecurityConfiguration(
                 authorize("/security/register/**", permitAll)
                 authorize("/security/login/**", permitAll)
                 authorize("/admin/get_authentication", permitAll)
-                authorize("/admin/**", hasAuthority(Role.admin.code))
+                authorize("/admin/**", hasAuthority(Role.ADMIN.name))
+                authorize("/reserve/**", permitAll)
                 authorize(anyRequest, authenticated)
             }
             sessionManagement {

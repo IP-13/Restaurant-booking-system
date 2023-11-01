@@ -76,7 +76,7 @@ create table if not exists visit_result (
     -- Оценка, которую менеджер поставил пользователю
     manager_grade float,
     -- Оценка, которую пользователь поставил ресторану
-    visitor_grade float,
+    visitor_grade float
 );
 
 create table if not exists booking_constraint (

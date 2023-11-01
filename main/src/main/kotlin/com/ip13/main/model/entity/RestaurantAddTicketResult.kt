@@ -12,7 +12,7 @@ class RestaurantAddTicketResult(
     @Column(name = "admin_id")
     val adminId: Int = 0,
     @Enumerated(value = EnumType.STRING)
-    val result: RestaurantAddResult = RestaurantAddResult.REJECTED,
+    val result: RestaurantAddResult = RestaurantAddResult.PROCESSING,
     @Column(name = "create_date")
     val createDate: LocalDateTime = LocalDateTime.now(),
     val adminComment: String? = null,
