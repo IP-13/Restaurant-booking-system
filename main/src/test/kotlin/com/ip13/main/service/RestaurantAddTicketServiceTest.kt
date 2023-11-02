@@ -15,7 +15,11 @@ import io.mockk.junit5.MockKExtension
 import io.mockk.verify
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 
 
@@ -88,5 +92,27 @@ class RestaurantAddTicketServiceTest {
 
         Assertions.assertThat(restaurantAddTicketService.processRestaurantAddTicket(result, ticket)).isEqualTo(null)
         verify(exactly = 1) { restaurantAddTicketResultRepository.save(any()) }
+    }
+
+    @Test
+    fun getTicketsTest() {
+        val pageRequest = PageRequest.of(0, 10, Sort.unsorted())
+
+        every { restaurantAddTicketRepository.findAllAsList(pageRequest) } returns listOf(
+            EntitiesProvider.getDefaultRestaurantAddTicket(id = 1, name = "first"),
+            EntitiesProvider.getDefaultRestaurantAddTicket(id = 13, name = "second"),
+            EntitiesProvider.getDefaultRestaurantAddTicket(id = 1313, name = "third",),
+            EntitiesProvider.getDefaultRestaurantAddTicket(id = 131313, name = "forth"),
+        )
+
+        val tickets = restaurantAddTicketService.getTickets(pageRequest)
+
+        assertAll(
+            { Assertions.assertThat(tickets).hasSize(4) },
+            { Assertions.assertThat(tickets[0].name).isEqualTo("first") },
+            { Assertions.assertThat(tickets[1].name).isEqualTo("second") },
+            { Assertions.assertThat(tickets[2].name).isEqualTo("third") },
+            { Assertions.assertThat(tickets[3].name).isEqualTo("forth") },
+        )
     }
 }

@@ -15,7 +15,7 @@ import java.util.*
 @Service
 class TokenService {
     private val secret = "s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu"
-    private val lifeTimeSeconds = 30L
+    private val lifeTimeSeconds = 120L
 
     fun createToken(user: User): String {
         val roles = user.authorities.map(GrantedAuthority::getAuthority).toList()
