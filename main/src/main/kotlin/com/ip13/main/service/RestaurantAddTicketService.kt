@@ -1,12 +1,15 @@
 package com.ip13.main.service
 
 import com.ip13.main.mapper.RestaurantMapper
+import com.ip13.main.model.entity.Manager
+import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.entity.RestaurantAddTicketResult
 import com.ip13.main.model.entity.enums.RestaurantAddResult
 import com.ip13.main.model.entity.enums.Role
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.repository.RestaurantAddTicketResultRepository
+import com.ip13.main.security.entity.User
 import com.ip13.main.security.service.UserService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
@@ -18,6 +21,7 @@ class RestaurantAddTicketService(
     private val restaurantAddTicketResultRepository: RestaurantAddTicketResultRepository,
     private val restaurantService: RestaurantService,
     private val userService: UserService,
+    private val managerService: ManagerService,
 ) {
     fun save(restaurantAddTicket: RestaurantAddTicket) {
         restaurantAddTicketRepository.save(restaurantAddTicket)
@@ -34,6 +38,12 @@ class RestaurantAddTicketService(
             val restaurant = RestaurantMapper.restaurantFromRestaurantAddTicket(ticket)
             userService.addRole(ticket.userId, Role.MANAGER.name)
             restaurantService.save(restaurant)
+            managerService.save(
+                Manager(
+                    user = User(id = ticket.userId),
+                    restaurant = Restaurant(id = restaurant.id)
+                )
+            )
         } else {
             null
         }
