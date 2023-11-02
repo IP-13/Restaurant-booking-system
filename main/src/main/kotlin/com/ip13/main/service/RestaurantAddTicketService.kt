@@ -5,21 +5,18 @@ import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.entity.RestaurantAddTicketResult
 import com.ip13.main.model.entity.enums.RestaurantAddResult
 import com.ip13.main.model.entity.enums.Role
-import com.ip13.main.repository.AddressRepository
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.repository.RestaurantAddTicketResultRepository
-import com.ip13.main.repository.RestaurantRepository
-import com.ip13.main.security.repository.UserRepository
+import com.ip13.main.security.service.UserService
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
 class RestaurantAddTicketService(
-    val restaurantAddTicketRepository: RestaurantAddTicketRepository,
-    val restaurantAddTicketResultRepository: RestaurantAddTicketResultRepository,
-    val restaurantService: RestaurantService,
-    // TODO() is it ok to add role from repository
-    val userRepository: UserRepository,
+    private val restaurantAddTicketRepository: RestaurantAddTicketRepository,
+    private val restaurantAddTicketResultRepository: RestaurantAddTicketResultRepository,
+    private val restaurantService: RestaurantService,
+    private val userService: UserService,
 ) {
     fun save(restaurantAddTicket: RestaurantAddTicket) {
         restaurantAddTicketRepository.save(restaurantAddTicket)
@@ -34,7 +31,7 @@ class RestaurantAddTicketService(
 
         return if (result.result == RestaurantAddResult.ACCEPTED) {
             val restaurant = RestaurantMapper.restaurantFromRestaurantAddTicket(ticket)
-            userRepository.addRole(ticket.userId, Role.MANAGER.name)
+            userService.addRole(ticket.userId, Role.MANAGER.name)
             restaurantService.save(restaurant)
         } else {
             null

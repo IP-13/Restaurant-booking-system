@@ -21,4 +21,34 @@ class RestaurantAddTicket(
     val userId: Int = 0,
     @Column(name = "create_date")
     val createDate: LocalDateTime = LocalDateTime.now(),
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        return other === this ||
+                (other is RestaurantAddTicket &&
+                        other.name == this.name &&
+                        other.country == this.country &&
+                        other.city == this.city &&
+                        other.street == this.street &&
+                        other.building == this.building &&
+                        other.entrance == this.entrance &&
+                        other.floor == this.floor &&
+                        other.description == this.description &&
+                        other.userId == this.userId &&
+                        other.createDate == this.createDate
+                        )
+    }
+
+    override fun hashCode(): Int {
+        var result = name.hashCode()
+        result = 31 * result + country.hashCode()
+        result = 31 * result + city.hashCode()
+        result = 31 * result + street.hashCode()
+        result = 31 * result + building
+        result = 31 * result + (entrance ?: 0)
+        result = 31 * result + (floor ?: 0)
+        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + userId
+        result = 31 * result + createDate.hashCode()
+        return result
+    }
+}

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service
 
 @Service
 class RestaurantService(
-    val restaurantRepository: RestaurantRepository,
-    val addressService: AddressService,
+    private val restaurantRepository: RestaurantRepository,
+    private val addressService: AddressService,
 ) {
     fun save(restaurant: Restaurant): Int {
         addressService.save(restaurant.address)

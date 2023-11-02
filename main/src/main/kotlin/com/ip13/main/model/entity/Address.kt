@@ -16,4 +16,26 @@ class Address(
     val building: Int = 0,
     val entrance: Int? = null,
     val floor: Int? = null,
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        return other === this ||
+                (other is Address &&
+                        other.country == this.country &&
+                        other.city == this.city &&
+                        other.street == this.street &&
+                        other.building == this.building &&
+                        other.entrance == this.entrance &&
+                        other.floor == this.floor
+                        )
+    }
+
+    override fun hashCode(): Int {
+        var result = country.hashCode()
+        result = 31 * result + city.hashCode()
+        result = 31 * result + street.hashCode()
+        result = 31 * result + building
+        result = 31 * result + (entrance ?: 0)
+        result = 31 * result + (floor ?: 0)
+        return result
+    }
+}
