@@ -17,7 +17,7 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -98,11 +98,13 @@ class RestaurantAddTicketServiceTest {
     fun getTicketsTest() {
         val pageRequest = PageRequest.of(0, 10, Sort.unsorted())
 
-        every { restaurantAddTicketRepository.findAllAsList(pageRequest) } returns listOf(
-            EntitiesProvider.getDefaultRestaurantAddTicket(id = 1, name = "first"),
-            EntitiesProvider.getDefaultRestaurantAddTicket(id = 13, name = "second"),
-            EntitiesProvider.getDefaultRestaurantAddTicket(id = 1313, name = "third",),
-            EntitiesProvider.getDefaultRestaurantAddTicket(id = 131313, name = "forth"),
+        every { restaurantAddTicketRepository.findAll(pageRequest) } returns PageImpl(
+            listOf(
+                EntitiesProvider.getDefaultRestaurantAddTicket(id = 1, name = "first"),
+                EntitiesProvider.getDefaultRestaurantAddTicket(id = 13, name = "second"),
+                EntitiesProvider.getDefaultRestaurantAddTicket(id = 1313, name = "third"),
+                EntitiesProvider.getDefaultRestaurantAddTicket(id = 131313, name = "forth"),
+            )
         )
 
         val tickets = restaurantAddTicketService.getTickets(pageRequest)

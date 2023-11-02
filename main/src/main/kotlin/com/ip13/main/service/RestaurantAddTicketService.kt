@@ -40,6 +40,6 @@ class RestaurantAddTicketService(
     }
 
     fun getTickets(pageRequest: PageRequest): List<RestaurantAddTicket> {
-        return restaurantAddTicketRepository.findAllAsList(pageRequest)
+        return restaurantAddTicketRepository.findAll(pageRequest).toList()
     }
 }
