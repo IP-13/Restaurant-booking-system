@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
+import java.time.LocalDateTime
 
 @Repository
 interface UserRepository : CrudRepository<User, Int> {
@@ -38,4 +39,10 @@ interface UserRepository : CrudRepository<User, Int> {
         @Param(value = "id")
         userId: Int,
     ): Boolean
+
+    @Query("select expiration_date from black_list where user_id = :user_id", nativeQuery = true)
+    fun getExpirationDateFromBlackList(
+        @Param(value = "user_id")
+        userId: Int,
+    ): LocalDateTime?
 }
