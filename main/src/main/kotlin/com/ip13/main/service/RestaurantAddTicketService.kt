@@ -8,6 +8,7 @@ import com.ip13.main.model.entity.enums.Role
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.repository.RestaurantAddTicketResultRepository
 import com.ip13.main.security.service.UserService
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -36,5 +37,9 @@ class RestaurantAddTicketService(
         } else {
             null
         }
+    }
+
+    fun getTickets(pageRequest: PageRequest): List<RestaurantAddTicket> {
+        return restaurantAddTicketRepository.findAll(pageRequest).toList()
     }
 }
