@@ -20,7 +20,7 @@ class RestaurantAddTicketResultMapperTest {
             { Assertions.assertThat(restaurantAddTicketResult.restaurantAddTicketId).isEqualTo(13) },
             { Assertions.assertThat(restaurantAddTicketResult.adminId).isEqualTo(13) },
             { Assertions.assertThat(restaurantAddTicketResult.result).isEqualTo(RestaurantAddResult.ACCEPTED) },
-            { Assertions.assertThat(restaurantAddTicketResult.adminComment).isEqualTo("live long, but die young") },
+            { Assertions.assertThat(restaurantAddTicketResult.adminComment).isEqualTo("live long die young") },
         )
     }
 }

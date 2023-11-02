@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class RestaurantAddTicketService(
-    val restaurantAddTicketRepository: RestaurantAddTicketRepository,
-    val restaurantAddTicketResultRepository: RestaurantAddTicketResultRepository,
-    val restaurantService: RestaurantService,
-    val userService: UserService,
+    private val restaurantAddTicketRepository: RestaurantAddTicketRepository,
+    private val restaurantAddTicketResultRepository: RestaurantAddTicketResultRepository,
+    private val restaurantService: RestaurantService,
+    private val userService: UserService,
 ) {
     fun save(restaurantAddTicket: RestaurantAddTicket) {
         restaurantAddTicketRepository.save(restaurantAddTicket)

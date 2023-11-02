@@ -1,0 +1,92 @@
+package com.ip13.main.service
+
+
+import com.ip13.main.model.entity.RestaurantAddTicket
+import com.ip13.main.model.entity.enums.RestaurantAddResult
+import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.provider.EntitiesProvider
+import com.ip13.main.repository.RestaurantAddTicketRepository
+import com.ip13.main.repository.RestaurantAddTicketResultRepository
+import com.ip13.main.security.service.UserService
+import io.mockk.every
+import io.mockk.impl.annotations.InjectMockKs
+import io.mockk.impl.annotations.MockK
+import io.mockk.junit5.MockKExtension
+import io.mockk.verify
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.data.repository.findByIdOrNull
+
+
+@ExtendWith(MockKExtension::class)
+class RestaurantAddTicketServiceTest {
+    @MockK
+    private lateinit var restaurantAddTicketRepository: RestaurantAddTicketRepository
+
+    @MockK
+    private lateinit var restaurantAddTicketResultRepository: RestaurantAddTicketResultRepository
+
+    @MockK
+    private lateinit var restaurantService: RestaurantService
+
+    @MockK
+    private lateinit var userService: UserService
+
+    @InjectMockKs
+    private lateinit var restaurantAddTicketService: RestaurantAddTicketService
+
+    @Test
+    fun saveTest() {
+        every { restaurantAddTicketRepository.save(any()) } returns null
+
+        restaurantAddTicketService.save(RestaurantAddTicket())
+
+        verify(exactly = 1) { restaurantAddTicketRepository.save(any()) }
+    }
+
+    @Test
+    fun findByIdTest() {
+        val restaurantAddTicket = EntitiesProvider.getDefaultRestaurantAddTicket()
+
+        every { restaurantAddTicketRepository.findByIdOrNull(any()) } returns restaurantAddTicket
+
+        Assertions.assertThat(restaurantAddTicketService.findByIdOrNull(10)).isEqualTo(restaurantAddTicket)
+        verify(exactly = 1) { restaurantAddTicketRepository.findByIdOrNull(any()) }
+    }
+
+    @Test
+    fun `findById should return null when restaurantAddTicketRepository returns null`() {
+        every { restaurantAddTicketRepository.findByIdOrNull(any()) } returns null
+
+        Assertions.assertThat(restaurantAddTicketService.findByIdOrNull(10)).isEqualTo(null)
+        verify(exactly = 1) { restaurantAddTicketRepository.findByIdOrNull(any()) }
+    }
+
+    @Test
+    fun `successful processRestaurantAddTicket`() {
+        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult()
+        val ticket = EntitiesProvider.getDefaultRestaurantAddTicket()
+
+        every { restaurantAddTicketResultRepository.save(result) } returns result
+        every { userService.addRole(any(), Role.MANAGER.name) } returns true
+        // returns id of new added restaurant
+        every { restaurantService.save(any()) } returns 13
+
+        Assertions.assertThat(restaurantAddTicketService.processRestaurantAddTicket(result, ticket)).isEqualTo(13)
+        verify(exactly = 1) { restaurantAddTicketResultRepository.save(any()) }
+        verify(exactly = 1) { userService.addRole(any(), any()) }
+        verify(exactly = 1) { restaurantService.save(any()) }
+    }
+
+    @Test
+    fun `should save ticketResult and return null when rejected`() {
+        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult(result = RestaurantAddResult.REJECTED)
+        val ticket = EntitiesProvider.getDefaultRestaurantAddTicket()
+
+        every { restaurantAddTicketResultRepository.save(result) } returns result
+
+        Assertions.assertThat(restaurantAddTicketService.processRestaurantAddTicket(result, ticket)).isEqualTo(null)
+        verify(exactly = 1) { restaurantAddTicketResultRepository.save(any()) }
+    }
+}
