@@ -1,5 +1,6 @@
 package com.ip13.main.controller
 
+import com.ip13.main.mapper.RestaurantAddTicketMapper
 import com.ip13.main.mapper.RestaurantAddTicketResultMapper.restaurantAddTicketResultFromRestaurantAddTicketResultDto
 import com.ip13.main.mapper.RestaurantMapper
 import com.ip13.main.model.dto.RestaurantAddTicketDto
@@ -27,7 +28,8 @@ class RestaurantController(
         restaurantAddTicketDto: RestaurantAddTicketDto,
     ): ResponseEntity<*> {
         // TODO() deduplication, validation
-        val restaurantAddTicket = RestaurantMapper.restaurantAddTicketDtoToRestaurantAddTicket(restaurantAddTicketDto)
+        val restaurantAddTicket =
+            RestaurantAddTicketMapper.restaurantAddTicketDtoToRestaurantAddTicket(restaurantAddTicketDto)
         restaurantAddTicketService.save(restaurantAddTicket)
 
         // TODO() answer
