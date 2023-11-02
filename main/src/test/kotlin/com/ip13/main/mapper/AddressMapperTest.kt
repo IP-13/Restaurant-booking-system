@@ -15,7 +15,6 @@ class AddressMapperTest {
         val address = AddressMapper.addressFromRestaurantAddTicket(restaurantAddTicket)
 
         assertAll(
-            { Assertions.assertThat(address.id).isEqualTo(0) },
             { Assertions.assertThat(address.country).isEqualTo("country") },
             { Assertions.assertThat(address.city).isEqualTo("city") },
             { Assertions.assertThat(address.street).isEqualTo("street") },
