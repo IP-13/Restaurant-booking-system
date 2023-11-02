@@ -24,7 +24,7 @@ object DtoProvider {
             restaurantAddTicketId = 13,
             adminId = 13,
             result = RestaurantAddResult.ACCEPTED,
-            adminComment = "live long, but die young",
+            adminComment = "live long die young",
         )
     }
 }
