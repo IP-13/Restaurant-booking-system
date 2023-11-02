@@ -43,7 +43,8 @@ class EndPointsOnWholeSystemTest(
         jdbc.execute("truncate table restaurant cascade") { _ -> { } }
         jdbc.execute("truncate table address cascade") { _ -> { } }
         jdbc.execute("truncate table restaurant_add_ticket_result cascade") { _ -> { } }
-        jdbc.execute("truncate table admin cascade") { _ -> { } }
+        // delete all admins except mega_admin
+        jdbc.execute("delete from admin where id != 100") { _ -> { } }
         // delete all users except mega_admin
         jdbc.execute("delete from user_t where id != 100") { _ -> { } }
         // TODO()
