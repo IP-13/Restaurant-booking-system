@@ -68,8 +68,8 @@ create table if not exists table_reserve_ticket (
 
 create table if not exists table_reserve_ticket_result (
     id int generated always as identity(start with 100 increment by 100) primary key,
-    manager_id,
-    manager_comment,
+    manager_id int references manager(id),
+    manager_comment text,
     status reserve_table_status
 );
 
