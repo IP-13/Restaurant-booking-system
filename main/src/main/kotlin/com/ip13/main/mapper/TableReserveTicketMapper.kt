@@ -11,8 +11,8 @@ object TableReserveTicketMapper {
         return TableReserveTicket(
             restaurant = Restaurant(id = tableReserveTicketDto.restaurantId),
             user = User(id = tableReserveTicketDto.userId),
-            visitorComment = tableReserveTicketDto.userComment,
             creationDate = LocalDateTime.now(),
+            userComment = tableReserveTicketDto.userComment,
         )
     }
 }

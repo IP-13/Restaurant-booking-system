@@ -1,12 +1,14 @@
 package com.ip13.main.service
 
 import com.ip13.main.mapper.RestaurantMapper
+import com.ip13.main.model.entity.Manager
+import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.entity.RestaurantAddTicketResult
 import com.ip13.main.model.entity.enums.RestaurantAddResult
 import com.ip13.main.model.entity.enums.Role
 import com.ip13.main.repository.RestaurantAddTicketRepository
-import com.ip13.main.repository.RestaurantAddTicketResultRepository
+import com.ip13.main.security.entity.User
 import com.ip13.main.security.service.UserService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
@@ -15,9 +17,10 @@ import org.springframework.stereotype.Service
 @Service
 class RestaurantAddTicketService(
     private val restaurantAddTicketRepository: RestaurantAddTicketRepository,
-    private val restaurantAddTicketResultRepository: RestaurantAddTicketResultRepository,
+    private val restaurantAddTicketResultService: RestaurantAddTicketResultService,
     private val restaurantService: RestaurantService,
     private val userService: UserService,
+    private val managerService: ManagerService,
 ) {
     fun save(restaurantAddTicket: RestaurantAddTicket) {
         restaurantAddTicketRepository.save(restaurantAddTicket)
@@ -28,18 +31,27 @@ class RestaurantAddTicketService(
     }
 
     fun processRestaurantAddTicket(result: RestaurantAddTicketResult, ticket: RestaurantAddTicket): Int? {
-        restaurantAddTicketResultRepository.save(result)
+        restaurantAddTicketResultService.save(result)
 
         return if (result.result == RestaurantAddResult.ACCEPTED) {
             val restaurant = RestaurantMapper.restaurantFromRestaurantAddTicket(ticket)
             userService.addRole(ticket.userId, Role.MANAGER.name)
-            restaurantService.save(restaurant)
+            // need to save restaurant before saving manager, because manager references on restaurant table
+            val newRestaurantId = restaurantService.save(restaurant)
+            managerService.save(
+                Manager(
+                    user = User(id = ticket.userId),
+                    restaurant = Restaurant(id = restaurant.id)
+                )
+            )
+            // return restaurant id
+            newRestaurantId
         } else {
             null
         }
     }
 
     fun getTickets(pageRequest: PageRequest): List<RestaurantAddTicket> {
-        return restaurantAddTicketRepository.findAllAsList(pageRequest)
+        return restaurantAddTicketRepository.findAll(pageRequest).toList()
     }
 }

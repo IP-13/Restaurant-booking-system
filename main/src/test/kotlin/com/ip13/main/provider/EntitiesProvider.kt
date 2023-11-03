@@ -2,11 +2,29 @@ package com.ip13.main.provider
 
 import com.ip13.main.model.entity.*
 import com.ip13.main.model.entity.enums.RestaurantAddResult
+import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.security.entity.User
 import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.time.Month
 
 object EntitiesProvider {
+    fun getDefaultUser(
+        id: Int = 13,
+        username: String = "username",
+        password: String = "password",
+        rating: Float = 5.0f,
+        roles: List<Role> = listOf(),
+    ): User {
+        return User(
+            id = id,
+            username = username,
+            password = password,
+            rating = rating,
+            roles = roles,
+        )
+    }
+
     fun getDefaultRestaurantAddTicket(
         id: Int = 13,
         name: String = "restaurant",
@@ -18,13 +36,7 @@ object EntitiesProvider {
         floor: Int = -2,
         description: String? = "this is a restaurant in the parking lot",
         userId: Int = 13,
-        createDate: LocalDateTime = LocalDateTime.of(
-            2002,
-            Month.APRIL,
-            19,
-            13,
-            13
-        )
+        createDate: LocalDateTime = getDefaultLocalDateTime(),
     ): RestaurantAddTicket {
         return RestaurantAddTicket(
             id = id,
@@ -37,7 +49,17 @@ object EntitiesProvider {
             floor = floor,
             description = description,
             userId = userId,
-            createDate = createDate
+            createDate = createDate,
+        )
+    }
+
+    fun getDefaultLocalDateTime(): LocalDateTime {
+        return LocalDateTime.of(
+            2002,
+            Month.APRIL,
+            19,
+            13,
+            13,
         )
     }
 
@@ -65,7 +87,7 @@ object EntitiesProvider {
         address: Address = getDefaultAddress(),
         restaurantAddTicket: RestaurantAddTicket = getDefaultRestaurantAddTicket(),
         description: String? = "live long die young",
-        managers: List<Manager> = listOf()
+        managers: List<Manager> = listOf(),
     ): Restaurant {
         return Restaurant(
             id = id,
@@ -94,6 +116,34 @@ object EntitiesProvider {
             building = building,
             entrance = entrance,
             floor = floor,
+        )
+    }
+
+    fun getDefaultManager(
+        id: Int = 13,
+        user: User = getDefaultUser(),
+        restaurant: Restaurant = getDefaultRestaurant(),
+    ): Manager {
+        return Manager(
+            id = id,
+            user = user,
+            restaurant = restaurant,
+        )
+    }
+
+    fun getDefaultTableReserveTicket(
+        id: Int = 13,
+        restaurant: Restaurant = getDefaultRestaurant(),
+        user: User = getDefaultUser(),
+        creationDate: LocalDateTime = getDefaultLocalDateTime(),
+        userComment: String? = "live long die young",
+    ): TableReserveTicket {
+        return TableReserveTicket(
+            id = id,
+            restaurant = restaurant,
+            user = user,
+            creationDate = creationDate,
+            userComment = userComment,
         )
     }
 }

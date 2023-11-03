@@ -17,7 +17,7 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -36,6 +36,9 @@ class RestaurantAddTicketServiceTest {
 
     @MockK
     private lateinit var userService: UserService
+
+    @MockK
+    private lateinit var managerService: ManagerService
 
     @InjectMockKs
     private lateinit var restaurantAddTicketService: RestaurantAddTicketService
@@ -69,13 +72,14 @@ class RestaurantAddTicketServiceTest {
 
     @Test
     fun `successful processRestaurantAddTicket`() {
-        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult()
+        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult(result = RestaurantAddResult.ACCEPTED)
         val ticket = EntitiesProvider.getDefaultRestaurantAddTicket()
 
         every { restaurantAddTicketResultRepository.save(result) } returns result
         every { userService.addRole(any(), Role.MANAGER.name) } returns true
         // returns id of new added restaurant
         every { restaurantService.save(any()) } returns 13
+        every { managerService.save(any()) } returns 13
 
         Assertions.assertThat(restaurantAddTicketService.processRestaurantAddTicket(result, ticket)).isEqualTo(13)
         verify(exactly = 1) { restaurantAddTicketResultRepository.save(any()) }
@@ -98,11 +102,13 @@ class RestaurantAddTicketServiceTest {
     fun getTicketsTest() {
         val pageRequest = PageRequest.of(0, 10, Sort.unsorted())
 
-        every { restaurantAddTicketRepository.findAllAsList(pageRequest) } returns listOf(
-            EntitiesProvider.getDefaultRestaurantAddTicket(id = 1, name = "first"),
-            EntitiesProvider.getDefaultRestaurantAddTicket(id = 13, name = "second"),
-            EntitiesProvider.getDefaultRestaurantAddTicket(id = 1313, name = "third",),
-            EntitiesProvider.getDefaultRestaurantAddTicket(id = 131313, name = "forth"),
+        every { restaurantAddTicketRepository.findAll(pageRequest) } returns PageImpl(
+            listOf(
+                EntitiesProvider.getDefaultRestaurantAddTicket(id = 1, name = "first"),
+                EntitiesProvider.getDefaultRestaurantAddTicket(id = 13, name = "second"),
+                EntitiesProvider.getDefaultRestaurantAddTicket(id = 1313, name = "third"),
+                EntitiesProvider.getDefaultRestaurantAddTicket(id = 131313, name = "forth"),
+            )
         )
 
         val tickets = restaurantAddTicketService.getTickets(pageRequest)

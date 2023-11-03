@@ -1,8 +1,8 @@
 package com.ip13.main.service
 
-import com.ip13.main.model.entity.Address
+import com.ip13.main.model.entity.Manager
 import com.ip13.main.provider.EntitiesProvider
-import com.ip13.main.repository.AddressRepository
+import com.ip13.main.repository.ManagerRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
@@ -11,21 +11,20 @@ import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-
 @ExtendWith(MockKExtension::class)
-class AddressServiceTest {
+class ManagerServiceTest {
     @MockK
-    private lateinit var addressRepository: AddressRepository
+    private lateinit var managerRepository: ManagerRepository
 
     @InjectMockKs
-    private lateinit var addressService: AddressService
+    private lateinit var managerService: ManagerService
 
     @Test
     fun saveTest() {
-        val address = EntitiesProvider.getDefaultAddress(id = 13)
+        val manager = EntitiesProvider.getDefaultManager(id = 13)
 
-        every { addressRepository.save(any()) } returns address
+        every { managerRepository.save(any()) } returns manager
 
-        Assertions.assertThat(addressService.save(Address())).isEqualTo(13)
+        Assertions.assertThat(managerService.save(manager)).isEqualTo(13)
     }
 }

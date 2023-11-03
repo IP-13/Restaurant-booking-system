@@ -8,8 +8,4 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface RestaurantAddTicketRepository : CrudRepository<RestaurantAddTicket, Int>,
-    ListPagingAndSortingRepository<RestaurantAddTicket, Int> {
-    fun findAllAsList(pageRequest: PageRequest): List<RestaurantAddTicket> {
-        return findAll(pageRequest).toList()
-    }
-}
+    ListPagingAndSortingRepository<RestaurantAddTicket, Int>

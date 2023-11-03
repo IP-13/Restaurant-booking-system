@@ -9,11 +9,12 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import java.nio.file.attribute.UserPrincipalNotFoundException
+import java.time.LocalDateTime
 
 @Service
 class UserService : UserDetailsService {
     @Autowired
-    lateinit var userRepository: UserRepository
+    private lateinit var userRepository: UserRepository
 
     override fun loadUserByUsername(username: String): User {
         return userRepository.findByUsername(username) ?: throw UsernameNotFoundException("No user with that name")
@@ -47,5 +48,9 @@ class UserService : UserDetailsService {
 
     fun checkRole(userId: Int, role: String): Boolean {
         return userRepository.checkRole(userId, role)
+    }
+
+    fun getExpirationDateFromBlackList(userId: Int): LocalDateTime? {
+        return userRepository.getExpirationDateFromBlackList(userId)
     }
 }
