@@ -72,7 +72,7 @@ class RestaurantAddTicketServiceTest {
 
     @Test
     fun `successful processRestaurantAddTicket`() {
-        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult()
+        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult(result = RestaurantAddResult.ACCEPTED)
         val ticket = EntitiesProvider.getDefaultRestaurantAddTicket()
 
         every { restaurantAddTicketResultRepository.save(result) } returns result

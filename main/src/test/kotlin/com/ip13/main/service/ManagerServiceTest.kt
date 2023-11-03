@@ -1,6 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.model.entity.Manager
+import com.ip13.main.provider.EntitiesProvider
 import com.ip13.main.repository.ManagerRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -20,7 +21,7 @@ class ManagerServiceTest {
 
     @Test
     fun saveTest() {
-        val manager = Manager(id = 13)
+        val manager = EntitiesProvider.getDefaultManager(id = 13)
 
         every { managerRepository.save(any()) } returns manager
 

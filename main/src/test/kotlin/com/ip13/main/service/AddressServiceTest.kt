@@ -1,6 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.model.entity.Address
+import com.ip13.main.provider.EntitiesProvider
 import com.ip13.main.repository.AddressRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -21,7 +22,10 @@ class AddressServiceTest {
 
     @Test
     fun saveTest() {
-        every { addressRepository.save(any()) } returns Address(id = 13)
+        val address = EntitiesProvider.getDefaultAddress(id = 13)
+
+        every { addressRepository.save(any()) } returns address
+
         Assertions.assertThat(addressService.save(Address())).isEqualTo(13)
     }
 }
