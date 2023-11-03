@@ -37,6 +37,9 @@ class RestaurantAddTicketServiceTest {
     @MockK
     private lateinit var userService: UserService
 
+    @MockK
+    private lateinit var managerService: ManagerService
+
     @InjectMockKs
     private lateinit var restaurantAddTicketService: RestaurantAddTicketService
 
@@ -76,6 +79,7 @@ class RestaurantAddTicketServiceTest {
         every { userService.addRole(any(), Role.MANAGER.name) } returns true
         // returns id of new added restaurant
         every { restaurantService.save(any()) } returns 13
+        every { managerService.save(any()) } returns 13
 
         Assertions.assertThat(restaurantAddTicketService.processRestaurantAddTicket(result, ticket)).isEqualTo(13)
         verify(exactly = 1) { restaurantAddTicketResultRepository.save(any()) }
