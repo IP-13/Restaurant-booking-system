@@ -96,7 +96,6 @@ create table if not exists booking_constraint (
 create table if not exists black_list (
     id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
-    manager_id int references manager(id),
     from_date timestamp not null,
     expiration_date timestamp not null,
     reason text not null
