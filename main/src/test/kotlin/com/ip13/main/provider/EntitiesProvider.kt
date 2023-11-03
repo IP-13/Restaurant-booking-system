@@ -36,13 +36,7 @@ object EntitiesProvider {
         floor: Int = -2,
         description: String? = "this is a restaurant in the parking lot",
         userId: Int = 13,
-        createDate: LocalDateTime = LocalDateTime.of(
-            2002,
-            Month.APRIL,
-            19,
-            13,
-            13
-        )
+        createDate: LocalDateTime = getDefaultLocalDateTime(),
     ): RestaurantAddTicket {
         return RestaurantAddTicket(
             id = id,
@@ -55,7 +49,17 @@ object EntitiesProvider {
             floor = floor,
             description = description,
             userId = userId,
-            createDate = createDate
+            createDate = createDate,
+        )
+    }
+
+    fun getDefaultLocalDateTime(): LocalDateTime {
+        return LocalDateTime.of(
+            2002,
+            Month.APRIL,
+            19,
+            13,
+            13,
         )
     }
 
@@ -83,7 +87,7 @@ object EntitiesProvider {
         address: Address = getDefaultAddress(),
         restaurantAddTicket: RestaurantAddTicket = getDefaultRestaurantAddTicket(),
         description: String? = "live long die young",
-        managers: List<Manager> = listOf()
+        managers: List<Manager> = listOf(),
     ): Restaurant {
         return Restaurant(
             id = id,
@@ -124,6 +128,22 @@ object EntitiesProvider {
             id = id,
             user = user,
             restaurant = restaurant,
+        )
+    }
+
+    fun getDefaultTableReserveTicket(
+        id: Int = 13,
+        restaurant: Restaurant = getDefaultRestaurant(),
+        user: User = getDefaultUser(),
+        creationDate: LocalDateTime = getDefaultLocalDateTime(),
+        userComment: String? = "live long die young",
+    ): TableReserveTicket {
+        return TableReserveTicket(
+            id = id,
+            restaurant = restaurant,
+            user = user,
+            creationDate = creationDate,
+            userComment = userComment,
         )
     }
 }
