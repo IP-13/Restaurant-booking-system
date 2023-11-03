@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class TableReserveService(
-    val tableReserveTicketRepository: TableReserveTicketRepository,
+    private val tableReserveTicketRepository: TableReserveTicketRepository,
 ) {
     fun save(tableReserveTicket: TableReserveTicket): Int {
         return tableReserveTicketRepository.save(tableReserveTicket).id
