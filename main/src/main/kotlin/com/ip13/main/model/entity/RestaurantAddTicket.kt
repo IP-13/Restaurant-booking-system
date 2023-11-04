@@ -4,7 +4,6 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "restaurant_add_ticket")
 class RestaurantAddTicket(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +16,7 @@ class RestaurantAddTicket(
     val entrance: Int? = null,
     val floor: Int? = null,
     val description: String? = null,
-    @Column(name = "user_id")
     val userId: Int = 0,
-    @Column(name = "create_date")
     val createDate: LocalDateTime = LocalDateTime.now(),
 ) {
     override fun equals(other: Any?): Boolean {
