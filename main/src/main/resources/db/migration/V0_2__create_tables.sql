@@ -50,7 +50,9 @@ create table if not exists restaurant (
     name varchar(50) not null,
     address_id int references address(id),
     restaurant_add_ticket_id int references restaurant_add_ticket(id),
-    description text
+    description text,
+    num_of_grades int not null,
+    sum_of_grades int not null
 );
 
 create table if not exists manager (
