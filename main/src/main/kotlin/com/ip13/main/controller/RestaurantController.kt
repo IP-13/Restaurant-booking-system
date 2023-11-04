@@ -1,8 +1,8 @@
 package com.ip13.main.controller
 
+import com.ip13.main.mapper.AddressMapper
 import com.ip13.main.mapper.RestaurantAddTicketMapper
-import com.ip13.main.mapper.RestaurantAddTicketResultMapper.restaurantAddTicketResultFromRestaurantAddTicketResultDto
-import com.ip13.main.model.dto.BookingConstraintDto
+import com.ip13.main.mapper.RestaurantAddTicketResultMapper.fromRestaurantAddTicketResultDto
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
 import com.ip13.main.service.AddressService
@@ -27,12 +27,21 @@ class RestaurantController(
         restaurantAddTicketDto: RestaurantAddTicketDto,
     ): ResponseEntity<*> {
         // TODO() deduplication, validation
-        val restaurantAddTicket =
-            RestaurantAddTicketMapper.restaurantAddTicketDtoToRestaurantAddTicket(restaurantAddTicketDto)
-        restaurantAddTicketService.save(restaurantAddTicket)
+        val address = AddressMapper.fromAddressDto(restaurantAddTicketDto.addressDto)
 
-        // TODO() answer
-        return ResponseEntity("Ticket for adding restaurant successfully created", HttpStatus.OK)
+        val addressId = addressService.save(address)
+
+        val restaurantAddTicket = RestaurantAddTicketMapper.fromRestaurantAddTicketDto(
+            addressId,
+            restaurantAddTicketDto
+        )
+
+        val restaurantAddTicketId = restaurantAddTicketService.save(restaurantAddTicket)
+
+        return ResponseEntity(
+            "Ticket for adding restaurant successfully created with id $restaurantAddTicketId",
+            HttpStatus.OK
+        )
     }
 
     @PostMapping("/process_ticket")
@@ -46,7 +55,7 @@ class RestaurantController(
                 HttpStatus.BAD_REQUEST
             )
 
-        val restaurantAddTicketResult = restaurantAddTicketResultFromRestaurantAddTicketResultDto(dto)
+        val restaurantAddTicketResult = fromRestaurantAddTicketResultDto(dto)
 
         val restaurantId = restaurantAddTicketService.processRestaurantAddTicket(
             restaurantAddTicketResult,
@@ -54,7 +63,7 @@ class RestaurantController(
         )
 
         return if (restaurantId != null) {
-            ResponseEntity("Restaurant successfully added. New restaurant id - $restaurantId", HttpStatus.OK)
+            ResponseEntity("Restaurant successfully added. New restaurant id $restaurantId", HttpStatus.OK)
         } else {
             ResponseEntity("You have rejected ticket with id ${dto.restaurantAddTicketId}", HttpStatus.OK)
         }

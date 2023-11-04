@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class AddressService(
-    val addressRepository: AddressRepository,
+    private val addressRepository: AddressRepository,
 ) {
     fun save(address: Address): Int {
         return addressRepository.save(address).id

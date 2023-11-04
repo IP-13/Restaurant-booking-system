@@ -34,14 +34,14 @@ class RestaurantAddTicketService(
         restaurantAddTicketResultService.save(result)
 
         return if (result.result == RestaurantAddStatus.ACCEPTED) {
-            val restaurant = RestaurantMapper.restaurantFromRestaurantAddTicket(ticket)
+            val restaurant = RestaurantMapper.fromRestaurantAddTicket(ticket)
             userService.addRole(ticket.userId, Role.MANAGER.name)
             // need to save restaurant before saving manager, because manager references on restaurant table
             val newRestaurantId = restaurantService.save(restaurant)
             managerService.save(
                 Manager(
-                    user = User(id = ticket.userId),
-                    restaurant = Restaurant(id = restaurant.id)
+                    userId = ticket.userId,
+                    restaurantId = newRestaurantId,
                 )
             )
             // return restaurant id
