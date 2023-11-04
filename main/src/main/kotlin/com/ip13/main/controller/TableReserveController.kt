@@ -1,6 +1,7 @@
 package com.ip13.main.controller
 
 import com.ip13.main.mapper.TableReserveTicketMapper
+import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.dto.TableReserveTicketDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.TableReserveService
@@ -46,5 +47,13 @@ class TableReserveController(
             "Reserve ticket has been successfully created with id: $createdTicketId",
             HttpStatus.OK
         )
+    }
+
+    @PostMapping("/add_booking_constraint")
+    fun addBookingConstraint(
+        @RequestBody
+        bookingConstraintDto: BookingConstraintDto,
+    ) {
+
     }
 }
