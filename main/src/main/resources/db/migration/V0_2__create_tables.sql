@@ -9,7 +9,8 @@ create table if not exists user_t (
 
 create table if not exists admin (
     id int generated always as identity(start with 100 increment by 100) primary key,
-    user_id int references user_t(id)
+    user_id int references user_t(id),
+    is_active boolean
 );
 
 create table if not exists restaurant_add_ticket (
