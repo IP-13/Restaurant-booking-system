@@ -12,7 +12,7 @@ object RestaurantAddTicketResultMapper {
             restaurantAddTicketId = dto.restaurantAddTicketId,
             adminId = dto.adminId,
             result = dto.result,
-            createDate = LocalDateTime.now(),
+            creationDate = LocalDateTime.now(),
             adminComment = dto.adminComment,
         )
     }

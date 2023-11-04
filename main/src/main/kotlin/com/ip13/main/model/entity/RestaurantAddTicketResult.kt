@@ -9,13 +9,10 @@ class RestaurantAddTicketResult(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
-    @Column(name = "restaurant_add_ticket_id")
-    val restaurantAddTicketId: Int,
-    @Column(name = "admin_id")
+    val restaurantAddTicketId: Int = 0,
     val adminId: Int = 0,
     @Enumerated(value = EnumType.STRING)
     val result: RestaurantAddResult = RestaurantAddResult.PROCESSING,
-    @Column(name = "create_date")
-    val createDate: LocalDateTime = LocalDateTime.now(),
+    val creationDate: LocalDateTime = LocalDateTime.now(),
     val adminComment: String? = null,
 )
