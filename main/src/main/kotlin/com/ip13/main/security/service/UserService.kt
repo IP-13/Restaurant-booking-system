@@ -16,6 +16,9 @@ class UserService : UserDetailsService {
     @Autowired
     private lateinit var userRepository: UserRepository
 
+    @Autowired
+    private lateinit var tokenService: TokenService
+
     override fun loadUserByUsername(username: String): User {
         return userRepository.findByUsername(username) ?: throw UsernameNotFoundException("No user with that name")
     }
@@ -52,5 +55,9 @@ class UserService : UserDetailsService {
 
     fun getExpirationDateFromBlackList(userId: Int): LocalDateTime? {
         return userRepository.getExpirationDateFromBlackList(userId)
+    }
+
+    fun getUserByToken(token: String): User {
+        return loadUserByUsername(tokenService.getUsername(token))
     }
 }
