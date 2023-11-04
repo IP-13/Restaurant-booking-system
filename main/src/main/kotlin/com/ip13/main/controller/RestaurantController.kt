@@ -8,6 +8,7 @@ import com.ip13.main.model.dto.RestaurantAddTicketResultDto
 import com.ip13.main.service.AddressService
 import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.service.RestaurantService
+import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
@@ -21,15 +22,18 @@ class RestaurantController(
     val restaurantAddTicketService: RestaurantAddTicketService,
     val restaurantService: RestaurantService,
 ) {
+    private val log = getLogger(javaClass)
+
     @PostMapping("/create_ticket")
     fun createTicketToAddRestaurant(
-        @RequestBody
+        @RequestBody(required = true)
         restaurantAddTicketDto: RestaurantAddTicketDto,
     ): ResponseEntity<*> {
         // TODO() deduplication, validation
         val address = AddressMapper.fromAddressDto(restaurantAddTicketDto.addressDto)
 
         val addressId = addressService.save(address)
+        log.debug("address saved to db with id {} \n{}\n", addressId, address)
 
         val restaurantAddTicket = RestaurantAddTicketMapper.fromRestaurantAddTicketDto(
             addressId,
@@ -37,6 +41,7 @@ class RestaurantController(
         )
 
         val restaurantAddTicketId = restaurantAddTicketService.save(restaurantAddTicket)
+        log.debug("restaurant add ticket saved to db with id {}", restaurantAddTicketId)
 
         return ResponseEntity(
             "Ticket for adding restaurant successfully created with id $restaurantAddTicketId",
@@ -55,12 +60,16 @@ class RestaurantController(
                 HttpStatus.BAD_REQUEST
             )
 
+        log.debug("Restaurant add ticket found\n{}", restaurantAddTicket)
+
         val restaurantAddTicketResult = fromRestaurantAddTicketResultDto(dto)
 
         val restaurantId = restaurantAddTicketService.processRestaurantAddTicket(
             restaurantAddTicketResult,
             restaurantAddTicket
         )
+
+        log.debug("New restaurant id {}", restaurantId)
 
         return if (restaurantId != null) {
             ResponseEntity("Restaurant successfully added. New restaurant id $restaurantId", HttpStatus.OK)
@@ -79,6 +88,8 @@ class RestaurantController(
         val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
 
         val tickets = restaurantAddTicketService.getTickets(pageRequest)
+
+        log.debug("tickets found\n{}", tickets)
 
         return ResponseEntity(tickets, HttpStatus.OK)
     }
