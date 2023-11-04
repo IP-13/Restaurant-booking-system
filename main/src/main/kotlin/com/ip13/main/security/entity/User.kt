@@ -14,8 +14,8 @@ class User(
     val id: Int = 0,
     private val username: String = "",
     private val password: String = "",
-    // TODO() default user rating
-    private val rating: Float = 5.0f,
+    private val numOfGrades: Int = 0,
+    private val sumOfGrades: Int = 0,
     @Enumerated(value = EnumType.STRING)
     val roles: List<Role> = listOf(),
 ) : UserDetails {

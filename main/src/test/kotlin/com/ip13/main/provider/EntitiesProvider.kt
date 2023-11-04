@@ -13,14 +13,16 @@ object EntitiesProvider {
         id: Int = 13,
         username: String = "username",
         password: String = "password",
-        rating: Float = 5.0f,
+        numOfGrades: Int = 0,
+        sumOfGrades: Int = 0,
         roles: List<Role> = listOf(),
     ): User {
         return User(
             id = id,
             username = username,
             password = password,
-            rating = rating,
+            numOfGrades = numOfGrades,
+            sumOfGrades = sumOfGrades,
             roles = roles,
         )
     }
