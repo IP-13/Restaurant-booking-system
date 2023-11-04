@@ -25,4 +25,10 @@ interface ManagerRepository : CrudRepository<Manager, Int> {
         @Param("manager_id")
         managerId: Int,
     ): Boolean
+
+    @Query("select * from manager where user_id = :user_id", nativeQuery = true)
+    fun getManagerByUserId(
+        @Param("user_id")
+        userId: Int,
+    ): Manager
 }

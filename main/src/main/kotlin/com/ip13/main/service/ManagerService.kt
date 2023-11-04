@@ -19,4 +19,8 @@ class ManagerService(
     fun checkIfActive(managerId: Int): Boolean {
         return managerRepository.checkIfActive(managerId)
     }
+
+    fun getManagerByUserId(userId: Int): Manager {
+        return managerRepository.getManagerByUserId(userId)
+    }
 }
