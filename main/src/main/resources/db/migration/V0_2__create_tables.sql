@@ -72,6 +72,7 @@ create table if not exists table_reserve_ticket (
     from_date timestamp not null,
     -- дата и время до которого пользователь планирует находиться в ресторане
     till_date timestamp not null,
+    num_of_guests int not null,
     user_comment text
 );
 
