@@ -1,17 +1,17 @@
 package com.ip13.main.mapper
 
+import com.ip13.main.model.dto.AddressDto
 import com.ip13.main.model.entity.Address
-import com.ip13.main.model.entity.RestaurantAddTicket
 
 object AddressMapper {
-    fun addressFromRestaurantAddTicket(ticket: RestaurantAddTicket): Address {
+    fun fromAddressDto(dto: AddressDto): Address {
         return Address(
-            country = ticket.country,
-            city = ticket.city,
-            street = ticket.street,
-            building = ticket.building,
-            entrance = ticket.entrance,
-            floor = ticket.floor,
+            country = dto.country,
+            city = dto.city,
+            street = dto.street,
+            building = dto.building,
+            entrance = dto.entrance,
+            floor = dto.floor,
         )
     }
 }

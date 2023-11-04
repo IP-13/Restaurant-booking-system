@@ -5,7 +5,7 @@ import com.ip13.main.model.entity.RestaurantAddTicketResult
 import java.time.LocalDateTime
 
 object RestaurantAddTicketResultMapper {
-    fun restaurantAddTicketResultFromRestaurantAddTicketResultDto(
+    fun fromRestaurantAddTicketResultDto(
         dto: RestaurantAddTicketResultDto
     ): RestaurantAddTicketResult {
         return RestaurantAddTicketResult(

@@ -4,11 +4,11 @@ import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
 
 object RestaurantMapper {
-    fun restaurantFromRestaurantAddTicket(ticket: RestaurantAddTicket): Restaurant {
+    fun fromRestaurantAddTicket(ticket: RestaurantAddTicket): Restaurant {
         return Restaurant(
             name = ticket.name,
-            address = AddressMapper.addressFromRestaurantAddTicket(ticket),
-            restaurantAddTicket = ticket,
+            addressId = ticket.addressId,
+            restaurantAddTicketId = ticket.id,
             description = ticket.description,
         )
     }
