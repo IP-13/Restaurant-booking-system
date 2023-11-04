@@ -73,6 +73,24 @@ create table if not exists table_reserve_ticket_result (
     status reserve_table_status
 );
 
+create table if not exists grade_after_visit_visitor (
+    id int generated always as identity(start with 100 increment by 100) primary key,
+    user_id int references user_t(id),
+    table_reserve_ticket_result_id int references table_reserve_ticket_result(id),
+    -- оценка, которую пользователь поставил ресторану после визита
+    grade float,
+    comment text
+);
+
+create table if not exists grade_after_visit_manager (
+    id int generated always as identity(start with 100 increment by 100) primary key,
+    manager_id int references manager(id),
+    table_reserve_ticket_result_id int references table_reserve_ticket_result(id),
+    -- оценка, которую менеджер поставил пользователю после визита
+    grade float,
+    comment text
+);
+
 create table if not exists visit_result (
     id int generated always as identity(start with 100 increment by 100) primary key,
     table_reserve_ticket_id int references table_reserve_ticket(id),
