@@ -29,12 +29,7 @@ object EntitiesProvider {
     fun getDefaultRestaurantAddTicket(
         id: Int = 13,
         name: String = "restaurant",
-        country: String = "country",
-        city: String = "city",
-        street: String = "street",
-        building: Int = 13,
-        entrance: Int? = 13,
-        floor: Int = -2,
+        addressId: Int = 13,
         description: String? = "this is a restaurant in the parking lot",
         userId: Int = 13,
         createDate: LocalDateTime = getDefaultLocalDateTime(),
@@ -42,15 +37,10 @@ object EntitiesProvider {
         return RestaurantAddTicket(
             id = id,
             name = name,
-            country = country,
-            city = city,
-            street = street,
-            building = building,
-            entrance = entrance,
-            floor = floor,
+            addressId = addressId,
             description = description,
             userId = userId,
-            createDate = createDate,
+            creationDate = createDate,
         )
     }
 
