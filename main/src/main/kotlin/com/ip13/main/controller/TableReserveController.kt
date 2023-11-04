@@ -38,7 +38,7 @@ class TableReserveController(
         }
 
         val createdTicketId = tableReserveService.save(
-            TableReserveTicketMapper.tableReserveTicketDtoToTableReserveTicket(
+            TableReserveTicketMapper.fromTableReserveTicketDto(
                 tableReserveTicketDto
             )
         )
