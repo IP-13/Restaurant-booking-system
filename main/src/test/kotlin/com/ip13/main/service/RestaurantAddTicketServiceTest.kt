@@ -44,10 +44,13 @@ class RestaurantAddTicketServiceTest {
 
     @Test
     fun saveTest() {
-        every { restaurantAddTicketRepository.save(any()) } returns null
+        val restaurantAddTicket = EntitiesProvider.getDefaultRestaurantAddTicket(id = 11)
 
-        restaurantAddTicketService.save(RestaurantAddTicket())
+        every { restaurantAddTicketRepository.save(any()) } returns restaurantAddTicket
 
+        val restaurantAddTicketId = restaurantAddTicketService.save(RestaurantAddTicket())
+
+        Assertions.assertThat(restaurantAddTicketId).isEqualTo(11)
         verify(exactly = 1) { restaurantAddTicketRepository.save(any()) }
     }
 
