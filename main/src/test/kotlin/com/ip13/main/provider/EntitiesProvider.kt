@@ -85,18 +85,20 @@ object EntitiesProvider {
     fun getDefaultRestaurant(
         id: Int = 13,
         name: String = "restaurant",
-        address: Address = getDefaultAddress(),
-        restaurantAddTicket: RestaurantAddTicket = getDefaultRestaurantAddTicket(),
+        addressId: Int = 13,
+        restaurantAddTicketId: Int = 13,
         description: String? = "live long die young",
-        managers: List<Manager> = listOf(),
+        numOfGrades: Int = 0,
+        sumOfGrades: Int = 0,
     ): Restaurant {
         return Restaurant(
             id = id,
             name = name,
-            address = address,
-            restaurantAddTicket = restaurantAddTicket,
+            addressId = addressId,
+            restaurantAddTicketId = restaurantAddTicketId,
             description = description,
-            managers = managers
+            numOfGrades = numOfGrades,
+            sumOfGrades = sumOfGrades,
         )
     }
 
@@ -122,28 +124,36 @@ object EntitiesProvider {
 
     fun getDefaultManager(
         id: Int = 13,
-        user: User = getDefaultUser(),
-        restaurant: Restaurant = getDefaultRestaurant(),
+        userId: Int = 13,
+        restaurantId: Int = 13,
+        isActive: Boolean = true,
     ): Manager {
         return Manager(
             id = id,
-            user = user,
-            restaurant = restaurant,
+            userId = userId,
+            restaurantId = restaurantId,
+            isActive = isActive,
         )
     }
 
     fun getDefaultTableReserveTicket(
         id: Int = 13,
-        restaurant: Restaurant = getDefaultRestaurant(),
-        user: User = getDefaultUser(),
+        restaurantId: Int = 13,
+        userId: Int = 13,
         creationDate: LocalDateTime = getDefaultLocalDateTime(),
+        fromDate: LocalDateTime = getDefaultLocalDateTime(),
+        tillDate: LocalDateTime = getDefaultLocalDateTime(),
+        numOfGuests: Int = 13,
         userComment: String? = "live long die young",
     ): TableReserveTicket {
         return TableReserveTicket(
             id = id,
-            restaurant = restaurant,
-            user = user,
+            restaurantId = restaurantId,
+            userId = userId,
             creationDate = creationDate,
+            fromDate = fromDate,
+            tillDate = tillDate,
+            numOfGuests = numOfGuests,
             userComment = userComment,
         )
     }
