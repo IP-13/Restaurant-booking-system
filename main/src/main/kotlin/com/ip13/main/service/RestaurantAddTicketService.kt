@@ -22,8 +22,8 @@ class RestaurantAddTicketService(
     private val userService: UserService,
     private val managerService: ManagerService,
 ) {
-    fun save(restaurantAddTicket: RestaurantAddTicket) {
-        restaurantAddTicketRepository.save(restaurantAddTicket)
+    fun save(restaurantAddTicket: RestaurantAddTicket): Int {
+        return restaurantAddTicketRepository.save(restaurantAddTicket).id
     }
 
     fun findByIdOrNull(id: Int): RestaurantAddTicket? {
