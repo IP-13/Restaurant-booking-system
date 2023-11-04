@@ -2,7 +2,7 @@ package com.ip13.main.provider
 
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
-import com.ip13.main.model.entity.enums.RestaurantAddResult
+import com.ip13.main.model.entity.enums.RestaurantAddStatus
 
 object DtoProvider {
     fun getDefaultRestaurantAddTicketDto(): RestaurantAddTicketDto {
@@ -23,7 +23,7 @@ object DtoProvider {
         return RestaurantAddTicketResultDto(
             restaurantAddTicketId = 13,
             adminId = 13,
-            result = RestaurantAddResult.ACCEPTED,
+            result = RestaurantAddStatus.ACCEPTED,
             adminComment = "live long die young",
         )
     }

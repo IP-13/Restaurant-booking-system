@@ -5,7 +5,7 @@ import com.ip13.main.model.entity.Manager
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.entity.RestaurantAddTicketResult
-import com.ip13.main.model.entity.enums.RestaurantAddResult
+import com.ip13.main.model.entity.enums.RestaurantAddStatus
 import com.ip13.main.model.entity.enums.Role
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.security.entity.User
@@ -33,7 +33,7 @@ class RestaurantAddTicketService(
     fun processRestaurantAddTicket(result: RestaurantAddTicketResult, ticket: RestaurantAddTicket): Int? {
         restaurantAddTicketResultService.save(result)
 
-        return if (result.result == RestaurantAddResult.ACCEPTED) {
+        return if (result.result == RestaurantAddStatus.ACCEPTED) {
             val restaurant = RestaurantMapper.restaurantFromRestaurantAddTicket(ticket)
             userService.addRole(ticket.userId, Role.MANAGER.name)
             // need to save restaurant before saving manager, because manager references on restaurant table

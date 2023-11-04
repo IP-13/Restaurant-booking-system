@@ -2,7 +2,7 @@ package com.ip13.main.service
 
 
 import com.ip13.main.model.entity.RestaurantAddTicket
-import com.ip13.main.model.entity.enums.RestaurantAddResult
+import com.ip13.main.model.entity.enums.RestaurantAddStatus
 import com.ip13.main.model.entity.enums.Role
 import com.ip13.main.provider.EntitiesProvider
 import com.ip13.main.repository.RestaurantAddTicketRepository
@@ -73,7 +73,7 @@ class RestaurantAddTicketServiceTest {
     fun `successful processRestaurantAddTicket`() {
         val result = EntitiesProvider.getDefaultRestaurantAddTicketResult(
             id = 13,
-            result = RestaurantAddResult.ACCEPTED
+            result = RestaurantAddStatus.ACCEPTED
         )
         val ticket = EntitiesProvider.getDefaultRestaurantAddTicket()
 
@@ -93,7 +93,7 @@ class RestaurantAddTicketServiceTest {
     fun `should save ticketResult and return null when rejected`() {
         val result = EntitiesProvider.getDefaultRestaurantAddTicketResult(
             id = 13,
-            result = RestaurantAddResult.REJECTED
+            result = RestaurantAddStatus.REJECTED
         )
         val ticket = EntitiesProvider.getDefaultRestaurantAddTicket()
 

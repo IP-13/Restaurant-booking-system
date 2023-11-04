@@ -1,6 +1,6 @@
 package com.ip13.main.model.entity
 
-import com.ip13.main.model.entity.enums.RestaurantAddResult
+import com.ip13.main.model.entity.enums.RestaurantAddStatus
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -12,7 +12,7 @@ class RestaurantAddTicketResult(
     val restaurantAddTicketId: Int = 0,
     val adminId: Int = 0,
     @Enumerated(value = EnumType.STRING)
-    val result: RestaurantAddResult = RestaurantAddResult.PROCESSING,
+    val result: RestaurantAddStatus = RestaurantAddStatus.PROCESSING,
     val creationDate: LocalDateTime = LocalDateTime.now(),
     val adminComment: String? = null,
 )

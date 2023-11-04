@@ -1,7 +1,7 @@
 package com.ip13.main.provider
 
 import com.ip13.main.model.entity.*
-import com.ip13.main.model.entity.enums.RestaurantAddResult
+import com.ip13.main.model.entity.enums.RestaurantAddStatus
 import com.ip13.main.model.entity.enums.Role
 import com.ip13.main.security.entity.User
 import java.time.LocalDateTime
@@ -68,7 +68,7 @@ object EntitiesProvider {
         id: Int = 13,
         restaurantAddTicketId: Int = 13,
         adminId: Int = 13,
-        result: RestaurantAddResult = RestaurantAddResult.ACCEPTED,
+        result: RestaurantAddStatus = RestaurantAddStatus.ACCEPTED,
         createDate: LocalDateTime = LocalDateTime.now(),
         adminComment: String? = "live long die young",
     ): RestaurantAddTicketResult {
