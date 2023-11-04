@@ -4,10 +4,10 @@ import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.entity.BookingConstraint
 
 object BookingConstraintMapper {
-    fun fromBookingConstraintDto(dto: BookingConstraintDto): BookingConstraint {
+    fun fromBookingConstraintDto(dto: BookingConstraintDto, managerId: Int): BookingConstraint {
         return BookingConstraint(
             restaurantId = dto.restaurantId,
-            managerId = dto.managerId,
+            managerId = managerId,
             reason = dto.reason,
             fromDate = dto.fromDate,
             tillDate = dto.tillDate,

@@ -12,10 +12,7 @@ import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/reserve")
@@ -61,24 +58,44 @@ class TableReserveController(
 
     @PostMapping("/add_booking_constraint")
     fun addBookingConstraint(
+        // Проверка токена уже была на стадии фильтров, так что если дошли до этого места, то хедер должен быть точно
+        @RequestHeader(name = "Authorization")
+        header: String,
         @RequestBody
         dto: BookingConstraintDto,
     ): ResponseEntity<*> {
         val restaurant = restaurantService.findByIdOrNull(dto.restaurantId)
             ?: return ResponseEntity("No restaurant found with id ${dto.restaurantId}", HttpStatus.BAD_REQUEST)
 
-        log.debug("Restaurant found\n{}", restaurant.toString())
+        log.debug("Restaurant found\n{}", restaurant.name)
 
-        val isWorkingInRestaurant = managerService.checkIfWorksInRestaurantById(dto.managerId, dto.restaurantId)
+        val user = userService.getUserByToken(header.substring(7))
+
+        log.debug("user extracted from token\n{}", user.username)
+
+        val manager = managerService.getManagerByUserId(userService.getUserByToken(header.substring(7)).id)
+
+        log.debug(
+            "manager loaded from db\nmanagerId {}\nuserId {}\nrestaurantId {}\nisActive {}",
+            manager.id,
+            manager.userId,
+            manager.restaurantId,
+            manager.isActive,
+        )
+
+        val managerId = manager.id
+        val restaurantId = restaurant.id
+
+        val isWorkingInRestaurant = managerService.checkIfWorksInRestaurantById(managerId, restaurantId)
 
         if (!isWorkingInRestaurant) {
             return ResponseEntity(
-                "Manager with id ${dto.managerId} does not work in restaurant with id ${dto.restaurantId}",
+                "Manager with id $managerId does not work in restaurant with id $restaurantId",
                 HttpStatus.BAD_REQUEST
             )
         }
 
-        val bookingConstraint = BookingConstraintMapper.fromBookingConstraintDto(dto)
+        val bookingConstraint = BookingConstraintMapper.fromBookingConstraintDto(dto, manager.id)
 
         val bookingConstraintId = bookingConstraintService.save(bookingConstraint)
 
