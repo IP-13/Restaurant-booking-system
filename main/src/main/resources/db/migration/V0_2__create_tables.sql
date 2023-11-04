@@ -101,17 +101,6 @@ create table if not exists grade_after_visit_manager (
     comment text
 );
 
-create table if not exists visit_result (
-    id int generated always as identity(start with 100 increment by 100) primary key,
-    table_reserve_ticket_id int references table_reserve_ticket(id),
-    manager_comment text,
-    visitor_comment text,
-    -- Оценка, которую менеджер поставил пользователю
-    manager_grade float,
-    -- Оценка, которую пользователь поставил ресторану
-    visitor_grade float
-);
-
 create table if not exists booking_constraint (
     id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_id int references restaurant(id),

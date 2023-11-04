@@ -2,6 +2,7 @@ package com.ip13.main.controller
 
 import com.ip13.main.mapper.RestaurantAddTicketMapper
 import com.ip13.main.mapper.RestaurantAddTicketResultMapper.restaurantAddTicketResultFromRestaurantAddTicketResultDto
+import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
 import com.ip13.main.service.AddressService
@@ -72,40 +73,4 @@ class RestaurantController(
 
         return ResponseEntity(tickets, HttpStatus.OK)
     }
-
-//    @GetMapping("/get/{id}")
-//    fun getRestaurant(
-//        @PathVariable(required = true)
-//        id: Int,
-//    ): ResponseEntity<*> {
-//        val restaurant = repository.findByIdOrNull(id)
-//        return if (restaurant != null) {
-//            ResponseEntity(restaurant, HttpStatus.OK)
-//        } else {
-//            ResponseEntity("No restaurant with id: $id", HttpStatus.OK)
-//        }
-//    }
-//
-//    @DeleteMapping("/delete/{id}")
-//    fun deleteRestaurant(
-//        @PathVariable(required = true)
-//        id: Int
-//    ): ResponseEntity<String> {
-//        repository.deleteById(id)
-//        return ResponseEntity.ok("Restaurant with id $id has been deleted")
-//    }
-//
-//    @PutMapping("/update/{id}")
-//    fun updateRestaurant(
-//        @RequestBody updatedRestaurant: RestaurantRequestDto
-//    ): ResponseEntity<> {
-//        repository.
-//    }
-//
-//    @PostMapping("/add_manager")
-//    fun addManager(
-//
-//    ) {
-//
-//    }
 }
