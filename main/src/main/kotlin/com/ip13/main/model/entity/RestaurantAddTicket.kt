@@ -12,5 +12,5 @@ class RestaurantAddTicket(
     val addressId: Int = 0,
     val description: String? = null,
     val userId: Int = 0,
-    val createDate: LocalDateTime = LocalDateTime.now(),
+    val creationDate: LocalDateTime = LocalDateTime.now(),
 )
