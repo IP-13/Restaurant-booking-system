@@ -21,7 +21,7 @@ class AuthService(
 ) {
     fun register(registerDto: RegisterDto): RegisterResponseDto {
         if (userService.existsByName(registerDto.name)) {
-            throw ResponseStatusException(400, "Login failed", null)
+            throw ResponseStatusException(400, "User with username ${registerDto.name} already exists", null)
         }
 
         val user = User(
