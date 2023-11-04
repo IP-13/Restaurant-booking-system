@@ -98,7 +98,7 @@ create table if not exists grade_after_visit_manager (
     manager_id int references manager(id),
     table_reserve_ticket_result_id int references table_reserve_ticket_result(id),
     -- оценка, которую менеджер поставил пользователю после визита
-    grade float,
+    grade int not null,
     comment text
 );
 
