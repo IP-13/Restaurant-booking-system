@@ -40,7 +40,7 @@ interface UserRepository : CrudRepository<User, Int> {
         userId: Int,
     ): Boolean
 
-    @Query("select expiration_date from black_list where user_id = :user_id", nativeQuery = true)
+    @Query("select till_date from black_list where user_id = :user_id", nativeQuery = true)
     fun getExpirationDateFromBlackList(
         @Param(value = "user_id")
         userId: Int,
