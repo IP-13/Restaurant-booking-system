@@ -6,6 +6,6 @@ data class BookingConstraintDto(
     val restaurantId: Int = 0,
     val managerId: Int = 0,
     val reason: String? = null,
-    val creationDate: LocalDateTime = LocalDateTime.now(),
-    val expirationDate: LocalDateTime = LocalDateTime.now(),
+    val fromDate: LocalDateTime = LocalDateTime.now(),
+    val tillDate: LocalDateTime = LocalDateTime.now(),
 )
