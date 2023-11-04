@@ -7,11 +7,13 @@ import com.ip13.main.security.entity.User
 import java.time.LocalDateTime
 
 object TableReserveTicketMapper {
-    fun tableReserveTicketDtoToTableReserveTicket(tableReserveTicketDto: TableReserveTicketDto): TableReserveTicket {
+    fun fromTableReserveTicketDto(tableReserveTicketDto: TableReserveTicketDto): TableReserveTicket {
         return TableReserveTicket(
-            restaurant = Restaurant(id = tableReserveTicketDto.restaurantId),
-            user = User(id = tableReserveTicketDto.userId),
-            creationDate = LocalDateTime.now(),
+            restaurantId = tableReserveTicketDto.restaurantId,
+            userId = tableReserveTicketDto.userId,
+            fromDate = tableReserveTicketDto.fromDate,
+            tillDate = tableReserveTicketDto.tillDate,
+            numOfGuests = tableReserveTicketDto.numOfGuests,
             userComment = tableReserveTicketDto.userComment,
         )
     }
