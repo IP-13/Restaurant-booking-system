@@ -20,7 +20,7 @@ interface ManagerRepository : CrudRepository<Manager, Int> {
         restaurantId: Int,
     ): Boolean
 
-    @Query("select is_active from manager where id = :manager_id")
+    @Query("select is_active from manager where id = :manager_id", nativeQuery = true)
     fun checkIfActive(
         @Param("manager_id")
         managerId: Int,

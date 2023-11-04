@@ -67,7 +67,7 @@ class TableReserveController(
         val restaurant = restaurantService.findByIdOrNull(dto.restaurantId)
             ?: return ResponseEntity("No restaurant found with id ${dto.restaurantId}", HttpStatus.BAD_REQUEST)
 
-        log.debug("Restaurant found\n{}", restaurant)
+        log.debug("Restaurant found\n{}", restaurant.toString())
 
         val isWorkingInRestaurant = managerService.checkIfWorksInRestaurantById(dto.managerId, dto.restaurantId)
 

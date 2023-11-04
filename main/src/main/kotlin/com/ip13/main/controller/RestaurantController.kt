@@ -33,7 +33,7 @@ class RestaurantController(
         val address = AddressMapper.fromAddressDto(restaurantAddTicketDto.addressDto)
 
         val addressId = addressService.save(address)
-        log.debug("address saved to db with id {} \n{}\n", addressId, address)
+        log.debug("address saved to db with id {} \n{}\n", addressId, address.toString())
 
         val restaurantAddTicket = RestaurantAddTicketMapper.fromRestaurantAddTicketDto(
             addressId,
@@ -60,7 +60,7 @@ class RestaurantController(
                 HttpStatus.BAD_REQUEST
             )
 
-        log.debug("Restaurant add ticket found\n{}", restaurantAddTicket)
+        log.debug("Restaurant add ticket found\n{}", restaurantAddTicket.toString())
 
         val restaurantAddTicketResult = fromRestaurantAddTicketResultDto(dto)
 
@@ -89,7 +89,7 @@ class RestaurantController(
 
         val tickets = restaurantAddTicketService.getTickets(pageRequest)
 
-        log.debug("tickets found\n{}", tickets)
+        log.debug("tickets found\n{}", tickets.toString())
 
         return ResponseEntity(tickets, HttpStatus.OK)
     }
