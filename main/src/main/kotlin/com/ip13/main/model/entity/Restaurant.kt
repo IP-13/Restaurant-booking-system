@@ -1,6 +1,9 @@
 package com.ip13.main.model.entity
 
-import jakarta.persistence.*
+import jakarta.persistence.Entity
+import jakarta.persistence.GeneratedValue
+import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
 
 @Entity
 class Restaurant(
@@ -8,13 +11,9 @@ class Restaurant(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
     val name: String = "",
-    @OneToOne
-    @JoinColumn(name = "address_id")
-    val address: Address = Address(),
-    @OneToOne
-    @JoinColumn(name = "restaurant_add_ticket_id")
-    val restaurantAddTicket: RestaurantAddTicket = RestaurantAddTicket(),
+    val addressId: Int = 0,
+    val restaurantAddTicketId: Int = 0,
     val description: String? = null,
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    val managers: List<Manager> = emptyList()
+    val numOfGrades: Int = 0,
+    val sumOfGrades: Int = 0,
 )
