@@ -55,7 +55,8 @@ create table if not exists restaurant (
 create table if not exists manager (
     id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
-    restaurant_id int references restaurant(id)
+    restaurant_id int references restaurant(id),
+    is_active boolean
 );
 
 create table if not exists table_reserve_ticket (
