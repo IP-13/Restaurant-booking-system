@@ -42,6 +42,7 @@ class RestaurantAddTicketService(
                 Manager(
                     userId = ticket.userId,
                     restaurantId = newRestaurantId,
+                    isActive = true,
                 )
             )
             // return restaurant id
