@@ -89,7 +89,7 @@ create table if not exists grade_after_visit_visitor (
     user_id int references user_t(id),
     table_reserve_ticket_result_id int references table_reserve_ticket_result(id),
     -- оценка, которую пользователь поставил ресторану после визита
-    grade float,
+    grade int not null,
     comment text
 );
 
