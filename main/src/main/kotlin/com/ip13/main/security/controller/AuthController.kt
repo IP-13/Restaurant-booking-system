@@ -28,15 +28,4 @@ class AuthController(
             authService.login(loginDto = loginDto)
         )
     }
-
-    @GetMapping("/test")
-    fun test(
-        @RequestParam(required = false) shouldThrowException: Boolean,
-    ): ResponseEntity<String> {
-        if (shouldThrowException) {
-            throw Exception()
-        } else {
-            return ResponseEntity.ok("you'd passed the security test")
-        }
-    }
 }
