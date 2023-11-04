@@ -23,7 +23,7 @@ create table if not exists restaurant_add_ticket (
     floor int,
     description text,
     user_id int references user_t(id),
-    create_date timestamp not null
+    creation_date timestamp not null
 );
 
 create table if not exists restaurant_add_ticket_result (
@@ -31,7 +31,7 @@ create table if not exists restaurant_add_ticket_result (
     restaurant_add_ticket_id int references restaurant_add_ticket(id),
     admin_id int references admin(id),
     result restaurant_add_result,
-    create_date timestamp not null,
+    creation_date timestamp not null,
     admin_comment text
 );
 
@@ -66,7 +66,12 @@ create table if not exists table_reserve_ticket (
     id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_id int references restaurant(id),
     user_id int references user_t(id),
+    -- дата и время создания заявки
     creation_date timestamp not null,
+    -- дата и время в которое пользователь планирует прийти
+    from_date timestamp not null,
+    -- дата и время до которого пользователь планирует находиться в ресторане
+    till_date timestamp not null,
     user_comment text
 );
 
@@ -111,14 +116,14 @@ create table if not exists booking_constraint (
     restaurant_id int references restaurant(id),
     manager_id int references manager(id),
     reason text not null,
-    creation_date timestamp not null,
-    expiration_date timestamp not null
+    from_date timestamp not null,
+    till_date timestamp not null
 );
 
 create table if not exists black_list (
     id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
     from_date timestamp not null,
-    expiration_date timestamp not null,
+    till_date timestamp not null,
     reason text not null
 );
