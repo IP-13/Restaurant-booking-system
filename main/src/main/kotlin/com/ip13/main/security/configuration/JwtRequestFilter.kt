@@ -34,11 +34,7 @@ class JwtRequestFilter(
         try {
             val header = request.getHeader("Authorization")
 
-            val jwt = if (header != null && header.startsWith("Bearer ")) {
-                header.substring(7)
-            } else {
-                null
-            }
+            val jwt = tokenService.getTokenFromHeader(header)
 
             val username = if (jwt != null) {
                 try {

@@ -47,6 +47,14 @@ class TokenService {
         return getAllClaims(token).get("roles", List::class.java) as List<String>
     }
 
+    fun getTokenFromHeader(header: String?): String? {
+        return if (header != null && header.startsWith("Bearer ")) {
+            header.substring(7)
+        } else {
+            null
+        }
+    }
+
     fun isTokenValid(token: String, user: User): Boolean {
         val username = getUsername(token)
         return (username == user.username && !isTokenExpired(token))
