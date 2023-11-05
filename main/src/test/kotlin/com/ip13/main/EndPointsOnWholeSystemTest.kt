@@ -83,7 +83,8 @@ class EndPointsOnWholeSystemTest(
     @Test
     @WithMockUser(authorities = [ADMIN])
     fun `test add role to non-existent user`() {
-        val body = "{ \"userId\": 10, \"role\": \"$MANAGER\" }"
+        val body = loadAsString("json/non_existent_user.json")
+
         mockMvc.post("/admin/add_role") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
