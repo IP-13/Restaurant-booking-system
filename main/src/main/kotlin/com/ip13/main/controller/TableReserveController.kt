@@ -60,7 +60,7 @@ class TableReserveController(
     fun addBookingConstraint(
         // Проверка токена уже была на стадии фильтров, так что если дошли до этого места, то хедер должен быть точно
         @RequestHeader(name = "Authorization")
-        header: String,
+        authHeader: String,
         @RequestBody
         dto: BookingConstraintDto,
     ): ResponseEntity<*> {
@@ -69,11 +69,11 @@ class TableReserveController(
 
         log.debug("Restaurant found\n{}", restaurant.name)
 
-        val user = userService.getUserByToken(header.substring(7))
+        val user = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("user extracted from token\n{}", user.username)
 
-        val manager = managerService.getManagerByUserId(userService.getUserByToken(header.substring(7)).id)
+        val manager = managerService.getManagerByUserId(user.id)
 
         log.debug(
             "manager loaded from db\nmanagerId {}\nuserId {}\nrestaurantId {}\nisActive {}",
