@@ -1,8 +1,8 @@
 package com.ip13.main.controller
 
-import com.ip13.main.mapper.BookingConstraintMapper
 import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.dto.TableReserveTicketDto
+import com.ip13.main.model.toBookingConstraint
 import com.ip13.main.model.toTableReserveTicket
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
@@ -96,7 +96,7 @@ class TableReserveController(
             )
         }
 
-        val bookingConstraint = BookingConstraintMapper.fromBookingConstraintDto(dto, manager.id)
+        val bookingConstraint = dto.toBookingConstraint(managerId)
 
         val bookingConstraintId = bookingConstraintService.save(bookingConstraint)
 

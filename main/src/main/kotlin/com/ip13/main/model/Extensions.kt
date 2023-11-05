@@ -1,11 +1,9 @@
 package com.ip13.main.model
 
 import com.ip13.main.model.dto.AddressDto
+import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.dto.TableReserveTicketDto
-import com.ip13.main.model.entity.Address
-import com.ip13.main.model.entity.Restaurant
-import com.ip13.main.model.entity.RestaurantAddTicket
-import com.ip13.main.model.entity.TableReserveTicket
+import com.ip13.main.model.entity.*
 
 fun AddressDto.toAddress(): Address {
     return Address(
@@ -35,5 +33,15 @@ fun TableReserveTicketDto.toTableReserveTicket(userId: Int): TableReserveTicket 
         tillDate = this.tillDate,
         numOfGuests = this.numOfGuests,
         userComment = this.userComment,
+    )
+}
+
+fun BookingConstraintDto.toBookingConstraint(managerId: Int): BookingConstraint {
+    return BookingConstraint(
+        restaurantId = this.restaurantId,
+        managerId = managerId,
+        reason = this.reason,
+        fromDate = this.fromDate,
+        tillDate = this.tillDate,
     )
 }
