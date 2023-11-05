@@ -86,6 +86,7 @@ class RestaurantAddTicketService(
                 newRestaurantId
             }
         } else {
+            restaurantAddTicketResultService.save(restaurantAddTicketResult)
             null
         }
     }
