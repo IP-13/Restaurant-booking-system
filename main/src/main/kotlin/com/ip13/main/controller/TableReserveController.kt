@@ -1,9 +1,9 @@
 package com.ip13.main.controller
 
 import com.ip13.main.mapper.BookingConstraintMapper
-import com.ip13.main.mapper.TableReserveTicketMapper
 import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.dto.TableReserveTicketDto
+import com.ip13.main.model.toTableReserveTicket
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.ManagerService
@@ -27,14 +27,17 @@ class TableReserveController(
 
     @PostMapping("reserve_table")
     fun reserveTable(
+        @RequestHeader(name = "Authorization")
+        authHeader: String,
         @RequestBody
         tableReserveTicketDto: TableReserveTicketDto
     ): ResponseEntity<String> {
-        val userId = tableReserveTicketDto.userId
+        val user = userService.getUserByTokenInHeader(authHeader)
 
-        userService.checkUser(userId)
+        // TODO() пользователя уже проверяли в филтрах, так что отсюда можно удалить
+        userService.checkUser(user.id)
 
-        val expirationDateFromBlackList = userService.getExpirationDateFromBlackList(userId)
+        val expirationDateFromBlackList = userService.getExpirationDateFromBlackList(user.id)
 
         if (expirationDateFromBlackList != null) {
             return ResponseEntity(
@@ -45,9 +48,7 @@ class TableReserveController(
         }
 
         val createdTicketId = tableReserveService.save(
-            TableReserveTicketMapper.fromTableReserveTicketDto(
-                tableReserveTicketDto
-            )
+            tableReserveTicketDto.toTableReserveTicket(user.id)
         )
 
         return ResponseEntity(
