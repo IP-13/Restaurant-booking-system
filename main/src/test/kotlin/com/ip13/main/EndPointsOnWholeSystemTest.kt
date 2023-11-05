@@ -37,16 +37,19 @@ class EndPointsOnWholeSystemTest(
     fun cleanUp() {
         jdbc.execute("truncate table black_list cascade") { _ -> { } }
         jdbc.execute("truncate table booking_constraint cascade") { _ -> { } }
+        jdbc.execute("truncate table grade_after_visit_manager cascade") { _ -> { } }
+        jdbc.execute("truncate table grade_after_visit_visitor cascade") { _ -> { } }
+        jdbc.execute("truncate table table_reserve_ticket_result cascade") { _ -> { } }
         jdbc.execute("truncate table table_reserve_ticket cascade") { _ -> { } }
         jdbc.execute("truncate table manager cascade") { _ -> { } }
         jdbc.execute("truncate table restaurant cascade") { _ -> { } }
-        jdbc.execute("truncate table address cascade") { _ -> { } }
         jdbc.execute("truncate table restaurant_add_ticket_result cascade") { _ -> { } }
+        jdbc.execute("truncate table restaurant_add_ticket cascade") { _ -> { } }
+        jdbc.execute("truncate table address cascade") { _ -> { } }
         // delete all admins except mega_admin
         jdbc.execute("delete from admin where id != 100") { _ -> { } }
         // delete all users except mega_admin
         jdbc.execute("delete from user_t where id != 100") { _ -> { } }
-        // TODO()
     }
 
     @Test
