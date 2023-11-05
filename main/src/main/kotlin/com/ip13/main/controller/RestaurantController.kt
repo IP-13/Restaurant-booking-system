@@ -1,6 +1,5 @@
 package com.ip13.main.controller
 
-import com.ip13.main.mapper.RestaurantAddTicketResultMapper.fromRestaurantAddTicketResultDto
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
 import com.ip13.main.service.AddressService
@@ -42,25 +41,12 @@ class RestaurantController(
 
     @PostMapping("/process_ticket")
     fun processTicketToAddRestaurant(
+        @RequestHeader(name = "Authorization")
+        authHeader: String,
         @RequestBody
         dto: RestaurantAddTicketResultDto,
     ): ResponseEntity<*> {
-        val restaurantAddTicket = restaurantAddTicketService.findByIdOrNull(dto.restaurantAddTicketId)
-            ?: return ResponseEntity(
-                "No restaurant add ticket with id ${dto.restaurantAddTicketId}",
-                HttpStatus.BAD_REQUEST
-            )
-
-        log.debug("Restaurant add ticket found\n{}", restaurantAddTicket.toString())
-
-        val restaurantAddTicketResult = fromRestaurantAddTicketResultDto(dto)
-
-        val restaurantId = restaurantAddTicketService.processRestaurantAddTicket(
-            restaurantAddTicketResult,
-            restaurantAddTicket
-        )
-
-        log.debug("New restaurant id {}", restaurantId)
+        val restaurantId = restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
 
         return if (restaurantId != null) {
             ResponseEntity("Restaurant successfully added. New restaurant id $restaurantId", HttpStatus.OK)
