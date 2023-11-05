@@ -15,4 +15,31 @@ class GradeAfterVisitManager(
     val tableReserveTicketResultId: Int = 0,
     val grade: Int = 0,
     val comment: String? = null,
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as GradeAfterVisitManager
+
+        if (managerId != other.managerId) return false
+        if (tableReserveTicketResultId != other.tableReserveTicketResultId) return false
+        if (grade != other.grade) return false
+        if (comment != other.comment) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = managerId
+        result = 31 * result + tableReserveTicketResultId
+        result = 31 * result + grade
+        result = 31 * result + (comment?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String {
+        return "GradeAfterVisitManager(id=$id, managerId=$managerId, " +
+                "tableReserveTicketResultId=$tableReserveTicketResultId, grade=$grade, comment=$comment)"
+    }
+}

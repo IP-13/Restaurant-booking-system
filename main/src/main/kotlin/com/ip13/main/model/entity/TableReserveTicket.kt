@@ -18,4 +18,37 @@ class TableReserveTicket(
     val tillDate: LocalDateTime = LocalDateTime.now(),
     val numOfGuests: Int = 0,
     val userComment: String? = null,
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as TableReserveTicket
+
+        if (restaurantId != other.restaurantId) return false
+        if (userId != other.userId) return false
+        if (creationDate != other.creationDate) return false
+        if (fromDate != other.fromDate) return false
+        if (tillDate != other.tillDate) return false
+        if (numOfGuests != other.numOfGuests) return false
+        if (userComment != other.userComment) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = restaurantId
+        result = 31 * result + userId
+        result = 31 * result + creationDate.hashCode()
+        result = 31 * result + fromDate.hashCode()
+        result = 31 * result + tillDate.hashCode()
+        result = 31 * result + numOfGuests
+        result = 31 * result + (userComment?.hashCode() ?: 0)
+        return result
+    }
+
+    override fun toString(): String {
+        return "TableReserveTicket(id=$id, restaurantId=$restaurantId, userId=$userId, creationDate=$creationDate, " +
+                "fromDate=$fromDate, tillDate=$tillDate, numOfGuests=$numOfGuests, userComment=$userComment)"
+    }
+}
