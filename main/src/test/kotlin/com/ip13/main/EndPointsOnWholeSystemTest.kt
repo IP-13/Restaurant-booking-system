@@ -1,6 +1,5 @@
 package com.ip13.main
 
-import com.ip13.main.model.entity.enums.Role
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.AfterEach
@@ -102,7 +101,7 @@ class EndPointsOnWholeSystemTest(
     companion object {
         private const val POSTGRES_IMAGE = "postgres:16.0"
 
-        private const val ADMIN = "admin"
+        private const val ADMIN = "ADMIN"
         private const val MANAGER = "MANAGER"
 
         @Container

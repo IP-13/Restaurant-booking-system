@@ -20,7 +20,7 @@ class User(
     val roles: List<Role> = listOf(),
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return roles.map { SimpleGrantedAuthority(it.code) }.toMutableList()
+        return roles.map { SimpleGrantedAuthority(it.name) }.toMutableList()
     }
 
     override fun getPassword(): String {

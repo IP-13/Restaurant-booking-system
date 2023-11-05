@@ -36,23 +36,23 @@ class AdminController(
 
         // TODO() сначала чекаем юзера, потом роли этого юзера. Первая проверка юзера выглядит необязательной,
         // но без нее не получается отдать пользователю правильный ответ
-        val isAlreadyHasRole = userService.checkRole(roleAddDto.userId, role.code)
+        val isAlreadyHasRole = userService.checkRole(roleAddDto.userId, role.name)
 
         return if (isAlreadyHasRole) {
             ResponseEntity(
-                "User with id: ${roleAddDto.userId} already has role: ${role.code}",
+                "User with id: ${roleAddDto.userId} already has role: ${role.name}",
                 HttpStatus.OK
             )
         } else {
-            val isRoleAdded = userService.addRole(roleAddDto.userId, role.code)
+            val isRoleAdded = userService.addRole(roleAddDto.userId, role.name)
             if (isRoleAdded) {
                 ResponseEntity(
-                    "Role: ${role.code} successfully added to user with id: ${roleAddDto.userId}",
+                    "Role: ${role.name} successfully added to user with id: ${roleAddDto.userId}",
                     HttpStatus.OK
                 )
             } else {
                 ResponseEntity(
-                    "Something went wrong and role: ${role.code} had not been added to user with id:" +
+                    "Something went wrong and role: ${role.name} had not been added to user with id:" +
                             " ${roleAddDto.userId}",
                     HttpStatus.BAD_REQUEST
                 )
