@@ -1,5 +1,6 @@
 package com.ip13.main.controller
 
+import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
 import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.dto.TableReserveTicketDto
 import com.ip13.main.model.toBookingConstraint
@@ -66,23 +67,17 @@ class TableReserveController(
         dto: BookingConstraintDto,
     ): ResponseEntity<*> {
         val restaurant = restaurantService.findByIdOrNull(dto.restaurantId)
-            ?: return ResponseEntity("No restaurant found with id ${dto.restaurantId}", HttpStatus.BAD_REQUEST)
+            ?: throw RestaurantNotFoundException("No restaurant with id ${dto.restaurantId}")
 
-        log.debug("Restaurant found\n{}", restaurant.name)
+        log.debug("Restaurant found\n{}", restaurant.toString())
 
         val user = userService.getUserByTokenInHeader(authHeader)
 
-        log.debug("user extracted from token\n{}", user.username)
+        log.debug("user extracted from token\n{}", user.toString())
 
         val manager = managerService.getManagerByUserId(user.id)
 
-        log.debug(
-            "manager loaded from db\nmanagerId {}\nuserId {}\nrestaurantId {}\nisActive {}",
-            manager.id,
-            manager.userId,
-            manager.restaurantId,
-            manager.isActive,
-        )
+        log.debug("manager loaded from db\n{}", manager.toString())
 
         val managerId = manager.id
         val restaurantId = restaurant.id
