@@ -1,7 +1,5 @@
 package com.ip13.main.controller
 
-import com.ip13.main.mapper.AddressMapper
-import com.ip13.main.mapper.RestaurantAddTicketMapper
 import com.ip13.main.mapper.RestaurantAddTicketResultMapper.fromRestaurantAddTicketResultDto
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
@@ -26,22 +24,15 @@ class RestaurantController(
 
     @PostMapping("/create_ticket")
     fun createTicketToAddRestaurant(
+        @RequestHeader(name = "Authorization")
+        authHeader: String,
         @RequestBody(required = true)
         restaurantAddTicketDto: RestaurantAddTicketDto,
     ): ResponseEntity<*> {
-        // TODO() deduplication, validation
-        val address = AddressMapper.fromAddressDto(restaurantAddTicketDto.addressDto)
-
-        val addressId = addressService.save(address)
-        log.debug("address saved to db with id {} \n{}\n", addressId, address.toString())
-
-        val restaurantAddTicket = RestaurantAddTicketMapper.fromRestaurantAddTicketDto(
-            addressId,
-            restaurantAddTicketDto
+        val restaurantAddTicketId = restaurantAddTicketService.saveTransactionalWithAddress(
+            restaurantAddTicketDto,
+            authHeader,
         )
-
-        val restaurantAddTicketId = restaurantAddTicketService.save(restaurantAddTicket)
-        log.debug("restaurant add ticket saved to db with id {}", restaurantAddTicketId)
 
         return ResponseEntity(
             "Ticket for adding restaurant successfully created with id $restaurantAddTicketId",
