@@ -4,51 +4,42 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
-@Table(name = "restaurant_add_ticket")
 class RestaurantAddTicket(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
     val name: String = "",
-    val country: String = "",
-    val city: String = "",
-    val street: String = "",
-    val building: Int = 0,
-    val entrance: Int? = null,
-    val floor: Int? = null,
+    val addressId: Int = 0,
     val description: String? = null,
-    @Column(name = "user_id")
     val userId: Int = 0,
-    @Column(name = "create_date")
-    val createDate: LocalDateTime = LocalDateTime.now(),
+    val creationDate: LocalDateTime = LocalDateTime.now(),
 ) {
     override fun equals(other: Any?): Boolean {
-        return other === this ||
-                (other is RestaurantAddTicket &&
-                        other.name == this.name &&
-                        other.country == this.country &&
-                        other.city == this.city &&
-                        other.street == this.street &&
-                        other.building == this.building &&
-                        other.entrance == this.entrance &&
-                        other.floor == this.floor &&
-                        other.description == this.description &&
-                        other.userId == this.userId &&
-                        other.createDate == this.createDate
-                        )
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as RestaurantAddTicket
+
+        if (name != other.name) return false
+        if (addressId != other.addressId) return false
+        if (description != other.description) return false
+        if (userId != other.userId) return false
+        if (creationDate != other.creationDate) return false
+
+        return true
     }
 
     override fun hashCode(): Int {
         var result = name.hashCode()
-        result = 31 * result + country.hashCode()
-        result = 31 * result + city.hashCode()
-        result = 31 * result + street.hashCode()
-        result = 31 * result + building
-        result = 31 * result + (entrance ?: 0)
-        result = 31 * result + (floor ?: 0)
+        result = 31 * result + addressId
         result = 31 * result + (description?.hashCode() ?: 0)
         result = 31 * result + userId
-        result = 31 * result + createDate.hashCode()
+        result = 31 * result + creationDate.hashCode()
         return result
+    }
+
+    override fun toString(): String {
+        return "RestaurantAddTicket(id=$id, name='$name', addressId=$addressId, description=$description, " +
+                "userId=$userId, creationDate=$creationDate)"
     }
 }

@@ -1,37 +1,16 @@
 create table if not exists user_t (
     id int generated always as identity(start with 100 increment by 100) primary key,
-    username varchar(50) not null,
+    username varchar(50) not null unique,
     password text not null,
-    rating float,
+    num_of_grades int not null,
+    sum_of_grades int not null,
     roles text[]
 );
 
 create table if not exists admin (
     id int generated always as identity(start with 100 increment by 100) primary key,
-    user_id int references user_t(id)
-);
-
-create table if not exists restaurant_add_ticket (
-    id int generated always as identity(start with 100 increment by 100) primary key,
-    name varchar(50) not null,
-    country text not null,
-    city text not null,
-    street text not null,
-    building int not null,
-    entrance int,
-    floor int,
-    description text,
     user_id int references user_t(id),
-    create_date timestamp not null
-);
-
-create table if not exists restaurant_add_ticket_result (
-    id int generated always as identity(start with 100 increment by 100) primary key,
-    restaurant_add_ticket_id int references restaurant_add_ticket(id),
-    admin_id int references admin(id),
-    result restaurant_add_result,
-    create_date timestamp not null,
-    admin_comment text
+    is_active boolean
 );
 
 create table if not exists address (
@@ -44,25 +23,52 @@ create table if not exists address (
     floor int
 );
 
+create table if not exists restaurant_add_ticket (
+    id int generated always as identity(start with 100 increment by 100) primary key,
+    name varchar(50) not null,
+    address_id int references address(id),
+    description text,
+    user_id int references user_t(id),
+    creation_date timestamp not null
+);
+
+create table if not exists restaurant_add_ticket_result (
+    id int generated always as identity(start with 100 increment by 100) primary key,
+    restaurant_add_ticket_id int references restaurant_add_ticket(id),
+    admin_id int references admin(id),
+    result restaurant_add_status,
+    creation_date timestamp not null,
+    admin_comment text
+);
+
 create table if not exists restaurant (
     id int generated always as identity(start with 100 increment by 100) primary key,
     name varchar(50) not null,
     address_id int references address(id),
     restaurant_add_ticket_id int references restaurant_add_ticket(id),
-    description text
+    description text,
+    num_of_grades int not null,
+    sum_of_grades int not null
 );
 
 create table if not exists manager (
     id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
-    restaurant_id int references restaurant(id)
+    restaurant_id int references restaurant(id),
+    is_active boolean
 );
 
 create table if not exists table_reserve_ticket (
     id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_id int references restaurant(id),
     user_id int references user_t(id),
+    -- дата и время создания заявки
     creation_date timestamp not null,
+    -- дата и время в которое пользователь планирует прийти
+    from_date timestamp not null,
+    -- дата и время до которого пользователь планирует находиться в ресторане
+    till_date timestamp not null,
+    num_of_guests int not null,
     user_comment text
 );
 
@@ -73,15 +79,22 @@ create table if not exists table_reserve_ticket_result (
     status reserve_table_status
 );
 
-create table if not exists visit_result (
+create table if not exists grade_after_visit_visitor (
     id int generated always as identity(start with 100 increment by 100) primary key,
-    table_reserve_ticket_id int references table_reserve_ticket(id),
-    manager_comment text,
-    visitor_comment text,
-    -- Оценка, которую менеджер поставил пользователю
-    manager_grade float,
-    -- Оценка, которую пользователь поставил ресторану
-    visitor_grade float
+    user_id int references user_t(id),
+    table_reserve_ticket_result_id int references table_reserve_ticket_result(id),
+    -- оценка, которую пользователь поставил ресторану после визита
+    grade int not null,
+    comment text
+);
+
+create table if not exists grade_after_visit_manager (
+    id int generated always as identity(start with 100 increment by 100) primary key,
+    manager_id int references manager(id),
+    table_reserve_ticket_result_id int references table_reserve_ticket_result(id),
+    -- оценка, которую менеджер поставил пользователю после визита
+    grade int not null,
+    comment text
 );
 
 create table if not exists booking_constraint (
@@ -89,15 +102,14 @@ create table if not exists booking_constraint (
     restaurant_id int references restaurant(id),
     manager_id int references manager(id),
     reason text not null,
-    creation_date timestamp not null,
-    expiration_date timestamp not null
+    from_date timestamp not null,
+    till_date timestamp not null
 );
 
 create table if not exists black_list (
     id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
-    manager_id int references manager(id),
     from_date timestamp not null,
-    expiration_date timestamp not null,
+    till_date timestamp not null,
     reason text not null
 );

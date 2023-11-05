@@ -2,11 +2,10 @@ package com.ip13.main.service
 
 
 import com.ip13.main.model.entity.RestaurantAddTicket
-import com.ip13.main.model.entity.enums.RestaurantAddResult
+import com.ip13.main.model.entity.enums.RestaurantAddStatus
 import com.ip13.main.model.entity.enums.Role
 import com.ip13.main.provider.EntitiesProvider
 import com.ip13.main.repository.RestaurantAddTicketRepository
-import com.ip13.main.repository.RestaurantAddTicketResultRepository
 import com.ip13.main.security.service.UserService
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -29,7 +28,7 @@ class RestaurantAddTicketServiceTest {
     private lateinit var restaurantAddTicketRepository: RestaurantAddTicketRepository
 
     @MockK
-    private lateinit var restaurantAddTicketResultRepository: RestaurantAddTicketResultRepository
+    private lateinit var restaurantAddTicketResultService: RestaurantAddTicketResultService
 
     @MockK
     private lateinit var restaurantService: RestaurantService
@@ -45,10 +44,13 @@ class RestaurantAddTicketServiceTest {
 
     @Test
     fun saveTest() {
-        every { restaurantAddTicketRepository.save(any()) } returns null
+        val restaurantAddTicket = EntitiesProvider.getDefaultRestaurantAddTicket(id = 11)
 
-        restaurantAddTicketService.save(RestaurantAddTicket())
+        every { restaurantAddTicketRepository.save(any()) } returns restaurantAddTicket
 
+        val restaurantAddTicketId = restaurantAddTicketService.save(RestaurantAddTicket())
+
+        Assertions.assertThat(restaurantAddTicketId).isEqualTo(11)
         verify(exactly = 1) { restaurantAddTicketRepository.save(any()) }
     }
 
@@ -72,30 +74,36 @@ class RestaurantAddTicketServiceTest {
 
     @Test
     fun `successful processRestaurantAddTicket`() {
-        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult(result = RestaurantAddResult.ACCEPTED)
+        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult(
+            id = 13,
+            result = RestaurantAddStatus.ACCEPTED
+        )
         val ticket = EntitiesProvider.getDefaultRestaurantAddTicket()
 
-        every { restaurantAddTicketResultRepository.save(result) } returns result
+        every { restaurantAddTicketResultService.save(result) } returns result.id
         every { userService.addRole(any(), Role.MANAGER.name) } returns true
         // returns id of new added restaurant
         every { restaurantService.save(any()) } returns 13
         every { managerService.save(any()) } returns 13
 
         Assertions.assertThat(restaurantAddTicketService.processRestaurantAddTicket(result, ticket)).isEqualTo(13)
-        verify(exactly = 1) { restaurantAddTicketResultRepository.save(any()) }
+        verify(exactly = 1) { restaurantAddTicketResultService.save(any()) }
         verify(exactly = 1) { userService.addRole(any(), any()) }
         verify(exactly = 1) { restaurantService.save(any()) }
     }
 
     @Test
     fun `should save ticketResult and return null when rejected`() {
-        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult(result = RestaurantAddResult.REJECTED)
+        val result = EntitiesProvider.getDefaultRestaurantAddTicketResult(
+            id = 13,
+            result = RestaurantAddStatus.REJECTED
+        )
         val ticket = EntitiesProvider.getDefaultRestaurantAddTicket()
 
-        every { restaurantAddTicketResultRepository.save(result) } returns result
+        every { restaurantAddTicketResultService.save(result) } returns result.id
 
         Assertions.assertThat(restaurantAddTicketService.processRestaurantAddTicket(result, ticket)).isEqualTo(null)
-        verify(exactly = 1) { restaurantAddTicketResultRepository.save(any()) }
+        verify(exactly = 1) { restaurantAddTicketResultService.save(any()) }
     }
 
     @Test

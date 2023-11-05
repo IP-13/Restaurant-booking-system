@@ -16,9 +16,6 @@ class RestaurantServiceTest {
     @MockK
     private lateinit var restaurantRepository: RestaurantRepository
 
-    @MockK
-    private lateinit var addressService: AddressService
-
     @InjectMockKs
     private lateinit var restaurantService: RestaurantService
 
@@ -26,11 +23,9 @@ class RestaurantServiceTest {
     fun saveTest() {
         val restaurant = EntitiesProvider.getDefaultRestaurant()
 
-        every { addressService.save(any()) } returns 1313
         every { restaurantRepository.save(restaurant) } returns EntitiesProvider.getDefaultRestaurant(id = 13)
 
         Assertions.assertThat(restaurantService.save(restaurant)).isEqualTo(13)
-        verify(exactly = 1) { addressService.save(any()) }
         verify(exactly = 1) { restaurantRepository.save(any()) }
     }
 }

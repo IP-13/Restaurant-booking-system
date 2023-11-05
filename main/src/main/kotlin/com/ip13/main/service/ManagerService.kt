@@ -11,4 +11,16 @@ class ManagerService(
     fun save(manager: Manager): Int {
         return managerRepository.save(manager).id
     }
+
+    fun checkIfWorksInRestaurantById(managerId: Int, restaurantId: Int): Boolean {
+        return managerRepository.checkIfWorksInRestaurantById(managerId, restaurantId)
+    }
+
+    fun checkIfActive(managerId: Int): Boolean {
+        return managerRepository.checkIfActive(managerId)
+    }
+
+    fun getManagerByUserId(userId: Int): Manager {
+        return managerRepository.getManagerByUserId(userId)
+    }
 }

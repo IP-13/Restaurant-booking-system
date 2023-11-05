@@ -8,13 +8,15 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
-import java.nio.file.attribute.UserPrincipalNotFoundException
 import java.time.LocalDateTime
 
 @Service
 class UserService : UserDetailsService {
     @Autowired
     private lateinit var userRepository: UserRepository
+
+    @Autowired
+    private lateinit var tokenService: TokenService
 
     override fun loadUserByUsername(username: String): User {
         return userRepository.findByUsername(username) ?: throw UsernameNotFoundException("No user with that name")
@@ -52,5 +54,14 @@ class UserService : UserDetailsService {
 
     fun getExpirationDateFromBlackList(userId: Int): LocalDateTime? {
         return userRepository.getExpirationDateFromBlackList(userId)
+    }
+
+    fun getUserByTokenInHeader(header: String): User {
+        return loadUserByUsername(tokenService.getUsername(getTokenFromHeader(header)))
+    }
+
+    private fun getTokenFromHeader(header: String): String {
+        // header starts with "Bearer ...token here..,"
+        return header.substring(7)
     }
 }

@@ -1,10 +1,9 @@
 package com.ip13.main.provider
 
 import com.ip13.main.model.entity.*
-import com.ip13.main.model.entity.enums.RestaurantAddResult
+import com.ip13.main.model.entity.enums.RestaurantAddStatus
 import com.ip13.main.model.entity.enums.Role
 import com.ip13.main.security.entity.User
-import jakarta.persistence.*
 import java.time.LocalDateTime
 import java.time.Month
 
@@ -13,14 +12,16 @@ object EntitiesProvider {
         id: Int = 13,
         username: String = "username",
         password: String = "password",
-        rating: Float = 5.0f,
+        numOfGrades: Int = 0,
+        sumOfGrades: Int = 0,
         roles: List<Role> = listOf(),
     ): User {
         return User(
             id = id,
             username = username,
             password = password,
-            rating = rating,
+            numOfGrades = numOfGrades,
+            sumOfGrades = sumOfGrades,
             roles = roles,
         )
     }
@@ -28,12 +29,7 @@ object EntitiesProvider {
     fun getDefaultRestaurantAddTicket(
         id: Int = 13,
         name: String = "restaurant",
-        country: String = "country",
-        city: String = "city",
-        street: String = "street",
-        building: Int = 13,
-        entrance: Int? = 13,
-        floor: Int = -2,
+        addressId: Int = 13,
         description: String? = "this is a restaurant in the parking lot",
         userId: Int = 13,
         createDate: LocalDateTime = getDefaultLocalDateTime(),
@@ -41,15 +37,10 @@ object EntitiesProvider {
         return RestaurantAddTicket(
             id = id,
             name = name,
-            country = country,
-            city = city,
-            street = street,
-            building = building,
-            entrance = entrance,
-            floor = floor,
+            addressId = addressId,
             description = description,
             userId = userId,
-            createDate = createDate,
+            creationDate = createDate,
         )
     }
 
@@ -67,7 +58,7 @@ object EntitiesProvider {
         id: Int = 13,
         restaurantAddTicketId: Int = 13,
         adminId: Int = 13,
-        result: RestaurantAddResult = RestaurantAddResult.ACCEPTED,
+        result: RestaurantAddStatus = RestaurantAddStatus.ACCEPTED,
         createDate: LocalDateTime = LocalDateTime.now(),
         adminComment: String? = "live long die young",
     ): RestaurantAddTicketResult {
@@ -76,7 +67,7 @@ object EntitiesProvider {
             restaurantAddTicketId = restaurantAddTicketId,
             adminId = adminId,
             result = result,
-            createDate = createDate,
+            creationDate = createDate,
             adminComment = adminComment,
         )
     }
@@ -84,18 +75,20 @@ object EntitiesProvider {
     fun getDefaultRestaurant(
         id: Int = 13,
         name: String = "restaurant",
-        address: Address = getDefaultAddress(),
-        restaurantAddTicket: RestaurantAddTicket = getDefaultRestaurantAddTicket(),
+        addressId: Int = 13,
+        restaurantAddTicketId: Int = 13,
         description: String? = "live long die young",
-        managers: List<Manager> = listOf(),
+        numOfGrades: Int = 0,
+        sumOfGrades: Int = 0,
     ): Restaurant {
         return Restaurant(
             id = id,
             name = name,
-            address = address,
-            restaurantAddTicket = restaurantAddTicket,
+            addressId = addressId,
+            restaurantAddTicketId = restaurantAddTicketId,
             description = description,
-            managers = managers
+            numOfGrades = numOfGrades,
+            sumOfGrades = sumOfGrades,
         )
     }
 
@@ -121,28 +114,36 @@ object EntitiesProvider {
 
     fun getDefaultManager(
         id: Int = 13,
-        user: User = getDefaultUser(),
-        restaurant: Restaurant = getDefaultRestaurant(),
+        userId: Int = 13,
+        restaurantId: Int = 13,
+        isActive: Boolean = true,
     ): Manager {
         return Manager(
             id = id,
-            user = user,
-            restaurant = restaurant,
+            userId = userId,
+            restaurantId = restaurantId,
+            isActive = isActive,
         )
     }
 
     fun getDefaultTableReserveTicket(
         id: Int = 13,
-        restaurant: Restaurant = getDefaultRestaurant(),
-        user: User = getDefaultUser(),
+        restaurantId: Int = 13,
+        userId: Int = 13,
         creationDate: LocalDateTime = getDefaultLocalDateTime(),
+        fromDate: LocalDateTime = getDefaultLocalDateTime(),
+        tillDate: LocalDateTime = getDefaultLocalDateTime(),
+        numOfGuests: Int = 13,
         userComment: String? = "live long die young",
     ): TableReserveTicket {
         return TableReserveTicket(
             id = id,
-            restaurant = restaurant,
-            user = user,
+            restaurantId = restaurantId,
+            userId = userId,
             creationDate = creationDate,
+            fromDate = fromDate,
+            tillDate = tillDate,
+            numOfGuests = numOfGuests,
             userComment = userComment,
         )
     }

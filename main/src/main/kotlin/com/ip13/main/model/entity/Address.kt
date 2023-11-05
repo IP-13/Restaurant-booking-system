@@ -38,4 +38,9 @@ class Address(
         result = 31 * result + (floor ?: 0)
         return result
     }
+
+    override fun toString(): String {
+        return "Address(id=$id, country='$country', city='$city', street='$street', building=$building, " +
+                "entrance=$entrance, floor=$floor)"
+    }
 }
