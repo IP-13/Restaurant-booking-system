@@ -12,7 +12,7 @@ class GradeAfterVisitManager(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
     val managerId: Int = 0,
-    val tableReserveTicketResultId: Int = 0,
+    val tableReserveTicketId: Int = 0,
     val grade: Int = 0,
     val comment: String? = null,
 ) {
@@ -23,7 +23,7 @@ class GradeAfterVisitManager(
         other as GradeAfterVisitManager
 
         if (managerId != other.managerId) return false
-        if (tableReserveTicketResultId != other.tableReserveTicketResultId) return false
+        if (tableReserveTicketId != other.tableReserveTicketId) return false
         if (grade != other.grade) return false
         if (comment != other.comment) return false
 
@@ -32,7 +32,7 @@ class GradeAfterVisitManager(
 
     override fun hashCode(): Int {
         var result = managerId
-        result = 31 * result + tableReserveTicketResultId
+        result = 31 * result + tableReserveTicketId
         result = 31 * result + grade
         result = 31 * result + (comment?.hashCode() ?: 0)
         return result
@@ -40,6 +40,6 @@ class GradeAfterVisitManager(
 
     override fun toString(): String {
         return "GradeAfterVisitManager(id=$id, managerId=$managerId, " +
-                "tableReserveTicketResultId=$tableReserveTicketResultId, grade=$grade, comment=$comment)"
+                "tableReserveTicketResultId=$tableReserveTicketId, grade=$grade, comment=$comment)"
     }
 }
