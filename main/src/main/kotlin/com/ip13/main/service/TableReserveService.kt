@@ -4,6 +4,7 @@ import com.ip13.main.model.dto.ReservationProcessDto
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.repository.TableReserveTicketRepository
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
 @Service
@@ -25,5 +26,9 @@ class TableReserveService(
             managerComment = reservationProcessDto.managerComment,
             status = reservationProcessDto.status.name,
         )
+    }
+
+    fun findByIdOrNull(tableReserveTicketId: Int): TableReserveTicket? {
+        return tableReserveTicketRepository.findByIdOrNull(tableReserveTicketId)
     }
 }

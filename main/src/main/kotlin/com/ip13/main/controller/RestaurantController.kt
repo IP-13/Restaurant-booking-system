@@ -1,14 +1,12 @@
 package com.ip13.main.controller
 
+import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
 import com.ip13.main.model.dto.GradeVisitorDto
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
 import com.ip13.main.model.toGradeVisitor
 import com.ip13.main.security.service.UserService
-import com.ip13.main.service.AddressService
-import com.ip13.main.service.GradeVisitorService
-import com.ip13.main.service.RestaurantAddTicketService
-import com.ip13.main.service.RestaurantService
+import com.ip13.main.service.*
 import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -22,6 +20,7 @@ class RestaurantController(
     private val restaurantAddTicketService: RestaurantAddTicketService,
     private val gradeVisitorService: GradeVisitorService,
     private val userService: UserService,
+    private val tableReserveService: TableReserveService,
 ) {
     private val log = getLogger(javaClass)
 
@@ -85,6 +84,11 @@ class RestaurantController(
         val user = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("user extracted from token\n{}", user.toString())
+
+        val tableReserveTicket = tableReserveService.findByIdOrNull(gradleVisitorDto.tableReserveTicketId)
+            ?: throw TableReserveTicketNotFoundException(
+                "No TableReserveTicket with id ${gradleVisitorDto.tableReserveTicketId}"
+            )
 
         val newGrade = gradeVisitorService.gradeRestaurant(gradleVisitorDto.toGradeVisitor(user.id))
 
