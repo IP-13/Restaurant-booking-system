@@ -13,6 +13,7 @@ class GradeManager(
     val id: Int = 0,
     val managerId: Int = 0,
     val tableReserveTicketId: Int = 0,
+    // Пользователь, которому ставит оценку менеджер
     val userId: Int = 0,
     val grade: Int = 0,
     val comment: String? = null,
