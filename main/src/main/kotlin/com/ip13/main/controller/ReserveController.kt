@@ -52,6 +52,19 @@ class ReserveController(
             )
         }
 
+        val constraintCount = bookingConstraintService.isOpen(
+            fromDate = tableReserveTicketDto.fromDate,
+            tillDate = tableReserveTicketDto.tillDate,
+            restaurantId = tableReserveTicketDto.restaurantId,
+        )
+
+        if (constraintCount > 0) {
+            return ResponseEntity(
+                "Sorry, restaurant with id ${tableReserveTicketDto.restaurantId} is closed at that time",
+                HttpStatus.OK
+            )
+        }
+
         val createdTicketId = tableReserveService.save(
             tableReserveTicketDto.toTableReserveTicket(user.id)
         )
