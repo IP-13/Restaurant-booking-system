@@ -11,12 +11,14 @@ import com.ip13.main.service.ManagerService
 import com.ip13.main.service.RestaurantService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/reserve")
+@RequestMapping("/reserve", method = [RequestMethod.POST, RequestMethod.GET])
 class ReserveController(
     private val tableReserveService: TableReserveService,
     private val userService: UserService,
@@ -28,9 +30,9 @@ class ReserveController(
 
     @PostMapping("reserve_table")
     fun reserveTable(
-        @RequestHeader(name = "Authorization")
+        @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
-        @RequestBody
+        @RequestBody(required = true)
         tableReserveTicketDto: TableReserveTicketDto
     ): ResponseEntity<String> {
         val user = userService.getUserByTokenInHeader(authHeader)
@@ -61,9 +63,9 @@ class ReserveController(
     @PostMapping("/add_booking_constraint")
     fun addBookingConstraint(
         // Проверка токена уже была на стадии фильтров, так что если дошли до этого места, то хедер должен быть точно
-        @RequestHeader(name = "Authorization")
+        @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
-        @RequestBody
+        @RequestBody(required = true)
         dto: BookingConstraintDto,
     ): ResponseEntity<*> {
         val restaurant = restaurantService.findByIdOrNull(dto.restaurantId)
@@ -96,5 +98,31 @@ class ReserveController(
         val bookingConstraintId = bookingConstraintService.save(bookingConstraint)
 
         return ResponseEntity("Booking constraint successfully added with id $bookingConstraintId", HttpStatus.OK)
+    }
+
+    @GetMapping("/show_reservations")
+    fun showRestaurant(
+        @RequestHeader(name = "page_number", required = true)
+        pageNumber: Int,
+        @RequestHeader(name = "page_size")
+        pageSize: Int,
+        @RequestHeader(name = "Authorization", required = true)
+        authHeader: String,
+    ): ResponseEntity<*> {
+        val user = userService.getUserByTokenInHeader(authHeader)
+
+        log.debug("user extracted from token\n{}", user.toString())
+
+        val manager = managerService.getManagerByUserId(user.id)
+
+        log.debug("manager loaded from db\n{}", manager.toString())
+
+        val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
+
+        val reservations = tableReserveService.getReservations(pageRequest)
+
+        log.debug("tickets found\n{}", reservations.map { it::toString })
+
+        return ResponseEntity(reservations, HttpStatus.OK)
     }
 }
