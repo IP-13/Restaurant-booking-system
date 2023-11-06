@@ -159,6 +159,28 @@ class EndPointsOnWholeSystemTest(
     }
 
     @Test
+    fun `should return 400 status code when wrong password`() {
+        registerDefaultUser()
+
+        val body = loadAsString("json/default_user_with_wrong_password.json")
+
+        val result = mockMvc.post("/security/login") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(400)
+            // assert that response contains token
+            content {
+                jsonPath(
+                    "message",
+                    containsString("passwords don't match"),
+                )
+            }
+        }
+    }
+
+    @Test
     @WithMockUser(authorities = [ADMIN])
     fun `test add role to non-existent user`() {
         val body = loadAsString("json/non_existent_user.json")
