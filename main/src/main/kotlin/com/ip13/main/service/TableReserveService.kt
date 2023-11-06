@@ -1,5 +1,6 @@
 package com.ip13.main.service
 
+import com.ip13.main.model.dto.ReservationProcessDto
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.repository.TableReserveTicketRepository
 import org.springframework.data.domain.PageRequest
@@ -15,5 +16,14 @@ class TableReserveService(
 
     fun getReservations(pageRequest: PageRequest): List<TableReserveTicket> {
         return tableReserveTicketRepository.findAll(pageRequest).toList()
+    }
+
+    fun processReservation(reservationProcessDto: ReservationProcessDto, managerId: Int): Int {
+        return tableReserveTicketRepository.processReservationDto(
+            tableReserveTicketId = reservationProcessDto.tableReserveTicketId,
+            managerId = managerId,
+            managerComment = reservationProcessDto.managerComment,
+            status = reservationProcessDto.status.name,
+        )
     }
 }

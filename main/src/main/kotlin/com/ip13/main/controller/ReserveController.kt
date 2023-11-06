@@ -3,6 +3,7 @@ package com.ip13.main.controller
 import com.ip13.main.exceptionHandling.exception.ManagerNotFoundException
 import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
 import com.ip13.main.model.dto.BookingConstraintDto
+import com.ip13.main.model.dto.ReservationProcessDto
 import com.ip13.main.model.dto.TableReserveTicketDto
 import com.ip13.main.model.toBookingConstraint
 import com.ip13.main.model.toTableReserveTicket
@@ -136,10 +137,31 @@ class ReserveController(
         return ResponseEntity(reservations, HttpStatus.OK)
     }
 
-    @PostMapping("/accept_reservation")
-    fun acceptReservation(
-
+    @PostMapping("/process_reservation")
+    fun processReservation(
+        @RequestHeader(name = "Authorization", required = true)
+        authHeader: String,
+        @RequestBody
+        reservationProcessDto: ReservationProcessDto,
     ): ResponseEntity<*> {
+        val user = userService.getUserByTokenInHeader(authHeader)
 
+        log.debug("user extracted from token\n{}", user.toString())
+
+        val manager = managerService.getManagerByUserIdOrNull(user.id)
+            ?: throw ManagerNotFoundException("No manager found with userId ${user.id}")
+
+        log.debug("manager loaded from db\n{}", manager.toString())
+
+        val updatedCount = tableReserveService.processReservation(reservationProcessDto, manager.id)
+
+        return if (updatedCount == 1) {
+            ResponseEntity("Successfully updated", HttpStatus.OK)
+        } else {
+            ResponseEntity(
+                "Something went wrong. Reservation ${reservationProcessDto.tableReserveTicketId} was not updated",
+                HttpStatus.INTERNAL_SERVER_ERROR
+            )
+        }
     }
 }
