@@ -1,6 +1,6 @@
 package com.ip13.main.model.enums
 
-enum class ReserveTableStatus {
+enum class TableReserveStatus {
     PROCESSING,
     ACCEPTED,
     REJECTED;

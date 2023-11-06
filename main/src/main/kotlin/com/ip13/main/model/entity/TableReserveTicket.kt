@@ -1,6 +1,6 @@
 package com.ip13.main.model.entity
 
-import com.ip13.main.model.enums.ReserveTableStatus
+import com.ip13.main.model.enums.TableReserveStatus
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -19,7 +19,7 @@ class TableReserveTicket(
     val managerId: Int? = null,
     val managerComment: String? = null,
     @Enumerated(EnumType.STRING)
-    val status: ReserveTableStatus = ReserveTableStatus.PROCESSING,
+    val status: TableReserveStatus = TableReserveStatus.PROCESSING,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
