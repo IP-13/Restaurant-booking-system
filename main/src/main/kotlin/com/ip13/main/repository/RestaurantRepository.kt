@@ -25,7 +25,7 @@ interface RestaurantRepository : CrudRepository<Restaurant, Int> {
     ): Int
 
     @Query(
-        "select cast(sum_of_grades as float)/num_of_grades where restaurant_id = :restaurant_id",
+        "select cast(sum_of_grades as float)/num_of_grades from restaurant where restaurant_id = :restaurant_id",
         nativeQuery = true
     )
     fun getGrade(
