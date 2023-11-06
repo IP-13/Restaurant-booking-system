@@ -4,21 +4,19 @@ import com.ip13.main.model.entity.enums.Role
 import com.ip13.main.security.repository.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
-import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
-import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -26,7 +24,6 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
-@RunWith(SpringRunner::class)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = ["security.enabled=true"],
@@ -35,27 +32,25 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @Testcontainers
 @AutoConfigureMockMvc
 class EndPointsOnWholeSystemTest(
-    @Autowired val jdbc: NamedParameterJdbcTemplate,
+    @Autowired val jdbc: JdbcTemplate,
     @Autowired val userRepository: UserRepository,
     @Autowired val passwordEncoder: PasswordEncoder,
 ) {
-    @AfterEach
+    @BeforeEach
     fun cleanUp() {
-        jdbc.execute("truncate table black_list cascade") { _ -> { } }
-        jdbc.execute("truncate table booking_constraint cascade") { _ -> { } }
-        jdbc.execute("truncate table grade_after_visit_manager cascade") { _ -> { } }
-        jdbc.execute("truncate table grade_after_visit_visitor cascade") { _ -> { } }
-        jdbc.execute("truncate table table_reserve_ticket_result cascade") { _ -> { } }
-        jdbc.execute("truncate table table_reserve_ticket cascade") { _ -> { } }
-        jdbc.execute("truncate table manager cascade") { _ -> { } }
-        jdbc.execute("truncate table restaurant cascade") { _ -> { } }
-        jdbc.execute("truncate table restaurant_add_ticket_result cascade") { _ -> { } }
-        jdbc.execute("truncate table restaurant_add_ticket cascade") { _ -> { } }
-        jdbc.execute("truncate table address cascade") { _ -> { } }
-        // delete all admins except mega_admin
-        jdbc.execute("delete from admin where id != 100") { _ -> { } }
-        // delete all users except mega_admin
-        jdbc.execute("delete from user_t where id != 100") { _ -> { } }
+        jdbc.execute("truncate table black_list cascade")
+        jdbc.execute("truncate table booking_constraint cascade")
+        jdbc.execute("truncate table grade_after_visit_manager cascade")
+        jdbc.execute("truncate table grade_after_visit_visitor cascade")
+        jdbc.execute("truncate table table_reserve_ticket_result cascade")
+        jdbc.execute("truncate table table_reserve_ticket cascade")
+        jdbc.execute("truncate table manager cascade")
+        jdbc.execute("truncate table restaurant cascade")
+        jdbc.execute("truncate table restaurant_add_ticket_result cascade")
+        jdbc.execute("truncate table restaurant_add_ticket cascade")
+        jdbc.execute("truncate table address cascade")
+        jdbc.execute("truncate table admin cascade")
+        jdbc.execute("truncate table user_t cascade")
     }
 
     @Test
@@ -67,8 +62,7 @@ class EndPointsOnWholeSystemTest(
     fun `test successful insert and select with address table`() {
         jdbc.update(
             "insert into address(country, city, street, building, entrance, floor) " +
-                    "values('Russia', 'Saint-Petersburg', 'Lenina', 12, 1, 3)",
-            mapOf<String, Any>()
+                    "values('Russia', 'Saint-Petersburg', 'Lenina', 12, 1, 3)"
         )
 
         val address = jdbc.query("select * from address") { rs, _ ->
@@ -116,9 +110,44 @@ class EndPointsOnWholeSystemTest(
         )
     }
 
-//    fun `should return 400 status code when someone tries to register with username that already exists`() {
-//
-//    }
+    @Test
+    fun `should return 400 status code when someone tries to register with username that already exists`() {
+        val body = loadAsString("json/default_user_register_dto.json")
+
+        mockMvc.post("/security/register") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(200)
+            content {
+                // проверка что приходит токен
+                jsonPath(
+                    "token",
+                    containsString(""),
+                )
+            }
+        }
+
+        mockMvc.post("/security/register") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(400)
+            content {
+                jsonPath(
+                    "message",
+                    containsString("User with username ip13 already exists"),
+                )
+            }
+        }
+
+        val numOfUsersInDb = jdbc.queryForObject("select count(*) from user_t", Int::class.java)
+
+        // новый юзер и mega_admin
+        assertThat(numOfUsersInDb!!).isEqualTo(1)
+    }
 
     @Test
     @WithMockUser(authorities = [ADMIN])
