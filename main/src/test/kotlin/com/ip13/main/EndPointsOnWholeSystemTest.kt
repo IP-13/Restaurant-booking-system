@@ -111,23 +111,10 @@ class EndPointsOnWholeSystemTest(
     }
 
     @Test
-    fun `should return 400 status code when someone tries to register with username that already exists`() {
-        val body = loadAsString("json/default_user_register_dto.json")
+    fun `should return 400 status code when register with username that already exists`() {
+        registerDefaultUser()
 
-        mockMvc.post("/security/register") {
-            contentType = MediaType.APPLICATION_JSON
-            accept = MediaType.APPLICATION_JSON
-            content = body
-        }.andExpect {
-            status().`is`(200)
-            content {
-                // проверка что приходит токен
-                jsonPath(
-                    "token",
-                    containsString(""),
-                )
-            }
-        }
+        val body = loadAsString("json/default_user_register_dto.json")
 
         mockMvc.post("/security/register") {
             contentType = MediaType.APPLICATION_JSON
@@ -150,6 +137,28 @@ class EndPointsOnWholeSystemTest(
     }
 
     @Test
+    fun `should return token when login with valid name and password`() {
+        registerDefaultUser()
+
+        val body = loadAsString("json/default_user_register_dto.json")
+
+        mockMvc.post("/security/login") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(200)
+            // assert that response contains token
+            content {
+                jsonPath(
+                    "token",
+                    containsString(""),
+                )
+            }
+        }
+    }
+
+    @Test
     @WithMockUser(authorities = [ADMIN])
     fun `test add role to non-existent user`() {
         val body = loadAsString("json/non_existent_user.json")
@@ -166,6 +175,25 @@ class EndPointsOnWholeSystemTest(
                     containsString(
                         "UserNotFoundException: User with id: 10 not found",
                     )
+                )
+            }
+        }
+    }
+
+    private fun registerDefaultUser() {
+        val body = loadAsString("json/default_user_register_dto.json")
+
+        mockMvc.post("/security/register") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(200)
+            content {
+                // проверка что приходит токен
+                jsonPath(
+                    "token",
+                    containsString(""),
                 )
             }
         }
