@@ -1,15 +1,19 @@
 package com.ip13.main
 
+import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.security.repository.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
@@ -32,6 +36,8 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @AutoConfigureMockMvc
 class EndPointsOnWholeSystemTest(
     @Autowired val jdbc: NamedParameterJdbcTemplate,
+    @Autowired val userRepository: UserRepository,
+    @Autowired val passwordEncoder: PasswordEncoder,
 ) {
     @AfterEach
     fun cleanUp() {
@@ -79,6 +85,40 @@ class EndPointsOnWholeSystemTest(
 
     @Autowired
     private lateinit var mockMvc: MockMvc
+
+    @Test
+    fun `should add new user to db when register successfully`() {
+        val body = loadAsString("json/default_user_register_dto.json")
+
+        mockMvc.post("/security/register") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(200)
+            content {
+                // проверка что приходит токен
+                jsonPath(
+                    "token",
+                    containsString(""),
+                )
+            }
+        }
+
+        val user = userRepository.findByUsername("ip13")!!
+
+        assertAll(
+            { assertThat(passwordEncoder.matches("who am i", user.password)).isTrue() },
+            { assertThat(user.username).isEqualTo("ip13") },
+            { assertThat(user.numOfGrades).isEqualTo(0) },
+            { assertThat(user.sumOfGrades).isEqualTo(0) },
+            { assertThat(user.roles).isEqualTo(listOf<Role>()) },
+        )
+    }
+
+//    fun `should return 400 status code when someone tries to register with username that already exists`() {
+//
+//    }
 
     @Test
     @WithMockUser(authorities = [ADMIN])

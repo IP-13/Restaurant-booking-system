@@ -20,12 +20,12 @@ class AuthService(
     @Autowired val passwordEncoder: BCryptPasswordEncoder,
 ) {
     fun register(registerDto: RegisterDto): RegisterResponseDto {
-        if (userService.existsByName(registerDto.name)) {
-            throw ResponseStatusException(400, "User with username ${registerDto.name} already exists", null)
+        if (userService.existsByName(registerDto.username)) {
+            throw ResponseStatusException(400, "User with username ${registerDto.username} already exists", null)
         }
 
         val user = User(
-            username = registerDto.name,
+            username = registerDto.username,
             password = passwordEncoder.encode(registerDto.password),
         )
 
@@ -39,13 +39,13 @@ class AuthService(
     fun login(loginDto: LoginDto): LoginResponseDto {
         authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(
-                loginDto.name,
+                loginDto.username,
                 // TODO() в фильтре credentials устанавливается в null
                 loginDto.password,
             )
         )
 
-        val user = userService.loadUserByUsername(loginDto.name)
+        val user = userService.loadUserByUsername(loginDto.username)
 
         val rawPassword = loginDto.password
         val encodedPassword = user.password
