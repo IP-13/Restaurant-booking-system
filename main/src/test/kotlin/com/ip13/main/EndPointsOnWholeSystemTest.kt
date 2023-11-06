@@ -1,21 +1,22 @@
 package com.ip13.main
 
 import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.security.repository.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
-import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.runner.RunWith
+import org.junit.jupiter.api.assertAll
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
-import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
@@ -23,7 +24,6 @@ import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 
-@RunWith(SpringRunner::class)
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = ["security.enabled=true"],
@@ -32,22 +32,25 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @Testcontainers
 @AutoConfigureMockMvc
 class EndPointsOnWholeSystemTest(
-    @Autowired val jdbc: NamedParameterJdbcTemplate,
+    @Autowired val jdbc: JdbcTemplate,
+    @Autowired val userRepository: UserRepository,
+    @Autowired val passwordEncoder: PasswordEncoder,
 ) {
-    @AfterEach
+    @BeforeEach
     fun cleanUp() {
-        jdbc.execute("truncate table black_list cascade") { _ -> { } }
-        jdbc.execute("truncate table booking_constraint cascade") { _ -> { } }
-        jdbc.execute("truncate table table_reserve_ticket cascade") { _ -> { } }
-        jdbc.execute("truncate table manager cascade") { _ -> { } }
-        jdbc.execute("truncate table restaurant cascade") { _ -> { } }
-        jdbc.execute("truncate table address cascade") { _ -> { } }
-        jdbc.execute("truncate table restaurant_add_ticket_result cascade") { _ -> { } }
-        // delete all admins except mega_admin
-        jdbc.execute("delete from admin where id != 100") { _ -> { } }
-        // delete all users except mega_admin
-        jdbc.execute("delete from user_t where id != 100") { _ -> { } }
-        // TODO()
+        jdbc.execute("truncate table black_list cascade")
+        jdbc.execute("truncate table booking_constraint cascade")
+        jdbc.execute("truncate table grade_after_visit_manager cascade")
+        jdbc.execute("truncate table grade_after_visit_visitor cascade")
+        jdbc.execute("truncate table table_reserve_ticket_result cascade")
+        jdbc.execute("truncate table table_reserve_ticket cascade")
+        jdbc.execute("truncate table manager cascade")
+        jdbc.execute("truncate table restaurant cascade")
+        jdbc.execute("truncate table restaurant_add_ticket_result cascade")
+        jdbc.execute("truncate table restaurant_add_ticket cascade")
+        jdbc.execute("truncate table address cascade")
+        jdbc.execute("truncate table admin cascade")
+        jdbc.execute("truncate table user_t cascade")
     }
 
     @Test
@@ -59,8 +62,7 @@ class EndPointsOnWholeSystemTest(
     fun `test successful insert and select with address table`() {
         jdbc.update(
             "insert into address(country, city, street, building, entrance, floor) " +
-                    "values('Russia', 'Saint-Petersburg', 'Lenina', 12, 1, 3)",
-            mapOf<String, Any>()
+                    "values('Russia', 'Saint-Petersburg', 'Lenina', 12, 1, 3)"
         )
 
         val address = jdbc.query("select * from address") { rs, _ ->
@@ -79,9 +81,110 @@ class EndPointsOnWholeSystemTest(
     private lateinit var mockMvc: MockMvc
 
     @Test
+    fun `should add new user to db when register successfully`() {
+        val body = loadAsString("json/default_user_register_dto.json")
+
+        mockMvc.post("/security/register") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(200)
+            content {
+                // проверка что приходит токен
+                jsonPath(
+                    "token",
+                    containsString(""),
+                )
+            }
+        }
+
+        val user = userRepository.findByUsername("ip13")!!
+
+        assertAll(
+            { assertThat(passwordEncoder.matches("who am i", user.password)).isTrue() },
+            { assertThat(user.username).isEqualTo("ip13") },
+            { assertThat(user.numOfGrades).isEqualTo(0) },
+            { assertThat(user.sumOfGrades).isEqualTo(0) },
+            { assertThat(user.roles).isEqualTo(listOf<Role>()) },
+        )
+    }
+
+    @Test
+    fun `should return 400 status code when register with username that already exists`() {
+        registerDefaultUser()
+
+        val body = loadAsString("json/default_user_register_dto.json")
+
+        mockMvc.post("/security/register") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(400)
+            content {
+                jsonPath(
+                    "message",
+                    containsString("User with username ip13 already exists"),
+                )
+            }
+        }
+
+        val numOfUsersInDb = jdbc.queryForObject("select count(*) from user_t", Int::class.java)
+
+        // новый юзер и mega_admin
+        assertThat(numOfUsersInDb!!).isEqualTo(1)
+    }
+
+    @Test
+    fun `should return token when login with valid name and password`() {
+        registerDefaultUser()
+
+        val body = loadAsString("json/default_user_register_dto.json")
+
+        mockMvc.post("/security/login") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(200)
+            // assert that response contains token
+            content {
+                jsonPath(
+                    "token",
+                    containsString(""),
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `should return 400 status code when wrong password`() {
+        registerDefaultUser()
+
+        val body = loadAsString("json/default_user_with_wrong_password.json")
+
+        val result = mockMvc.post("/security/login") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(400)
+            // assert that response contains token
+            content {
+                jsonPath(
+                    "message",
+                    containsString("passwords don't match"),
+                )
+            }
+        }
+    }
+
+    @Test
     @WithMockUser(authorities = [ADMIN])
     fun `test add role to non-existent user`() {
-        val body = "{ \"userId\": 10, \"role\": \"$MANAGER\" }"
+        val body = loadAsString("json/non_existent_user.json")
+
         mockMvc.post("/admin/add_role") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
@@ -99,10 +202,29 @@ class EndPointsOnWholeSystemTest(
         }
     }
 
+    private fun registerDefaultUser() {
+        val body = loadAsString("json/default_user_register_dto.json")
+
+        mockMvc.post("/security/register") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+        }.andExpect {
+            status().`is`(200)
+            content {
+                // проверка что приходит токен
+                jsonPath(
+                    "token",
+                    containsString(""),
+                )
+            }
+        }
+    }
+
     companion object {
         private const val POSTGRES_IMAGE = "postgres:16.0"
 
-        private const val ADMIN = "admin"
+        private const val ADMIN = "ADMIN"
         private const val MANAGER = "MANAGER"
 
         @Container

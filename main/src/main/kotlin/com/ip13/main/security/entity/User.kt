@@ -12,15 +12,16 @@ class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
+    // поля private, чтобы можно было без ошибок переопределить методы getPassword, getUsername
     private val username: String = "",
     private val password: String = "",
-    private val numOfGrades: Int = 0,
-    private val sumOfGrades: Int = 0,
+    val numOfGrades: Int = 0,
+    val sumOfGrades: Int = 0,
     @Enumerated(value = EnumType.STRING)
     val roles: List<Role> = listOf(),
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return roles.map { SimpleGrantedAuthority(it.code) }.toMutableList()
+        return roles.map { SimpleGrantedAuthority(it.name) }.toMutableList()
     }
 
     override fun getPassword(): String {
