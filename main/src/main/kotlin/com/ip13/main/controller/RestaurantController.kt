@@ -1,9 +1,12 @@
 package com.ip13.main.controller
 
+import com.ip13.main.exceptionHandling.exception.ManagerNotFoundException
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
+import com.ip13.main.model.dto.GradeManagerDto
 import com.ip13.main.model.dto.GradeVisitorDto
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
+import com.ip13.main.model.toGradeManager
 import com.ip13.main.model.toGradeVisitor
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.*
@@ -21,6 +24,8 @@ class RestaurantController(
     private val gradeVisitorService: GradeVisitorService,
     private val userService: UserService,
     private val tableReserveService: TableReserveService,
+    private val managerService: ManagerService,
+    private val gradeManagerService: GradeManagerService,
 ) {
     private val log = getLogger(javaClass)
 
@@ -74,30 +79,69 @@ class RestaurantController(
         return ResponseEntity(tickets, HttpStatus.OK)
     }
 
-    @GetMapping("add_grade_visitor")
+    @GetMapping("/add_grade_visitor")
     fun addGradeVisitor(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody
-        gradleVisitorDto: GradeVisitorDto,
+        gradeVisitorDto: GradeVisitorDto,
     ): ResponseEntity<String> {
         val user = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("user extracted from token\n{}", user.toString())
 
         // TODO() нужна ли эта проверка вообще
-        val tableReserveTicket = tableReserveService.findByIdOrNull(gradleVisitorDto.tableReserveTicketId)
+        val tableReserveTicket = tableReserveService.findByIdOrNull(gradeVisitorDto.tableReserveTicketId)
             ?: throw TableReserveTicketNotFoundException(
-                "No TableReserveTicket with id ${gradleVisitorDto.tableReserveTicketId}"
+                "No TableReserveTicket with id ${gradeVisitorDto.tableReserveTicketId}"
             )
 
+        log.debug("tableReserveTicket loaded from db\n{}", tableReserveTicket.toString())
+
         val newGrade = gradeVisitorService.gradeRestaurant(
-            gradleVisitorDto.toGradeVisitor(
+            gradeVisitorDto.toGradeVisitor(
                 user.id,
                 tableReserveTicket.restaurantId
             )
         )
 
-        return ResponseEntity("New grade is $newGrade", HttpStatus.OK)
+        return ResponseEntity(
+            "New restaurant with id ${tableReserveTicket.restaurantId} grade is $newGrade",
+            HttpStatus.OK
+        )
+    }
+
+    @GetMapping("/add_grade_manager")
+    fun addGradeManager(
+        @RequestHeader(name = "Authorization", required = true)
+        authHeader: String,
+        @RequestBody
+        gradeManagerDto: GradeManagerDto,
+    ): ResponseEntity<String> {
+        // Пользователь, который отправил запрос, дальше по его id достаем менеджера
+        val user = userService.getUserByTokenInHeader(authHeader)
+
+        log.debug("user extracted from token\n{}", user.toString())
+
+        val manager = managerService.getManagerByUserIdOrNull(user.id)
+            ?: throw ManagerNotFoundException("No manager found with userId ${user.id}")
+
+        log.debug("manager loaded from db\n{}", manager.toString())
+
+        val tableReserveTicket = tableReserveService.findByIdOrNull(gradeManagerDto.tableReserveTicketId)
+            ?: throw TableReserveTicketNotFoundException(
+                "No TableReserveTicket with id ${gradeManagerDto.tableReserveTicketId}"
+            )
+
+        log.debug("tableReserveTicket loaded from db\n{}", tableReserveTicket.toString())
+
+        val newGrade = gradeManagerService.gradeUser(
+            gradeManagerDto.toGradeManager(
+                managerId = manager.id,
+                userId = tableReserveTicket.userId // пользователь, которому ставим оценку
+            )
+        )
+
+        return ResponseEntity("New user with id ${tableReserveTicket.userId} grade is $newGrade", HttpStatus.OK)
     }
 }
