@@ -1,8 +1,12 @@
 package com.ip13.main.controller
 
+import com.ip13.main.model.dto.GradeVisitorDto
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
+import com.ip13.main.model.toGradeVisitor
+import com.ip13.main.security.service.UserService
 import com.ip13.main.service.AddressService
+import com.ip13.main.service.GradeVisitorService
 import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.service.RestaurantService
 import com.ip13.main.util.getLogger
@@ -15,9 +19,9 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/restaurant", method = [RequestMethod.POST, RequestMethod.GET])
 class RestaurantController(
-    val addressService: AddressService,
-    val restaurantAddTicketService: RestaurantAddTicketService,
-    val restaurantService: RestaurantService,
+    private val restaurantAddTicketService: RestaurantAddTicketService,
+    private val gradeVisitorService: GradeVisitorService,
+    private val userService: UserService,
 ) {
     private val log = getLogger(javaClass)
 
@@ -69,5 +73,21 @@ class RestaurantController(
         log.debug("tickets found\n{}", tickets.map { it::toString })
 
         return ResponseEntity(tickets, HttpStatus.OK)
+    }
+
+    @GetMapping("add_grade_visitor")
+    fun addGradeVisitor(
+        @RequestHeader(name = "Authorization", required = true)
+        authHeader: String,
+        @RequestBody
+        gradleVisitorDto: GradeVisitorDto,
+    ): ResponseEntity<String> {
+        val user = userService.getUserByTokenInHeader(authHeader)
+
+        log.debug("user extracted from token\n{}", user.toString())
+
+        val newGrade = gradeVisitorService.gradeRestaurant(gradleVisitorDto.toGradeVisitor(user.id))
+
+        return ResponseEntity("New grade is $newGrade", HttpStatus.OK)
     }
 }
