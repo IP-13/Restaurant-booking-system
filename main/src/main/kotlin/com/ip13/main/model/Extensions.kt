@@ -2,6 +2,7 @@ package com.ip13.main.model
 
 import com.ip13.main.model.dto.AddressDto
 import com.ip13.main.model.dto.BookingConstraintDto
+import com.ip13.main.model.dto.GradeVisitorDto
 import com.ip13.main.model.dto.TableReserveTicketDto
 import com.ip13.main.model.entity.*
 
@@ -43,5 +44,15 @@ fun BookingConstraintDto.toBookingConstraint(managerId: Int): BookingConstraint 
         reason = this.reason,
         fromDate = this.fromDate,
         tillDate = this.tillDate,
+    )
+}
+
+fun GradeVisitorDto.toGradeVisitor(userId: Int): GradeVisitor {
+    return GradeVisitor(
+        userId = userId,
+        tableReserveTicketId = this.tableReserveTicketId,
+        restaurantId = this.restaurantId,
+        grade = this.grade,
+        comment = this.comment,
     )
 }
