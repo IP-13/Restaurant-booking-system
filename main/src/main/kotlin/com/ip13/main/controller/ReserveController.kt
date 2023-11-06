@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/reserve")
-class TableReserveController(
+class ReserveController(
     private val tableReserveService: TableReserveService,
     private val userService: UserService,
     private val restaurantService: RestaurantService,
