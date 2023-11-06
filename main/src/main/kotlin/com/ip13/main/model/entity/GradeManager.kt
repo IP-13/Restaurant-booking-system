@@ -13,6 +13,7 @@ class GradeManager(
     val id: Int = 0,
     val managerId: Int = 0,
     val tableReserveTicketId: Int = 0,
+    val userId: Int = 0,
     val grade: Int = 0,
     val comment: String? = null,
 ) {
@@ -24,6 +25,7 @@ class GradeManager(
 
         if (managerId != other.managerId) return false
         if (tableReserveTicketId != other.tableReserveTicketId) return false
+        if (userId != other.userId) return false
         if (grade != other.grade) return false
         if (comment != other.comment) return false
 
@@ -33,13 +35,14 @@ class GradeManager(
     override fun hashCode(): Int {
         var result = managerId
         result = 31 * result + tableReserveTicketId
+        result = 31 * result + userId
         result = 31 * result + grade
         result = 31 * result + (comment?.hashCode() ?: 0)
         return result
     }
 
     override fun toString(): String {
-        return "GradeAfterVisitManager(id=$id, managerId=$managerId, " +
-                "tableReserveTicketResultId=$tableReserveTicketId, grade=$grade, comment=$comment)"
+        return "GradeManager(id=$id, managerId=$managerId, tableReserveTicketId=$tableReserveTicketId, " +
+                "userId=$userId, grade=$grade, comment=$comment)"
     }
 }
