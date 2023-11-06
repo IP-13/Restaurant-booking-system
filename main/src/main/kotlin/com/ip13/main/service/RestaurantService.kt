@@ -1,7 +1,6 @@
 package com.ip13.main.service
 
 import com.ip13.main.model.entity.Restaurant
-import com.ip13.main.repository.AddressRepository
 import com.ip13.main.repository.RestaurantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -18,7 +17,7 @@ class RestaurantService(
         return restaurantRepository.findByIdOrNull(id)
     }
 
-    fun updateGrade(restaurantId: Int, grade: Int): Int {
+    fun addGrade(restaurantId: Int, grade: Int): Int {
         return restaurantRepository.addGrade(restaurantId, grade)
     }
 

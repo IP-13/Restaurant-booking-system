@@ -22,7 +22,7 @@ class GradeVisitorService(
         // TODO() try-catch
         transactionTemplate.execute {
             save(gradeVisitor)
-            restaurantService.updateGrade(gradeVisitor.restaurantId, gradeVisitor.grade)
+            restaurantService.addGrade(gradeVisitor.restaurantId, gradeVisitor.grade)
         }
 
         return restaurantService.getGrade(gradeVisitor.restaurantId)
