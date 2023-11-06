@@ -21,4 +21,8 @@ class RestaurantService(
     fun updateGrade(restaurantId: Int, grade: Int): Int {
         return restaurantRepository.addGrade(restaurantId, grade)
     }
+
+    fun getGrade(restaurantId: Int): Float {
+        return restaurantRepository.getGrade(restaurantId)
+    }
 }
