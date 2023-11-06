@@ -7,8 +7,8 @@ import com.ip13.main.model.dto.RestaurantAddTicketResultDto
 import com.ip13.main.model.entity.Manager
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.entity.RestaurantAddTicketResult
-import com.ip13.main.model.entity.enums.RestaurantAddStatus
-import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.model.enums.RestaurantAddStatus
+import com.ip13.main.model.enums.Role
 import com.ip13.main.model.toAddress
 import com.ip13.main.model.toRestaurant
 import com.ip13.main.repository.RestaurantAddTicketRepository

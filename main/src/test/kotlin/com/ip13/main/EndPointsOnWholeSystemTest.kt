@@ -1,6 +1,6 @@
 package com.ip13.main
 
-import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.model.enums.Role
 import com.ip13.main.security.repository.UserRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
@@ -42,7 +42,6 @@ class EndPointsOnWholeSystemTest(
         jdbc.execute("truncate table booking_constraint cascade")
         jdbc.execute("truncate table grade_after_visit_manager cascade")
         jdbc.execute("truncate table grade_after_visit_visitor cascade")
-        jdbc.execute("truncate table table_reserve_ticket_result cascade")
         jdbc.execute("truncate table table_reserve_ticket cascade")
         jdbc.execute("truncate table manager cascade")
         jdbc.execute("truncate table restaurant cascade")

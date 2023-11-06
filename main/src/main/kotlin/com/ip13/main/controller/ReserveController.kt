@@ -29,7 +29,7 @@ class ReserveController(
 ) {
     private val log = getLogger(javaClass)
 
-    @PostMapping("reserve_table")
+    @PostMapping("/reserve_table")
     fun reserveTable(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
@@ -134,5 +134,12 @@ class ReserveController(
         log.debug("tickets found\n{}", reservations.map { it::toString })
 
         return ResponseEntity(reservations, HttpStatus.OK)
+    }
+
+    @PostMapping("/accept_reservation")
+    fun acceptReservation(
+
+    ): ResponseEntity<*> {
+
     }
 }
