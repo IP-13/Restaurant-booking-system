@@ -17,4 +17,8 @@ class RestaurantService(
     fun findByIdOrNull(id: Int): Restaurant? {
         return restaurantRepository.findByIdOrNull(id)
     }
+
+    fun updateGrade(restaurantId: Int, grade: Int): Int {
+        return restaurantRepository.addGrade(restaurantId, grade)
+    }
 }
