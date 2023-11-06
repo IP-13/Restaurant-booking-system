@@ -75,7 +75,7 @@ create table if not exists table_reserve_ticket (
     status reserve_table_status
 );
 
-create table if not exists grade_after_visit_visitor (
+create table if not exists grade_visitor (
     id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
     table_reserve_ticket_id int references table_reserve_ticket(id),
@@ -84,7 +84,7 @@ create table if not exists grade_after_visit_visitor (
     comment text
 );
 
-create table if not exists grade_after_visit_manager (
+create table if not exists grade_manager (
     id int generated always as identity(start with 100 increment by 100) primary key,
     manager_id int references manager(id),
     table_reserve_ticket_id int references table_reserve_ticket(id),

@@ -5,13 +5,12 @@ import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 
-
 @Entity
-class GradeAfterVisitManager(
+class GradeVisitor(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
-    val managerId: Int = 0,
+    val userId: Int = 0,
     val tableReserveTicketId: Int = 0,
     val grade: Int = 0,
     val comment: String? = null,
@@ -20,9 +19,9 @@ class GradeAfterVisitManager(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as GradeAfterVisitManager
+        other as GradeVisitor
 
-        if (managerId != other.managerId) return false
+        if (userId != other.userId) return false
         if (tableReserveTicketId != other.tableReserveTicketId) return false
         if (grade != other.grade) return false
         if (comment != other.comment) return false
@@ -31,7 +30,7 @@ class GradeAfterVisitManager(
     }
 
     override fun hashCode(): Int {
-        var result = managerId
+        var result = userId
         result = 31 * result + tableReserveTicketId
         result = 31 * result + grade
         result = 31 * result + (comment?.hashCode() ?: 0)
@@ -39,7 +38,7 @@ class GradeAfterVisitManager(
     }
 
     override fun toString(): String {
-        return "GradeAfterVisitManager(id=$id, managerId=$managerId, " +
+        return "GradeAfterVisitVisitor(id=$id, userId=$userId, " +
                 "tableReserveTicketResultId=$tableReserveTicketId, grade=$grade, comment=$comment)"
     }
 }
