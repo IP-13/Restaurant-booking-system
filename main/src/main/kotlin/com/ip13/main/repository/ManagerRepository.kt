@@ -30,5 +30,5 @@ interface ManagerRepository : CrudRepository<Manager, Int> {
     fun getManagerByUserId(
         @Param("user_id")
         userId: Int,
-    ): Manager
+    ): Manager?
 }

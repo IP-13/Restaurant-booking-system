@@ -1,5 +1,6 @@
 package com.ip13.main.controller
 
+import com.ip13.main.exceptionHandling.exception.ManagerNotFoundException
 import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
 import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.dto.TableReserveTicketDto
@@ -77,7 +78,8 @@ class ReserveController(
 
         log.debug("user extracted from token\n{}", user.toString())
 
-        val manager = managerService.getManagerByUserId(user.id)
+        val manager = managerService.getManagerByUserIdOrNull(user.id)
+            ?: throw ManagerNotFoundException("No manager found with userId ${user.id}")
 
         log.debug("manager loaded from db\n{}", manager.toString())
 
@@ -113,9 +115,17 @@ class ReserveController(
 
         log.debug("user extracted from token\n{}", user.toString())
 
-        val manager = managerService.getManagerByUserId(user.id)
+        val manager = managerService.getManagerByUserIdOrNull(user.id)
+            ?: throw ManagerNotFoundException("No manager found with userId ${user.id}")
 
         log.debug("manager loaded from db\n{}", manager.toString())
+
+        if (!managerService.checkIfActive(managerId = manager.id)) {
+            throw ManagerNotFoundException(
+                "You don't work here anymore stupid piece of shit. " +
+                        "If you try this one more time, I'll find you by your ip and you'll regret that you were born"
+            )
+        }
 
         val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
 
