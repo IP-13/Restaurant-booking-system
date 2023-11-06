@@ -69,11 +69,7 @@ create table if not exists table_reserve_ticket (
     -- дата и время до которого пользователь планирует находиться в ресторане
     till_date timestamp not null,
     num_of_guests int not null,
-    user_comment text
-);
-
-create table if not exists table_reserve_ticket_result (
-    id int generated always as identity(start with 100 increment by 100) primary key,
+    user_comment text,
     manager_id int references manager(id),
     manager_comment text,
     status reserve_table_status
@@ -82,7 +78,7 @@ create table if not exists table_reserve_ticket_result (
 create table if not exists grade_after_visit_visitor (
     id int generated always as identity(start with 100 increment by 100) primary key,
     user_id int references user_t(id),
-    table_reserve_ticket_result_id int references table_reserve_ticket_result(id),
+    table_reserve_ticket_id int references table_reserve_ticket(id),
     -- оценка, которую пользователь поставил ресторану после визита
     grade int not null,
     comment text
@@ -91,7 +87,7 @@ create table if not exists grade_after_visit_visitor (
 create table if not exists grade_after_visit_manager (
     id int generated always as identity(start with 100 increment by 100) primary key,
     manager_id int references manager(id),
-    table_reserve_ticket_result_id int references table_reserve_ticket_result(id),
+    table_reserve_ticket_id int references table_reserve_ticket(id),
     -- оценка, которую менеджер поставил пользователю после визита
     grade int not null,
     comment text
