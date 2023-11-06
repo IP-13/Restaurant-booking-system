@@ -85,12 +85,18 @@ class RestaurantController(
 
         log.debug("user extracted from token\n{}", user.toString())
 
+        // TODO() нужна ли эта проверка вообще
         val tableReserveTicket = tableReserveService.findByIdOrNull(gradleVisitorDto.tableReserveTicketId)
             ?: throw TableReserveTicketNotFoundException(
                 "No TableReserveTicket with id ${gradleVisitorDto.tableReserveTicketId}"
             )
 
-        val newGrade = gradeVisitorService.gradeRestaurant(gradleVisitorDto.toGradeVisitor(user.id))
+        val newGrade = gradeVisitorService.gradeRestaurant(
+            gradleVisitorDto.toGradeVisitor(
+                user.id,
+                tableReserveTicket.restaurantId
+            )
+        )
 
         return ResponseEntity("New grade is $newGrade", HttpStatus.OK)
     }

@@ -47,11 +47,11 @@ fun BookingConstraintDto.toBookingConstraint(managerId: Int): BookingConstraint 
     )
 }
 
-fun GradeVisitorDto.toGradeVisitor(userId: Int): GradeVisitor {
+fun GradeVisitorDto.toGradeVisitor(userId: Int, restaurantId: Int): GradeVisitor {
     return GradeVisitor(
         userId = userId,
         tableReserveTicketId = this.tableReserveTicketId,
-        restaurantId = this.restaurantId,
+        restaurantId = restaurantId,
         grade = this.grade,
         comment = this.comment,
     )
