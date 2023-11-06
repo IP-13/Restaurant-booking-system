@@ -23,7 +23,7 @@ class RestaurantController(
 
     @PostMapping("/create_ticket")
     fun createTicketToAddRestaurant(
-        @RequestHeader(name = "Authorization")
+        @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
         restaurantAddTicketDto: RestaurantAddTicketDto,
@@ -41,9 +41,9 @@ class RestaurantController(
 
     @PostMapping("/process_ticket")
     fun processTicketToAddRestaurant(
-        @RequestHeader(name = "Authorization")
+        @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
-        @RequestBody
+        @RequestBody(required = true)
         dto: RestaurantAddTicketResultDto,
     ): ResponseEntity<*> {
         val restaurantId = restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
@@ -57,16 +57,16 @@ class RestaurantController(
 
     @GetMapping("/show_tickets")
     fun showTickets(
-        @RequestHeader(name = "page_number")
+        @RequestHeader(name = "page_number", required = true)
         pageNumber: Int,
-        @RequestHeader(name = "page_size")
+        @RequestHeader(name = "page_size", required = true)
         pageSize: Int,
     ): ResponseEntity<*> {
         val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
 
         val tickets = restaurantAddTicketService.getTickets(pageRequest)
 
-        log.debug("tickets found\n{}", tickets.toString())
+        log.debug("tickets found\n{}", tickets.map { it::toString })
 
         return ResponseEntity(tickets, HttpStatus.OK)
     }
