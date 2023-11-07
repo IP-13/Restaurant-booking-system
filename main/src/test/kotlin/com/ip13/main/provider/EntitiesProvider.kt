@@ -1,8 +1,8 @@
 package com.ip13.main.provider
 
 import com.ip13.main.model.entity.*
-import com.ip13.main.model.entity.enums.RestaurantAddStatus
-import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.model.enums.RestaurantAddStatus
+import com.ip13.main.model.enums.Role
 import com.ip13.main.security.entity.User
 import java.time.LocalDateTime
 import java.time.Month

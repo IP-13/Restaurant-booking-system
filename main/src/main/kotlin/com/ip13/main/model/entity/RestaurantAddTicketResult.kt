@@ -1,6 +1,6 @@
 package com.ip13.main.model.entity
 
-import com.ip13.main.model.entity.enums.RestaurantAddStatus
+import com.ip13.main.model.enums.RestaurantAddStatus
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

@@ -45,4 +45,37 @@ interface UserRepository : CrudRepository<User, Int> {
         @Param(value = "user_id")
         userId: Int,
     ): LocalDateTime?
+
+    @Transactional
+    @Modifying
+    @Query(
+        "update user_t set num_of_grades = num_of_grades + 1, sum_of_grades = sum_of_grades + :grade " +
+                "where id = :user_id",
+        nativeQuery = true
+    )
+    fun addGrade(
+        @Param("user_id")
+        userId: Int,
+        @Param("grade")
+        grade: Int
+    ): Int
+
+    @Query(
+        "select sum_of_grades from user_t where id = :user_id",
+        nativeQuery = true
+    )
+    fun getSumOfGrades(
+        @Param("user_id")
+        userId: Int,
+    ): Int
+
+    @Query(
+        "select num_of_grades from user_t where id = :user_id",
+        nativeQuery = true
+    )
+    fun getNumOfGrades(
+        @Param("user_id")
+        userId: Int,
+    ): Int
+
 }

@@ -1,6 +1,6 @@
 package com.ip13.main.security.entity
 
-import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.model.enums.Role
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority

@@ -7,8 +7,8 @@ import com.ip13.main.model.dto.RestaurantAddTicketResultDto
 import com.ip13.main.model.entity.Manager
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.entity.RestaurantAddTicketResult
-import com.ip13.main.model.entity.enums.RestaurantAddStatus
-import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.model.enums.RestaurantAddStatus
+import com.ip13.main.model.enums.Role
 import com.ip13.main.model.toAddress
 import com.ip13.main.model.toRestaurant
 import com.ip13.main.repository.RestaurantAddTicketRepository
@@ -55,8 +55,12 @@ class RestaurantAddTicketService(
 
         val user = userService.getUserByTokenInHeader(authHeader)
 
+        log.debug("User found\n{}", user.toString())
+
         val admin = adminService.getActiveByUserIdOrNull(user.id)
             ?: throw AdminNotFoundException("No active admin found with user_id ${user.id}")
+
+        log.debug("Admin found\n{}", admin.toString())
 
         val restaurantAddTicketResult = RestaurantAddTicketResult(
             restaurantAddTicketId = dto.restaurantAddTicketId,
@@ -76,13 +80,14 @@ class RestaurantAddTicketService(
                 val newRestaurantId = restaurantService.save(restaurant)
                 managerService.save(
                     Manager(
-                        userId = user.id,
+                        // id пользователя, который создал заявку на добавление ресторана
+                        userId = restaurantAddTicket.userId,
                         restaurantId = newRestaurantId,
                         isActive = true,
                     )
                 )
-                // return restaurant id
                 log.debug("New restaurant id {}", newRestaurantId)
+                // return restaurant id
                 newRestaurantId
             }
         } else {
@@ -101,8 +106,12 @@ class RestaurantAddTicketService(
     ): Int? {
         val user = userService.getUserByTokenInHeader(authHeader)
 
+        log.debug("User found\n{}", user.toString())
+
         val address = restaurantAddTicketDto.addressDto.toAddress()
 
+        log.debug("Address found\n{}", address.toString())
+        
         val restaurantAddTicketId = transactionTemplate.execute {
             val addressId = addressService.save(address)
 

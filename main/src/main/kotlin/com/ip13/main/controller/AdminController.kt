@@ -1,7 +1,7 @@
 package com.ip13.main.controller
 
 import com.ip13.main.model.dto.RoleAddDto
-import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.model.enums.Role
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatus

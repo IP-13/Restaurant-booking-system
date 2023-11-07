@@ -1,6 +1,6 @@
 package com.ip13.main.security.configuration
 
-import com.ip13.main.model.entity.enums.Role
+import com.ip13.main.model.enums.Role
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty

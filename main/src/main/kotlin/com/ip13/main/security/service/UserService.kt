@@ -38,6 +38,18 @@ class UserService : UserDetailsService {
         return userRepository.addRole(userId, newRole) == 1
     }
 
+    fun addGrade(userId: Int, grade: Int): Int {
+        return userRepository.addGrade(userId, grade)
+    }
+
+    fun getSumOfGrades(userId: Int): Int {
+        return userRepository.getSumOfGrades(userId)
+    }
+
+    fun getNumOfGrades(userId: Int): Int {
+        return userRepository.getNumOfGrades(userId)
+    }
+
     /**
      * If user with id=userId doesn't exist in db throw exception, and controllerAdvice will return error 404
      * Doesn't return value. TODO(Use as a checker)

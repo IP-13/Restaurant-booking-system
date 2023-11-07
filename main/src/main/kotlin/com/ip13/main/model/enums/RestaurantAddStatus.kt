@@ -1,4 +1,4 @@
-package com.ip13.main.model.entity.enums
+package com.ip13.main.model.enums
 
 enum class RestaurantAddStatus {
     PROCESSING,

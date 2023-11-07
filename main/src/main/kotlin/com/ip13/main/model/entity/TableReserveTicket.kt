@@ -1,9 +1,7 @@
 package com.ip13.main.model.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import com.ip13.main.model.enums.TableReserveStatus
+import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @Entity
@@ -18,6 +16,10 @@ class TableReserveTicket(
     val tillDate: LocalDateTime = LocalDateTime.now(),
     val numOfGuests: Int = 0,
     val userComment: String? = null,
+    val managerId: Int? = null,
+    val managerComment: String? = null,
+    @Enumerated(EnumType.STRING)
+    val status: TableReserveStatus = TableReserveStatus.PROCESSING,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -32,6 +34,9 @@ class TableReserveTicket(
         if (tillDate != other.tillDate) return false
         if (numOfGuests != other.numOfGuests) return false
         if (userComment != other.userComment) return false
+        if (managerId != other.managerId) return false
+        if (managerComment != other.managerComment) return false
+        if (status != other.status) return false
 
         return true
     }
@@ -44,11 +49,15 @@ class TableReserveTicket(
         result = 31 * result + tillDate.hashCode()
         result = 31 * result + numOfGuests
         result = 31 * result + (userComment?.hashCode() ?: 0)
+        result = 31 * result + (managerId ?: 0)
+        result = 31 * result + (managerComment?.hashCode() ?: 0)
+        result = 31 * result + status.hashCode()
         return result
     }
 
     override fun toString(): String {
         return "TableReserveTicket(id=$id, restaurantId=$restaurantId, userId=$userId, creationDate=$creationDate, " +
-                "fromDate=$fromDate, tillDate=$tillDate, numOfGuests=$numOfGuests, userComment=$userComment)"
+                "fromDate=$fromDate, tillDate=$tillDate, numOfGuests=$numOfGuests, userComment=$userComment, " +
+                "managerId=$managerId, managerComment=$managerComment, status=$status)"
     }
 }
