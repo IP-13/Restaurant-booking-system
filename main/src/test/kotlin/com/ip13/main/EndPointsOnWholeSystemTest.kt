@@ -40,8 +40,8 @@ class EndPointsOnWholeSystemTest(
     fun cleanUp() {
         jdbc.execute("truncate table black_list cascade")
         jdbc.execute("truncate table booking_constraint cascade")
-        jdbc.execute("truncate table grade_after_visit_manager cascade")
-        jdbc.execute("truncate table grade_after_visit_visitor cascade")
+        jdbc.execute("truncate table grade_manager cascade")
+        jdbc.execute("truncate table grade_visitor cascade")
         jdbc.execute("truncate table table_reserve_ticket cascade")
         jdbc.execute("truncate table manager cascade")
         jdbc.execute("truncate table restaurant cascade")
@@ -163,7 +163,7 @@ class EndPointsOnWholeSystemTest(
 
         val body = loadAsString("json/default_user_with_wrong_password.json")
 
-        val result = mockMvc.post("/security/login") {
+        mockMvc.post("/security/login") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = body
