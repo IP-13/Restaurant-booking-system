@@ -1,5 +1,6 @@
 package com.ip13.main.security.entity
 
+import com.ip13.main.model.entity.*
 import com.ip13.main.model.enums.Role
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
@@ -19,6 +20,27 @@ class User(
     val sumOfGrades: Int = 0,
     @Enumerated(value = EnumType.STRING)
     val roles: List<Role> = listOf(),
+    // Сушности, которые ссылаются на user_t
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    val restaurantAddTicketsAsUser: List<RestaurantAddTicket> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
+    val restaurantAddTicketsAsAdmin: List<RestaurantAddTicket> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
+    val restaurants: List<Restaurant> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    val tableReserveTicketsAsUser: List<TableReserveTicket> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
+    val tableReserveTicketsAsManager: List<TableReserveTicket> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    val gradesToRestaurants: List<GradeVisitor> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    val gradesFromManagers: List<GradeManager> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
+    val gradesAsManager: List<GradeManager> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
+    val createdBookingConstraints: List<BookingConstraint> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    val entriesInBlackList: List<BlackList> = listOf(),
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return roles.map { SimpleGrantedAuthority(it.name) }.toMutableList()
