@@ -28,6 +28,8 @@ class RestaurantAddTicket(
     val admin: User? = null,
     val processingDate: LocalDateTime? = null,
     val adminComment: String? = null,
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "restaurantAddTicket")
+    val restaurant: Restaurant? = null,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
