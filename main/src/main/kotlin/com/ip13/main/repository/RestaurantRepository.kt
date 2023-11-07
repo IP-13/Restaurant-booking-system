@@ -14,7 +14,7 @@ interface RestaurantRepository : CrudRepository<Restaurant, Int> {
     @Modifying
     @Query(
         "update restaurant set num_of_grades = num_of_grades + 1, sum_of_grades = sum_of_grades + :grade " +
-                "where restaurant_id = :restaurant_id",
+                "where id = :restaurant_id",
         nativeQuery = true
     )
     fun addGrade(
@@ -25,7 +25,7 @@ interface RestaurantRepository : CrudRepository<Restaurant, Int> {
     ): Int
 
     @Query(
-        "select cast(sum_of_grades as float)/num_of_grades from restaurant where restaurant_id = :restaurant_id",
+        "select cast(sum_of_grades as float)/num_of_grades from restaurant where id = :restaurant_id",
         nativeQuery = true
     )
     fun getGrade(

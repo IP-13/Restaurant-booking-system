@@ -50,7 +50,7 @@ interface UserRepository : CrudRepository<User, Int> {
     @Modifying
     @Query(
         "update user_t set num_of_grades = num_of_grades + 1, sum_of_grades = sum_of_grades + :grade " +
-                "where user_id = :user_id",
+                "where id = :user_id",
         nativeQuery = true
     )
     fun addGrade(
@@ -61,7 +61,7 @@ interface UserRepository : CrudRepository<User, Int> {
     ): Int
 
     @Query(
-        "select cast(sum_of_grades as float)/num_of_grades from user_t where user = :user_id",
+        "select cast(sum_of_grades as float)/num_of_grades from user_t where id = :user_id",
         nativeQuery = true
     )
     fun getGrade(
