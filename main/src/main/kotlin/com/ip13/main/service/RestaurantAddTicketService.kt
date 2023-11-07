@@ -4,7 +4,6 @@ import com.ip13.main.exceptionHandling.exception.AdminNotFoundException
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
-import com.ip13.main.model.entity.Manager
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.entity.RestaurantAddTicketResult
 import com.ip13.main.model.enums.RestaurantAddStatus
@@ -111,7 +110,7 @@ class RestaurantAddTicketService(
         val address = restaurantAddTicketDto.addressDto.toAddress()
 
         log.debug("Address found\n{}", address.toString())
-        
+
         val restaurantAddTicketId = transactionTemplate.execute {
             val addressId = addressService.save(address)
 
