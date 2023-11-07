@@ -5,7 +5,6 @@ import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundExce
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto
 import com.ip13.main.model.entity.RestaurantAddTicket
-import com.ip13.main.model.entity.RestaurantAddTicketResult
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.enums.Role
 import com.ip13.main.model.toAddress

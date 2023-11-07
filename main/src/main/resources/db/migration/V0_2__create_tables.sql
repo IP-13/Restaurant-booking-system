@@ -19,7 +19,7 @@ create table if not exists restaurant_add_ticket (
     description text,
     user_id int references user_t(id),
     creation_date timestamp not null,
-    result restaurant_add_status,
+    status restaurant_add_status,
     admin_id int references user_t(id),
     processing_date timestamp,
     admin_comment text

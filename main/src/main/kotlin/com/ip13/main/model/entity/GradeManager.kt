@@ -1,9 +1,7 @@
 package com.ip13.main.model.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
+import com.ip13.main.security.entity.User
+import jakarta.persistence.*
 
 
 @Entity
@@ -11,10 +9,16 @@ class GradeManager(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
-    val managerId: Int = 0,
-    val tableReserveTicketId: Int = 0,
-    // Пользователь, которому ставит оценку менеджер
-    val userId: Int = 0,
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    val manager: User = User(),
+    @ManyToOne
+    @JoinColumn(name = "table_reserve_ticket_id")
+    val tableReserveTicket: TableReserveTicket = TableReserveTicket(),
+    // Пользователь, которому менеджер ставит оценку
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    val user: User = User(),
     val grade: Int = 0,
     val comment: String? = null,
 ) {
@@ -24,9 +28,9 @@ class GradeManager(
 
         other as GradeManager
 
-        if (managerId != other.managerId) return false
-        if (tableReserveTicketId != other.tableReserveTicketId) return false
-        if (userId != other.userId) return false
+        if (manager != other.manager) return false
+        if (tableReserveTicket != other.tableReserveTicket) return false
+        if (user != other.user) return false
         if (grade != other.grade) return false
         if (comment != other.comment) return false
 
@@ -34,16 +38,16 @@ class GradeManager(
     }
 
     override fun hashCode(): Int {
-        var result = managerId
-        result = 31 * result + tableReserveTicketId
-        result = 31 * result + userId
+        var result = manager.hashCode()
+        result = 31 * result + tableReserveTicket.hashCode()
+        result = 31 * result + user.hashCode()
         result = 31 * result + grade
         result = 31 * result + (comment?.hashCode() ?: 0)
         return result
     }
 
     override fun toString(): String {
-        return "GradeManager(id=$id, managerId=$managerId, tableReserveTicketId=$tableReserveTicketId, " +
-                "userId=$userId, grade=$grade, comment=$comment)"
+        return "GradeManager(id=$id, manager=$manager, tableReserveTicket=$tableReserveTicket, user=$user, " +
+                "grade=$grade, comment=$comment)"
     }
 }

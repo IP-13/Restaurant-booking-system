@@ -1,6 +1,5 @@
 package com.ip13.main.service
 
-import com.ip13.main.model.entity.RestaurantAddTicketResult
 import com.ip13.main.repository.RestaurantAddTicketResultRepository
 import org.springframework.stereotype.Service
 
