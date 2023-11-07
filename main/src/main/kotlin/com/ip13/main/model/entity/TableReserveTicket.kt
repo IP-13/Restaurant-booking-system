@@ -27,6 +27,10 @@ class TableReserveTicket(
     val managerComment: String? = null,
     @Enumerated(EnumType.STRING)
     val status: TableReserveStatus = TableReserveStatus.PROCESSING,
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "tableReserveTicket")
+    val gradeVisitor: GradeVisitor? = null,
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "tableReserveTicket")
+    val gradeManager: GradeManager? = null,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
