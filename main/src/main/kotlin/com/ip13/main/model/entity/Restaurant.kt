@@ -1,12 +1,7 @@
 package com.ip13.main.model.entity
 
 import com.ip13.main.security.entity.User
-import jakarta.persistence.Entity
-import jakarta.persistence.GeneratedValue
-import jakarta.persistence.GenerationType
-import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.OneToOne
+import jakarta.persistence.*
 
 @Entity
 class Restaurant(
@@ -16,7 +11,7 @@ class Restaurant(
     @OneToOne
     @JoinColumn(name = "restaurant_add_ticket_id")
     val restaurantAddTicket: RestaurantAddTicket = RestaurantAddTicket(),
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "manager_id")
     val manager: User = User(),
     val name: String = "",
