@@ -24,6 +24,12 @@ class Restaurant(
     val description: String? = null,
     val numOfGrades: Int = 0,
     val sumOfGrades: Int = 0,
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    val tableReserveTickets: List<TableReserveTicket> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    val gradesFromVisitors: List<GradeVisitor> = listOf(),
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    val bookingConstraints: List<BookingConstraint> = listOf(),
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
