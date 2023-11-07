@@ -61,11 +61,21 @@ interface UserRepository : CrudRepository<User, Int> {
     ): Int
 
     @Query(
-        "select cast(sum_of_grades as float)/num_of_grades from user_t where id = :user_id",
+        "select sum_of_grades from user_t where id = :user_id",
         nativeQuery = true
     )
-    fun getGrade(
+    fun getSumOfGrades(
         @Param("user_id")
         userId: Int,
-    ): Float
+    ): Int
+
+    @Query(
+        "select num_of_grades from user_t where id = :user_id",
+        nativeQuery = true
+    )
+    fun getNumOfGrades(
+        @Param("user_id")
+        userId: Int,
+    ): Int
+
 }

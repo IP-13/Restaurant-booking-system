@@ -42,8 +42,12 @@ class UserService : UserDetailsService {
         return userRepository.addGrade(userId, grade)
     }
 
-    fun getGrade(userId: Int): Float {
-        return userRepository.getGrade(userId)
+    fun getSumOfGrades(userId: Int): Int {
+        return userRepository.getSumOfGrades(userId)
+    }
+
+    fun getNumOfGrades(userId: Int): Int {
+        return userRepository.getNumOfGrades(userId)
     }
 
     /**
