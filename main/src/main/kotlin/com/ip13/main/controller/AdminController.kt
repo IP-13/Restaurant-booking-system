@@ -1,11 +1,10 @@
 package com.ip13.main.controller
 
 import com.ip13.main.model.dto.RoleAddDto
-import com.ip13.main.model.enums.Role
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 
@@ -20,52 +19,20 @@ class AdminController(
     fun addRole(
         @RequestBody(required = true)
         roleAddDto: RoleAddDto,
-    ): ResponseEntity<*> {
-        // TODO() refactoring with JPA
-
+    ): ResponseEntity<String> {
         logger.debug("/admin/add_role endpoint invoked")
 
-//        // TODO() параметр принимается строкой, преобразуется в enum, проверяется, преобразуется обратно в строку
-//        val role = try {
-//            Role.valueOf(roleAddDto.role)
-//        } catch (ex: IllegalArgumentException) {
-//            logger.debug("Role \"${roleAddDto.role}\" not found")
-//            return ResponseEntity("No such role \"${roleAddDto.role}\"", HttpStatus.BAD_REQUEST)
-//        }
-//
-//        userService.checkUser(roleAddDto.userId)
-//
-//        // TODO() сначала чекаем юзера, потом роли этого юзера. Первая проверка юзера выглядит необязательной,
-//        // но без нее не получается отдать пользователю правильный ответ
-//        val isAlreadyHasRole = userService.checkRole(roleAddDto.userId, role.name)
-//
-//        return if (isAlreadyHasRole) {
-//            ResponseEntity(
-//                "User with id: ${roleAddDto.userId} already has role: ${role.name}",
-//                HttpStatus.OK
-//            )
-//        } else {
-//            val isRoleAdded = userService.addRole(roleAddDto.userId, role.name)
-//            if (isRoleAdded) {
-//                ResponseEntity(
-//                    "Role: ${role.name} successfully added to user with id: ${roleAddDto.userId}",
-//                    HttpStatus.OK
-//                )
-//            } else {
-//                ResponseEntity(
-//                    "Something went wrong and role: ${role.name} had not been added to user with id:" +
-//                            " ${roleAddDto.userId}",
-//                    HttpStatus.BAD_REQUEST
-//                )
-//            }
-//        }
+        val isAdded = userService.addRole(roleAddDto)
 
-        return ResponseEntity("", HttpStatus.OK)
+        return if (isAdded) {
+            ResponseEntity.ok("Role ${roleAddDto.role} successfully added to user ${roleAddDto.userId}")
+        } else {
+            ResponseEntity.ok("User ${roleAddDto.userId} already has role ${roleAddDto.role}")
+        }
     }
 
     @GetMapping("/get_authentication")
-    fun getRoles(): ResponseEntity<*> {
-        return ResponseEntity(SecurityContextHolder.getContext().authentication, HttpStatus.OK)
+    fun getAuthentication(): ResponseEntity<Authentication> {
+        return ResponseEntity.ok(SecurityContextHolder.getContext().authentication)
     }
-
 }
