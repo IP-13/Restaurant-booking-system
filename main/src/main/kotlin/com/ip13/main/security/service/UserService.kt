@@ -3,7 +3,6 @@ package com.ip13.main.security.service
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
 import com.ip13.main.security.entity.User
 import com.ip13.main.security.repository.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -11,13 +10,10 @@ import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
 @Service
-class UserService : UserDetailsService {
-    @Autowired
-    private lateinit var userRepository: UserRepository
-
-    @Autowired
-    private lateinit var tokenService: TokenService
-
+class UserService(
+    private val userRepository: UserRepository,
+    private val tokenService: TokenService,
+) : UserDetailsService {
     override fun loadUserByUsername(username: String): User {
         return userRepository.findByUsername(username) ?: throw UsernameNotFoundException("No user with that name")
     }
