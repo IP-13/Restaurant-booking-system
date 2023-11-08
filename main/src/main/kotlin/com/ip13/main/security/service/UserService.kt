@@ -6,7 +6,6 @@ import com.ip13.main.security.entity.User
 import com.ip13.main.security.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,7 +14,7 @@ class UserService(
     private val tokenService: TokenService,
 ) : UserDetailsService {
     override fun loadUserByUsername(username: String): User {
-        return userRepository.findByUsername(username) ?: throw UsernameNotFoundException("No user with that name")
+        return userRepository.findByUsername(username) ?: throw UserNotFoundException("No user with name \'$username\'")
     }
 
     fun save(user: User): User {
