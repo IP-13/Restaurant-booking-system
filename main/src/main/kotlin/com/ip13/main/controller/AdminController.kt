@@ -25,40 +25,42 @@ class AdminController(
 
         logger.debug("/admin/add_role endpoint invoked")
 
-        // TODO() параметр принимается строкой, преобразуется в enum, проверяется, преобразуется обратно в строку
-        val role = try {
-            Role.valueOf(roleAddDto.role)
-        } catch (ex: IllegalArgumentException) {
-            logger.debug("Role \"${roleAddDto.role}\" not found")
-            return ResponseEntity("No such role \"${roleAddDto.role}\"", HttpStatus.BAD_REQUEST)
-        }
+//        // TODO() параметр принимается строкой, преобразуется в enum, проверяется, преобразуется обратно в строку
+//        val role = try {
+//            Role.valueOf(roleAddDto.role)
+//        } catch (ex: IllegalArgumentException) {
+//            logger.debug("Role \"${roleAddDto.role}\" not found")
+//            return ResponseEntity("No such role \"${roleAddDto.role}\"", HttpStatus.BAD_REQUEST)
+//        }
+//
+//        userService.checkUser(roleAddDto.userId)
+//
+//        // TODO() сначала чекаем юзера, потом роли этого юзера. Первая проверка юзера выглядит необязательной,
+//        // но без нее не получается отдать пользователю правильный ответ
+//        val isAlreadyHasRole = userService.checkRole(roleAddDto.userId, role.name)
+//
+//        return if (isAlreadyHasRole) {
+//            ResponseEntity(
+//                "User with id: ${roleAddDto.userId} already has role: ${role.name}",
+//                HttpStatus.OK
+//            )
+//        } else {
+//            val isRoleAdded = userService.addRole(roleAddDto.userId, role.name)
+//            if (isRoleAdded) {
+//                ResponseEntity(
+//                    "Role: ${role.name} successfully added to user with id: ${roleAddDto.userId}",
+//                    HttpStatus.OK
+//                )
+//            } else {
+//                ResponseEntity(
+//                    "Something went wrong and role: ${role.name} had not been added to user with id:" +
+//                            " ${roleAddDto.userId}",
+//                    HttpStatus.BAD_REQUEST
+//                )
+//            }
+//        }
 
-        userService.checkUser(roleAddDto.userId)
-
-        // TODO() сначала чекаем юзера, потом роли этого юзера. Первая проверка юзера выглядит необязательной,
-        // но без нее не получается отдать пользователю правильный ответ
-        val isAlreadyHasRole = userService.checkRole(roleAddDto.userId, role.name)
-
-        return if (isAlreadyHasRole) {
-            ResponseEntity(
-                "User with id: ${roleAddDto.userId} already has role: ${role.name}",
-                HttpStatus.OK
-            )
-        } else {
-            val isRoleAdded = userService.addRole(roleAddDto.userId, role.name)
-            if (isRoleAdded) {
-                ResponseEntity(
-                    "Role: ${role.name} successfully added to user with id: ${roleAddDto.userId}",
-                    HttpStatus.OK
-                )
-            } else {
-                ResponseEntity(
-                    "Something went wrong and role: ${role.name} had not been added to user with id:" +
-                            " ${roleAddDto.userId}",
-                    HttpStatus.BAD_REQUEST
-                )
-            }
-        }
+        return ResponseEntity("", HttpStatus.OK)
     }
 
     @GetMapping("/get_authentication")
