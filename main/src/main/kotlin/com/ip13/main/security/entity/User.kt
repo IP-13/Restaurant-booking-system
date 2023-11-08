@@ -19,28 +19,28 @@ class User(
     val numOfGrades: Int = 0,
     val sumOfGrades: Int = 0,
     @Enumerated(value = EnumType.STRING)
-    val roles: List<Role> = listOf(),
+    val roles: MutableList<Role> = mutableListOf(),
     // Сушности, которые ссылаются на user_t
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val restaurantAddTicketsAsUser: List<RestaurantAddTicket> = listOf(),
+    val restaurantAddTicketsAsUser: MutableList<RestaurantAddTicket> = mutableListOf(),
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
-    val restaurantAddTicketsAsAdmin: List<RestaurantAddTicket> = listOf(),
+    val restaurantAddTicketsAsAdmin: MutableList<RestaurantAddTicket> = mutableListOf(),
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    val restaurants: List<Restaurant> = listOf(),
+    val restaurants: MutableList<Restaurant> = mutableListOf(),
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val tableReserveTicketsAsUser: List<TableReserveTicket> = listOf(),
+    val tableReserveTicketsAsUser: MutableList<TableReserveTicket> = mutableListOf(),
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    val tableReserveTicketsAsManager: List<TableReserveTicket> = listOf(),
+    val tableReserveTicketsAsManager: MutableList<TableReserveTicket> = mutableListOf(),
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val gradesToRestaurants: List<GradeVisitor> = listOf(),
+    val gradesToRestaurants: MutableList<GradeVisitor> = mutableListOf(),
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val gradesFromManagers: List<GradeManager> = listOf(),
+    val gradesFromManagers: MutableList<GradeManager> = mutableListOf(),
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    val gradesAsManager: List<GradeManager> = listOf(),
+    val gradesAsManager: MutableList<GradeManager> = mutableListOf(),
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    val createdBookingConstraints: List<BookingConstraint> = listOf(),
+    val createdBookingConstraints: MutableList<BookingConstraint> = mutableListOf(),
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val entriesInBlackList: List<BlackList> = listOf(),
+    val entriesInBlackList: MutableList<BlackList> = mutableListOf(),
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return roles.map { SimpleGrantedAuthority(it.name) }.toMutableList()
@@ -95,6 +95,7 @@ class User(
     }
 
     override fun toString(): String {
-        return "User(id=$id, username='$username', password='$password', numOfGrades=$numOfGrades, sumOfGrades=$sumOfGrades, roles=$roles)"
+        return "User(id=$id, username='$username', password='$password', numOfGrades=$numOfGrades, " +
+                "sumOfGrades=$sumOfGrades, roles=$roles)"
     }
 }
