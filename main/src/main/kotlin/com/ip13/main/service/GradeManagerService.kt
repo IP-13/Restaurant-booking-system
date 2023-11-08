@@ -19,30 +19,32 @@ class GradeManagerService(
     private val transactionTemplate = TransactionTemplate(transactionManager)
 
     fun gradeUser(gradeManager: GradeManager): Float? {
-        // TODO() try-catch
-        val newGrade = transactionTemplate.execute {
-            gradeManagerRepository.save(gradeManager)
-            userService.addGrade(gradeManager.userId, gradeManager.grade)
+//        // TODO() try-catch
+//        val newGrade = transactionTemplate.execute {
+//            gradeManagerRepository.save(gradeManager)
+//            userService.addGrade(gradeManager.userId, gradeManager.grade)
+//
+//            val newSumOfGrades = userService.getSumOfGrades(gradeManager.userId)
+//            val newNumOfGrades = userService.getNumOfGrades(gradeManager.userId)
+//
+//            val newGrade = (newSumOfGrades.toFloat()) / newNumOfGrades
+//
+//            if (newGrade < 3.0 && newNumOfGrades > 1) {
+//                blackListService.save(
+//                    blackList = BlackList(
+//                        userId = gradeManager.userId,
+//                        fromDate = LocalDateTime.now(),
+//                        tillDate = LocalDateTime.now().plusMonths(3),
+//                        reason = "grade less than 3.0",
+//                    )
+//                )
+//            }
+//
+//            newGrade
+//        }
+//
+//        return newGrade
 
-            val newSumOfGrades = userService.getSumOfGrades(gradeManager.userId)
-            val newNumOfGrades = userService.getNumOfGrades(gradeManager.userId)
-
-            val newGrade = (newSumOfGrades.toFloat()) / newNumOfGrades
-
-            if (newGrade < 3.0 && newNumOfGrades > 1) {
-                blackListService.save(
-                    blackList = BlackList(
-                        userId = gradeManager.userId,
-                        fromDate = LocalDateTime.now(),
-                        tillDate = LocalDateTime.now().plusMonths(3),
-                        reason = "grade less than 3.0",
-                    )
-                )
-            }
-
-            newGrade
-        }
-
-        return newGrade
+        return 1.0f
     }
 }

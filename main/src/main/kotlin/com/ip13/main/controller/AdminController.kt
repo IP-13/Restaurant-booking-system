@@ -21,6 +21,8 @@ class AdminController(
         @RequestBody(required = true)
         roleAddDto: RoleAddDto,
     ): ResponseEntity<*> {
+        // TODO() refactoring with JPA
+
         logger.debug("/admin/add_role endpoint invoked")
 
         // TODO() параметр принимается строкой, преобразуется в enum, проверяется, преобразуется обратно в строку
@@ -31,7 +33,6 @@ class AdminController(
             return ResponseEntity("No such role \"${roleAddDto.role}\"", HttpStatus.BAD_REQUEST)
         }
 
-        // TODO() is it ok?
         userService.checkUser(roleAddDto.userId)
 
         // TODO() сначала чекаем юзера, потом роли этого юзера. Первая проверка юзера выглядит необязательной,

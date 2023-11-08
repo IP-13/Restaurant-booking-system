@@ -1,4 +1,4 @@
-package com.ip13.main
+package com.ip13.main.utils
 
 import org.springframework.test.web.servlet.MvcResult
 import java.io.File
@@ -13,5 +13,4 @@ fun getMvcResultInfo(result: MvcResult) {
     println(result.response.errorMessage)
     println(result.response.status)
     println("__________________________________________________________________________")
-
 }

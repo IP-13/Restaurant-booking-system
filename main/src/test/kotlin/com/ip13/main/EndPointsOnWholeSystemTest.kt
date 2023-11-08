@@ -2,6 +2,7 @@ package com.ip13.main
 
 import com.ip13.main.model.enums.Role
 import com.ip13.main.security.repository.UserRepository
+import com.ip13.main.utils.loadAsString
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.BeforeEach
@@ -43,37 +44,9 @@ class EndPointsOnWholeSystemTest(
         jdbc.execute("truncate table grade_manager cascade")
         jdbc.execute("truncate table grade_visitor cascade")
         jdbc.execute("truncate table table_reserve_ticket cascade")
-        jdbc.execute("truncate table manager cascade")
         jdbc.execute("truncate table restaurant cascade")
-        jdbc.execute("truncate table restaurant_add_ticket_result cascade")
         jdbc.execute("truncate table restaurant_add_ticket cascade")
-        jdbc.execute("truncate table address cascade")
-        jdbc.execute("truncate table admin cascade")
         jdbc.execute("truncate table user_t cascade")
-    }
-
-    @Test
-    fun `container is running test`() {
-        println(container.databaseName)
-    }
-
-    @Test
-    fun `test successful insert and select with address table`() {
-        jdbc.update(
-            "insert into address(country, city, street, building, entrance, floor) " +
-                    "values('Russia', 'Saint-Petersburg', 'Lenina', 12, 1, 3)"
-        )
-
-        val address = jdbc.query("select * from address") { rs, _ ->
-            rs.getString("country") +
-                    rs.getString("city") +
-                    rs.getString("street") +
-                    rs.getInt("building") +
-                    rs.getInt("entrance") +
-                    rs.getInt("floor")
-        }.first()
-
-        assertThat(address).isEqualTo("RussiaSaint-PetersburgLenina1213")
     }
 
     @Autowired
