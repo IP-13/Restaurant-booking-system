@@ -1,7 +1,6 @@
 package com.ip13.main.service
 
 import com.ip13.main.provider.EntitiesProvider
-import com.ip13.main.repository.ManagerRepository
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
