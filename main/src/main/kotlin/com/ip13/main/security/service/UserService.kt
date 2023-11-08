@@ -1,6 +1,7 @@
 package com.ip13.main.security.service
 
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
+import com.ip13.main.model.dto.RoleAddDto
 import com.ip13.main.security.entity.User
 import com.ip13.main.security.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -33,10 +34,18 @@ class UserService(
         return userRepository.existsByUsername(name)
     }
 
-    fun checkUser(userId: Int) {
-        if (!userRepository.existsById(userId)) {
-            throw UserNotFoundException("User with id: $userId not found")
+    fun findByIdOrThrow(id: Int): User {
+        return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id: $id not found")
+    }
+
+    fun addRole(roleAddDto: RoleAddDto): Boolean {
+        val user = findByIdOrThrow(roleAddDto.userId)
+        if (user.roles.contains(roleAddDto.role)) {
+            return false
         }
+        val isAdded = user.roles.add(roleAddDto.role)
+        save(user)
+        return isAdded
     }
 
     fun getUserByTokenInHeader(header: String): User {
