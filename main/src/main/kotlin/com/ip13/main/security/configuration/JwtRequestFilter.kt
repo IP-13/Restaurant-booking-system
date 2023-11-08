@@ -34,6 +34,8 @@ class JwtRequestFilter(
         try {
             val header = request.getHeader("Authorization")
 
+            log.debug("header extracted: {}", header)
+
             val jwt = tokenService.getTokenFromHeader(header)
 
             val username = if (jwt != null) {
@@ -47,6 +49,8 @@ class JwtRequestFilter(
             } else {
                 null
             }
+
+            log.debug("username extracted: {}", username)
 
             if (username != null && SecurityContextHolder.getContext().authentication == null) {
                 val user = userService.loadUserByUsername(username as String)

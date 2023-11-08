@@ -2,6 +2,7 @@ package com.ip13.main.exceptionHandling
 
 import com.ip13.main.exceptionHandling.dto.CommonResponse
 import com.ip13.main.exceptionHandling.exception.NotFoundException
+import com.ip13.main.exceptionHandling.exception.NotMegaAdminException
 import io.jsonwebtoken.ExpiredJwtException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -26,5 +27,10 @@ class CommonControllerAdvice {
     @ExceptionHandler(ExpiredJwtException::class)
     fun handleExpiredJwtException(ex: ExpiredJwtException): ResponseEntity<CommonResponse> {
         return ResponseEntity(CommonResponse(message = "Jwt token has expired. $ex.message"), HttpStatus.FORBIDDEN)
+    }
+
+    @ExceptionHandler(NotMegaAdminException::class)
+    fun handleNotMegaAdminException(ex: NotMegaAdminException): ResponseEntity<CommonResponse> {
+        return ResponseEntity(CommonResponse(message = ex.message), HttpStatus.FORBIDDEN)
     }
 }
