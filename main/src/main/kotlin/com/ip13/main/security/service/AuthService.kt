@@ -6,20 +6,15 @@ import com.ip13.main.security.dto.RegisterDto
 import com.ip13.main.security.dto.RegisterResponseDto
 import com.ip13.main.security.entity.User
 import com.ip13.main.util.getLogger
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.AuthenticationException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.web.server.ResponseStatusException
 
 @Service
 class AuthService(
-    @Autowired private val tokenService: TokenService,
-    @Autowired val authenticationManager: AuthenticationManager,
-    @Autowired private val userService: UserService,
-    @Autowired val passwordEncoder: BCryptPasswordEncoder,
+    private val tokenService: TokenService,
+    private val userService: UserService,
+    private val passwordEncoder: BCryptPasswordEncoder,
 ) {
     private val log = getLogger(javaClass)
 

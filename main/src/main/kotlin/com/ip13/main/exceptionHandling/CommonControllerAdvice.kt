@@ -14,9 +14,9 @@ import java.time.LocalDateTime
 @ControllerAdvice
 class CommonControllerAdvice {
     @ExceptionHandler(NotFoundException::class)
-    fun handleUserNotFoundException(ex: NotFoundException): ResponseEntity<CommonResponse> {
+    fun handleNotFoundException(ex: NotFoundException): ResponseEntity<CommonResponse> {
         val message = "${LocalDateTime.now()}: $ex.message"
-        return ResponseEntity(CommonResponse(message), HttpStatus.BAD_REQUEST)
+        return ResponseEntity(CommonResponse(message), HttpStatus.NOT_FOUND)
     }
 
     @ExceptionHandler(ResponseStatusException::class)
