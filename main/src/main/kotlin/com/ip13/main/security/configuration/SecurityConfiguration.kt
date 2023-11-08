@@ -72,7 +72,7 @@ class SecurityConfiguration(
     }
 
     @Bean
-    fun passwordEncoder(): PasswordEncoder {
+    fun passwordEncoder(): BCryptPasswordEncoder {
         return BCryptPasswordEncoder()
     }
 }
