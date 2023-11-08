@@ -41,18 +41,6 @@ class AuthService(
     }
 
     fun login(loginDto: LoginDto): LoginResponseDto {
-        try {
-            authenticationManager.authenticate(
-                UsernamePasswordAuthenticationToken(
-                    loginDto.username,
-                    // TODO() в фильтре credentials устанавливается в null
-                    loginDto.password,
-                )
-            )
-        } catch (ex: AuthenticationException) {
-            throw ResponseStatusException(400, "passwords don't match", null)
-        }
-
         val user = userService.loadUserByUsername(loginDto.username)
 
         log.debug("User found\n{}", user.toString())
@@ -60,7 +48,6 @@ class AuthService(
         val rawPassword = loginDto.password
         val encodedPassword = user.password
 
-        // TODO() delete
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw ResponseStatusException(400, "passwords don't match", null)
         }

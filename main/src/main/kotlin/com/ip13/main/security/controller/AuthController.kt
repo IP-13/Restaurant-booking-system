@@ -24,7 +24,7 @@ class AuthController(
         @RequestBody
         registerDto: RegisterDto,
     ): ResponseEntity<RegisterResponseDto> {
-        log.debug("/security/register endpoint invoked")
+        log.debug("/auth/register endpoint invoked")
 
         return ResponseEntity.ok(
             authService.register(registerDto = registerDto)
@@ -36,7 +36,7 @@ class AuthController(
         @RequestBody
         loginDto: LoginDto
     ): ResponseEntity<LoginResponseDto> {
-        log.debug("/security/login endpoint invoked")
+        log.debug("/auth/login endpoint invoked")
 
         return ResponseEntity.ok(
             authService.login(loginDto = loginDto)

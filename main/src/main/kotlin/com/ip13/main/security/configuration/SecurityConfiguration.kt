@@ -40,8 +40,8 @@ class SecurityConfiguration(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeHttpRequests {
-                authorize("/security/register/**", hasAuthority(Role.ADMIN.name))
-                authorize("/security/login/**", permitAll)
+                authorize("/auth/register/**", hasAuthority(Role.ADMIN.name))
+                authorize("/auth/login/**", permitAll)
                 authorize("/admin/get_authentication", permitAll)
                 authorize("/admin/**", hasAuthority(Role.ADMIN.name))
                 authorize("/restaurant/process_ticket", hasAuthority(Role.ADMIN.name))
