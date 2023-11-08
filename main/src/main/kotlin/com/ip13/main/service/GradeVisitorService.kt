@@ -19,12 +19,14 @@ class GradeVisitorService(
     }
 
     fun gradeRestaurant(gradeVisitor: GradeVisitor): Float {
-        // TODO() try-catch
-        transactionTemplate.execute {
-            save(gradeVisitor)
-            restaurantService.addGrade(gradeVisitor.restaurantId, gradeVisitor.grade)
-        }
+//        // TODO() try-catch
+//        transactionTemplate.execute {
+//            save(gradeVisitor)
+//            restaurantService.addGrade(gradeVisitor.restaurantId, gradeVisitor.grade)
+//        }
+//
+//        return restaurantService.getGrade(gradeVisitor.restaurantId)
 
-        return restaurantService.getGrade(gradeVisitor.restaurantId)
+        return 1.0f
     }
 }
