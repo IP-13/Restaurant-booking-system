@@ -76,26 +76,21 @@ class User(
 
         other as User
 
-        if (username != other.username) return false
-        if (password != other.password) return false
-        if (numOfGrades != other.numOfGrades) return false
-        if (sumOfGrades != other.sumOfGrades) return false
-        if (roles != other.roles) return false
-
-        return true
+        return username == other.username
     }
 
     override fun hashCode(): Int {
-        var result = username.hashCode()
-        result = 31 * result + password.hashCode()
-        result = 31 * result + numOfGrades
-        result = 31 * result + sumOfGrades
-        result = 31 * result + roles.hashCode()
-        return result
+        return username.hashCode()
     }
 
     override fun toString(): String {
         return "User(id=$id, username='$username', password='$password', numOfGrades=$numOfGrades, " +
-                "sumOfGrades=$sumOfGrades, roles=$roles)"
+                "sumOfGrades=$sumOfGrades, roles=$roles, restaurantAddTicketsAsUser=$restaurantAddTicketsAsUser, " +
+                "restaurantAddTicketsAsAdmin=$restaurantAddTicketsAsAdmin, restaurants=$restaurants, " +
+                "tableReserveTicketsAsUser=$tableReserveTicketsAsUser, " +
+                "tableReserveTicketsAsManager=$tableReserveTicketsAsManager, " +
+                "gradesToRestaurants=$gradesToRestaurants, " + "gradesFromManagers=$gradesFromManagers, " +
+                "gradesAsManager=$gradesAsManager, " +
+                "createdBookingConstraints=$createdBookingConstraints, entriesInBlackList=$entriesInBlackList)"
     }
 }
