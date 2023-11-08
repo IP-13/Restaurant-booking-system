@@ -4,8 +4,6 @@ import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
 import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.dto.ReservationProcessDto
 import com.ip13.main.model.dto.TableReserveTicketDto
-import com.ip13.main.model.toBookingConstraint
-import com.ip13.main.model.toTableReserveTicket
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.RestaurantService
@@ -23,7 +21,6 @@ class ReserveController(
     private val tableReserveService: TableReserveService,
     private val userService: UserService,
     private val restaurantService: RestaurantService,
-    private val managerService: ManagerService,
     private val bookingConstraintService: BookingConstraintService,
 ) {
     private val log = getLogger(javaClass)
@@ -37,40 +34,43 @@ class ReserveController(
     ): ResponseEntity<String> {
         val user = userService.getUserByTokenInHeader(authHeader)
 
-        // TODO() пользователя уже проверяли в филтрах, так что отсюда можно удалить
-        userService.checkUser(user.id)
+        log.debug("user extracted from token\n{}", user.toString())
 
-        val expirationDateFromBlackList = userService.getExpirationDateFromBlackList(user.id)
+        // TODO() перефакторить под JPA
 
-        if (expirationDateFromBlackList != null) {
-            return ResponseEntity(
-                "You're toxic person and you cannot use our service for quite some time. " +
-                        "Exactly till $expirationDateFromBlackList",
-                HttpStatus.BAD_REQUEST
-            )
-        }
+//        val expirationDateFromBlackList = userService.getExpirationDateFromBlackList(user.id)
+//
+//        if (expirationDateFromBlackList != null) {
+//            return ResponseEntity(
+//                "You're toxic person and you cannot use our service for quite some time. " +
+//                        "Exactly till $expirationDateFromBlackList",
+//                HttpStatus.BAD_REQUEST
+//            )
+//        }
+//
+//        val constraintCount = bookingConstraintService.isOpen(
+//            fromDate = tableReserveTicketDto.fromDate,
+//            tillDate = tableReserveTicketDto.tillDate,
+//            restaurantId = tableReserveTicketDto.restaurantId,
+//        )
+//
+//        if (constraintCount > 0) {
+//            return ResponseEntity(
+//                "Sorry, restaurant with id ${tableReserveTicketDto.restaurantId} is closed at that time",
+//                HttpStatus.OK
+//            )
+//        }
+//
+//        val createdTicketId = tableReserveService.save(
+//            tableReserveTicketDto.toTableReserveTicket(user.id)
+//        )
+//
+//        return ResponseEntity(
+//            "Reserve ticket has been successfully created with id: $createdTicketId",
+//            HttpStatus.OK
+//        )
 
-        val constraintCount = bookingConstraintService.isOpen(
-            fromDate = tableReserveTicketDto.fromDate,
-            tillDate = tableReserveTicketDto.tillDate,
-            restaurantId = tableReserveTicketDto.restaurantId,
-        )
-
-        if (constraintCount > 0) {
-            return ResponseEntity(
-                "Sorry, restaurant with id ${tableReserveTicketDto.restaurantId} is closed at that time",
-                HttpStatus.OK
-            )
-        }
-
-        val createdTicketId = tableReserveService.save(
-            tableReserveTicketDto.toTableReserveTicket(user.id)
-        )
-
-        return ResponseEntity(
-            "Reserve ticket has been successfully created with id: $createdTicketId",
-            HttpStatus.OK
-        )
+        return ResponseEntity("", HttpStatus.OK)
     }
 
     @PostMapping("/add_booking_constraint")
@@ -90,28 +90,27 @@ class ReserveController(
 
         log.debug("user extracted from token\n{}", user.toString())
 
-        val manager = managerService.getManagerByUserIdOrNull(user.id)
-            ?: throw ManagerNotFoundException("No manager found with userId ${user.id}")
+        // TODO() проверить работает ли в этом ресторане
 
-        log.debug("manager loaded from db\n{}", manager.toString())
+        // TODO() переделать dto и порефакторить под JPA
 
-        val managerId = manager.id
-        val restaurantId = restaurant.id
+//        val managerId = manager.id
+//        val restaurantId = restaurant.id
+//
+//        val isWorkingInRestaurant = managerService.checkIfWorksInRestaurantById(managerId, restaurantId)
+//
+//        if (!isWorkingInRestaurant) {
+//            return ResponseEntity(
+//                "Manager with id $managerId does not work in restaurant with id $restaurantId",
+//                HttpStatus.BAD_REQUEST
+//            )
+//        }
+//
+//        val bookingConstraint = dto.toBookingConstraint(managerId)
+//
+//        val bookingConstraintId = bookingConstraintService.save(bookingConstraint)
 
-        val isWorkingInRestaurant = managerService.checkIfWorksInRestaurantById(managerId, restaurantId)
-
-        if (!isWorkingInRestaurant) {
-            return ResponseEntity(
-                "Manager with id $managerId does not work in restaurant with id $restaurantId",
-                HttpStatus.BAD_REQUEST
-            )
-        }
-
-        val bookingConstraint = dto.toBookingConstraint(managerId)
-
-        val bookingConstraintId = bookingConstraintService.save(bookingConstraint)
-
-        return ResponseEntity("Booking constraint successfully added with id $bookingConstraintId", HttpStatus.OK)
+        return ResponseEntity("", HttpStatus.OK)
     }
 
     @GetMapping("/show_reservations")
@@ -127,17 +126,7 @@ class ReserveController(
 
         log.debug("user extracted from token\n{}", user.toString())
 
-        val manager = managerService.getManagerByUserIdOrNull(user.id)
-            ?: throw ManagerNotFoundException("No manager found with userId ${user.id}")
-
-        log.debug("manager loaded from db\n{}", manager.toString())
-
-        if (!managerService.checkIfActive(managerId = manager.id)) {
-            throw ManagerNotFoundException(
-                "You don't work here anymore stupid piece of shit. " +
-                        "If you try this one more time, I'll find you by your ip and you'll regret that you were born"
-            )
-        }
+        // TODO() проверить работает ли в этом ресторане
 
         val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
 
@@ -159,20 +148,21 @@ class ReserveController(
 
         log.debug("user extracted from token\n{}", user.toString())
 
-        val manager = managerService.getManagerByUserIdOrNull(user.id)
-            ?: throw ManagerNotFoundException("No manager found with userId ${user.id}")
+        // TODO() проверить работает ли в этом ресторане
 
-        log.debug("manager loaded from db\n{}", manager.toString())
+        // TODO() переделать dto и порефакторить под JPA
 
-        val updatedCount = tableReserveService.processReservation(reservationProcessDto, manager.id)
+//        val updatedCount = tableReserveService.processReservation(reservationProcessDto, manager.id)
+//
+//        return if (updatedCount == 1) {
+//            ResponseEntity("Successfully updated", HttpStatus.OK)
+//        } else {
+//            ResponseEntity(
+//                "Something went wrong. Reservation ${reservationProcessDto.tableReserveTicketId} was not updated",
+//                HttpStatus.INTERNAL_SERVER_ERROR
+//            )
+//        }
 
-        return if (updatedCount == 1) {
-            ResponseEntity("Successfully updated", HttpStatus.OK)
-        } else {
-            ResponseEntity(
-                "Something went wrong. Reservation ${reservationProcessDto.tableReserveTicketId} was not updated",
-                HttpStatus.INTERNAL_SERVER_ERROR
-            )
-        }
+        return ResponseEntity("", HttpStatus.OK)
     }
 }
