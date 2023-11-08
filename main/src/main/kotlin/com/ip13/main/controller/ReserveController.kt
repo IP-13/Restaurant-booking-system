@@ -9,7 +9,6 @@ import com.ip13.main.model.toBookingConstraint
 import com.ip13.main.model.toTableReserveTicket
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
-import com.ip13.main.service.ManagerService
 import com.ip13.main.service.RestaurantService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
