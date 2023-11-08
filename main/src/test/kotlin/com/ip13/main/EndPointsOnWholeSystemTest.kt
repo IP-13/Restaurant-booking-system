@@ -2,6 +2,7 @@ package com.ip13.main
 
 import com.ip13.main.model.enums.Role
 import com.ip13.main.security.repository.UserRepository
+import com.ip13.main.utils.loadAsString
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.BeforeEach
