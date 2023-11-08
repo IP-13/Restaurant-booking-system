@@ -1,6 +1,5 @@
 package com.ip13.main.service
 
-import com.ip13.main.exceptionHandling.exception.AdminNotFoundException
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
 import com.ip13.main.model.dto.RestaurantAddTicketDto
 import com.ip13.main.model.dto.RestaurantAddTicketResultDto

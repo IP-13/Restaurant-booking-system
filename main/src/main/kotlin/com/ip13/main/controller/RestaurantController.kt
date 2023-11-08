@@ -1,6 +1,5 @@
 package com.ip13.main.controller
 
-import com.ip13.main.exceptionHandling.exception.ManagerNotFoundException
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
 import com.ip13.main.model.dto.GradeManagerDto
 import com.ip13.main.model.dto.GradeVisitorDto

@@ -1,6 +1,5 @@
 package com.ip13.main.controller
 
-import com.ip13.main.exceptionHandling.exception.ManagerNotFoundException
 import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
 import com.ip13.main.model.dto.BookingConstraintDto
 import com.ip13.main.model.dto.ReservationProcessDto
