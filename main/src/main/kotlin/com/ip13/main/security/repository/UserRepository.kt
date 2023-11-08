@@ -15,7 +15,6 @@ interface UserRepository : CrudRepository<User, Int> {
 
     fun existsByUsername(username: String): Boolean
 
-    // TODO() вынести функции в отдельный репозиторий, не в пакете security
     @Modifying
     @Transactional
     @Query("update user_t set roles = array_append(roles, :role) where user_t.id = :id", nativeQuery = true)
