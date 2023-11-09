@@ -67,6 +67,16 @@ class UserService(
         return isDeleted
     }
 
+    fun deleteUser(userId: Int) {
+        if (userId == 100) {
+            throw AttemptToOverthrowMegaAdminException(
+                "Who do you think you are? You cannot delete mage_admin. Next time you'll be banned",
+                HttpStatusCode.valueOf(400)
+            )
+        }
+        userRepository.deleteById(userId)
+    }
+
     fun getUserByTokenInHeader(header: String): User {
         return loadUserByUsername(tokenService.getUsername(getTokenFromHeader(header)))
     }

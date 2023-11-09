@@ -52,4 +52,16 @@ class AdminController(
             ResponseEntity.ok("User ${roleDeleteDto.userId} does not have role ${roleDeleteDto.role} to delete")
         }
     }
+
+    @PostMapping("/delete_user/{userId}")
+    fun deleteUser(
+        @PathVariable(required = true)
+        userId: Int
+    ): ResponseEntity<String> {
+        logger.debug("/admin/delete_user endpoint invoked")
+
+        userService.deleteUser(userId)
+
+        return ResponseEntity.ok("User with id $userId was deleted")
+    }
 }
