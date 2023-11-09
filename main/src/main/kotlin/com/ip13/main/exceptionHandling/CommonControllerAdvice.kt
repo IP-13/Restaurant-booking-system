@@ -37,6 +37,6 @@ class CommonControllerAdvice {
 
     @ExceptionHandler(CommonException::class)
     fun handleCommonException(ex: CommonException): ResponseEntity<CommonResponse> {
-        return ResponseEntity(CommonResponse(message = "${ex.cause}: ${ex.message}"), ex.httpStatusCode)
+        return ResponseEntity(CommonResponse(message = ex.toString()), ex.httpStatusCode)
     }
 }
