@@ -1,13 +1,11 @@
 package com.ip13.main.exceptionHandling
 
 import com.ip13.main.exceptionHandling.dto.CommonResponse
-import com.ip13.main.exceptionHandling.exception.AttemptToOverthrowMegaAdminException
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.NotFoundException
 import com.ip13.main.exceptionHandling.exception.NotMegaAdminException
 import io.jsonwebtoken.ExpiredJwtException
 import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
