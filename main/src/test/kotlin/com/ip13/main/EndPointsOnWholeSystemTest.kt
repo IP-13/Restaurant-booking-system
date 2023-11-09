@@ -13,8 +13,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -53,10 +55,11 @@ class EndPointsOnWholeSystemTest(
     private lateinit var mockMvc: MockMvc
 
     @Test
+    @WithMockUser(authorities = [ADMIN])
     fun `should add new user to db when register successfully`() {
         val body = loadAsString("json/default_user_register_dto.json")
 
-        mockMvc.post("/security/register") {
+        mockMvc.post("/auth/register") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = body
@@ -83,12 +86,13 @@ class EndPointsOnWholeSystemTest(
     }
 
     @Test
+    @WithMockUser(authorities = [ADMIN])
     fun `should return 400 status code when register with username that already exists`() {
         registerDefaultUser()
 
         val body = loadAsString("json/default_user_register_dto.json")
 
-        mockMvc.post("/security/register") {
+        mockMvc.post("/auth/register") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = body
@@ -114,7 +118,7 @@ class EndPointsOnWholeSystemTest(
 
         val body = loadAsString("json/default_user_register_dto.json")
 
-        mockMvc.post("/security/login") {
+        mockMvc.post("/auth/login") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = body
@@ -136,7 +140,7 @@ class EndPointsOnWholeSystemTest(
 
         val body = loadAsString("json/default_user_with_wrong_password.json")
 
-        mockMvc.post("/security/login") {
+        mockMvc.post("/auth/login") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = body
@@ -177,10 +181,11 @@ class EndPointsOnWholeSystemTest(
     private fun registerDefaultUser() {
         val body = loadAsString("json/default_user_register_dto.json")
 
-        mockMvc.post("/security/register") {
+        mockMvc.post("/auth/register") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = body
+            with(user("ip13").password("13579").authorities(SimpleGrantedAuthority(ADMIN)))
         }.andExpect {
             status().`is`(200)
             content {
