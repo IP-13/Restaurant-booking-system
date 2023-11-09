@@ -1,10 +1,13 @@
 package com.ip13.main.security.service
 
+import com.ip13.main.exceptionHandling.exception.AttemptToOverthrowMegaAdminException
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
 import com.ip13.main.model.dto.RoleAddDto
+import com.ip13.main.model.dto.RoleDeleteDto
 import com.ip13.main.security.entity.User
 import com.ip13.main.security.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatusCode
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
@@ -45,6 +48,33 @@ class UserService(
         val isAdded = user.roles.add(roleAddDto.role)
         save(user)
         return isAdded
+    }
+
+    fun deleteRole(roleDeleteDto: RoleDeleteDto): Boolean {
+        if (roleDeleteDto.userId == 100) {
+            throw AttemptToOverthrowMegaAdminException(
+                "Who do you think you are? You cannot delete roles from mage_admin. Next time you'll be banned",
+                HttpStatusCode.valueOf(400)
+            )
+        }
+
+        val user = findByIdOrThrow(roleDeleteDto.userId)
+        if (!user.roles.contains(roleDeleteDto.role)) {
+            return false
+        }
+        val isDeleted = user.roles.remove(roleDeleteDto.role)
+        save(user)
+        return isDeleted
+    }
+
+    fun deleteUser(userId: Int) {
+        if (userId == 100) {
+            throw AttemptToOverthrowMegaAdminException(
+                "Who do you think you are? You cannot delete mage_admin. Next time you'll be banned",
+                HttpStatusCode.valueOf(400)
+            )
+        }
+        userRepository.deleteById(userId)
     }
 
     fun getUserByTokenInHeader(header: String): User {

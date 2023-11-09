@@ -1,5 +1,6 @@
 package com.ip13.main.security.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.ip13.main.model.entity.*
 import com.ip13.main.model.enums.Role
 import jakarta.persistence.*
@@ -21,24 +22,34 @@ class User(
     @Enumerated(value = EnumType.STRING)
     val roles: MutableList<Role> = mutableListOf(),
     // Сушности, которые ссылаются на user_t
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     val restaurantAddTicketsAsUser: MutableList<RestaurantAddTicket> = mutableListOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
     val restaurantAddTicketsAsAdmin: MutableList<RestaurantAddTicket> = mutableListOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
     val restaurants: MutableList<Restaurant> = mutableListOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     val tableReserveTicketsAsUser: MutableList<TableReserveTicket> = mutableListOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
     val tableReserveTicketsAsManager: MutableList<TableReserveTicket> = mutableListOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     val gradesToRestaurants: MutableList<GradeVisitor> = mutableListOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     val gradesFromManagers: MutableList<GradeManager> = mutableListOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
     val gradesAsManager: MutableList<GradeManager> = mutableListOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
     val createdBookingConstraints: MutableList<BookingConstraint> = mutableListOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     val entriesInBlackList: MutableList<BlackList> = mutableListOf(),
 ) : UserDetails {
@@ -85,12 +96,6 @@ class User(
 
     override fun toString(): String {
         return "User(id=$id, username='$username', password='$password', numOfGrades=$numOfGrades, " +
-                "sumOfGrades=$sumOfGrades, roles=$roles, restaurantAddTicketsAsUser=$restaurantAddTicketsAsUser, " +
-                "restaurantAddTicketsAsAdmin=$restaurantAddTicketsAsAdmin, restaurants=$restaurants, " +
-                "tableReserveTicketsAsUser=$tableReserveTicketsAsUser, " +
-                "tableReserveTicketsAsManager=$tableReserveTicketsAsManager, " +
-                "gradesToRestaurants=$gradesToRestaurants, " + "gradesFromManagers=$gradesFromManagers, " +
-                "gradesAsManager=$gradesAsManager, " +
-                "createdBookingConstraints=$createdBookingConstraints, entriesInBlackList=$entriesInBlackList)"
+                "sumOfGrades=$sumOfGrades, roles=$roles)"
     }
 }

@@ -1,7 +1,10 @@
 package com.ip13.main.model
 
+import com.ip13.main.model.dto.BlackListDto
+import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
+import com.ip13.main.security.entity.User
 
 fun RestaurantAddTicket.toRestaurant(): Restaurant {
     return Restaurant(
@@ -17,5 +20,14 @@ fun RestaurantAddTicket.toRestaurant(): Restaurant {
         description = this.description,
         numOfGrades = 0,
         sumOfGrades = 0,
+    )
+}
+
+fun BlackListDto.toBlackList(): BlackList {
+    return BlackList(
+        user = User(this.userId),
+        fromDate = this.fromDate,
+        tillDate = this.tillDate,
+        reason = this.reason,
     )
 }
