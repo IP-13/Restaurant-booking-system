@@ -2,6 +2,7 @@ package com.ip13.main.security.service
 
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
 import com.ip13.main.model.dto.RoleAddDto
+import com.ip13.main.model.dto.RoleDeleteDto
 import com.ip13.main.security.entity.User
 import com.ip13.main.security.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -45,6 +46,16 @@ class UserService(
         val isAdded = user.roles.add(roleAddDto.role)
         save(user)
         return isAdded
+    }
+
+    fun deleteRole(roleDeleteDto: RoleDeleteDto): Boolean {
+        val user = findByIdOrThrow(roleDeleteDto.userId)
+        if (!user.roles.contains(roleDeleteDto.role)) {
+            return false
+        }
+        val isDeleted = user.roles.remove(roleDeleteDto.role)
+        save(user)
+        return isDeleted
     }
 
     fun getUserByTokenInHeader(header: String): User {
