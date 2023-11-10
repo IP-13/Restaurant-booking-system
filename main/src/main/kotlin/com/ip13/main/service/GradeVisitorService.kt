@@ -1,5 +1,6 @@
 package com.ip13.main.service
 
+import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.model.dto.request.GradeVisitorRequestDto
 import com.ip13.main.model.entity.GradeVisitor
 import com.ip13.main.model.entity.Restaurant
@@ -7,6 +8,7 @@ import com.ip13.main.model.toGradeVisitor
 import com.ip13.main.repository.GradeVisitorRepository
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -32,6 +34,13 @@ class GradeVisitorService(
         val tableReserveTicket = tableReserveService.findByIdOrThrow(dto.tableReserveTicketId)
 
         log.debug("tableReserveTicket loaded from db\n{}", tableReserveTicket.toString())
+
+        if (tableReserveTicket.user.id != user.id) {
+            throw CommonException(
+                "You're trying to grade table reserve ticket which doesn't belong to you",
+                HttpStatus.BAD_REQUEST
+            )
+        }
 
         val restaurant = restaurantService.findByIdOrThrow(tableReserveTicket.restaurant.id)
 
