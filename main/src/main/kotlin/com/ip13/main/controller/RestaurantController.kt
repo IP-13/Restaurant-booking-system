@@ -6,6 +6,7 @@ import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
 import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
 import com.ip13.main.model.dto.response.RestaurantProcessTicketResponseDto
+import com.ip13.main.model.dto.response.ShowTicketsResponseDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.GradeManagerService
 import com.ip13.main.service.GradeVisitorService
@@ -63,14 +64,14 @@ class RestaurantController(
         pageNumber: Int,
         @RequestHeader(name = "page_size", required = true)
         pageSize: Int,
-    ): ResponseEntity<*> {
+    ): ShowTicketsResponseDto {
         val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
 
         val tickets = restaurantAddTicketService.getTickets(pageRequest)
 
         log.debug("tickets found\n{}", tickets.map { it::toString })
 
-        return ResponseEntity(tickets, HttpStatus.OK)
+        return ShowTicketsResponseDto(tickets)
     }
 
     @GetMapping("/add_grade_visitor")

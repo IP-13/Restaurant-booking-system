@@ -1,5 +1,6 @@
 package com.ip13.main.model.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.security.entity.User
 import jakarta.persistence.*
@@ -29,6 +30,7 @@ class RestaurantAddTicket(
     val admin: User? = null,
     val processingDate: LocalDateTime? = null,
     val adminComment: String? = null,
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "restaurantAddTicket")
     val restaurant: Restaurant? = null,
 ) {
