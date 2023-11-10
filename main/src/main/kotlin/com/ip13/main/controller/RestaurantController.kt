@@ -5,6 +5,7 @@ import com.ip13.main.model.dto.request.GradeVisitorDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
 import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
+import com.ip13.main.model.dto.response.RestaurantProcessTicketResponseDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.GradeManagerService
 import com.ip13.main.service.GradeVisitorService
@@ -37,10 +38,10 @@ class RestaurantController(
     ): ResponseEntity<RestaurantAddTicketResponseDto> {
         log.debug("/restaurant/create_ticket endpoint invoked")
 
-        val responseDto = restaurantAddTicketService.createTicket(authHeader, restaurantAddTicketRequestDto)
+        val response = restaurantAddTicketService.createTicket(authHeader, restaurantAddTicketRequestDto)
 
         return ResponseEntity.ok(
-            responseDto,
+            response,
         )
     }
 
@@ -50,10 +51,10 @@ class RestaurantController(
         authHeader: String,
         @RequestBody(required = true)
         dto: RestaurantAddTicketResultDto,
-    ): ResponseEntity<*> {
-        restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
+    ): ResponseEntity<RestaurantProcessTicketResponseDto> {
+        val response = restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
 
-        return ResponseEntity("", HttpStatus.OK)
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/show_tickets")

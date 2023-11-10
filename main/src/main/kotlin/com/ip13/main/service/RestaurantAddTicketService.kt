@@ -6,6 +6,8 @@ import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
 import com.ip13.main.model.dto.request.RoleAddDto
 import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
+import com.ip13.main.model.dto.response.RestaurantProcessTicketResponseDto
+import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.enums.Role
@@ -19,6 +21,8 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Isolation
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class RestaurantAddTicketService(
@@ -37,7 +41,7 @@ class RestaurantAddTicketService(
     }
 
     /**
-     * throw RestaurantAddTicketNotFoundException if RestaurantAddTicket with that id doesn't exist
+     * @throws RestaurantAddTicketNotFoundException if RestaurantAddTicket with that id doesn't exist
      */
     fun findByIdOrThrow(id: Int): RestaurantAddTicket {
         return restaurantAddTicketRepository.findByIdOrNull(id)
@@ -57,7 +61,7 @@ class RestaurantAddTicketService(
     fun processRestaurantAddTicket(
         authHeader: String,
         dto: RestaurantAddTicketResultDto,
-    ): Int? {
+    ): RestaurantProcessTicketResponseDto {
         val restaurantAddTicket = findByIdOrThrow(dto.restaurantAddTicketId)
 
         log.debug("Restaurant add ticket found\n{}", restaurantAddTicket.toString())
@@ -82,15 +86,24 @@ class RestaurantAddTicketService(
         if (dto.status == RestaurantAddStatus.ACCEPTED) {
             val restaurant = updatedRestaurantAddTicket.toRestaurant()
 
-            save(updatedRestaurantAddTicket)
-            userService.addRole(RoleAddDto(updatedRestaurantAddTicket.user.id, Role.MANAGER))
-            restaurantService.save(restaurant)
+            val restaurantId = saveRestaurantAddTicketAndRestaurantTransactional(updatedRestaurantAddTicket, restaurant)
 
-        } else if (dto.status == RestaurantAddStatus.REJECTED) {
-            save(updatedRestaurantAddTicket)
+            return RestaurantProcessTicketResponseDto(RestaurantAddStatus.ACCEPTED, restaurantId)
         }
 
-        return null
+        save(updatedRestaurantAddTicket)
+
+        return RestaurantProcessTicketResponseDto(dto.status, null)
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    private fun saveRestaurantAddTicketAndRestaurantTransactional(
+        updatedRestaurantAddTicket: RestaurantAddTicket,
+        restaurant: Restaurant,
+    ): Int {
+        save(updatedRestaurantAddTicket)
+        userService.addRole(RoleAddDto(updatedRestaurantAddTicket.user.id, Role.MANAGER))
+        return restaurantService.save(restaurant).id
     }
 
     fun getTickets(pageRequest: PageRequest): List<RestaurantAddTicket> {
