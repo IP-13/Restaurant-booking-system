@@ -3,7 +3,7 @@ package com.ip13.main.service
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
-import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
+import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
 import com.ip13.main.model.dto.request.RoleAddDto
 import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
 import com.ip13.main.model.dto.response.RestaurantProcessTicketResponseDto
@@ -60,7 +60,7 @@ class RestaurantAddTicketService(
 
     fun processRestaurantAddTicket(
         authHeader: String,
-        dto: RestaurantAddTicketResultDto,
+        dto: RestaurantProcessTicketRequestDto,
     ): RestaurantProcessTicketResponseDto {
         val restaurantAddTicket = findByIdOrThrow(dto.restaurantAddTicketId)
 

@@ -3,7 +3,7 @@ package com.ip13.main.controller
 import com.ip13.main.model.dto.request.GradeManagerDto
 import com.ip13.main.model.dto.request.GradeVisitorDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
-import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
+import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
 import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
 import com.ip13.main.model.dto.response.RestaurantProcessTicketResponseDto
 import com.ip13.main.security.service.UserService
@@ -50,7 +50,7 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
-        dto: RestaurantAddTicketResultDto,
+        dto: RestaurantProcessTicketRequestDto,
     ): ResponseEntity<RestaurantProcessTicketResponseDto> {
         val response = restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
 
