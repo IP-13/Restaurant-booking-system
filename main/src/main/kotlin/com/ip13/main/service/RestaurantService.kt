@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service
 class RestaurantService(
     private val restaurantRepository: RestaurantRepository,
 ) {
-    fun save(restaurant: Restaurant): Int {
-        return restaurantRepository.save(restaurant).id
+    fun save(restaurant: Restaurant): Restaurant {
+        return restaurantRepository.save(restaurant)
     }
 
     fun findByIdOrNull(id: Int): Restaurant? {
