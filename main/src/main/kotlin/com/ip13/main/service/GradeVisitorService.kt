@@ -43,6 +43,8 @@ class GradeVisitorService(
 
         log.debug("Updated restaurant\n{}", updatedRestaurant)
 
+        saveGradeVisitorAndRestaurantTransactional(updatedRestaurant, gradeVisitor)
+
         return updatedRestaurant.sumOfGrades.toFloat() / updatedRestaurant.numOfGrades
     }
 
