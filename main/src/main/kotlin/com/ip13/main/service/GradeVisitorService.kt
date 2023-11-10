@@ -42,6 +42,13 @@ class GradeVisitorService(
             )
         }
 
+        if (tableReserveTicket.gradeVisitor != null) {
+            throw CommonException(
+                "You already left grade to table reserve ticket with id ${tableReserveTicket.id}",
+                HttpStatus.BAD_REQUEST
+            )
+        }
+
         val restaurant = restaurantService.findByIdOrThrow(tableReserveTicket.restaurant.id)
 
         log.debug("Restaurant loaded from db\n{}", restaurant.toString())
