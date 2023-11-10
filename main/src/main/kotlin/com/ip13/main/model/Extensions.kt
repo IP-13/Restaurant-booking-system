@@ -1,11 +1,13 @@
 package com.ip13.main.model
 
 import com.ip13.main.model.dto.request.BlackListDto
+import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.entity.TableReserveTicket
+import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.enums.TableReserveStatus
 import com.ip13.main.security.entity.User
 import java.time.LocalDateTime
@@ -51,6 +53,22 @@ fun TableReserveRequestDto.toTableReserveTicket(
         numOfGuests = this.numOfGuests,
         userComment = this.userComment,
         managerComment = managerComment,
+        status = status,
+    )
+}
+
+fun RestaurantAddTicketRequestDto.toRestaurantAddTicket(user: User, status: RestaurantAddStatus): RestaurantAddTicket {
+    return RestaurantAddTicket(
+        name = this.name,
+        country = this.country,
+        city = this.city,
+        street = this.street,
+        building = this.building,
+        entrance = this.entrance,
+        floor = this.floor,
+        description = this.description,
+        user = user,
+        creationDate = LocalDateTime.now(),
         status = status,
     )
 }
