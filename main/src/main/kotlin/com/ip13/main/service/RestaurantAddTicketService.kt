@@ -1,5 +1,6 @@
 package com.ip13.main.service
 
+import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
@@ -16,6 +17,7 @@ import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
@@ -59,6 +61,13 @@ class RestaurantAddTicketService(
         val restaurantAddTicket = findByIdOrThrow(dto.restaurantAddTicketId)
 
         log.debug("Restaurant add ticket found\n{}", restaurantAddTicket.toString())
+
+        if (restaurantAddTicket.status != RestaurantAddStatus.PROCESSING) {
+            throw CommonException(
+                "Ticket with id ${dto.restaurantAddTicketId} already processed. Status ${restaurantAddTicket.status}",
+                HttpStatus.BAD_REQUEST
+            )
+        }
 
         val admin = userService.getUserByTokenInHeader(authHeader)
 
