@@ -1,10 +1,9 @@
 package com.ip13.main.controller
 
-import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
-import com.ip13.main.model.dto.GradeManagerDto
-import com.ip13.main.model.dto.GradeVisitorDto
-import com.ip13.main.model.dto.RestaurantAddTicketDto
-import com.ip13.main.model.dto.RestaurantAddTicketResultDto
+import com.ip13.main.model.dto.request.GradeManagerDto
+import com.ip13.main.model.dto.request.GradeVisitorDto
+import com.ip13.main.model.dto.request.RestaurantAddTicketDto
+import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.*
 import com.ip13.main.util.getLogger

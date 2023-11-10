@@ -2,8 +2,8 @@ package com.ip13.main.security.service
 
 import com.ip13.main.exceptionHandling.exception.AttemptToOverthrowMegaAdminException
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
-import com.ip13.main.model.dto.RoleAddDto
-import com.ip13.main.model.dto.RoleDeleteDto
+import com.ip13.main.model.dto.request.RoleAddDto
+import com.ip13.main.model.dto.request.RoleDeleteDto
 import com.ip13.main.security.entity.User
 import com.ip13.main.security.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -16,6 +16,9 @@ class UserService(
     private val userRepository: UserRepository,
     private val tokenService: TokenService,
 ) : UserDetailsService {
+    /**
+     * throw UserNotFoundException if user with that name doesn't exist
+     */
     override fun loadUserByUsername(username: String): User {
         return userRepository.findByUsername(username) ?: throw UserNotFoundException("No user with name \'$username\'")
     }
@@ -36,6 +39,9 @@ class UserService(
         return userRepository.existsByUsername(name)
     }
 
+    /**
+     * throw UserNotFoundException if user with that id doesn't exist
+     */
     fun findByIdOrThrow(id: Int): User {
         return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id: $id not found")
     }
@@ -77,6 +83,9 @@ class UserService(
         userRepository.deleteById(userId)
     }
 
+    /**
+     * throw UserNotFoundException if you couldn't extract user from header
+     */
     fun getUserByTokenInHeader(header: String): User {
         return loadUserByUsername(tokenService.getUsername(getTokenFromHeader(header)))
     }

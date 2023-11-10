@@ -51,7 +51,7 @@ class User(
     val createdBookingConstraints: MutableList<BookingConstraint> = mutableListOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val entriesInBlackList: MutableList<BlackList> = mutableListOf(),
+    val blackListEntries: MutableList<BlackList> = mutableListOf(),
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return roles.map { SimpleGrantedAuthority(it.name) }.toMutableList()

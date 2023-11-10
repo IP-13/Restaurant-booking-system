@@ -1,7 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
-import com.ip13.main.model.dto.RoleAddDto
+import com.ip13.main.model.dto.request.RoleAddDto
 import com.ip13.main.model.enums.Role
 import com.ip13.main.security.entity.User
 import com.ip13.main.security.repository.UserRepository
