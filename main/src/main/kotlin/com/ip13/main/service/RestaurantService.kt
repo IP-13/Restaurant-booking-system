@@ -1,5 +1,6 @@
 package com.ip13.main.service
 
+import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.repository.RestaurantRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -15,6 +16,10 @@ class RestaurantService(
 
     fun findByIdOrNull(id: Int): Restaurant? {
         return restaurantRepository.findByIdOrNull(id)
+    }
+
+    fun findByIdOrThrow(id: Int): Restaurant {
+        return restaurantRepository.findByIdOrNull(id) ?: throw RestaurantNotFoundException("No restaurant with id $id")
     }
 
     fun addGrade(restaurantId: Int, grade: Int): Int {
