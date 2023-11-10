@@ -22,6 +22,7 @@ class RestaurantAddTicket(
     @JoinColumn(name = "user_id")
     val user: User = User(),
     val creationDate: LocalDateTime = LocalDateTime.now(),
+    @Enumerated(EnumType.STRING)
     val status: RestaurantAddStatus = RestaurantAddStatus.PROCESSING,
     @ManyToOne
     @JoinColumn(name = "admin_id")
