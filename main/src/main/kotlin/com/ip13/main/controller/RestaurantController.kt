@@ -51,15 +51,7 @@ class RestaurantController(
         @RequestBody(required = true)
         dto: RestaurantAddTicketResultDto,
     ): ResponseEntity<*> {
-        // TODO() переделать dto и порефакторить под JPA
-
-//        val restaurantId = restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
-
-//        return if (restaurantId != null) {
-//            ResponseEntity("Restaurant successfully added. New restaurant id $restaurantId", HttpStatus.OK)
-//        } else {
-//            ResponseEntity("You have rejected ticket with id ${dto.restaurantAddTicketId}", HttpStatus.OK)
-//        }
+        restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
 
         return ResponseEntity("", HttpStatus.OK)
     }

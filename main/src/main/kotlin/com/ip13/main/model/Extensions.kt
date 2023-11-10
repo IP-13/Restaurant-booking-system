@@ -15,6 +15,7 @@ import java.time.LocalDateTime
 fun RestaurantAddTicket.toRestaurant(): Restaurant {
     return Restaurant(
         restaurantAddTicket = this,
+        // при успешной обработке, пользователь создавший заявку становится менеджером ресторана.
         manager = this.user,
         name = this.name,
         country = this.country,
@@ -70,5 +71,28 @@ fun RestaurantAddTicketRequestDto.toRestaurantAddTicket(user: User, status: Rest
         user = user,
         creationDate = LocalDateTime.now(),
         status = status,
+    )
+}
+
+fun RestaurantAddTicket.updateRestaurantAddTicket(
+    status: RestaurantAddStatus,
+    admin: User,
+    adminComment: String?,
+): RestaurantAddTicket {
+    return RestaurantAddTicket(
+        id = this.id,
+        name = this.name,
+        country = this.country,
+        city = this.city,
+        street = this.street,
+        building = this.building,
+        entrance = this.entrance,
+        floor = this.floor,
+        description = this.description,
+        user = this.user,
+        creationDate = this.creationDate,
+        status = status,
+        admin = admin,
+        adminComment = adminComment,
     )
 }
