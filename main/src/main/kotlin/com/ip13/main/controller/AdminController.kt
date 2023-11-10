@@ -1,8 +1,8 @@
 package com.ip13.main.controller
 
-import com.ip13.main.model.dto.request.BlackListDto
-import com.ip13.main.model.dto.request.RoleAddDto
-import com.ip13.main.model.dto.request.RoleDeleteDto
+import com.ip13.main.model.dto.request.BlackListRequestDto
+import com.ip13.main.model.dto.request.RoleAddRequestDto
+import com.ip13.main.model.dto.request.RoleDeleteRequestDto
 import com.ip13.main.model.toBlackList
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BlackListService
@@ -23,16 +23,16 @@ class AdminController(
     @PostMapping("/add_role")
     fun addRole(
         @RequestBody(required = true)
-        roleAddDto: RoleAddDto,
+        roleAddRequestDto: RoleAddRequestDto,
     ): ResponseEntity<String> {
         logger.debug("/admin/add_role endpoint invoked")
 
-        val isAdded = userService.addRole(roleAddDto)
+        val isAdded = userService.addRole(roleAddRequestDto)
 
         return if (isAdded) {
-            ResponseEntity.ok("Role ${roleAddDto.role} successfully added to user ${roleAddDto.userId}")
+            ResponseEntity.ok("Role ${roleAddRequestDto.role} successfully added to user ${roleAddRequestDto.userId}")
         } else {
-            ResponseEntity.ok("User ${roleAddDto.userId} already has role ${roleAddDto.role}")
+            ResponseEntity.ok("User ${roleAddRequestDto.userId} already has role ${roleAddRequestDto.role}")
         }
     }
 
@@ -44,16 +44,16 @@ class AdminController(
     @PostMapping("/delete_role")
     fun deleteRole(
         @RequestBody(required = true)
-        roleDeleteDto: RoleDeleteDto,
+        roleDeleteRequestDto: RoleDeleteRequestDto,
     ): ResponseEntity<String> {
         logger.debug("/admin/delete_role endpoint invoked")
 
-        val isDeleted = userService.deleteRole(roleDeleteDto)
+        val isDeleted = userService.deleteRole(roleDeleteRequestDto)
 
         return if (isDeleted) {
-            ResponseEntity.ok("Role ${roleDeleteDto.role} successfully deleted from user ${roleDeleteDto.userId}")
+            ResponseEntity.ok("Role ${roleDeleteRequestDto.role} successfully deleted from user ${roleDeleteRequestDto.userId}")
         } else {
-            ResponseEntity.ok("User ${roleDeleteDto.userId} does not have role ${roleDeleteDto.role} to delete")
+            ResponseEntity.ok("User ${roleDeleteRequestDto.userId} does not have role ${roleDeleteRequestDto.role} to delete")
         }
     }
 
@@ -72,11 +72,11 @@ class AdminController(
     @PostMapping("/add_to_black_list")
     fun addToBlackList(
         @RequestBody(required = true)
-        blackListDto: BlackListDto
+        blackListRequestDto: BlackListRequestDto
     ): ResponseEntity<Int> {
         logger.debug("/admin/add_to_black_list endpoint invoked")
 
-        val blackListId = blackListService.save(blackListDto.toBlackList())
+        val blackListId = blackListService.save(blackListRequestDto.toBlackList())
 
         return ResponseEntity.ok(blackListId)
     }

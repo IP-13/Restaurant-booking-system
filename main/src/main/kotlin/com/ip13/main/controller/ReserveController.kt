@@ -1,7 +1,7 @@
 package com.ip13.main.controller
 
 import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
-import com.ip13.main.model.dto.request.BookingConstraintDto
+import com.ip13.main.model.dto.request.BookingConstraintRequestDto
 import com.ip13.main.model.dto.request.ReservationProcessDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.security.service.UserService
@@ -45,7 +45,7 @@ class ReserveController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
-        dto: BookingConstraintDto,
+        dto: BookingConstraintRequestDto,
     ): ResponseEntity<*> {
         val restaurant = restaurantService.findByIdOrNull(dto.restaurantId)
             ?: throw RestaurantNotFoundException("No restaurant with id ${dto.restaurantId}")

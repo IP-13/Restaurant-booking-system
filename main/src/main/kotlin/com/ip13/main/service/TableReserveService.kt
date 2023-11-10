@@ -1,5 +1,6 @@
 package com.ip13.main.service
 
+import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
 import com.ip13.main.model.dto.request.ReservationProcessDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.model.dto.response.TableReserveResponseDto
@@ -38,8 +39,16 @@ class TableReserveService(
         )
     }
 
-    fun findByIdOrNull(tableReserveTicketId: Int): TableReserveTicket? {
-        return tableReserveTicketRepository.findByIdOrNull(tableReserveTicketId)
+    fun findByIdOrNull(id: Int): TableReserveTicket? {
+        return tableReserveTicketRepository.findByIdOrNull(id)
+    }
+
+    /**
+     * @throws TableReserveTicketNotFoundException if TableReserveTicket with that id doesn't exist
+     */
+    fun findByIdOrThrow(id: Int): TableReserveTicket {
+        return tableReserveTicketRepository.findByIdOrNull(id)
+            ?: throw TableReserveTicketNotFoundException("No table reserve ticket with id $id")
     }
 
     fun reserveTable(dto: TableReserveRequestDto, authHeader: String): TableReserveResponseDto {
@@ -96,7 +105,7 @@ class TableReserveService(
                 restaurant = restaurant,
                 user = user,
                 managerComment = null,
-                status = TableReserveStatus.REJECTED
+                status = TableReserveStatus.PROCESSING
             )
         )
 

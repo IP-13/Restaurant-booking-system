@@ -1,5 +1,6 @@
 package com.ip13.main.model.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.security.entity.User
 import jakarta.persistence.*
@@ -22,12 +23,14 @@ class RestaurantAddTicket(
     @JoinColumn(name = "user_id")
     val user: User = User(),
     val creationDate: LocalDateTime = LocalDateTime.now(),
+    @Enumerated(EnumType.STRING)
     val status: RestaurantAddStatus = RestaurantAddStatus.PROCESSING,
     @ManyToOne
     @JoinColumn(name = "admin_id")
     val admin: User? = null,
     val processingDate: LocalDateTime? = null,
     val adminComment: String? = null,
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "restaurantAddTicket")
     val restaurant: Restaurant? = null,
 ) {

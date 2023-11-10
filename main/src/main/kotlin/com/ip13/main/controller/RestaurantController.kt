@@ -1,11 +1,18 @@
 package com.ip13.main.controller
 
-import com.ip13.main.model.dto.request.GradeManagerDto
-import com.ip13.main.model.dto.request.GradeVisitorDto
-import com.ip13.main.model.dto.request.RestaurantAddTicketDto
-import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
+import com.ip13.main.model.dto.request.GradeManagerRequestDto
+import com.ip13.main.model.dto.request.GradeVisitorRequestDto
+import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
+import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
+import com.ip13.main.model.dto.response.GradeVisitorResponseDto
+import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
+import com.ip13.main.model.dto.response.RestaurantProcessTicketResponseDto
+import com.ip13.main.model.dto.response.ShowTicketsResponseDto
 import com.ip13.main.security.service.UserService
-import com.ip13.main.service.*
+import com.ip13.main.service.GradeManagerService
+import com.ip13.main.service.GradeVisitorService
+import com.ip13.main.service.RestaurantAddTicketService
+import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -29,13 +36,14 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
-        restaurantAddTicketDto: RestaurantAddTicketDto,
-    ): ResponseEntity<*> {
-        // TODO() переделать dto и в этом месте просто вызывать save
+        restaurantAddTicketRequestDto: RestaurantAddTicketRequestDto,
+    ): ResponseEntity<RestaurantAddTicketResponseDto> {
+        log.debug("/restaurant/create_ticket endpoint invoked")
 
-        return ResponseEntity(
-            "",
-            HttpStatus.OK
+        val response = restaurantAddTicketService.createTicket(authHeader, restaurantAddTicketRequestDto)
+
+        return ResponseEntity.ok(
+            response,
         )
     }
 
@@ -44,19 +52,11 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
-        dto: RestaurantAddTicketResultDto,
-    ): ResponseEntity<*> {
-        // TODO() переделать dto и порефакторить под JPA
+        dto: RestaurantProcessTicketRequestDto,
+    ): ResponseEntity<RestaurantProcessTicketResponseDto> {
+        val response = restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
 
-//        val restaurantId = restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
-
-//        return if (restaurantId != null) {
-//            ResponseEntity("Restaurant successfully added. New restaurant id $restaurantId", HttpStatus.OK)
-//        } else {
-//            ResponseEntity("You have rejected ticket with id ${dto.restaurantAddTicketId}", HttpStatus.OK)
-//        }
-
-        return ResponseEntity("", HttpStatus.OK)
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/show_tickets")
@@ -65,14 +65,14 @@ class RestaurantController(
         pageNumber: Int,
         @RequestHeader(name = "page_size", required = true)
         pageSize: Int,
-    ): ResponseEntity<*> {
+    ): ShowTicketsResponseDto {
         val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
 
         val tickets = restaurantAddTicketService.getTickets(pageRequest)
 
         log.debug("tickets found\n{}", tickets.map { it::toString })
 
-        return ResponseEntity(tickets, HttpStatus.OK)
+        return ShowTicketsResponseDto(tickets)
     }
 
     @GetMapping("/add_grade_visitor")
@@ -80,32 +80,11 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody
-        gradeVisitorDto: GradeVisitorDto,
-    ): ResponseEntity<String> {
-        // TODO() переделать под JPA
+        gradeVisitorRequestDto: GradeVisitorRequestDto,
+    ): GradeVisitorResponseDto {
+        val newGrade = gradeVisitorService.gradeRestaurant(authHeader, gradeVisitorRequestDto)
 
-//        val user = userService.getUserByTokenInHeader(authHeader)
-//
-//        log.debug("user extracted from token\n{}", user.toString())
-//
-//        val tableReserveTicket = tableReserveService.findByIdOrNull(gradeVisitorDto.tableReserveTicketId)
-//            ?: throw TableReserveTicketNotFoundException(
-//                "No TableReserveTicket with id ${gradeVisitorDto.tableReserveTicketId}"
-//            )
-//
-//        log.debug("tableReserveTicket loaded from db\n{}", tableReserveTicket.toString())
-//
-//        val newGrade = gradeVisitorService.gradeRestaurant(
-//            gradeVisitorDto.toGradeVisitor(
-//                user.id,
-//                tableReserveTicket.restaurantId
-//            )
-//        )
-
-        return ResponseEntity(
-            "",
-            HttpStatus.OK
-        )
+        return GradeVisitorResponseDto(newGrade)
     }
 
     @GetMapping("/add_grade_manager")
@@ -113,7 +92,7 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody
-        gradeManagerDto: GradeManagerDto,
+        gradeManagerRequestDto: GradeManagerRequestDto,
     ): ResponseEntity<String> {
         // TODO() переделать dto и порефакторить под JPA
 
