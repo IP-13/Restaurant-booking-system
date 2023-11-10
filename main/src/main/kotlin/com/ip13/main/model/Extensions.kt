@@ -1,6 +1,6 @@
 package com.ip13.main.model
 
-import com.ip13.main.model.dto.BlackListDto
+import com.ip13.main.model.dto.request.BlackListDto
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket

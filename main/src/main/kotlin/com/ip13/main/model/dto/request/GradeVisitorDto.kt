@@ -1,4 +1,4 @@
-package com.ip13.main.model.dto
+package com.ip13.main.model.dto.request
 
 data class GradeVisitorDto(
     val tableReserveTicketId: Int,

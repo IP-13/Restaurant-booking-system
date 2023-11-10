@@ -1,12 +1,8 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
-import com.ip13.main.model.dto.RestaurantAddTicketDto
-import com.ip13.main.model.dto.RestaurantAddTicketResultDto
+import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
 import com.ip13.main.model.entity.RestaurantAddTicket
-import com.ip13.main.model.enums.RestaurantAddStatus
-import com.ip13.main.model.enums.Role
-import com.ip13.main.model.toRestaurant
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
@@ -15,7 +11,6 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionTemplate
-import java.time.LocalDateTime
 
 @Service
 class RestaurantAddTicketService(

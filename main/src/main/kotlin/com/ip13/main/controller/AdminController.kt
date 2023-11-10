@@ -1,8 +1,8 @@
 package com.ip13.main.controller
 
-import com.ip13.main.model.dto.BlackListDto
-import com.ip13.main.model.dto.RoleAddDto
-import com.ip13.main.model.dto.RoleDeleteDto
+import com.ip13.main.model.dto.request.BlackListDto
+import com.ip13.main.model.dto.request.RoleAddDto
+import com.ip13.main.model.dto.request.RoleDeleteDto
 import com.ip13.main.model.toBlackList
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BlackListService
