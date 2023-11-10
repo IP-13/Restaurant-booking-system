@@ -1,9 +1,9 @@
 package com.ip13.main.controller
 
 import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
-import com.ip13.main.model.dto.BookingConstraintDto
-import com.ip13.main.model.dto.ReservationProcessDto
-import com.ip13.main.model.dto.TableReserveTicketDto
+import com.ip13.main.model.dto.request.BookingConstraintDto
+import com.ip13.main.model.dto.request.ReservationProcessDto
+import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.RestaurantService
@@ -30,45 +30,11 @@ class ReserveController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
-        tableReserveTicketDto: TableReserveTicketDto
+        tableReserveRequestDto: TableReserveRequestDto
     ): ResponseEntity<String> {
-        val user = userService.getUserByTokenInHeader(authHeader)
+        log.debug("/reserve/reserve_table endpoint invoked")
 
-        log.debug("user extracted from token\n{}", user.toString())
-
-        // TODO() перефакторить под JPA
-
-//        val expirationDateFromBlackList = userService.getExpirationDateFromBlackList(user.id)
-//
-//        if (expirationDateFromBlackList != null) {
-//            return ResponseEntity(
-//                "You're toxic person and you cannot use our service for quite some time. " +
-//                        "Exactly till $expirationDateFromBlackList",
-//                HttpStatus.BAD_REQUEST
-//            )
-//        }
-//
-//        val constraintCount = bookingConstraintService.isOpen(
-//            fromDate = tableReserveTicketDto.fromDate,
-//            tillDate = tableReserveTicketDto.tillDate,
-//            restaurantId = tableReserveTicketDto.restaurantId,
-//        )
-//
-//        if (constraintCount > 0) {
-//            return ResponseEntity(
-//                "Sorry, restaurant with id ${tableReserveTicketDto.restaurantId} is closed at that time",
-//                HttpStatus.OK
-//            )
-//        }
-//
-//        val createdTicketId = tableReserveService.save(
-//            tableReserveTicketDto.toTableReserveTicket(user.id)
-//        )
-//
-//        return ResponseEntity(
-//            "Reserve ticket has been successfully created with id: $createdTicketId",
-//            HttpStatus.OK
-//        )
+        tableReserveService.reserveTable(tableReserveRequestDto, authHeader)
 
         return ResponseEntity("", HttpStatus.OK)
     }

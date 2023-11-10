@@ -6,6 +6,7 @@ import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.entity.TableReserveTicket
+import com.ip13.main.model.enums.TableReserveStatus
 import com.ip13.main.security.entity.User
 import java.time.LocalDateTime
 
@@ -38,6 +39,8 @@ fun BlackListDto.toBlackList(): BlackList {
 fun TableReserveRequestDto.toTableReserveTicket(
     restaurant: Restaurant,
     user: User,
+    managerComment: String? = null,
+    status: TableReserveStatus = TableReserveStatus.PROCESSING,
 ): TableReserveTicket {
     return TableReserveTicket(
         restaurant = restaurant,
@@ -47,5 +50,7 @@ fun TableReserveRequestDto.toTableReserveTicket(
         tillDate = this.tillDate,
         numOfGuests = this.numOfGuests,
         userComment = this.userComment,
+        managerComment = managerComment,
+        status = status,
     )
 }
