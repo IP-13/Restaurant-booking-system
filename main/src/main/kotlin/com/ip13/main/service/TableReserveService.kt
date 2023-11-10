@@ -105,7 +105,7 @@ class TableReserveService(
                 restaurant = restaurant,
                 user = user,
                 managerComment = null,
-                status = TableReserveStatus.REJECTED
+                status = TableReserveStatus.PROCESSING
             )
         )
 
