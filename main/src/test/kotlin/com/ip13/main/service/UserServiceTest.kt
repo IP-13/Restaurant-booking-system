@@ -1,7 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
-import com.ip13.main.model.dto.request.RoleAddDto
+import com.ip13.main.model.dto.request.RoleAddRequestDto
 import com.ip13.main.model.enums.Role
 import com.ip13.main.security.entity.User
 import com.ip13.main.security.repository.UserRepository
@@ -115,12 +115,12 @@ class UserServiceTest {
         val roles = mutableListOf<Role>()
 
         val user = User(id = id, username = username, roles = roles)
-        val roleAddDto = RoleAddDto(userId = id, Role.MANAGER)
+        val roleAddRequestDto = RoleAddRequestDto(userId = id, Role.MANAGER)
 
         every { userRepository.findByIdOrNull(id) } returns user
         every { userRepository.save(user) } returns User()
 
-        val isAdded = userService.addRole(roleAddDto)
+        val isAdded = userService.addRole(roleAddRequestDto)
 
         assertAll(
             { Assertions.assertThat(isAdded).isTrue() }
@@ -137,12 +137,12 @@ class UserServiceTest {
         val roles = mutableListOf(Role.MANAGER)
 
         val user = User(id = id, username = username, roles = roles)
-        val roleAddDto = RoleAddDto(userId = id, Role.MANAGER)
+        val roleAddRequestDto = RoleAddRequestDto(userId = id, Role.MANAGER)
 
         every { userRepository.findByIdOrNull(id) } returns user
         every { userRepository.save(user) } returns User()
 
-        val isAdded = userService.addRole(roleAddDto)
+        val isAdded = userService.addRole(roleAddRequestDto)
 
         assertAll(
             { Assertions.assertThat(isAdded).isFalse() }

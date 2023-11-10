@@ -4,7 +4,7 @@ import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
-import com.ip13.main.model.dto.request.RoleAddDto
+import com.ip13.main.model.dto.request.RoleAddRequestDto
 import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
 import com.ip13.main.model.dto.response.RestaurantProcessTicketResponseDto
 import com.ip13.main.model.entity.Restaurant
@@ -102,7 +102,7 @@ class RestaurantAddTicketService(
         restaurant: Restaurant,
     ): Int {
         save(updatedRestaurantAddTicket)
-        userService.addRole(RoleAddDto(updatedRestaurantAddTicket.user.id, Role.MANAGER))
+        userService.addRole(RoleAddRequestDto(updatedRestaurantAddTicket.user.id, Role.MANAGER))
         return restaurantService.save(restaurant).id
     }
 

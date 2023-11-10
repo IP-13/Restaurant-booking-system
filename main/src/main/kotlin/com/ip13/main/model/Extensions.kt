@@ -1,6 +1,6 @@
 package com.ip13.main.model
 
-import com.ip13.main.model.dto.request.BlackListDto
+import com.ip13.main.model.dto.request.BlackListRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.model.entity.BlackList
@@ -30,7 +30,7 @@ fun RestaurantAddTicket.toRestaurant(): Restaurant {
     )
 }
 
-fun BlackListDto.toBlackList(): BlackList {
+fun BlackListRequestDto.toBlackList(): BlackList {
     return BlackList(
         user = User(this.userId),
         fromDate = this.fromDate,

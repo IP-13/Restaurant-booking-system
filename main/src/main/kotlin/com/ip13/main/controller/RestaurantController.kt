@@ -1,7 +1,7 @@
 package com.ip13.main.controller
 
-import com.ip13.main.model.dto.request.GradeManagerDto
-import com.ip13.main.model.dto.request.GradeVisitorDto
+import com.ip13.main.model.dto.request.GradeManagerRequestDto
+import com.ip13.main.model.dto.request.GradeVisitorRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
 import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
@@ -79,7 +79,7 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody
-        gradeVisitorDto: GradeVisitorDto,
+        gradeVisitorRequestDto: GradeVisitorRequestDto,
     ): ResponseEntity<String> {
         // TODO() переделать под JPA
 
@@ -112,7 +112,7 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody
-        gradeManagerDto: GradeManagerDto,
+        gradeManagerRequestDto: GradeManagerRequestDto,
     ): ResponseEntity<String> {
         // TODO() переделать dto и порефакторить под JPA
 
