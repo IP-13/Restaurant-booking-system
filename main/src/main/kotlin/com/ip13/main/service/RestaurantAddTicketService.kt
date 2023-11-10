@@ -1,8 +1,12 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
+import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
+import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
 import com.ip13.main.model.entity.RestaurantAddTicket
+import com.ip13.main.model.enums.RestaurantAddStatus
+import com.ip13.main.model.toRestaurantAddTicket
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
@@ -23,12 +27,22 @@ class RestaurantAddTicketService(
 
     private val transactionTemplate = TransactionTemplate(transactionManager)
 
-    fun save(restaurantAddTicket: RestaurantAddTicket): Int {
-        return restaurantAddTicketRepository.save(restaurantAddTicket).id
+    fun save(restaurantAddTicket: RestaurantAddTicket): RestaurantAddTicket {
+        return restaurantAddTicketRepository.save(restaurantAddTicket)
     }
 
     fun findByIdOrNull(id: Int): RestaurantAddTicket? {
         return restaurantAddTicketRepository.findByIdOrNull(id)
+    }
+
+    fun createTicket(authHeader: String, dto: RestaurantAddTicketRequestDto): RestaurantAddTicketResponseDto {
+        val user = userService.getUserByTokenInHeader(authHeader)
+
+        log.debug("User found\n{}", user.toString())
+
+        val restaurantAddTicket = save(dto.toRestaurantAddTicket(user, RestaurantAddStatus.PROCESSING))
+
+        return RestaurantAddTicketResponseDto(restaurantAddTicket.status)
     }
 
     fun processRestaurantAddTicket(

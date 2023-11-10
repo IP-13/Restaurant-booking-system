@@ -2,10 +2,14 @@ package com.ip13.main.controller
 
 import com.ip13.main.model.dto.request.GradeManagerDto
 import com.ip13.main.model.dto.request.GradeVisitorDto
-import com.ip13.main.model.dto.request.RestaurantAddTicketDto
+import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketResultDto
+import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
 import com.ip13.main.security.service.UserService
-import com.ip13.main.service.*
+import com.ip13.main.service.GradeManagerService
+import com.ip13.main.service.GradeVisitorService
+import com.ip13.main.service.RestaurantAddTicketService
+import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -29,13 +33,14 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
-        restaurantAddTicketDto: RestaurantAddTicketDto,
-    ): ResponseEntity<*> {
-        // TODO() переделать dto и в этом месте просто вызывать save
+        restaurantAddTicketRequestDto: RestaurantAddTicketRequestDto,
+    ): ResponseEntity<RestaurantAddTicketResponseDto> {
+        log.debug("/restaurant/create_ticket endpoint invoked")
 
-        return ResponseEntity(
-            "",
-            HttpStatus.OK
+        val responseDto = restaurantAddTicketService.createTicket(authHeader, restaurantAddTicketRequestDto)
+
+        return ResponseEntity.ok(
+            responseDto,
         )
     }
 
