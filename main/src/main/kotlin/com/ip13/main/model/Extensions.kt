@@ -1,10 +1,13 @@
 package com.ip13.main.model
 
 import com.ip13.main.model.dto.request.BlackListDto
+import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
+import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.security.entity.User
+import java.time.LocalDateTime
 
 fun RestaurantAddTicket.toRestaurant(): Restaurant {
     return Restaurant(
@@ -29,5 +32,20 @@ fun BlackListDto.toBlackList(): BlackList {
         fromDate = this.fromDate,
         tillDate = this.tillDate,
         reason = this.reason,
+    )
+}
+
+fun TableReserveRequestDto.toTableReserveTicket(
+    restaurant: Restaurant,
+    user: User,
+): TableReserveTicket {
+    return TableReserveTicket(
+        restaurant = restaurant,
+        user = user,
+        creationDate = LocalDateTime.now(),
+        fromDate = this.fromDate,
+        tillDate = this.tillDate,
+        numOfGuests = this.numOfGuests,
+        userComment = this.userComment,
     )
 }
