@@ -1,12 +1,10 @@
 package com.ip13.main.model
 
 import com.ip13.main.model.dto.request.BlackListRequestDto
+import com.ip13.main.model.dto.request.GradeVisitorRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
-import com.ip13.main.model.entity.BlackList
-import com.ip13.main.model.entity.Restaurant
-import com.ip13.main.model.entity.RestaurantAddTicket
-import com.ip13.main.model.entity.TableReserveTicket
+import com.ip13.main.model.entity.*
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.enums.TableReserveStatus
 import com.ip13.main.security.entity.User
@@ -94,5 +92,19 @@ fun RestaurantAddTicket.updateRestaurantAddTicket(
         status = status,
         admin = admin,
         adminComment = adminComment,
+    )
+}
+
+fun GradeVisitorRequestDto.toGradeVisitor(
+    user: User,
+    tableReserveTicket: TableReserveTicket,
+    restaurant: Restaurant
+): GradeVisitor {
+    return GradeVisitor(
+        user = user,
+        tableReserveTicket = tableReserveTicket,
+        restaurant = restaurant,
+        grade = this.grade,
+        comment = this.comment
     )
 }

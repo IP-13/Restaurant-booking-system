@@ -4,6 +4,7 @@ import com.ip13.main.model.dto.request.GradeManagerRequestDto
 import com.ip13.main.model.dto.request.GradeVisitorRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
+import com.ip13.main.model.dto.response.GradeVisitorResponseDto
 import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
 import com.ip13.main.model.dto.response.RestaurantProcessTicketResponseDto
 import com.ip13.main.model.dto.response.ShowTicketsResponseDto
@@ -80,31 +81,10 @@ class RestaurantController(
         authHeader: String,
         @RequestBody
         gradeVisitorRequestDto: GradeVisitorRequestDto,
-    ): ResponseEntity<String> {
-        // TODO() переделать под JPA
+    ): GradeVisitorResponseDto {
+        val newGrade = gradeVisitorService.gradeRestaurant(authHeader, gradeVisitorRequestDto)
 
-//        val user = userService.getUserByTokenInHeader(authHeader)
-//
-//        log.debug("user extracted from token\n{}", user.toString())
-//
-//        val tableReserveTicket = tableReserveService.findByIdOrNull(gradeVisitorDto.tableReserveTicketId)
-//            ?: throw TableReserveTicketNotFoundException(
-//                "No TableReserveTicket with id ${gradeVisitorDto.tableReserveTicketId}"
-//            )
-//
-//        log.debug("tableReserveTicket loaded from db\n{}", tableReserveTicket.toString())
-//
-//        val newGrade = gradeVisitorService.gradeRestaurant(
-//            gradeVisitorDto.toGradeVisitor(
-//                user.id,
-//                tableReserveTicket.restaurantId
-//            )
-//        )
-
-        return ResponseEntity(
-            "",
-            HttpStatus.OK
-        )
+        return GradeVisitorResponseDto(newGrade)
     }
 
     @GetMapping("/add_grade_manager")
