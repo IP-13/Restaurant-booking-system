@@ -88,6 +88,7 @@ fun RestaurantAddTicket.updateRestaurantAddTicket(
         creationDate = this.creationDate,
         status = status,
         admin = admin,
+        processingDate = LocalDateTime.now(),
         adminComment = adminComment,
     )
 }

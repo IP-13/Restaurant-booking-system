@@ -53,12 +53,10 @@ class RestaurantController(
         authHeader: String,
         @RequestBody(required = true)
         dto: RestaurantProcessTicketRequestDto,
-    ): ResponseEntity<RestaurantProcessTicketResponseDto> {
+    ): RestaurantProcessTicketResponseDto {
         log.debug("/restaurant/process_ticket endpoint invoked")
 
-        val response = restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
-
-        return ResponseEntity.ok(response)
+        return restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
     }
 
     @GetMapping("/show_tickets")
