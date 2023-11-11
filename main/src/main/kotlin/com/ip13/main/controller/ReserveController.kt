@@ -1,9 +1,11 @@
 package com.ip13.main.controller
 
+import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
 import com.ip13.main.model.dto.request.BookingConstraintRequestDto
 import com.ip13.main.model.dto.request.ReservationProcessDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
+import com.ip13.main.model.toBookingConstraint
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.RestaurantService
@@ -41,40 +43,12 @@ class ReserveController(
 
     @PostMapping("/add_booking_constraint")
     fun addBookingConstraint(
-        // Проверка токена уже была на стадии фильтров, так что если дошли до этого места, то хедер должен быть точно
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
         dto: BookingConstraintRequestDto,
     ): ResponseEntity<*> {
-        val restaurant = restaurantService.findByIdOrNull(dto.restaurantId)
-            ?: throw RestaurantNotFoundException("No restaurant with id ${dto.restaurantId}")
-
-        log.debug("Restaurant found\n{}", restaurant.toString())
-
-        val user = userService.getUserByTokenInHeader(authHeader)
-
-        log.debug("user extracted from token\n{}", user.toString())
-
-        // TODO() проверить работает ли в этом ресторане
-
-        // TODO() переделать dto и порефакторить под JPA
-
-//        val managerId = manager.id
-//        val restaurantId = restaurant.id
-//
-//        val isWorkingInRestaurant = managerService.checkIfWorksInRestaurantById(managerId, restaurantId)
-//
-//        if (!isWorkingInRestaurant) {
-//            return ResponseEntity(
-//                "Manager with id $managerId does not work in restaurant with id $restaurantId",
-//                HttpStatus.BAD_REQUEST
-//            )
-//        }
-//
-//        val bookingConstraint = dto.toBookingConstraint(managerId)
-//
-//        val bookingConstraintId = bookingConstraintService.save(bookingConstraint)
+        bookingConstraintService.addBookingConstraint(authHeader, dto)
 
         return ResponseEntity("", HttpStatus.OK)
     }
