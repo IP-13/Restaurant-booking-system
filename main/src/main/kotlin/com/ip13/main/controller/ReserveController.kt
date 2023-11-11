@@ -46,6 +46,8 @@ class ReserveController(
         @RequestBody(required = true)
         dto: AddBookingConstraintRequestDto,
     ): AddBookingConstraintResponseDto {
+        log.debug("/reserve/add_booking_constraint endpoint invoked")
+
         return bookingConstraintService.addBookingConstraint(authHeader, dto)
     }
 

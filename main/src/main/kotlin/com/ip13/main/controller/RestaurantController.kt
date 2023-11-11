@@ -54,6 +54,8 @@ class RestaurantController(
         @RequestBody(required = true)
         dto: RestaurantProcessTicketRequestDto,
     ): ResponseEntity<RestaurantProcessTicketResponseDto> {
+        log.debug("/restaurant/process_ticket endpoint invoked")
+
         val response = restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
 
         return ResponseEntity.ok(response)
@@ -66,6 +68,8 @@ class RestaurantController(
         @RequestHeader(name = "page_size", required = true)
         pageSize: Int,
     ): ShowTicketsResponseDto {
+        log.debug("/restaurant/show_tickets endpoint invoked")
+
         val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
 
         val tickets = restaurantAddTicketService.getTickets(pageRequest)
@@ -82,6 +86,8 @@ class RestaurantController(
         @RequestBody
         gradeVisitorRequestDto: GradeVisitorRequestDto,
     ): GradeVisitorResponseDto {
+        log.debug("/restaurant/add_grade_visitor endpoint invoked")
+
         val newGrade = gradeVisitorService.gradeRestaurant(authHeader, gradeVisitorRequestDto)
 
         return GradeVisitorResponseDto(newGrade)
