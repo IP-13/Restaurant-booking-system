@@ -51,4 +51,8 @@ class RestaurantService(
     fun getGrade(restaurantId: Int): Float {
         return restaurantRepository.getGrade(restaurantId)
     }
+
+    fun findByManagerId(managerId: Int): Restaurant {
+        return restaurantRepository.findByManagerId(managerId)
+    }
 }
