@@ -4,10 +4,7 @@ import com.ip13.main.model.dto.request.GradeManagerRequestDto
 import com.ip13.main.model.dto.request.GradeVisitorRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
-import com.ip13.main.model.dto.response.GradeVisitorResponseDto
-import com.ip13.main.model.dto.response.RestaurantAddTicketResponseDto
-import com.ip13.main.model.dto.response.RestaurantProcessTicketResponseDto
-import com.ip13.main.model.dto.response.ShowTicketsResponseDto
+import com.ip13.main.model.dto.response.*
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.GradeManagerService
 import com.ip13.main.service.GradeVisitorService
@@ -16,7 +13,6 @@ import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
-import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -96,34 +92,10 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody
-        gradeManagerRequestDto: GradeManagerRequestDto,
-    ): ResponseEntity<String> {
-        // TODO() переделать dto и порефакторить под JPA
+        dto: GradeManagerRequestDto,
+    ): GradeManagerResponseDto {
+        log.debug("/restaurant/add_grade_manager endpoint invoked")
 
-//        // Пользователь, который отправил запрос, дальше по его id достаем менеджера
-//        val user = userService.getUserByTokenInHeader(authHeader)
-//
-//        log.debug("user extracted from token\n{}", user.toString())
-//
-//        val manager = managerService.getManagerByUserIdOrNull(user.id)
-//            ?: throw ManagerNotFoundException("No manager found with userId ${user.id}")
-//
-//        log.debug("manager loaded from db\n{}", manager.toString())
-//
-//        val tableReserveTicket = tableReserveService.findByIdOrNull(gradeManagerDto.tableReserveTicketId)
-//            ?: throw TableReserveTicketNotFoundException(
-//                "No TableReserveTicket with id ${gradeManagerDto.tableReserveTicketId}"
-//            )
-//
-//        log.debug("tableReserveTicket loaded from db\n{}", tableReserveTicket.toString())
-//
-//        val newGrade = gradeManagerService.gradeUser(
-//            gradeManagerDto.toGradeManager(
-//                managerId = manager.id,
-//                userId = tableReserveTicket.userId // пользователь, которому ставим оценку
-//            )
-//        )
-
-        return ResponseEntity("", HttpStatus.OK)
+        return gradeManagerService.gradeUser(authHeader, dto)
     }
 }
