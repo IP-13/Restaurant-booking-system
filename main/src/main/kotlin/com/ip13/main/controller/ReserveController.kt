@@ -3,6 +3,7 @@ package com.ip13.main.controller
 import com.ip13.main.model.dto.request.AddBookingConstraintRequestDto
 import com.ip13.main.model.dto.request.ReservationProcessDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
+import com.ip13.main.model.dto.response.AddBookingConstraintResponseDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.RestaurantService
@@ -44,10 +45,8 @@ class ReserveController(
         authHeader: String,
         @RequestBody(required = true)
         dto: AddBookingConstraintRequestDto,
-    ): ResponseEntity<*> {
-        bookingConstraintService.addBookingConstraint(authHeader, dto)
-
-        return ResponseEntity("", HttpStatus.OK)
+    ): AddBookingConstraintResponseDto {
+        return bookingConstraintService.addBookingConstraint(authHeader, dto)
     }
 
     @GetMapping("/show_reservations")
