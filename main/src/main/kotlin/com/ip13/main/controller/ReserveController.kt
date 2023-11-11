@@ -58,6 +58,8 @@ class ReserveController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
     ): ShowReservationsResponseDto {
+        log.debug("/reserve/show_reservations endpoint invoked")
+
         return tableReserveService.getReservations(authHeader, pageNumber, pageSize)
     }
 
@@ -68,24 +70,9 @@ class ReserveController(
         @RequestBody
         dto: ReservationProcessRequestDto,
     ): ResponseEntity<*> {
-        val user = userService.getUserByTokenInHeader(authHeader)
+        log.debug("/reserve/process_reservation endpoint invoked")
 
-        log.debug("user extracted from token\n{}", user.toString())
-
-        // TODO() проверить работает ли в этом ресторане
-
-        // TODO() переделать dto и порефакторить под JPA
-
-//        val updatedCount = tableReserveService.processReservation(reservationProcessDto, manager.id)
-//
-//        return if (updatedCount == 1) {
-//            ResponseEntity("Successfully updated", HttpStatus.OK)
-//        } else {
-//            ResponseEntity(
-//                "Something went wrong. Reservation ${reservationProcessDto.tableReserveTicketId} was not updated",
-//                HttpStatus.INTERNAL_SERVER_ERROR
-//            )
-//        }
+        tableReserveService.processReservation(authHeader, dto)
 
         return ResponseEntity("", HttpStatus.OK)
     }

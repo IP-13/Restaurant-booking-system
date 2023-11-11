@@ -1,6 +1,8 @@
 package com.ip13.main.service
 
+import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
+import com.ip13.main.model.dto.request.ReservationProcessRequestDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.model.dto.response.ShowReservationsResponseDto
 import com.ip13.main.model.dto.response.TableReserveResponseDto
@@ -13,6 +15,7 @@ import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
@@ -122,5 +125,38 @@ class TableReserveService(
             status = TableReserveStatus.PROCESSING,
             comment = "Your ticket successfully added"
         )
+    }
+
+    fun processReservation(authHeader: String, dto: ReservationProcessRequestDto) {
+        val manager = userService.getUserByTokenInHeader(authHeader)
+
+        log.debug("manager extracted from token\n{}", manager.toString())
+
+        val tableReserveTicket = findByIdOrThrow(dto.tableReserveTicketId)
+
+        log.debug("TableReserveTicket found\n{}", tableReserveTicket)
+
+        if (tableReserveTicket.restaurant.manager.id != manager.id) {
+            throw CommonException(
+                "You don't work in restaurant ${tableReserveTicket.restaurant.id}",
+                HttpStatus.BAD_REQUEST
+            )
+        }
+
+        val processedTableReserveTicket = TableReserveTicket (
+            id = tableReserveTicket.id,
+            restaurant = tableReserveTicket.restaurant,
+            user = tableReserveTicket.user,
+            creationDate = tableReserveTicket.creationDate,
+            fromDate = tableReserveTicket.fromDate,
+            tillDate = tableReserveTicket.tillDate,
+            numOfGuests = tableReserveTicket.numOfGuests,
+            userComment = tableReserveTicket.userComment,
+            manager = manager,
+            managerComment = dto.managerComment,
+            status = dto.status,
+        )
+
+        save(processedTableReserveTicket)
     }
 }
