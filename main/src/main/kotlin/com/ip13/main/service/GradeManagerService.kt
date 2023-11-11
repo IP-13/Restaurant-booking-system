@@ -24,7 +24,6 @@ class GradeManagerService(
     private val log = getLogger(javaClass)
 
     fun gradeUser(authHeader: String, dto: GradeManagerRequestDto): GradeManagerResponseDto {
-        // Пользователь, который отправил запрос, дальше по его id достаем менеджера
         val manager = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("manager extracted from token\n{}", manager.toString())
@@ -36,6 +35,13 @@ class GradeManagerService(
         if (tableReserveTicket.restaurant.manager.id != manager.id) {
             throw CommonException(
                 "You don't work in restaurant ${tableReserveTicket.restaurant.id}",
+                HttpStatus.BAD_REQUEST
+            )
+        }
+
+        if (tableReserveTicket.gradeManager != null) {
+            throw CommonException(
+                "You already left grade to table reserve ticket with id ${tableReserveTicket.id}",
                 HttpStatus.BAD_REQUEST
             )
         }
