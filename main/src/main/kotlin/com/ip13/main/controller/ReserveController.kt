@@ -1,18 +1,17 @@
 package com.ip13.main.controller
 
-import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
-import com.ip13.main.model.dto.request.BookingConstraintRequestDto
-import com.ip13.main.model.dto.request.ReservationProcessDto
+import com.ip13.main.model.dto.request.AddBookingConstraintRequestDto
+import com.ip13.main.model.dto.request.ReservationProcessRequestDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
+import com.ip13.main.model.dto.response.AddBookingConstraintResponseDto
+import com.ip13.main.model.dto.response.ReservationProcessResponseDto
+import com.ip13.main.model.dto.response.ShowReservationsResponseDto
+import com.ip13.main.model.dto.response.TableReserveResponseDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.RestaurantService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -31,52 +30,22 @@ class ReserveController(
         authHeader: String,
         @RequestBody(required = true)
         tableReserveRequestDto: TableReserveRequestDto
-    ): ResponseEntity<String> {
+    ): TableReserveResponseDto {
         log.debug("/reserve/reserve_table endpoint invoked")
 
-        tableReserveService.reserveTable(tableReserveRequestDto, authHeader)
-
-        return ResponseEntity("", HttpStatus.OK)
+        return tableReserveService.reserveTable(tableReserveRequestDto, authHeader)
     }
 
     @PostMapping("/add_booking_constraint")
     fun addBookingConstraint(
-        // Проверка токена уже была на стадии фильтров, так что если дошли до этого места, то хедер должен быть точно
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
-        dto: BookingConstraintRequestDto,
-    ): ResponseEntity<*> {
-        val restaurant = restaurantService.findByIdOrNull(dto.restaurantId)
-            ?: throw RestaurantNotFoundException("No restaurant with id ${dto.restaurantId}")
+        dto: AddBookingConstraintRequestDto,
+    ): AddBookingConstraintResponseDto {
+        log.debug("/reserve/add_booking_constraint endpoint invoked")
 
-        log.debug("Restaurant found\n{}", restaurant.toString())
-
-        val user = userService.getUserByTokenInHeader(authHeader)
-
-        log.debug("user extracted from token\n{}", user.toString())
-
-        // TODO() проверить работает ли в этом ресторане
-
-        // TODO() переделать dto и порефакторить под JPA
-
-//        val managerId = manager.id
-//        val restaurantId = restaurant.id
-//
-//        val isWorkingInRestaurant = managerService.checkIfWorksInRestaurantById(managerId, restaurantId)
-//
-//        if (!isWorkingInRestaurant) {
-//            return ResponseEntity(
-//                "Manager with id $managerId does not work in restaurant with id $restaurantId",
-//                HttpStatus.BAD_REQUEST
-//            )
-//        }
-//
-//        val bookingConstraint = dto.toBookingConstraint(managerId)
-//
-//        val bookingConstraintId = bookingConstraintService.save(bookingConstraint)
-
-        return ResponseEntity("", HttpStatus.OK)
+        return bookingConstraintService.addBookingConstraint(authHeader, dto)
     }
 
     @GetMapping("/show_reservations")
@@ -87,20 +56,10 @@ class ReserveController(
         pageSize: Int,
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
-    ): ResponseEntity<*> {
-        val user = userService.getUserByTokenInHeader(authHeader)
+    ): ShowReservationsResponseDto {
+        log.debug("/reserve/show_reservations endpoint invoked")
 
-        log.debug("user extracted from token\n{}", user.toString())
-
-        // TODO() проверить работает ли в этом ресторане
-
-        val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
-
-        val reservations = tableReserveService.getReservations(pageRequest)
-
-        log.debug("tickets found\n{}", reservations.map { it::toString })
-
-        return ResponseEntity(reservations, HttpStatus.OK)
+        return tableReserveService.getReservations(authHeader, pageNumber, pageSize)
     }
 
     @PostMapping("/process_reservation")
@@ -108,27 +67,10 @@ class ReserveController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody
-        reservationProcessDto: ReservationProcessDto,
-    ): ResponseEntity<*> {
-        val user = userService.getUserByTokenInHeader(authHeader)
+        dto: ReservationProcessRequestDto,
+    ): ReservationProcessResponseDto {
+        log.debug("/reserve/process_reservation endpoint invoked")
 
-        log.debug("user extracted from token\n{}", user.toString())
-
-        // TODO() проверить работает ли в этом ресторане
-
-        // TODO() переделать dto и порефакторить под JPA
-
-//        val updatedCount = tableReserveService.processReservation(reservationProcessDto, manager.id)
-//
-//        return if (updatedCount == 1) {
-//            ResponseEntity("Successfully updated", HttpStatus.OK)
-//        } else {
-//            ResponseEntity(
-//                "Something went wrong. Reservation ${reservationProcessDto.tableReserveTicketId} was not updated",
-//                HttpStatus.INTERNAL_SERVER_ERROR
-//            )
-//        }
-
-        return ResponseEntity("", HttpStatus.OK)
+        return tableReserveService.processReservation(authHeader, dto)
     }
 }

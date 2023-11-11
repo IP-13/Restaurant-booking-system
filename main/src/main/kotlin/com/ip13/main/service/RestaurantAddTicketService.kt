@@ -77,21 +77,21 @@ class RestaurantAddTicketService(
 
         log.debug("Admin found\n{}", admin.toString())
 
-        val updatedRestaurantAddTicket = restaurantAddTicket.updateRestaurantAddTicket(
+        val processedRestaurantAddTicket = restaurantAddTicket.updateRestaurantAddTicket(
             status = dto.status,
             admin = admin,
             adminComment = dto.adminComment,
         )
 
         if (dto.status == RestaurantAddStatus.ACCEPTED) {
-            val restaurant = updatedRestaurantAddTicket.toRestaurant()
+            val restaurant = processedRestaurantAddTicket.toRestaurant()
 
-            val restaurantId = saveRestaurantAddTicketAndRestaurantTransactional(updatedRestaurantAddTicket, restaurant)
+            val restaurantId = saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant)
 
             return RestaurantProcessTicketResponseDto(RestaurantAddStatus.ACCEPTED, restaurantId)
         }
 
-        save(updatedRestaurantAddTicket)
+        save(processedRestaurantAddTicket)
 
         return RestaurantProcessTicketResponseDto(dto.status, null)
     }

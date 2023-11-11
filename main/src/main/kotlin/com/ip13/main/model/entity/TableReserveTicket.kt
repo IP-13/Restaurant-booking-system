@@ -1,5 +1,6 @@
 package com.ip13.main.model.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.ip13.main.model.enums.TableReserveStatus
 import com.ip13.main.security.entity.User
 import jakarta.persistence.*
@@ -27,8 +28,10 @@ class TableReserveTicket(
     val managerComment: String? = null,
     @Enumerated(EnumType.STRING)
     val status: TableReserveStatus = TableReserveStatus.PROCESSING,
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "tableReserveTicket")
     val gradeVisitor: GradeVisitor? = null,
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "tableReserveTicket")
     val gradeManager: GradeManager? = null,
 ) {

@@ -32,4 +32,6 @@ interface RestaurantRepository : CrudRepository<Restaurant, Int> {
         @Param("restaurant_id")
         restaurantId: Int,
     ): Float
+
+    fun findByManagerId(managerId: Int): Restaurant
 }

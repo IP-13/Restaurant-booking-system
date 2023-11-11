@@ -1,8 +1,11 @@
 package com.ip13.main.service
 
+import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
-import com.ip13.main.model.dto.request.ReservationProcessDto
+import com.ip13.main.model.dto.request.ReservationProcessRequestDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
+import com.ip13.main.model.dto.response.ReservationProcessResponseDto
+import com.ip13.main.model.dto.response.ShowReservationsResponseDto
 import com.ip13.main.model.dto.response.TableReserveResponseDto
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.model.enums.TableReserveStatus
@@ -11,7 +14,9 @@ import com.ip13.main.repository.TableReserveTicketRepository
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
 
 @Service
@@ -26,17 +31,23 @@ class TableReserveService(
         return tableReserveTicketRepository.save(tableReserveTicket)
     }
 
-    fun getReservations(pageRequest: PageRequest): List<TableReserveTicket> {
-        return tableReserveTicketRepository.findAll(pageRequest).toList()
-    }
+    fun getReservations(authHeader: String, pageNumber: Int, pageSize: Int): ShowReservationsResponseDto {
+        val manager = userService.getUserByTokenInHeader(authHeader)
 
-    fun processReservation(reservationProcessDto: ReservationProcessDto, managerId: Int): Int {
-        return tableReserveTicketRepository.processReservationDto(
-            tableReserveTicketId = reservationProcessDto.tableReserveTicketId,
-            managerId = managerId,
-            managerComment = reservationProcessDto.managerComment,
-            status = reservationProcessDto.status.name,
-        )
+        log.debug("manager extracted from token\n{}", manager.toString())
+
+        val restaurant = restaurantService.findByManagerId(manager.id)
+
+        log.debug("restaurant found by manager id\n{}", restaurant.toString())
+
+        val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
+
+        val reservations =
+            tableReserveTicketRepository.findAll(pageRequest).filter { it.restaurant.id == restaurant.id }.toList()
+
+        log.debug("reservations found\n{}", reservations.map { it.toString() })
+
+        return ShowReservationsResponseDto(reservations)
     }
 
     fun findByIdOrNull(id: Int): TableReserveTicket? {
@@ -114,6 +125,42 @@ class TableReserveService(
             bookingConstraints = bookingConstraints,
             status = TableReserveStatus.PROCESSING,
             comment = "Your ticket successfully added"
+        )
+    }
+
+    fun processReservation(authHeader: String, dto: ReservationProcessRequestDto): ReservationProcessResponseDto {
+        val manager = userService.getUserByTokenInHeader(authHeader)
+
+        log.debug("manager extracted from token\n{}", manager.toString())
+
+        val tableReserveTicket = findByIdOrThrow(dto.tableReserveTicketId)
+
+        log.debug("TableReserveTicket found\n{}", tableReserveTicket)
+
+        if (tableReserveTicket.restaurant.manager.id != manager.id) {
+            throw CommonException(
+                "You don't work in restaurant ${tableReserveTicket.restaurant.id}",
+                HttpStatus.BAD_REQUEST
+            )
+        }
+
+        val processedTableReserveTicket = TableReserveTicket(
+            id = tableReserveTicket.id,
+            restaurant = tableReserveTicket.restaurant,
+            user = tableReserveTicket.user,
+            creationDate = tableReserveTicket.creationDate,
+            fromDate = tableReserveTicket.fromDate,
+            tillDate = tableReserveTicket.tillDate,
+            numOfGuests = tableReserveTicket.numOfGuests,
+            userComment = tableReserveTicket.userComment,
+            manager = manager,
+            managerComment = dto.managerComment,
+            status = dto.status,
+        )
+
+        return ReservationProcessResponseDto(
+            id = processedTableReserveTicket.id,
+            status = processedTableReserveTicket.status,
         )
     }
 }

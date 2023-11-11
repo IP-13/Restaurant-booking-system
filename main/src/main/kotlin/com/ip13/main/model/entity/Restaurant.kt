@@ -1,5 +1,6 @@
 package com.ip13.main.model.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.ip13.main.security.entity.User
 import jakarta.persistence.*
 
@@ -24,10 +25,13 @@ class Restaurant(
     val description: String? = null,
     val numOfGrades: Int = 0,
     val sumOfGrades: Int = 0,
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     val tableReserveTickets: List<TableReserveTicket> = listOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     val gradesFromVisitors: List<GradeVisitor> = listOf(),
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     val bookingConstraints: List<BookingConstraint> = listOf(),
 ) {

@@ -1,9 +1,6 @@
 package com.ip13.main.model
 
-import com.ip13.main.model.dto.request.BlackListRequestDto
-import com.ip13.main.model.dto.request.GradeVisitorRequestDto
-import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
-import com.ip13.main.model.dto.request.TableReserveRequestDto
+import com.ip13.main.model.dto.request.*
 import com.ip13.main.model.entity.*
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.enums.TableReserveStatus
@@ -91,6 +88,7 @@ fun RestaurantAddTicket.updateRestaurantAddTicket(
         creationDate = this.creationDate,
         status = status,
         admin = admin,
+        processingDate = LocalDateTime.now(),
         adminComment = adminComment,
     )
 }
@@ -106,5 +104,15 @@ fun GradeVisitorRequestDto.toGradeVisitor(
         restaurant = restaurant,
         grade = this.grade,
         comment = this.comment
+    )
+}
+
+fun AddBookingConstraintRequestDto.toBookingConstraint(restaurant: Restaurant, manager: User): BookingConstraint {
+    return BookingConstraint(
+        restaurant = restaurant,
+        manager = manager,
+        reason = this.reason,
+        fromDate = this.fromDate,
+        tillDate = this.tillDate,
     )
 }
