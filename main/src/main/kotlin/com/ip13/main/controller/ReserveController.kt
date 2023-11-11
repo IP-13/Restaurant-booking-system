@@ -5,6 +5,7 @@ import com.ip13.main.model.dto.request.ReservationProcessDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.model.dto.response.AddBookingConstraintResponseDto
 import com.ip13.main.model.dto.response.ShowReservationsResponseDto
+import com.ip13.main.model.dto.response.TableReserveResponseDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.RestaurantService
@@ -30,12 +31,10 @@ class ReserveController(
         authHeader: String,
         @RequestBody(required = true)
         tableReserveRequestDto: TableReserveRequestDto
-    ): ResponseEntity<String> {
+    ): TableReserveResponseDto {
         log.debug("/reserve/reserve_table endpoint invoked")
 
-        tableReserveService.reserveTable(tableReserveRequestDto, authHeader)
-
-        return ResponseEntity("", HttpStatus.OK)
+        return tableReserveService.reserveTable(tableReserveRequestDto, authHeader)
     }
 
     @PostMapping("/add_booking_constraint")
