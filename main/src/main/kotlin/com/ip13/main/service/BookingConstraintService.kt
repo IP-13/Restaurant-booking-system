@@ -1,7 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.BookingConstraintRequestDto
+import com.ip13.main.model.dto.request.AddBookingConstraintRequestDto
 import com.ip13.main.model.entity.BookingConstraint
 import com.ip13.main.model.toBookingConstraint
 import com.ip13.main.repository.BookingConstraintRepository
@@ -27,7 +27,7 @@ class BookingConstraintService(
         return bookingConstraintRepository.isOpen(fromDate, tillDate, restaurantId)
     }
 
-    fun addBookingConstraint(authHeader: String, dto: BookingConstraintRequestDto) {
+    fun addBookingConstraint(authHeader: String, dto: AddBookingConstraintRequestDto) {
         val restaurant = restaurantService.findByIdOrThrow(dto.restaurantId)
 
         log.debug("Restaurant found\n{}", restaurant.toString())

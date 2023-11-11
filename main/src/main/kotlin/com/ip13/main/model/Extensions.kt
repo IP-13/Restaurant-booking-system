@@ -106,7 +106,7 @@ fun GradeVisitorRequestDto.toGradeVisitor(
     )
 }
 
-fun BookingConstraintRequestDto.toBookingConstraint(restaurant: Restaurant, manager: User): BookingConstraint {
+fun AddBookingConstraintRequestDto.toBookingConstraint(restaurant: Restaurant, manager: User): BookingConstraint {
     return BookingConstraint(
         restaurant = restaurant,
         manager = manager,

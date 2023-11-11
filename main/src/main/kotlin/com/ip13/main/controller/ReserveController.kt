@@ -1,11 +1,8 @@
 package com.ip13.main.controller
 
-import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
-import com.ip13.main.model.dto.request.BookingConstraintRequestDto
+import com.ip13.main.model.dto.request.AddBookingConstraintRequestDto
 import com.ip13.main.model.dto.request.ReservationProcessDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
-import com.ip13.main.model.toBookingConstraint
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.RestaurantService
@@ -46,7 +43,7 @@ class ReserveController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody(required = true)
-        dto: BookingConstraintRequestDto,
+        dto: AddBookingConstraintRequestDto,
     ): ResponseEntity<*> {
         bookingConstraintService.addBookingConstraint(authHeader, dto)
 
