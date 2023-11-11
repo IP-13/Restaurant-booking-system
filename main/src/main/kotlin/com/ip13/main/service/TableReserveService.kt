@@ -3,6 +3,7 @@ package com.ip13.main.service
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
 import com.ip13.main.model.dto.request.ReservationProcessDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
+import com.ip13.main.model.dto.response.ShowReservationsResponseDto
 import com.ip13.main.model.dto.response.TableReserveResponseDto
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.model.enums.TableReserveStatus
@@ -11,6 +12,7 @@ import com.ip13.main.repository.TableReserveTicketRepository
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 
@@ -26,8 +28,23 @@ class TableReserveService(
         return tableReserveTicketRepository.save(tableReserveTicket)
     }
 
-    fun getReservations(pageRequest: PageRequest): List<TableReserveTicket> {
-        return tableReserveTicketRepository.findAll(pageRequest).toList()
+    fun getReservations(authHeader: String, pageNumber: Int, pageSize: Int): ShowReservationsResponseDto {
+        val manager = userService.getUserByTokenInHeader(authHeader)
+
+        log.debug("manager extracted from token\n{}", manager.toString())
+
+        val restaurant = restaurantService.findByManagerId(manager.id)
+
+        log.debug("restaurant found by manager id\n{}", restaurant.toString())
+
+        val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
+
+        val reservations =
+            tableReserveTicketRepository.findAll(pageRequest).filter { it.restaurant.id == restaurant.id }.toList()
+
+        log.debug("reservations found\n{}", reservations.map { it.toString() })
+
+        return ShowReservationsResponseDto(reservations)
     }
 
     fun processReservation(reservationProcessDto: ReservationProcessDto, managerId: Int): Int {

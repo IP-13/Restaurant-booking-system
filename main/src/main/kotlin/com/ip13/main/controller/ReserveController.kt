@@ -4,13 +4,12 @@ import com.ip13.main.model.dto.request.AddBookingConstraintRequestDto
 import com.ip13.main.model.dto.request.ReservationProcessDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.model.dto.response.AddBookingConstraintResponseDto
+import com.ip13.main.model.dto.response.ShowReservationsResponseDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.RestaurantService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -59,20 +58,8 @@ class ReserveController(
         pageSize: Int,
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
-    ): ResponseEntity<*> {
-        val user = userService.getUserByTokenInHeader(authHeader)
-
-        log.debug("user extracted from token\n{}", user.toString())
-
-        // TODO() проверить работает ли в этом ресторане
-
-        val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
-
-        val reservations = tableReserveService.getReservations(pageRequest)
-
-        log.debug("tickets found\n{}", reservations.map { it::toString })
-
-        return ResponseEntity(reservations, HttpStatus.OK)
+    ): ShowReservationsResponseDto {
+        return tableReserveService.getReservations(authHeader, pageNumber, pageSize)
     }
 
     @PostMapping("/process_reservation")
