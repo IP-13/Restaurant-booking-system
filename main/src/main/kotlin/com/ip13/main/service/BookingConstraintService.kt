@@ -9,8 +9,8 @@ import java.time.LocalDateTime
 class BookingConstraintService(
     private val bookingConstraintRepository: BookingConstraintRepository,
 ) {
-    fun save(bookingConstraint: BookingConstraint): Int {
-        return bookingConstraintRepository.save(bookingConstraint).id
+    fun save(bookingConstraint: BookingConstraint): BookingConstraint {
+        return bookingConstraintRepository.save(bookingConstraint)
     }
 
     fun isOpen(fromDate: LocalDateTime, tillDate: LocalDateTime, restaurantId: Int): Int {
