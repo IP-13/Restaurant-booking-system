@@ -4,6 +4,7 @@ import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
 import com.ip13.main.model.dto.request.ReservationProcessRequestDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
+import com.ip13.main.model.dto.response.ReservationProcessResponseDto
 import com.ip13.main.model.dto.response.ShowReservationsResponseDto
 import com.ip13.main.model.dto.response.TableReserveResponseDto
 import com.ip13.main.model.entity.TableReserveTicket
@@ -127,7 +128,7 @@ class TableReserveService(
         )
     }
 
-    fun processReservation(authHeader: String, dto: ReservationProcessRequestDto) {
+    fun processReservation(authHeader: String, dto: ReservationProcessRequestDto): ReservationProcessResponseDto {
         val manager = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("manager extracted from token\n{}", manager.toString())
@@ -143,7 +144,7 @@ class TableReserveService(
             )
         }
 
-        val processedTableReserveTicket = TableReserveTicket (
+        val processedTableReserveTicket = TableReserveTicket(
             id = tableReserveTicket.id,
             restaurant = tableReserveTicket.restaurant,
             user = tableReserveTicket.user,
@@ -157,6 +158,9 @@ class TableReserveService(
             status = dto.status,
         )
 
-        save(processedTableReserveTicket)
+        return ReservationProcessResponseDto(
+            id = processedTableReserveTicket.id,
+            status = processedTableReserveTicket.status,
+        )
     }
 }
