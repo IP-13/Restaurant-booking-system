@@ -1,7 +1,7 @@
 package com.ip13.main.controller
 
 import com.ip13.main.model.dto.request.AddBookingConstraintRequestDto
-import com.ip13.main.model.dto.request.ReservationProcessDto
+import com.ip13.main.model.dto.request.ReservationProcessRequestDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.model.dto.response.AddBookingConstraintResponseDto
 import com.ip13.main.model.dto.response.ShowReservationsResponseDto
@@ -66,7 +66,7 @@ class ReserveController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @RequestBody
-        reservationProcessDto: ReservationProcessDto,
+        dto: ReservationProcessRequestDto,
     ): ResponseEntity<*> {
         val user = userService.getUserByTokenInHeader(authHeader)
 

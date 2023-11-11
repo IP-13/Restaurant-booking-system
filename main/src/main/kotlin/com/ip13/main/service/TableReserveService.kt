@@ -1,7 +1,6 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
-import com.ip13.main.model.dto.request.ReservationProcessDto
 import com.ip13.main.model.dto.request.TableReserveRequestDto
 import com.ip13.main.model.dto.response.ShowReservationsResponseDto
 import com.ip13.main.model.dto.response.TableReserveResponseDto
@@ -45,15 +44,6 @@ class TableReserveService(
         log.debug("reservations found\n{}", reservations.map { it.toString() })
 
         return ShowReservationsResponseDto(reservations)
-    }
-
-    fun processReservation(reservationProcessDto: ReservationProcessDto, managerId: Int): Int {
-        return tableReserveTicketRepository.processReservationDto(
-            tableReserveTicketId = reservationProcessDto.tableReserveTicketId,
-            managerId = managerId,
-            managerComment = reservationProcessDto.managerComment,
-            status = reservationProcessDto.status.name,
-        )
     }
 
     fun findByIdOrNull(id: Int): TableReserveTicket? {
