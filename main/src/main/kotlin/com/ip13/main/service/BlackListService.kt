@@ -12,9 +12,14 @@ class BlackListService(
     private val blackListRepository: BlackListRepository,
     private val userService: UserService,
 ) {
-    fun save(dto: BlackListRequestDto): Int {
+    fun processRequest(dto: BlackListRequestDto): Int {
         // check if user exists
         val blackList = dto.toBlackList()
+        userService.findByIdOrThrow(blackList.user.id)
+        return blackListRepository.save(blackList).id
+    }
+
+    fun save(blackList: BlackList): Int {
         userService.findByIdOrThrow(blackList.user.id)
         return blackListRepository.save(blackList).id
     }
