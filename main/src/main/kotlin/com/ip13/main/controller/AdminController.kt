@@ -76,7 +76,7 @@ class AdminController(
     ): ResponseEntity<Int> {
         logger.debug("/admin/add_to_black_list endpoint invoked")
 
-        val blackListId = blackListService.save(blackListRequestDto.toBlackList())
+        val blackListId = blackListService.save(blackListRequestDto)
 
         return ResponseEntity.ok(blackListId)
     }
