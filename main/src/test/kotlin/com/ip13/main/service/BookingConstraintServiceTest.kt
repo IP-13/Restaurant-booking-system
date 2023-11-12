@@ -13,6 +13,7 @@ import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
@@ -46,7 +47,7 @@ class BookingConstraintServiceTest {
         every { bookingConstraintRepository.save(any()) } returns BookingConstraint(17)
         val bcsReturned = bookingConstraintService.addBookingConstraint(TEST_AUTH_HEADER, dto)
         assertAll(
-                { bcsReturned.id == 17 }
+                { Assertions.assertEquals(bcsReturned.id, 17) }
         )
     }
 
