@@ -3,7 +3,6 @@ package com.ip13.main.controller
 import com.ip13.main.model.dto.request.BlackListRequestDto
 import com.ip13.main.model.dto.request.RoleAddRequestDto
 import com.ip13.main.model.dto.request.RoleDeleteRequestDto
-import com.ip13.main.model.toBlackList
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BlackListService
 import com.ip13.main.util.getLogger
@@ -76,7 +75,7 @@ class AdminController(
     ): ResponseEntity<Int> {
         logger.debug("/admin/add_to_black_list endpoint invoked")
 
-        val blackListId = blackListService.save(blackListRequestDto)
+        val blackListId = blackListService.processRequest(blackListRequestDto)
 
         return ResponseEntity.ok(blackListId)
     }
