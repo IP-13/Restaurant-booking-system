@@ -63,7 +63,7 @@ class GradeManagerServiceTest {
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
         every { gradeManagerRepository.save(any()) } returns defaultGradeManager
         every { blackListService.save(any()) } returns defaultBlackList.id
-        val response =  gradeManagerService.gradeUser(TEST_AUTH_HEADER, dto)
+        val response = gradeManagerService.gradeUser(TEST_AUTH_HEADER, dto)
         assertAll(
                 { Assertions.assertEquals(TEST_GRADE.toFloat(), response.newAverageGrade) }
         )
@@ -93,7 +93,7 @@ class GradeManagerServiceTest {
     fun doubleGradeUserTest() {
         val defaultUser = User(id = BookingConstraintServiceTest.TEST_USER_ID)
         val defaultManager = User(id = TEST_MANAGER_ID)
-        val defaultRestaurant = Restaurant(id = BookingConstraintServiceTest.TEST_RESTAURANT_ID, manager = defaultManager)
+        val defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID, manager = defaultManager)
         var defaultTableReserveTicket = TableReserveTicket(
                 id = TEST_TABLE_RESERVE_ID,
                 restaurant = defaultRestaurant,
@@ -129,6 +129,7 @@ class GradeManagerServiceTest {
         const val TEST_TABLE_RESERVE_ID = 15
         const val TEST_MANAGER_ID = 17
         const val TEST_GRADE = 5
+        const val TEST_RESTAURANT_ID = 11
         const val TEST_AUTH_HEADER = "TEST_AUTH_HEADER"
         const val TEST_COMMENT = "TEST_COMMENT"
     }

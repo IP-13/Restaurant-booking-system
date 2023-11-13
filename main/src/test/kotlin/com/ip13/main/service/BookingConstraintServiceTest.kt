@@ -4,9 +4,7 @@ import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.model.dto.request.AddBookingConstraintRequestDto
 import com.ip13.main.model.entity.BookingConstraint
 import com.ip13.main.model.entity.Restaurant
-import com.ip13.main.model.toBookingConstraint
 import com.ip13.main.repository.BookingConstraintRepository
-import com.ip13.main.repository.RestaurantRepository
 import com.ip13.main.security.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
@@ -18,7 +16,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
-import org.springframework.data.repository.findByIdOrNull
 import java.time.LocalDateTime
 
 @ExtendWith(MockKExtension::class)
@@ -82,8 +79,8 @@ class BookingConstraintServiceTest {
     }
 
     companion object {
-        const val TEST_RESTAURANT_ID = 11;
-        const val TEST_USER_ID = 13;
-        const val TEST_AUTH_HEADER = "TEST_AUTH_HEADER";
+        const val TEST_RESTAURANT_ID = 11
+        const val TEST_USER_ID = 13
+        const val TEST_AUTH_HEADER = "TEST_AUTH_HEADER"
     }
 }
