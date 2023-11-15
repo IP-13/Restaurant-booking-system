@@ -1,5 +1,43 @@
 #!/bin/bash
-cd ..
-gradle build
-gradle jacocoTestReport
-docker compose up
+if [ -n "$1" ]
+then
+  if [ "$1" = "-h" ]
+  then
+    printf "%s\n" "Global options:"
+    printf "\t%-20s%-50s\n" "-jacocoReport" "generates jacoco report"
+    printf "\t%-20s%-50s\n" "-no_volumes" "runs app with no-volumes docker profile"
+    printf "\t%-20s%-50s\n" "-volumes" "runs app with volumes docker profile"
+    printf "\n"
+    printf "print './start -h' for help\n"
+  else
+    cd ..
+    gradle build
+    while [ -n "$1" ]
+    do
+    case "$1" in
+      -no_volumes)
+        echo "no_volumes profile chosen"
+        docker compose --profile no_volumes up
+        ;;
+      -volumes)
+        echo "volumes profile chosen"
+        docker compose --profile volumes up
+        ;;
+      -jacocoReport) gradle jacocoTestReport
+        ;;
+      *) echo "unknown flag: $1"
+    esac
+    shift
+    done
+    if [[ $* != "-no_volumes" ]] && [[ $* != "-volumes" ]]
+    then
+      echo "no docker profile flag found, use 'volumes' profile by default"
+      docker compose --profile volumes up
+    fi
+  fi
+else
+  echo "no docker profile flag found, use 'volumes' profile by default"
+  cd ..
+  gradle build
+  docker compose --profile volumes up
+fi
