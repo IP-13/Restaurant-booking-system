@@ -5,35 +5,30 @@ import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.oauth2.jwt.JwtClaimsSet
 import org.springframework.stereotype.Service
 import java.security.Key
-import java.time.Instant
 import java.util.*
 
 @Service
 class TokenService {
-    private val secret = "s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu"
-    private val lifeTimeSeconds = 120L
+    @Value("\${security.secret}")
+    private lateinit var secret: String
+
+    @Value("\${security.lifeTimeSeconds}")
+    private lateinit var lifeTimeSeconds: String
 
     fun createToken(user: User): String {
         val roles = user.authorities.map(GrantedAuthority::getAuthority).toList()
 
-        val claims = JwtClaimsSet.builder()
-            .issuedAt(Instant.now())
-            .expiresAt(Instant.now().plusSeconds(lifeTimeSeconds))
-            .subject(user.username)
-            .claim("userId", user.id)
-            .claim("roles", roles)
-            .build()
-            .claims
+        val claims = mapOf<String, Any>("roles" to roles)
 
         return Jwts.builder()
             .setClaims(claims)
             .setSubject(user.username)
             .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + lifeTimeSeconds * 1000))
+            .setExpiration(Date(System.currentTimeMillis() + lifeTimeSeconds.toLong() * 1000))
             .signWith(createSignInKey())
             .compact()
     }
