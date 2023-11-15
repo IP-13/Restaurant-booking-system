@@ -7,6 +7,7 @@ import com.ip13.main.exceptionHandling.exception.NotMegaAdminException
 import io.jsonwebtoken.ExpiredJwtException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.server.ResponseStatusException
@@ -38,5 +39,11 @@ class CommonControllerAdvice {
     @ExceptionHandler(CommonException::class)
     fun handleCommonException(ex: CommonException): ResponseEntity<CommonResponse> {
         return ResponseEntity(CommonResponse(message = ex.toString()), ex.httpStatusCode)
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handleValidation(ex: MethodArgumentNotValidException): ResponseEntity<CommonResponse> {
+        val message = "Look like you entered invalid data.\n${ex.message}"
+        return ResponseEntity(CommonResponse(ex.message), HttpStatus.BAD_REQUEST)
     }
 }

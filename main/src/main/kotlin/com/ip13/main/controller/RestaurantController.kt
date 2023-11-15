@@ -9,6 +9,7 @@ import com.ip13.main.service.GradeManagerService
 import com.ip13.main.service.GradeVisitorService
 import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.util.getLogger
+import jakarta.validation.Valid
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -27,6 +28,7 @@ class RestaurantController(
     fun createTicketToAddRestaurant(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody(required = true)
         restaurantAddTicketRequestDto: RestaurantAddTicketRequestDto,
     ): ResponseEntity<RestaurantAddTicketResponseDto> {
@@ -43,6 +45,7 @@ class RestaurantController(
     fun processTicketToAddRestaurant(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody(required = true)
         dto: RestaurantProcessTicketRequestDto,
     ): RestaurantProcessTicketResponseDto {
@@ -73,6 +76,7 @@ class RestaurantController(
     fun addGradeVisitor(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody
         gradeVisitorRequestDto: GradeVisitorRequestDto,
     ): GradeVisitorResponseDto {
@@ -87,6 +91,7 @@ class RestaurantController(
     fun addGradeManager(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody
         dto: GradeManagerRequestDto,
     ): GradeManagerResponseDto {

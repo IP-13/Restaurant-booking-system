@@ -6,6 +6,7 @@ import com.ip13.main.model.dto.request.RoleDeleteRequestDto
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BlackListService
 import com.ip13.main.util.getLogger
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
@@ -21,6 +22,7 @@ class AdminController(
 
     @PostMapping("/add_role")
     fun addRole(
+        @Valid
         @RequestBody(required = true)
         roleAddRequestDto: RoleAddRequestDto,
     ): ResponseEntity<String> {
@@ -42,6 +44,7 @@ class AdminController(
 
     @PostMapping("/delete_role")
     fun deleteRole(
+        @Valid
         @RequestBody(required = true)
         roleDeleteRequestDto: RoleDeleteRequestDto,
     ): ResponseEntity<String> {
@@ -70,6 +73,7 @@ class AdminController(
 
     @PostMapping("/add_to_black_list")
     fun addToBlackList(
+        @Valid
         @RequestBody(required = true)
         blackListRequestDto: BlackListRequestDto
     ): ResponseEntity<Int> {
