@@ -34,7 +34,7 @@ class AuthControllerTest: AbstractTestContainersTest() {
         val user = userRepository.findByUsername("ip13")!!
 
         assertAll(
-            { assertThat(passwordEncoder.matches("who am i", user.password)).isTrue() },
+            { assertThat(passwordEncoder.matches("ip_13Q!", user.password)).isTrue() },
             { assertThat(user.username).isEqualTo("ip13") },
             { assertThat(user.numOfGrades).isEqualTo(0) },
             { assertThat(user.sumOfGrades).isEqualTo(0) },
