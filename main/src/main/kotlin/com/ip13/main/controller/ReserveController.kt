@@ -12,6 +12,7 @@ import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.RestaurantService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -28,6 +29,7 @@ class ReserveController(
     fun reserveTable(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody(required = true)
         tableReserveRequestDto: TableReserveRequestDto
     ): TableReserveResponseDto {
@@ -40,6 +42,7 @@ class ReserveController(
     fun addBookingConstraint(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody(required = true)
         dto: AddBookingConstraintRequestDto,
     ): AddBookingConstraintResponseDto {
@@ -66,6 +69,7 @@ class ReserveController(
     fun processReservation(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody
         dto: ReservationProcessRequestDto,
     ): ReservationProcessResponseDto {
