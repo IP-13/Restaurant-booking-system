@@ -17,15 +17,12 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.testcontainers.containers.PostgreSQLContainer
-import org.testcontainers.junit.jupiter.Container
-import org.testcontainers.junit.jupiter.Testcontainers
 import java.io.File
 
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = ["security.enabled=true"],
 )
-@Testcontainers
 @AutoConfigureMockMvc
 abstract class AbstractTestContainersTest {
     @Autowired
@@ -84,11 +81,11 @@ abstract class AbstractTestContainersTest {
         const val ADMIN = "ADMIN"
         const val MANAGER = "MANAGER"
 
-        @Container
-        val container = PostgreSQLContainer(POSTGRES_IMAGE).apply {
+        private val container = PostgreSQLContainer(POSTGRES_IMAGE).apply {
             withDatabaseName("test_db")
             withUsername("test_user")
             withPassword("test_password")
+            start()
         }
 
         @JvmStatic
