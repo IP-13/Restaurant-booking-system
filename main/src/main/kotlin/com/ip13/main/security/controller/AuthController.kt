@@ -6,6 +6,7 @@ import com.ip13.main.security.dto.RegisterDto
 import com.ip13.main.security.dto.RegisterResponseDto
 import com.ip13.main.security.service.AuthService
 import com.ip13.main.util.getLogger
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -21,6 +22,7 @@ class AuthController(
 
     @PostMapping("/register")
     fun register(
+        @Valid
         @RequestBody
         registerDto: RegisterDto,
     ): ResponseEntity<RegisterResponseDto> {
@@ -33,6 +35,7 @@ class AuthController(
 
     @PostMapping("/login")
     fun login(
+        @Valid
         @RequestBody
         loginDto: LoginDto
     ): ResponseEntity<LoginResponseDto> {
