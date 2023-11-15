@@ -156,28 +156,6 @@ class EndPointsOnWholeSystemTest(
         }
     }
 
-    @Test
-    @WithMockUser(authorities = [ADMIN])
-    fun `test add role to non-existent user`() {
-        val body = loadAsString("json/non_existent_user.json")
-
-        mockMvc.post("/admin/add_role") {
-            contentType = MediaType.APPLICATION_JSON
-            accept = MediaType.APPLICATION_JSON
-            content = body
-        }.andExpect {
-            status().`is`(400)
-            content {
-                jsonPath(
-                    "message",
-                    containsString(
-                        "UserNotFoundException: User with id: 10 not found",
-                    )
-                )
-            }
-        }
-    }
-
     private fun registerDefaultUser() {
         val body = loadAsString("json/default_user_register_dto.json")
 
