@@ -3,6 +3,7 @@ package com.ip13.main
 import com.ip13.main.model.enums.Role
 import com.ip13.main.security.repository.UserRepository
 import com.ip13.main.utils.loadAsString
+import com.ip13.main.utils.registerDefaultUser
 import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.BeforeEach
@@ -13,10 +14,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.jdbc.core.JdbcTemplate
-import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -88,7 +87,7 @@ class EndPointsOnWholeSystemTest(
     @Test
     @WithMockUser(authorities = [ADMIN])
     fun `should return 400 status code when register with username that already exists`() {
-        registerDefaultUser()
+        registerDefaultUser(mockMvc)
 
         val body = loadAsString("json/default_user_register_dto.json")
 
@@ -114,7 +113,7 @@ class EndPointsOnWholeSystemTest(
 
     @Test
     fun `should return token when login with valid name and password`() {
-        registerDefaultUser()
+        registerDefaultUser(mockMvc)
 
         val body = loadAsString("json/default_user_register_dto.json")
 
@@ -136,7 +135,7 @@ class EndPointsOnWholeSystemTest(
 
     @Test
     fun `should return 400 status code when wrong password`() {
-        registerDefaultUser()
+        registerDefaultUser(mockMvc)
 
         val body = loadAsString("json/default_user_with_wrong_password.json")
 
@@ -151,26 +150,6 @@ class EndPointsOnWholeSystemTest(
                 jsonPath(
                     "message",
                     containsString("passwords don't match"),
-                )
-            }
-        }
-    }
-
-    private fun registerDefaultUser() {
-        val body = loadAsString("json/default_user_register_dto.json")
-
-        mockMvc.post("/auth/register") {
-            contentType = MediaType.APPLICATION_JSON
-            accept = MediaType.APPLICATION_JSON
-            content = body
-            with(user("ip13").password("13579").authorities(SimpleGrantedAuthority(ADMIN)))
-        }.andExpect {
-            status().`is`(200)
-            content {
-                // проверка что приходит токен
-                jsonPath(
-                    "token",
-                    containsString(""),
                 )
             }
         }
