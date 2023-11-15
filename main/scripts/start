@@ -4,14 +4,15 @@ then
   if [ "$1" = "-h" ]
   then
     printf "%s\n" "Global options:"
-    printf "\t%-20s%-50s\n" "-jacocoReport" "generates jacoco report"
+    printf "\t%-20s%-50s\n" "-jacocoReport" "generates jacoco report. Works only after '-test' option"
     printf "\t%-20s%-50s\n" "-no_volumes" "runs app with no-volumes docker profile"
     printf "\t%-20s%-50s\n" "-volumes" "runs app with volumes docker profile"
+    printf "\t%-20s%-50s\n" "-test" "run gradle test task"
     printf "\n"
     printf "print './start -h' for help\n"
   else
     cd ..
-    gradle build
+    gradle build -x test
     while [ -n "$1" ]
     do
     case "$1" in
@@ -23,7 +24,11 @@ then
         echo "volumes profile chosen"
         docker compose --profile volumes up
         ;;
-      -jacocoReport) gradle jacocoTestReport
+      -jacocoReport)
+        gradle jacocoTestReport
+        ;;
+      -test)
+        gradle test
         ;;
       *) echo "unknown flag: $1"
     esac
@@ -38,6 +43,6 @@ then
 else
   echo "no docker profile flag found, use 'volumes' profile by default"
   cd ..
-  gradle build
+  gradle build -x test
   docker compose --profile volumes up
 fi
