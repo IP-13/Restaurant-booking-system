@@ -11,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
-import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.servlet.MockMvc
@@ -26,7 +25,6 @@ import java.io.File
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = ["security.enabled=true"],
 )
-@ActiveProfiles("test-containers-flyway")
 @Testcontainers
 @AutoConfigureMockMvc
 abstract class AbstractTestContainersTest {
@@ -59,8 +57,6 @@ abstract class AbstractTestContainersTest {
     }
 
     fun registerDefaultUser() {
-        val adminRole = "ADMIN"
-
         val body = loadAsString("json/default_user_register_dto.json")
 
         mockMvc.post("/auth/register") {
@@ -69,7 +65,7 @@ abstract class AbstractTestContainersTest {
             content = body
             with(
                 SecurityMockMvcRequestPostProcessors.user("ip13")
-                    .password("13579").authorities(SimpleGrantedAuthority(adminRole))
+                    .password("13579").authorities(SimpleGrantedAuthority(ADMIN))
             )
         }.andExpect {
             MockMvcResultMatchers.status().`is`(200)
