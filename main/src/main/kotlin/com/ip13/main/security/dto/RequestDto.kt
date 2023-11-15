@@ -13,6 +13,5 @@ data class RegisterDto(
 data class LoginDto(
     @NotBlank
     val username: String,
-    @Password
     val password: String,
 )
