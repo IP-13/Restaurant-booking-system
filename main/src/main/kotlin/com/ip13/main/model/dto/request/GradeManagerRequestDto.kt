@@ -8,6 +8,6 @@ data class GradeManagerRequestDto(
     val tableReserveTicketId: Int,
     @Positive
     val grade: Int,
-    @Size(min = 3, max = 25, message = "Comment should be from 3 to 25 symbols")
+    @Size(max = 25, message = "Comment length should be less than 25 symbols")
     val comment: String?,
 )
