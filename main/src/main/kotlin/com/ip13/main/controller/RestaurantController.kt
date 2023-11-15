@@ -5,11 +5,9 @@ import com.ip13.main.model.dto.request.GradeVisitorRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
 import com.ip13.main.model.dto.response.*
-import com.ip13.main.security.service.UserService
 import com.ip13.main.service.GradeManagerService
 import com.ip13.main.service.GradeVisitorService
 import com.ip13.main.service.RestaurantAddTicketService
-import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
@@ -21,8 +19,6 @@ import org.springframework.web.bind.annotation.*
 class RestaurantController(
     private val restaurantAddTicketService: RestaurantAddTicketService,
     private val gradeVisitorService: GradeVisitorService,
-    private val userService: UserService,
-    private val tableReserveService: TableReserveService,
     private val gradeManagerService: GradeManagerService,
 ) {
     private val log = getLogger(javaClass)
