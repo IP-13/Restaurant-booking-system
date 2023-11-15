@@ -7,9 +7,7 @@ import com.ip13.main.model.dto.response.AddBookingConstraintResponseDto
 import com.ip13.main.model.dto.response.ReservationProcessResponseDto
 import com.ip13.main.model.dto.response.ShowReservationsResponseDto
 import com.ip13.main.model.dto.response.TableReserveResponseDto
-import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BookingConstraintService
-import com.ip13.main.service.RestaurantService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
 import org.springframework.web.bind.annotation.*
@@ -18,8 +16,6 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/reserve", method = [RequestMethod.POST, RequestMethod.GET])
 class ReserveController(
     private val tableReserveService: TableReserveService,
-    private val userService: UserService,
-    private val restaurantService: RestaurantService,
     private val bookingConstraintService: BookingConstraintService,
 ) {
     private val log = getLogger(javaClass)
