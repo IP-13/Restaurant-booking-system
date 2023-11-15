@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 data class AddBookingConstraintRequestDto(
     @PositiveOrZero
     val restaurantId: Int = 0,
-    @Size(min = 5, max = 15, message = "Reason message is too long. Need from 5 to 15 symbols")
+    @Size(min = 5, max = 15, message = "Reason message should be from 5 to 15 symbols")
     val reason: String? = null,
     @FutureOrPresent
     val fromDate: LocalDateTime = LocalDateTime.now(),
