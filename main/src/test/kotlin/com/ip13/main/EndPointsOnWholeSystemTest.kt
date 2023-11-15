@@ -48,7 +48,7 @@ class EndPointsOnWholeSystemTest(
         jdbc.execute("truncate table table_reserve_ticket cascade")
         jdbc.execute("truncate table restaurant cascade")
         jdbc.execute("truncate table restaurant_add_ticket cascade")
-        jdbc.execute("truncate table user_t cascade")
+        jdbc.execute("delete from user_t where id != 100")
     }
 
     @Autowired
@@ -109,7 +109,7 @@ class EndPointsOnWholeSystemTest(
         val numOfUsersInDb = jdbc.queryForObject("select count(*) from user_t", Int::class.java)
 
         // новый юзер и mega_admin
-        assertThat(numOfUsersInDb!!).isEqualTo(1)
+        assertThat(numOfUsersInDb!!).isEqualTo(2)
     }
 
     @Test
