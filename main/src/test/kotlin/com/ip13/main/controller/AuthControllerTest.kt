@@ -1,4 +1,4 @@
-package com.ip13.main
+package com.ip13.main.controller
 
 import com.ip13.main.model.enums.Role
 import com.ip13.main.security.repository.UserRepository
@@ -33,7 +33,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @ActiveProfiles("test-containers-flyway")
 @Testcontainers
 @AutoConfigureMockMvc
-class EndPointsOnWholeSystemTest(
+class AuthControllerTest(
     @Autowired val jdbc: JdbcTemplate,
     @Autowired val userRepository: UserRepository,
     @Autowired val passwordEncoder: PasswordEncoder,
