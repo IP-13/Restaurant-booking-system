@@ -40,8 +40,12 @@ class SecurityConfiguration(
                 authorize("/admin/get_authentication", permitAll)
                 authorize("/admin/**", hasAuthority(Role.ADMIN.name))
                 authorize("/restaurant/process_ticket", hasAuthority(Role.ADMIN.name))
+                authorize("/restaurant/show_tickets", hasAuthority(Role.ADMIN.name))
+                authorize("/restaurant/add_grade_manager", hasAuthority(Role.MANAGER.name))
                 authorize("/restaurant/create_ticket", permitAll)
-                authorize("/reserve/**", permitAll)
+                authorize("/restaurant/add_grade_visitor", permitAll)
+                authorize("/reserve/reserve_table", permitAll)
+                authorize("/reserve/**", hasAuthority(Role.MANAGER.name))
                 authorize(anyRequest, authenticated)
             }
             sessionManagement {
