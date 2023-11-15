@@ -10,3 +10,6 @@ spring:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show_sql: true
+security:
+  secret: s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu
+  lifeTimeSeconds: 300
