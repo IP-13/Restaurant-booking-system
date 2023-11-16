@@ -1,8 +1,6 @@
 package com.ip13.main.security.configuration
 
 import com.ip13.main.model.enums.Role
-import io.jsonwebtoken.io.Decoders
-import io.jsonwebtoken.security.Keys
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -14,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.invoke
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.oauth2.jwt.JwtDecoder
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 
@@ -44,8 +40,12 @@ class SecurityConfiguration(
                 authorize("/admin/get_authentication", permitAll)
                 authorize("/admin/**", hasAuthority(Role.ADMIN.name))
                 authorize("/restaurant/process_ticket", hasAuthority(Role.ADMIN.name))
+                authorize("/restaurant/show_tickets", hasAuthority(Role.ADMIN.name))
+                authorize("/restaurant/add_grade_manager", hasAuthority(Role.MANAGER.name))
                 authorize("/restaurant/create_ticket", permitAll)
-                authorize("/reserve/**", permitAll)
+                authorize("/restaurant/add_grade_visitor", permitAll)
+                authorize("/reserve/reserve_table", permitAll)
+                authorize("/reserve/**", hasAuthority(Role.MANAGER.name))
                 authorize(anyRequest, authenticated)
             }
             sessionManagement {
@@ -63,11 +63,6 @@ class SecurityConfiguration(
     @Bean
     fun authenticationManager(): AuthenticationManager {
         return authenticationConfiguration.getAuthenticationManager()
-    }
-
-    @Bean
-    fun jwtDecoder(): JwtDecoder {
-        return NimbusJwtDecoder.withSecretKey(Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret))).build()
     }
 
     @Bean

@@ -8,6 +8,22 @@ services:
     depends_on:
       - db
       - flyway
+    volumes:
+      - app:/var/lib/postgresql/data
+    profiles:
+      - volumes
+
+  app_no_volumes:
+    build: .
+    container_name: app
+    image: image
+    ports:
+      - "8000:8080"
+    depends_on:
+      - db
+      - flyway
+    profiles:
+      - no_volumes
 
   db:
     image: postgres:16.0
@@ -35,3 +51,6 @@ services:
       db:
         condition: service_healthy
     container_name: flyway
+
+volumes:
+  app:

@@ -5,12 +5,11 @@ import com.ip13.main.model.dto.request.GradeVisitorRequestDto
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
 import com.ip13.main.model.dto.response.*
-import com.ip13.main.security.service.UserService
 import com.ip13.main.service.GradeManagerService
 import com.ip13.main.service.GradeVisitorService
 import com.ip13.main.service.RestaurantAddTicketService
-import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
+import jakarta.validation.Valid
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.*
 class RestaurantController(
     private val restaurantAddTicketService: RestaurantAddTicketService,
     private val gradeVisitorService: GradeVisitorService,
-    private val userService: UserService,
-    private val tableReserveService: TableReserveService,
     private val gradeManagerService: GradeManagerService,
 ) {
     private val log = getLogger(javaClass)
@@ -31,6 +28,7 @@ class RestaurantController(
     fun createTicketToAddRestaurant(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody(required = true)
         restaurantAddTicketRequestDto: RestaurantAddTicketRequestDto,
     ): ResponseEntity<RestaurantAddTicketResponseDto> {
@@ -47,6 +45,7 @@ class RestaurantController(
     fun processTicketToAddRestaurant(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody(required = true)
         dto: RestaurantProcessTicketRequestDto,
     ): RestaurantProcessTicketResponseDto {
@@ -77,6 +76,7 @@ class RestaurantController(
     fun addGradeVisitor(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody
         gradeVisitorRequestDto: GradeVisitorRequestDto,
     ): GradeVisitorResponseDto {
@@ -91,6 +91,7 @@ class RestaurantController(
     fun addGradeManager(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
+        @Valid
         @RequestBody
         dto: GradeManagerRequestDto,
     ): GradeManagerResponseDto {
