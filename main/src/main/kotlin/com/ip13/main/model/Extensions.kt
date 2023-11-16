@@ -1,9 +1,12 @@
 package com.ip13.main.model
 
 import com.ip13.main.model.dto.request.*
+import com.ip13.main.model.dto.response.RestaurantResponse
+import com.ip13.main.model.dto.response.TableReserveTicketResponse
 import com.ip13.main.model.entity.*
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.enums.TableReserveStatus
+import com.ip13.main.security.model.dto.response.UserResponse
 import com.ip13.main.security.model.entity.User
 import java.time.LocalDateTime
 
@@ -114,5 +117,47 @@ fun AddBookingConstraintRequest.toBookingConstraint(restaurant: Restaurant, mana
         reason = this.reason,
         fromDate = this.fromDate,
         tillDate = this.tillDate,
+    )
+}
+
+fun User.toUserResponse(): UserResponse {
+    return UserResponse(
+        id = this.id,
+        username = this.username,
+        numOfGrades = this.numOfGrades,
+        sumOfGrades = this.sumOfGrades,
+        roles = this.roles,
+    )
+}
+
+fun Restaurant.toRestaurantResponse(): RestaurantResponse {
+    return RestaurantResponse(
+        id = this.id,
+        name = this.name,
+        country = this.country,
+        city = this.city,
+        street = this.street,
+        building = this.building,
+        entrance = this.entrance,
+        floor = this.floor,
+        description = this.description,
+        numOfGrades = this.numOfGrades,
+        sumOfGrades = this.sumOfGrades,
+    )
+}
+
+fun TableReserveTicket.toTableReserveTicketResponse(): TableReserveTicketResponse {
+    return TableReserveTicketResponse(
+        id = this.id,
+        restaurant = this.restaurant.toRestaurantResponse(),
+        user = this.user.toUserResponse(),
+        creationDate = this.creationDate,
+        fromDate = this.fromDate,
+        tillDate = this.tillDate,
+        numOfGuests = this.numOfGuests,
+        userComment = this.userComment,
+        manager = this.manager?.toUserResponse(),
+        managerComment = this.managerComment,
+        status = this.status
     )
 }

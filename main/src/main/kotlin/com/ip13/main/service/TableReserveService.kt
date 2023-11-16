@@ -10,6 +10,7 @@ import com.ip13.main.model.dto.response.TableReserveResponse
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.model.enums.TableReserveStatus
 import com.ip13.main.model.toTableReserveTicket
+import com.ip13.main.model.toTableReserveTicketResponse
 import com.ip13.main.repository.TableReserveTicketRepository
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
@@ -47,7 +48,7 @@ class TableReserveService(
 
         log.debug("reservations found\n{}", reservations.map { it.toString() })
 
-        return ShowReservationsResponse(reservations)
+        return ShowReservationsResponse(reservations.map { it.toTableReserveTicketResponse() })
     }
 
     fun findByIdOrNull(id: Int): TableReserveTicket? {
