@@ -58,11 +58,7 @@ class RestaurantController(
     ): ShowTicketsResponse {
         log.debug("/restaurant/show_tickets endpoint invoked")
 
-        val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
-
-        val tickets = restaurantAddTicketService.getTickets(pageRequest)
-
-        log.debug("tickets found\n{}", tickets.map { it::toString })
+        val tickets = restaurantAddTicketService.getTickets(pageNumber, pageSize)
 
         return ShowTicketsResponse(tickets)
     }

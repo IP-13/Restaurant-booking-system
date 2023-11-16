@@ -18,6 +18,7 @@ import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
 import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
@@ -106,7 +107,9 @@ class RestaurantAddTicketService(
         return restaurantService.save(restaurant).id
     }
 
-    fun getTickets(pageRequest: PageRequest): List<RestaurantAddTicket> {
+    fun getTickets(pageNumber: Int, pageSize: Int): List<RestaurantAddTicket> {
+        val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
+
         return restaurantAddTicketRepository.findAll(pageRequest).toList()
     }
 }
