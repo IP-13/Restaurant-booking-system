@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 
-data class RestaurantProcessTicketRequestDto(
+data class RestaurantProcessTicketRequest(
     @Positive
     val restaurantAddTicketId: Int,
     @NotNull

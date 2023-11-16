@@ -1,8 +1,8 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.AddBookingConstraintRequestDto
-import com.ip13.main.model.dto.response.AddBookingConstraintResponseDto
+import com.ip13.main.model.dto.request.AddBookingConstraintRequest
+import com.ip13.main.model.dto.response.AddBookingConstraintResponse
 import com.ip13.main.model.entity.BookingConstraint
 import com.ip13.main.model.toBookingConstraint
 import com.ip13.main.repository.BookingConstraintRepository
@@ -10,7 +10,6 @@ import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
-import java.time.LocalDateTime
 
 @Service
 class BookingConstraintService(
@@ -24,12 +23,8 @@ class BookingConstraintService(
         return bookingConstraintRepository.save(bookingConstraint)
     }
 
-    fun isOpen(fromDate: LocalDateTime, tillDate: LocalDateTime, restaurantId: Int): Int {
-        return bookingConstraintRepository.isOpen(fromDate, tillDate, restaurantId)
-    }
-
-    fun addBookingConstraint(authHeader: String, dto: AddBookingConstraintRequestDto): AddBookingConstraintResponseDto {
-        val restaurant = restaurantService.findByIdOrThrow(dto.restaurantId)
+    fun addBookingConstraint(authHeader: String, request: AddBookingConstraintRequest): AddBookingConstraintResponse {
+        val restaurant = restaurantService.findByIdOrThrow(request.restaurantId)
 
         log.debug("Restaurant found\n{}", restaurant.toString())
 
@@ -44,9 +39,9 @@ class BookingConstraintService(
             )
         }
 
-        val bookingConstraint = dto.toBookingConstraint(restaurant, user)
+        val bookingConstraint = request.toBookingConstraint(restaurant, user)
 
-        return AddBookingConstraintResponseDto(
+        return AddBookingConstraintResponse(
             id = save(bookingConstraint).id
         )
     }

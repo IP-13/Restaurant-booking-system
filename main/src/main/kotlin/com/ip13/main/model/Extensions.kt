@@ -25,7 +25,7 @@ fun RestaurantAddTicket.toRestaurant(): Restaurant {
     )
 }
 
-fun BlackListRequestDto.toBlackList(): BlackList {
+fun BlackListRequest.toBlackList(): BlackList {
     return BlackList(
         user = User(this.userId),
         fromDate = this.fromDate,
@@ -34,7 +34,7 @@ fun BlackListRequestDto.toBlackList(): BlackList {
     )
 }
 
-fun TableReserveRequestDto.toTableReserveTicket(
+fun TableReserveRequest.toTableReserveTicket(
     restaurant: Restaurant,
     user: User,
     managerComment: String? = null,
@@ -53,7 +53,7 @@ fun TableReserveRequestDto.toTableReserveTicket(
     )
 }
 
-fun RestaurantAddTicketRequestDto.toRestaurantAddTicket(user: User, status: RestaurantAddStatus): RestaurantAddTicket {
+fun RestaurantAddTicketRequest.toRestaurantAddTicket(user: User, status: RestaurantAddStatus): RestaurantAddTicket {
     return RestaurantAddTicket(
         name = this.name,
         country = this.country,
@@ -93,7 +93,7 @@ fun RestaurantAddTicket.updateRestaurantAddTicket(
     )
 }
 
-fun GradeVisitorRequestDto.toGradeVisitor(
+fun GradeVisitorRequest.toGradeVisitor(
     user: User,
     tableReserveTicket: TableReserveTicket,
     restaurant: Restaurant
@@ -107,7 +107,7 @@ fun GradeVisitorRequestDto.toGradeVisitor(
     )
 }
 
-fun AddBookingConstraintRequestDto.toBookingConstraint(restaurant: Restaurant, manager: User): BookingConstraint {
+fun AddBookingConstraintRequest.toBookingConstraint(restaurant: Restaurant, manager: User): BookingConstraint {
     return BookingConstraint(
         restaurant = restaurant,
         manager = manager,

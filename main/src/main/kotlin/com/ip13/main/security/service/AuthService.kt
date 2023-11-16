@@ -1,10 +1,10 @@
 package com.ip13.main.security.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.security.model.dto.LoginDto
-import com.ip13.main.security.model.dto.LoginResponseDto
-import com.ip13.main.security.model.dto.RegisterDto
-import com.ip13.main.security.model.dto.RegisterResponseDto
+import com.ip13.main.security.model.dto.LoginRequest
+import com.ip13.main.security.model.dto.LoginResponse
+import com.ip13.main.security.model.dto.RegisterRequest
+import com.ip13.main.security.model.dto.RegisterResponse
 import com.ip13.main.security.model.entity.User
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatusCode
@@ -19,39 +19,39 @@ class AuthService(
 ) {
     private val log = getLogger(javaClass)
 
-    fun register(registerDto: RegisterDto): RegisterResponseDto {
-        if (userService.existsByName(registerDto.username)) {
+    fun register(request: RegisterRequest): RegisterResponse {
+        if (userService.existsByName(request.username)) {
             throw CommonException(
-                "User with username ${registerDto.username} already exists",
+                "User with username ${request.username} already exists",
                 HttpStatusCode.valueOf(400)
             )
         }
 
         val user = User(
-            username = registerDto.username,
-            password = passwordEncoder.encode(registerDto.password),
+            username = request.username,
+            password = passwordEncoder.encode(request.password),
         )
 
         val savedUser = userService.save(user)
 
-        return RegisterResponseDto(
+        return RegisterResponse(
             token = tokenService.createToken(savedUser),
         )
     }
 
-    fun login(loginDto: LoginDto): LoginResponseDto {
-        val user = userService.loadUserByUsername(loginDto.username)
+    fun login(request: LoginRequest): LoginResponse {
+        val user = userService.loadUserByUsername(request.username)
 
         log.debug("User found\n{}", user.toString())
 
-        val rawPassword = loginDto.password
+        val rawPassword = request.password
         val encodedPassword = user.password
 
         if (!passwordEncoder.matches(rawPassword, encodedPassword)) {
             throw CommonException("passwords don't match", HttpStatusCode.valueOf(400))
         }
 
-        return LoginResponseDto(
+        return LoginResponse(
             token = tokenService.createToken(user),
         )
     }

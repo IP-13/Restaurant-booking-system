@@ -4,7 +4,7 @@ import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.BookingConstraint
 import com.ip13.main.model.enums.TableReserveStatus
 
-data class TableReserveResponseDto(
+data class TableReserveResponse(
     val blackListEntries: List<BlackList>,
     val bookingConstraints: List<BookingConstraint>,
     val status: TableReserveStatus,

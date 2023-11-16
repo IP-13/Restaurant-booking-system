@@ -2,11 +2,11 @@ package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
-import com.ip13.main.model.dto.request.ReservationProcessRequestDto
-import com.ip13.main.model.dto.request.TableReserveRequestDto
-import com.ip13.main.model.dto.response.ReservationProcessResponseDto
-import com.ip13.main.model.dto.response.ShowReservationsResponseDto
-import com.ip13.main.model.dto.response.TableReserveResponseDto
+import com.ip13.main.model.dto.request.ReservationProcessRequest
+import com.ip13.main.model.dto.request.TableReserveRequest
+import com.ip13.main.model.dto.response.ReservationProcessResponse
+import com.ip13.main.model.dto.response.ShowReservationsResponse
+import com.ip13.main.model.dto.response.TableReserveResponse
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.model.enums.TableReserveStatus
 import com.ip13.main.model.toTableReserveTicket
@@ -31,7 +31,7 @@ class TableReserveService(
         return tableReserveTicketRepository.save(tableReserveTicket)
     }
 
-    fun getReservations(authHeader: String, pageNumber: Int, pageSize: Int): ShowReservationsResponseDto {
+    fun getReservations(authHeader: String, pageNumber: Int, pageSize: Int): ShowReservationsResponse {
         val manager = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("manager extracted from token\n{}", manager.toString())
@@ -47,7 +47,7 @@ class TableReserveService(
 
         log.debug("reservations found\n{}", reservations.map { it.toString() })
 
-        return ShowReservationsResponseDto(reservations)
+        return ShowReservationsResponse(reservations)
     }
 
     fun findByIdOrNull(id: Int): TableReserveTicket? {
@@ -62,16 +62,16 @@ class TableReserveService(
             ?: throw TableReserveTicketNotFoundException("No table reserve ticket with id $id")
     }
 
-    fun reserveTable(dto: TableReserveRequestDto, authHeader: String): TableReserveResponseDto {
+    fun reserveTable(request: TableReserveRequest, authHeader: String): TableReserveResponse {
         val user = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("user extracted from token\n{}", user.toString())
 
-        val restaurant = restaurantService.findByIdOrThrow(dto.restaurantId)
+        val restaurant = restaurantService.findByIdOrThrow(request.restaurantId)
 
         if (user.blackListEntries.isNotEmpty()) {
             save(
-                dto.toTableReserveTicket(
+                request.toTableReserveTicket(
                     restaurant = restaurant,
                     user = user,
                     managerComment = "You're in a black list for bad behaviour",
@@ -79,7 +79,7 @@ class TableReserveService(
                 )
             )
 
-            return TableReserveResponseDto(
+            return TableReserveResponse(
                 blackListEntries = user.blackListEntries,
                 bookingConstraints = listOf(),
                 status = TableReserveStatus.REJECTED,
@@ -89,13 +89,13 @@ class TableReserveService(
         }
 
         val bookingConstraints = restaurant.bookingConstraints.filter {
-            dto.fromDate < it.tillDate && dto.fromDate >= it.fromDate ||
-                    dto.tillDate <= it.tillDate && dto.tillDate > it.fromDate
+            request.fromDate < it.tillDate && request.fromDate >= it.fromDate ||
+                    request.tillDate <= it.tillDate && request.tillDate > it.fromDate
         }
 
         if (bookingConstraints.isNotEmpty()) {
             save(
-                dto.toTableReserveTicket(
+                request.toTableReserveTicket(
                     restaurant = restaurant,
                     user = user,
                     managerComment = "Sorry, restaurant ${restaurant.id} is closed at that time",
@@ -103,7 +103,7 @@ class TableReserveService(
                 )
             )
 
-            return TableReserveResponseDto(
+            return TableReserveResponse(
                 blackListEntries = user.blackListEntries,
                 bookingConstraints = bookingConstraints,
                 status = TableReserveStatus.REJECTED,
@@ -112,7 +112,7 @@ class TableReserveService(
         }
 
         save(
-            dto.toTableReserveTicket(
+            request.toTableReserveTicket(
                 restaurant = restaurant,
                 user = user,
                 managerComment = null,
@@ -120,7 +120,7 @@ class TableReserveService(
             )
         )
 
-        return TableReserveResponseDto(
+        return TableReserveResponse(
             blackListEntries = user.blackListEntries,
             bookingConstraints = bookingConstraints,
             status = TableReserveStatus.PROCESSING,
@@ -128,12 +128,12 @@ class TableReserveService(
         )
     }
 
-    fun processReservation(authHeader: String, dto: ReservationProcessRequestDto): ReservationProcessResponseDto {
+    fun processReservation(authHeader: String, request: ReservationProcessRequest): ReservationProcessResponse {
         val manager = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("manager extracted from token\n{}", manager.toString())
 
-        val tableReserveTicket = findByIdOrThrow(dto.tableReserveTicketId)
+        val tableReserveTicket = findByIdOrThrow(request.tableReserveTicketId)
 
         log.debug("TableReserveTicket found\n{}", tableReserveTicket)
 
@@ -154,11 +154,11 @@ class TableReserveService(
             numOfGuests = tableReserveTicket.numOfGuests,
             userComment = tableReserveTicket.userComment,
             manager = manager,
-            managerComment = dto.managerComment,
-            status = dto.status,
+            managerComment = request.managerComment,
+            status = request.status,
         )
 
-        return ReservationProcessResponseDto(
+        return ReservationProcessResponse(
             id = processedTableReserveTicket.id,
             status = processedTableReserveTicket.status,
         )

@@ -1,9 +1,9 @@
 package com.ip13.main.security.controller
 
-import com.ip13.main.security.model.dto.LoginDto
-import com.ip13.main.security.model.dto.LoginResponseDto
-import com.ip13.main.security.model.dto.RegisterDto
-import com.ip13.main.security.model.dto.RegisterResponseDto
+import com.ip13.main.security.model.dto.LoginRequest
+import com.ip13.main.security.model.dto.LoginResponse
+import com.ip13.main.security.model.dto.RegisterRequest
+import com.ip13.main.security.model.dto.RegisterResponse
 import com.ip13.main.security.service.AuthService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
@@ -23,21 +23,21 @@ class AuthController(
     fun register(
         @Valid
         @RequestBody
-        registerDto: RegisterDto,
-    ): RegisterResponseDto {
+        request: RegisterRequest,
+    ): RegisterResponse {
         log.debug("/auth/register endpoint invoked")
 
-        return authService.register(registerDto = registerDto)
+        return authService.register(request = request)
     }
 
     @PostMapping("/login")
     fun login(
         @Valid
         @RequestBody
-        loginDto: LoginDto
-    ): LoginResponseDto {
+        request: LoginRequest
+    ): LoginResponse {
         log.debug("/auth/login endpoint invoked")
 
-        return authService.login(loginDto = loginDto)
+        return authService.login(request = request)
     }
 }
