@@ -158,6 +158,8 @@ class TableReserveService(
             status = dto.status,
         )
 
+        save(processedTableReserveTicket)
+
         return ReservationProcessResponseDto(
             id = processedTableReserveTicket.id,
             status = processedTableReserveTicket.status,
