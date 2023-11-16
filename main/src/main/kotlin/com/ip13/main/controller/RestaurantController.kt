@@ -5,6 +5,7 @@ import com.ip13.main.model.dto.request.GradeVisitorRequest
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequest
 import com.ip13.main.model.dto.response.*
+import com.ip13.main.model.toRestaurantAddTicketResponse
 import com.ip13.main.service.GradeManagerService
 import com.ip13.main.service.GradeVisitorService
 import com.ip13.main.service.RestaurantAddTicketService
@@ -63,7 +64,7 @@ class RestaurantController(
 
         val tickets = restaurantAddTicketService.getTickets(pageNumber, pageSize)
 
-        return ShowTicketsResponse(tickets)
+        return ShowTicketsResponse(tickets.map { it.toRestaurantAddTicketResponse() })
     }
 
     @GetMapping("/add_grade_visitor")

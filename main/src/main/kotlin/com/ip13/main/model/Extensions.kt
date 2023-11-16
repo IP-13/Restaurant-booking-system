@@ -1,6 +1,7 @@
 package com.ip13.main.model
 
 import com.ip13.main.model.dto.request.*
+import com.ip13.main.model.dto.response.RestaurantAddTicketResponse
 import com.ip13.main.model.dto.response.RestaurantResponse
 import com.ip13.main.model.dto.response.TableReserveTicketResponse
 import com.ip13.main.model.entity.*
@@ -159,5 +160,25 @@ fun TableReserveTicket.toTableReserveTicketResponse(): TableReserveTicketRespons
         manager = this.manager?.toUserResponse(),
         managerComment = this.managerComment,
         status = this.status
+    )
+}
+
+fun RestaurantAddTicket.toRestaurantAddTicketResponse(): RestaurantAddTicketResponse {
+    return RestaurantAddTicketResponse(
+        id = this.id,
+        name = this.name,
+        country = this.country,
+        city = this.city,
+        street = this.street,
+        building = this.building,
+        entrance = this.entrance,
+        floor = this.floor,
+        description = this.description,
+        user = this.user.toUserResponse(),
+        creationDate = this.creationDate,
+        status = this.status,
+        admin = this.admin?.toUserResponse(),
+        processingDate = this.processingDate,
+        adminComment = this.adminComment,
     )
 }
