@@ -3,7 +3,7 @@ package com.ip13.main.service
 import com.ip13.main.exceptionHandling.exception.RestaurantNotFoundException
 import com.ip13.main.model.entity.*
 import com.ip13.main.repository.RestaurantRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import jakarta.persistence.*
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service

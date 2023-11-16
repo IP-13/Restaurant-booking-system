@@ -4,7 +4,7 @@ import com.ip13.main.model.dto.request.*
 import com.ip13.main.model.entity.*
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.enums.TableReserveStatus
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import java.time.LocalDateTime
 
 fun RestaurantAddTicket.toRestaurant(): Restaurant {

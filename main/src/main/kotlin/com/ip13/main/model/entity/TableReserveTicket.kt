@@ -2,7 +2,7 @@ package com.ip13.main.model.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.ip13.main.model.enums.TableReserveStatus
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import jakarta.persistence.*
 import java.time.LocalDateTime
 

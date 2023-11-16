@@ -6,7 +6,7 @@ import com.ip13.main.model.dto.request.BlackListRequestDto
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.toBlackList
 import com.ip13.main.repository.BlackListRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

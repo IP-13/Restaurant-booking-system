@@ -6,7 +6,7 @@ import com.ip13.main.model.entity.GradeVisitor
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.repository.GradeVisitorRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

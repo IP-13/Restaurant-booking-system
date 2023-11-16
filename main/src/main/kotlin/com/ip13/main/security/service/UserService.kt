@@ -4,7 +4,7 @@ import com.ip13.main.exceptionHandling.exception.AttemptToOverthrowMegaAdminExce
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
 import com.ip13.main.model.dto.request.RoleAddRequestDto
 import com.ip13.main.model.dto.request.RoleDeleteRequestDto
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatusCode

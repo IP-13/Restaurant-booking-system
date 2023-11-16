@@ -1,9 +1,9 @@
 package com.ip13.main.security.controller
 
-import com.ip13.main.security.dto.LoginDto
-import com.ip13.main.security.dto.LoginResponseDto
-import com.ip13.main.security.dto.RegisterDto
-import com.ip13.main.security.dto.RegisterResponseDto
+import com.ip13.main.security.model.dto.LoginDto
+import com.ip13.main.security.model.dto.LoginResponseDto
+import com.ip13.main.security.model.dto.RegisterDto
+import com.ip13.main.security.model.dto.RegisterResponseDto
 import com.ip13.main.security.service.AuthService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid

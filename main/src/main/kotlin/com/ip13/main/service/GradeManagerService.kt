@@ -6,7 +6,7 @@ import com.ip13.main.model.dto.response.GradeManagerResponseDto
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.GradeManager
 import com.ip13.main.repository.GradeManagerRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatus

@@ -1,11 +1,11 @@
 package com.ip13.main.security.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.security.dto.LoginDto
-import com.ip13.main.security.dto.LoginResponseDto
-import com.ip13.main.security.dto.RegisterDto
-import com.ip13.main.security.dto.RegisterResponseDto
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.dto.LoginDto
+import com.ip13.main.security.model.dto.LoginResponseDto
+import com.ip13.main.security.model.dto.RegisterDto
+import com.ip13.main.security.model.dto.RegisterResponseDto
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatusCode
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder

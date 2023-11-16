@@ -8,7 +8,7 @@ import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.toRestaurant
 import com.ip13.main.repository.RestaurantAddTicketRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

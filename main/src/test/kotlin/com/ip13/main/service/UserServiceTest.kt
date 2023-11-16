@@ -3,7 +3,7 @@ package com.ip13.main.service
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
 import com.ip13.main.model.dto.request.RoleAddRequestDto
 import com.ip13.main.model.enums.Role
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.repository.UserRepository
 import com.ip13.main.security.service.TokenService
 import com.ip13.main.security.service.UserService
