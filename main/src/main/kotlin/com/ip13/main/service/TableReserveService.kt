@@ -80,8 +80,6 @@ class TableReserveService(
             )
 
             return TableReserveResponse(
-                blackListEntries = user.blackListEntries,
-                bookingConstraints = listOf(),
                 status = TableReserveStatus.REJECTED,
                 comment = "You're in a black list for bad behaviour",
             )
@@ -104,8 +102,6 @@ class TableReserveService(
             )
 
             return TableReserveResponse(
-                blackListEntries = user.blackListEntries,
-                bookingConstraints = bookingConstraints,
                 status = TableReserveStatus.REJECTED,
                 comment = "Sorry, restaurant ${restaurant.id} is closed at that time",
             )
@@ -121,8 +117,6 @@ class TableReserveService(
         )
 
         return TableReserveResponse(
-            blackListEntries = user.blackListEntries,
-            bookingConstraints = bookingConstraints,
             status = TableReserveStatus.PROCESSING,
             comment = "Your ticket successfully added"
         )
