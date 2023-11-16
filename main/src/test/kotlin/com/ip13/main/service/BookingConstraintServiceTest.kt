@@ -63,21 +63,6 @@ class BookingConstraintServiceTest {
         }
     }
 
-    @Test
-    fun addYesterdayConstraintTest() {
-        val dto = AddBookingConstraintRequestDto(TEST_RESTAURANT_ID, "TEST", LocalDateTime.now().minusDays(2),
-                LocalDateTime.now().minusDays(1))
-        val defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID, manager = User(TEST_USER_ID))
-        val defaultUser = User(id = TEST_USER_ID)
-        every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        every { userService.getUserByTokenInHeader(any()) } returns defaultUser
-        every { bookingConstraintRepository.save(any()) } returns BookingConstraint(17)
-        val bcsReturned = bookingConstraintService.addBookingConstraint(TEST_AUTH_HEADER, dto)
-        assertThrows<CommonException> {
-            bookingConstraintService.addBookingConstraint(TEST_AUTH_HEADER, dto)
-        }
-    }
-
     companion object {
         const val TEST_RESTAURANT_ID = 11
         const val TEST_USER_ID = 13

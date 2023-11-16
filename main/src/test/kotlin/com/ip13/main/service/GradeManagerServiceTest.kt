@@ -111,7 +111,6 @@ class GradeManagerServiceTest {
                 user = defaultUser,
                 gradeManager = defaultGradeManager
         )
-        val defaultBlackList = BlackList(user = defaultUser)
         val dto = GradeManagerRequestDto(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
@@ -121,7 +120,6 @@ class GradeManagerServiceTest {
         every { userService.save(any()) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
         every { gradeManagerRepository.save(any()) } returns defaultGradeManager
-        every { blackListService.save(any()) } returns defaultBlackList.id
         assertThrows<CommonException> { gradeManagerService.gradeUser(TEST_AUTH_HEADER, dto) }
     }
 
