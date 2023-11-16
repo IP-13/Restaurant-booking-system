@@ -32,7 +32,7 @@ class BlackListServiceTest {
 
     @Test
     fun addCorrectBlackListTest() {
-        val defaultUser = User(13)
+        val defaultUser = User(TEST_USER_ID)
         val dto = BlackListRequestDto(TEST_USER_ID,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(1),
@@ -61,11 +61,12 @@ class BlackListServiceTest {
 
     @Test
     fun addTillYesterdayTest() {
+        val defaultUser = User(TEST_USER_ID)
         val dto = BlackListRequestDto(TEST_USER_ID,
                 LocalDateTime.now().minusDays(2),
                 LocalDateTime.now().minusDays(1),
                 "TEST")
-        every { userService.findByIdOrThrow(any()) } throws UserNotFoundException()
+        every { userService.findByIdOrThrow(any()) } returns defaultUser
         every { blackListRepository.save(any()) } returns BlackList(TEST_BLACK_LIST_ID)
         assertThrows<CommonException> { blackListService.processRequest(dto) }
         assertThrows<CommonException> { blackListService.save(dto.toBlackList()) }
