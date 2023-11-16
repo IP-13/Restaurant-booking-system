@@ -10,10 +10,13 @@ import com.ip13.main.service.GradeVisitorService
 import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
+import jakarta.validation.constraints.PositiveOrZero
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
+@Validated
 @RestController
 @RequestMapping("/restaurant", method = [RequestMethod.POST, RequestMethod.GET])
 class RestaurantController(
@@ -51,8 +54,10 @@ class RestaurantController(
 
     @GetMapping("/show_tickets")
     fun showTickets(
+        @PositiveOrZero
         @RequestHeader(name = "page_number", required = true)
         pageNumber: Int,
+        @PositiveOrZero
         @RequestHeader(name = "page_size", required = true)
         pageSize: Int,
     ): ShowTicketsResponse {
@@ -68,7 +73,7 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @Valid
-        @RequestBody
+        @RequestBody(required = true)
         request: GradeVisitorRequest,
     ): GradeVisitorResponse {
         log.debug("/restaurant/add_grade_visitor endpoint invoked")
@@ -83,7 +88,7 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @Valid
-        @RequestBody
+        @RequestBody(required = true)
         request: GradeManagerRequest,
     ): GradeManagerResponse {
         log.debug("/restaurant/add_grade_manager endpoint invoked")
