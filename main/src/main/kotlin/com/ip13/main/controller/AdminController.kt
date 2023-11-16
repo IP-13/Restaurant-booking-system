@@ -3,6 +3,8 @@ package com.ip13.main.controller
 import com.ip13.main.model.dto.request.BlackListRequest
 import com.ip13.main.model.dto.request.RoleAddRequest
 import com.ip13.main.model.dto.request.RoleDeleteRequest
+import com.ip13.main.model.dto.response.AddRoleResponse
+import com.ip13.main.model.dto.response.AddToBlackListResponse
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BlackListService
 import com.ip13.main.util.getLogger
@@ -25,15 +27,15 @@ class AdminController(
         @Valid
         @RequestBody(required = true)
         request: RoleAddRequest,
-    ): ResponseEntity<String> {
+    ): AddRoleResponse {
         logger.debug("/admin/add_role endpoint invoked")
 
         val isAdded = userService.addRole(request)
 
         return if (isAdded) {
-            ResponseEntity.ok("Role ${request.role} successfully added to user ${request.userId}")
+            AddRoleResponse("Role ${request.role} successfully added to user ${request.userId}")
         } else {
-            ResponseEntity.ok("User ${request.userId} already has role ${request.role}")
+            AddRoleResponse("User ${request.userId} already has role ${request.role}")
         }
     }
 
@@ -76,11 +78,11 @@ class AdminController(
         @Valid
         @RequestBody(required = true)
         request: BlackListRequest
-    ): ResponseEntity<Int> {
+    ): AddToBlackListResponse {
         logger.debug("/admin/add_to_black_list endpoint invoked")
 
         val blackListId = blackListService.processRequest(request)
 
-        return ResponseEntity.ok(blackListId)
+        return AddToBlackListResponse(blackListId)
     }
 }
