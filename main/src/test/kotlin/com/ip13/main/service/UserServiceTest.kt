@@ -38,7 +38,7 @@ class UserServiceTest {
         val user = userService.loadUserByUsername(username)
 
         assertAll(
-            { Assertions.assertThat(user.username).isEqualTo("username") }
+                { Assertions.assertThat(user.username).isEqualTo("username") }
         )
 
         verify(exactly = 1) { userRepository.findByUsername(any()) }
@@ -51,11 +51,11 @@ class UserServiceTest {
         every { userRepository.findByUsername(username) } returns null
 
         assertAll(
-            {
-                Assertions.assertThatExceptionOfType(UserNotFoundException::class.java)
-                    .isThrownBy { userService.loadUserByUsername(username) }
-                    .withMessage("No user with name \'invalid user\'")
-            }
+                {
+                    Assertions.assertThatExceptionOfType(UserNotFoundException::class.java)
+                            .isThrownBy { userService.loadUserByUsername(username) }
+                            .withMessage("No user with name \'invalid user\'")
+                }
         )
 
         verify(exactly = 1) { userRepository.findByUsername(any()) }
@@ -70,7 +70,7 @@ class UserServiceTest {
         val savedUser = userRepository.save(user)
 
         assertAll(
-            { Assertions.assertThat(savedUser.id).isEqualTo(155) }
+                { Assertions.assertThat(savedUser.id).isEqualTo(155) }
         )
 
         verify(exactly = 1) { userRepository.save(any()) }
@@ -85,7 +85,7 @@ class UserServiceTest {
         val foundUser = userRepository.findByIdOrNull(id)
 
         assertAll(
-            { Assertions.assertThat(foundUser!!.username).isEqualTo("ip13") }
+                { Assertions.assertThat(foundUser!!.username).isEqualTo("ip13") }
         )
 
         verify(exactly = 1) { userRepository.findById(any()) }
@@ -100,9 +100,9 @@ class UserServiceTest {
         val allUsers = userService.findAll()
 
         assertAll(
-            { Assertions.assertThat(allUsers).hasSize(2) },
-            { Assertions.assertThat(allUsers.component1().username).isEqualTo("first user") },
-            { Assertions.assertThat(allUsers.component2().username).isEqualTo("second user") },
+                { Assertions.assertThat(allUsers).hasSize(2) },
+                { Assertions.assertThat(allUsers.component1().username).isEqualTo("first user") },
+                { Assertions.assertThat(allUsers.component2().username).isEqualTo("second user") },
         )
 
         verify(exactly = 1) { userRepository.findAll() }
@@ -123,7 +123,7 @@ class UserServiceTest {
         val isAdded = userService.addRole(roleAddRequestDto)
 
         assertAll(
-            { Assertions.assertThat(isAdded).isTrue() }
+                { Assertions.assertThat(isAdded).isTrue() }
         )
 
         verify(exactly = 1) { userRepository.save(any()) }
@@ -145,7 +145,7 @@ class UserServiceTest {
         val isAdded = userService.addRole(roleAddRequestDto)
 
         assertAll(
-            { Assertions.assertThat(isAdded).isFalse() }
+                { Assertions.assertThat(isAdded).isFalse() }
         )
 
         verify(exactly = 0) { userRepository.save(any()) }
