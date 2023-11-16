@@ -9,11 +9,14 @@ import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BlackListService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Positive
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
+@Validated
 @RestController
 @RequestMapping("/admin", method = [RequestMethod.POST, RequestMethod.GET])
 class AdminController(
@@ -64,6 +67,7 @@ class AdminController(
     @PostMapping("/delete_user/{userId}")
     fun deleteUser(
         @PathVariable(required = true)
+        @Positive
         userId: Int
     ): ResponseEntity<String> {
         logger.debug("/admin/delete_user endpoint invoked")
