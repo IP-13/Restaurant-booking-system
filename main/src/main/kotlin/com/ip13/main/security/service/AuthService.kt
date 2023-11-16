@@ -1,10 +1,10 @@
 package com.ip13.main.security.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.security.model.dto.LoginRequest
-import com.ip13.main.security.model.dto.LoginResponse
-import com.ip13.main.security.model.dto.RegisterRequest
-import com.ip13.main.security.model.dto.RegisterResponse
+import com.ip13.main.security.model.dto.request.LoginRequest
+import com.ip13.main.security.model.dto.response.LoginResponse
+import com.ip13.main.security.model.dto.request.RegisterRequest
+import com.ip13.main.security.model.dto.response.RegisterResponse
 import com.ip13.main.security.model.entity.User
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatusCode

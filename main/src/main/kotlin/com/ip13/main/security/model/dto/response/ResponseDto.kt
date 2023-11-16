@@ -1,4 +1,4 @@
-package com.ip13.main.security.model.dto
+package com.ip13.main.security.model.dto.response
 
 import jakarta.validation.constraints.NotBlank
 
