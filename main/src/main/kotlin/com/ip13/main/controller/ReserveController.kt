@@ -11,8 +11,11 @@ import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
+import jakarta.validation.constraints.PositiveOrZero
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
+@Validated
 @RestController
 @RequestMapping("/reserve", method = [RequestMethod.POST, RequestMethod.GET])
 class ReserveController(
@@ -49,9 +52,11 @@ class ReserveController(
 
     @GetMapping("/show_reservations")
     fun showRestaurant(
+        @PositiveOrZero
         @RequestHeader(name = "page_number", required = true)
         pageNumber: Int,
-        @RequestHeader(name = "page_size")
+        @PositiveOrZero
+        @RequestHeader(name = "page_size", required = true)
         pageSize: Int,
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
@@ -66,7 +71,7 @@ class ReserveController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @Valid
-        @RequestBody
+        @RequestBody(required = true)
         request: ReservationProcessRequest,
     ): ReservationProcessResponse {
         log.debug("/reserve/process_reservation endpoint invoked")
