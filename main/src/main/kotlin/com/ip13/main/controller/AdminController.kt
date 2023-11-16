@@ -59,18 +59,6 @@ class AdminController(
         }
     }
 
-    @PostMapping("/delete_user/{userId}")
-    fun deleteUser(
-        @PathVariable(required = true)
-        userId: Int
-    ): ResponseEntity<String> {
-        logger.debug("/admin/delete_user endpoint invoked")
-
-        userService.deleteUser(userId)
-
-        return ResponseEntity.ok("User with id $userId was deleted")
-    }
-
     @PostMapping("/add_to_black_list")
     fun addToBlackList(
         @Valid
