@@ -11,8 +11,6 @@ import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
 import jakarta.validation.constraints.PositiveOrZero
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -33,7 +31,7 @@ class RestaurantController(
         @Valid
         @RequestBody(required = true)
         request: RestaurantAddTicketRequest,
-    ): RestaurantAddTicketResponse {
+    ): RestaurantCreateTicketResponse {
         log.debug("/restaurant/create_ticket endpoint invoked")
 
         return restaurantAddTicketService.createTicket(authHeader, request)

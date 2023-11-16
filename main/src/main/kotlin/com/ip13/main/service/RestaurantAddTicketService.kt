@@ -5,7 +5,7 @@ import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundExce
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequest
 import com.ip13.main.model.dto.request.RoleAddRequest
-import com.ip13.main.model.dto.response.RestaurantAddTicketResponse
+import com.ip13.main.model.dto.response.RestaurantCreateTicketResponse
 import com.ip13.main.model.dto.response.RestaurantProcessTicketResponse
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
@@ -49,14 +49,14 @@ class RestaurantAddTicketService(
             ?: throw RestaurantAddTicketNotFoundException("No restaurantAddTicket with id $id")
     }
 
-    fun createTicket(authHeader: String, request: RestaurantAddTicketRequest): RestaurantAddTicketResponse {
+    fun createTicket(authHeader: String, request: RestaurantAddTicketRequest): RestaurantCreateTicketResponse {
         val user = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("User found\n{}", user.toString())
 
         val restaurantAddTicket = save(request.toRestaurantAddTicket(user, RestaurantAddStatus.PROCESSING))
 
-        return RestaurantAddTicketResponse(restaurantAddTicket.status)
+        return RestaurantCreateTicketResponse(restaurantAddTicket.status)
     }
 
     fun processRestaurantAddTicket(
