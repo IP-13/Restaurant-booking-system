@@ -12,7 +12,6 @@ import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -31,14 +30,10 @@ class RestaurantController(
         @Valid
         @RequestBody(required = true)
         restaurantAddTicketRequestDto: RestaurantAddTicketRequestDto,
-    ): ResponseEntity<RestaurantAddTicketResponseDto> {
+    ): RestaurantAddTicketResponseDto {
         log.debug("/restaurant/create_ticket endpoint invoked")
 
-        val response = restaurantAddTicketService.createTicket(authHeader, restaurantAddTicketRequestDto)
-
-        return ResponseEntity.ok(
-            response,
-        )
+        return restaurantAddTicketService.createTicket(authHeader, restaurantAddTicketRequestDto)
     }
 
     @PostMapping("/process_ticket")
