@@ -34,7 +34,7 @@ class ManagerController(
         @RequestBody(required = true)
         request: AddBookingConstraintRequest,
     ): AddBookingConstraintResponse {
-        log.debug("/reserve/add-booking-constraint endpoint invoked")
+        log.debug("/manager/add-booking-constraint endpoint invoked")
 
         return bookingConstraintService.addBookingConstraint(authHeader, request)
     }
@@ -50,7 +50,7 @@ class ManagerController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
     ): ShowReservationsResponse {
-        log.debug("/reserve/show-reservations endpoint invoked")
+        log.debug("/manager/show-reservations endpoint invoked")
 
         return tableReserveService.getReservations(authHeader, pageNumber, pageSize)
     }
@@ -63,7 +63,7 @@ class ManagerController(
         @RequestBody(required = true)
         request: ReservationProcessRequest,
     ): ReservationProcessResponse {
-        log.debug("/reserve/process-reservation endpoint invoked")
+        log.debug("/manager/process-reservation endpoint invoked")
 
         return tableReserveService.processReservation(authHeader, request)
     }
@@ -76,7 +76,7 @@ class ManagerController(
         @RequestBody(required = true)
         request: GradeVisitorRequest,
     ): GradeVisitorResponse {
-        log.debug("/restaurant/add_grade-manager endpoint invoked")
+        log.debug("/manager/grade-visitor endpoint invoked")
 
         return gradeManagerService.gradeVisitor(authHeader, request)
     }

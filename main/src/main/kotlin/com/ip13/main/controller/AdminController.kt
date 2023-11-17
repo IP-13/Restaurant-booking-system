@@ -80,7 +80,7 @@ class AdminController(
         @RequestBody(required = true)
         request: RestaurantProcessTicketRequest,
     ): RestaurantProcessTicketResponse {
-        log.debug("/restaurant/process-ticket endpoint invoked")
+        log.debug("/admin/process-ticket endpoint invoked")
 
         return restaurantAddTicketService.processRestaurantAddTicket(authHeader, request)
     }
@@ -94,7 +94,7 @@ class AdminController(
         @RequestHeader(name = "page_size", required = true)
         pageSize: Int,
     ): ShowTicketsResponse {
-        log.debug("/restaurant/show-tickets endpoint invoked")
+        log.debug("/admin/show-tickets endpoint invoked")
 
         val tickets = restaurantAddTicketService.getTickets(pageNumber, pageSize)
 

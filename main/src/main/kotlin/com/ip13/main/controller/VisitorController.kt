@@ -32,7 +32,7 @@ class VisitorController(
         @RequestBody(required = true)
         request: TableReserveRequest
     ): TableReserveResponse {
-        log.debug("/reserve/reserve-table endpoint invoked")
+        log.debug("/visitor/reserve-table endpoint invoked")
 
         return tableReserveService.reserveTable(request, authHeader)
     }
@@ -45,7 +45,7 @@ class VisitorController(
         @RequestBody(required = true)
         request: RestaurantAddTicketRequest,
     ): RestaurantCreateTicketResponse {
-        log.debug("/restaurant/create-ticket endpoint invoked")
+        log.debug("/visitor/create-ticket endpoint invoked")
 
         return restaurantAddTicketService.createTicket(authHeader, request)
     }
@@ -58,7 +58,7 @@ class VisitorController(
         @RequestBody(required = true)
         request: GradeRestaurantRequest,
     ): GradeRestaurantResponse {
-        log.debug("/restaurant/add-grade-visitor endpoint invoked")
+        log.debug("/visitor/grade-restaurant endpoint invoked")
 
         val newGrade = gradeVisitorService.gradeRestaurant(authHeader, request)
 
