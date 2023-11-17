@@ -4,7 +4,7 @@ import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.model.dto.request.GradeVisitorRequest
 import com.ip13.main.model.dto.response.GradeVisitorResponse
 import com.ip13.main.model.entity.BlackList
-import com.ip13.main.model.entity.GradeManager
+import com.ip13.main.model.entity.VisitorGrade
 import com.ip13.main.repository.GradeManagerRepository
 import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
@@ -39,7 +39,7 @@ class GradeManagerService(
             )
         }
 
-        if (tableReserveTicket.gradeManager != null) {
+        if (tableReserveTicket.visitorGrade != null) {
             throw CommonException(
                 "You already left grade to table reserve ticket with id ${tableReserveTicket.id}",
                 HttpStatus.BAD_REQUEST
@@ -48,7 +48,7 @@ class GradeManagerService(
 
         val user = tableReserveTicket.user
 
-        val gradeManager = GradeManager(
+        val visitorGrade = VisitorGrade(
             manager = manager,
             tableReserveTicket = tableReserveTicket,
             user = tableReserveTicket.user,
@@ -61,7 +61,7 @@ class GradeManagerService(
             username = user.username,
             password = user.password,
             numOfGrades = user.numOfGrades + 1,
-            sumOfGrades = user.sumOfGrades + gradeManager.grade,
+            sumOfGrades = user.sumOfGrades + visitorGrade.grade,
         )
 
         val newAverageGrade = userWithUpdatedGrades.sumOfGrades.toFloat() / userWithUpdatedGrades.numOfGrades
@@ -71,7 +71,7 @@ class GradeManagerService(
         val isBadPerson = newAverageGrade < 3.0 && newNumOfGrades > 1
 
         saveGradeManagerAndUpdateUserGradeAndAddToBlackListTransactional(
-            gradeManager,
+            visitorGrade,
             userWithUpdatedGrades,
             isBadPerson,
         )
@@ -81,11 +81,11 @@ class GradeManagerService(
 
     @Transactional
     private fun saveGradeManagerAndUpdateUserGradeAndAddToBlackListTransactional(
-        gradeManager: GradeManager,
+        visitorGrade: VisitorGrade,
         userWithUpdatedGrades: User,
         isBadPerson: Boolean,
     ) {
-        gradeManagerRepository.save(gradeManager)
+        gradeManagerRepository.save(visitorGrade)
 
         userService.save(userWithUpdatedGrades)
 

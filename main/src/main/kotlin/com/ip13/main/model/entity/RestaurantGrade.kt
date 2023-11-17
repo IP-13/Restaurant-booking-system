@@ -7,10 +7,9 @@ import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToOne
 
 @Entity
-class GradeVisitor(
+class RestaurantGrade(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
@@ -30,7 +29,7 @@ class GradeVisitor(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as GradeVisitor
+        other as RestaurantGrade
 
         if (user != other.user) return false
         if (tableReserveTicket != other.tableReserveTicket) return false

@@ -30,10 +30,10 @@ class TableReserveTicket(
     val status: TableReserveStatus = TableReserveStatus.PROCESSING,
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "tableReserveTicket")
-    val gradeVisitor: GradeVisitor? = null,
+    val restaurantGrade: RestaurantGrade? = null,
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "tableReserveTicket")
-    val gradeManager: GradeManager? = null,
+    val visitorGrade: VisitorGrade? = null,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

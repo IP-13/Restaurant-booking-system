@@ -3,7 +3,7 @@ package com.ip13.main.service
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.model.dto.request.GradeVisitorRequest
 import com.ip13.main.model.entity.BlackList
-import com.ip13.main.model.entity.GradeManager
+import com.ip13.main.model.entity.VisitorGrade
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.repository.GradeManagerRepository
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
-class GradeManagerServiceTest {
+class VisitorGradeServiceTest {
     @MockK
     private lateinit var gradeManagerRepository: GradeManagerRepository
 
@@ -46,7 +46,7 @@ class GradeManagerServiceTest {
                 restaurant = defaultRestaurant,
                 user = defaultUser
         )
-        val defaultGradeManager = GradeManager(
+        val defaultVisitorGrade = VisitorGrade(
                 manager = defaultManager,
                 user = defaultUser,
                 tableReserveTicket = defaultTableReserveTicket,
@@ -61,7 +61,7 @@ class GradeManagerServiceTest {
         every { userService.getUserByTokenInHeader(any()) } returns defaultManager
         every { userService.save(any()) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
-        every { gradeManagerRepository.save(any()) } returns defaultGradeManager
+        every { gradeManagerRepository.save(any()) } returns defaultVisitorGrade
         every { blackListService.save(any()) } returns defaultBlackList.id
         val response = gradeManagerService.gradeVisitor(TEST_AUTH_HEADER, dto)
         assertAll(
@@ -99,7 +99,7 @@ class GradeManagerServiceTest {
                 restaurant = defaultRestaurant,
                 user = defaultUser
         )
-        val defaultGradeManager = GradeManager(
+        val defaultVisitorGrade = VisitorGrade(
                 manager = defaultManager,
                 user = defaultUser,
                 tableReserveTicket = defaultTableReserveTicket,
@@ -109,7 +109,7 @@ class GradeManagerServiceTest {
                 id = TEST_TABLE_RESERVE_ID,
                 restaurant = defaultRestaurant,
                 user = defaultUser,
-                gradeManager = defaultGradeManager
+                visitorGrade = defaultVisitorGrade
         )
         val dto = GradeVisitorRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
@@ -119,7 +119,7 @@ class GradeManagerServiceTest {
         every { userService.getUserByTokenInHeader(any()) } returns defaultManager
         every { userService.save(any()) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
-        every { gradeManagerRepository.save(any()) } returns defaultGradeManager
+        every { gradeManagerRepository.save(any()) } returns defaultVisitorGrade
         assertThrows<CommonException> { gradeManagerService.gradeVisitor(TEST_AUTH_HEADER, dto) }
     }
 

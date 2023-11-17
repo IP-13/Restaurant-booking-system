@@ -5,7 +5,7 @@ import jakarta.persistence.*
 
 
 @Entity
-class GradeManager(
+class VisitorGrade(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
@@ -26,7 +26,7 @@ class GradeManager(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as GradeManager
+        other as VisitorGrade
 
         if (manager != other.manager) return false
         if (tableReserveTicket != other.tableReserveTicket) return false

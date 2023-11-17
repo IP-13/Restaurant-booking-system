@@ -39,13 +39,13 @@ class User(
     val tableReserveTicketsAsManager: List<TableReserveTicket> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val gradesToRestaurants: List<GradeVisitor> = listOf(),
+    val gradesToRestaurants: List<RestaurantGrade> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val gradesFromManagers: List<GradeManager> = listOf(),
+    val gradesFromManagers: List<VisitorGrade> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    val gradesAsManager: List<GradeManager> = listOf(),
+    val gradesAsManager: List<VisitorGrade> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
     val createdBookingConstraints: List<BookingConstraint> = listOf(),

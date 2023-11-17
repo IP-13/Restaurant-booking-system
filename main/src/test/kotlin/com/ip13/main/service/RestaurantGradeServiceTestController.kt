@@ -2,7 +2,7 @@ package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.model.dto.request.GradeRestaurantRequest
-import com.ip13.main.model.entity.GradeVisitor
+import com.ip13.main.model.entity.RestaurantGrade
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.repository.GradeVisitorRepository
@@ -18,7 +18,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
-class GradeVisitorServiceTestController {
+class RestaurantGradeServiceTestController {
     @MockK
     private lateinit var gradeVisitorRepository: GradeVisitorRepository
 
@@ -36,9 +36,9 @@ class GradeVisitorServiceTestController {
 
     @Test
     fun saveTest() {
-        val defaultGradeVisitor = GradeVisitor(id = TEST_GRADE_VISITOR_ID)
-        every { gradeVisitorRepository.save(any()) } returns defaultGradeVisitor
-        Assertions.assertEquals(TEST_GRADE_VISITOR_ID, gradeVisitorService.save(defaultGradeVisitor))
+        val defaultRestaurantGrade = RestaurantGrade(id = TEST_GRADE_VISITOR_ID)
+        every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
+        Assertions.assertEquals(TEST_GRADE_VISITOR_ID, gradeVisitorService.save(defaultRestaurantGrade))
     }
 
     @Test
@@ -54,13 +54,13 @@ class GradeVisitorServiceTestController {
                 restaurant = defaultRestaurant,
                 user = defaultUser
         )
-        val defaultGradeVisitor = GradeVisitor(id = TEST_GRADE_VISITOR_ID)
+        val defaultRestaurantGrade = RestaurantGrade(id = TEST_GRADE_VISITOR_ID)
         val dto = GradeRestaurantRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
         )
-        every { gradeVisitorRepository.save(any()) } returns defaultGradeVisitor
+        every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
         every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
@@ -82,13 +82,13 @@ class GradeVisitorServiceTestController {
                 restaurant = defaultRestaurant,
                 user = visitor
         )
-        val defaultGradeVisitor = GradeVisitor(id = TEST_GRADE_VISITOR_ID)
+        val defaultRestaurantGrade = RestaurantGrade(id = TEST_GRADE_VISITOR_ID)
         val dto = GradeRestaurantRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
         )
-        every { gradeVisitorRepository.save(any()) } returns defaultGradeVisitor
+        every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
         every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns dick
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
@@ -108,7 +108,7 @@ class GradeVisitorServiceTestController {
                 restaurant = defaultRestaurant,
                 user = defaultUser
         )
-        val defaultGradeVisitor = GradeVisitor(
+        val defaultRestaurantGrade = RestaurantGrade(
                 id = TEST_GRADE_VISITOR_ID,
                 grade = TEST_GRADE,
                 tableReserveTicket = defaultTableReserveTicket
@@ -117,14 +117,14 @@ class GradeVisitorServiceTestController {
                 id = TEST_TABLE_RESERVE_ID,
                 restaurant = defaultRestaurant,
                 user = defaultUser,
-                gradeVisitor = defaultGradeVisitor
+                restaurantGrade = defaultRestaurantGrade
         )
         val dto = GradeRestaurantRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
         )
-        every { gradeVisitorRepository.save(any()) } returns defaultGradeVisitor
+        every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
         every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
