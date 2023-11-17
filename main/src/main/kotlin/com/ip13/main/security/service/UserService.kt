@@ -46,30 +46,56 @@ class UserService(
         return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id: $id not found")
     }
 
-    fun addRole(roleAddRequest: RoleAddRequest): Boolean {
-        val user = findByIdOrThrow(roleAddRequest.userId)
-        if (user.roles.contains(roleAddRequest.role)) {
+    fun addRole(request: RoleAddRequest): Boolean {
+        val user = findByIdOrThrow(request.userId)
+        if (user.roles.contains(request.role)) {
             return false
         }
-        val isAdded = user.roles.add(roleAddRequest.role)
-        save(user)
+        val updatedRoles = user.roles.toMutableList()
+
+        val isAdded = updatedRoles.add(request.role)
+
+        val updatedUser = User(
+            id = user.id,
+            username = user.username,
+            password = user.password,
+            numOfGrades = user.numOfGrades,
+            sumOfGrades = user.sumOfGrades,
+            roles = updatedRoles,
+        )
+
+        save(updatedUser)
         return isAdded
     }
 
-    fun deleteRole(roleDeleteRequest: RoleDeleteRequest): Boolean {
-        if (roleDeleteRequest.userId == 100) {
+    fun deleteRole(request: RoleDeleteRequest): Boolean {
+        if (request.userId == 100) {
             throw AttemptToOverthrowMegaAdminException(
                 "Who do you think you are? You cannot delete roles from mage_admin. Next time you'll be banned",
                 HttpStatusCode.valueOf(400)
             )
         }
 
-        val user = findByIdOrThrow(roleDeleteRequest.userId)
-        if (!user.roles.contains(roleDeleteRequest.role)) {
+        val user = findByIdOrThrow(request.userId)
+
+        if (!user.roles.contains(request.role)) {
             return false
         }
-        val isDeleted = user.roles.remove(roleDeleteRequest.role)
-        save(user)
+
+        val updatedRoles = user.roles.toMutableList()
+
+        val isDeleted = updatedRoles.remove(request.role)
+
+        val updatedUser = User(
+            id = user.id,
+            username = user.username,
+            password = user.password,
+            numOfGrades = user.numOfGrades,
+            sumOfGrades = user.sumOfGrades,
+            roles = updatedRoles,
+        )
+
+        save(updatedUser)
         return isDeleted
     }
 

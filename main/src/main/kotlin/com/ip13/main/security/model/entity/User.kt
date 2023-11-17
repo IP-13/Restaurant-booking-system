@@ -20,38 +20,38 @@ class User(
     val numOfGrades: Int = 0,
     val sumOfGrades: Int = 0,
     @Enumerated(value = EnumType.STRING)
-    val roles: MutableList<Role> = mutableListOf(),
+    val roles: List<Role> = listOf(),
     // Сушности, которые ссылаются на user_t
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val restaurantAddTicketsAsUser: MutableList<RestaurantAddTicket> = mutableListOf(),
+    val restaurantAddTicketsAsUser: List<RestaurantAddTicket> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "admin")
-    val restaurantAddTicketsAsAdmin: MutableList<RestaurantAddTicket> = mutableListOf(),
+    val restaurantAddTicketsAsAdmin: List<RestaurantAddTicket> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    val restaurants: MutableList<Restaurant> = mutableListOf(),
+    val restaurants: List<Restaurant> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val tableReserveTicketsAsUser: MutableList<TableReserveTicket> = mutableListOf(),
+    val tableReserveTicketsAsUser: List<TableReserveTicket> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    val tableReserveTicketsAsManager: MutableList<TableReserveTicket> = mutableListOf(),
+    val tableReserveTicketsAsManager: List<TableReserveTicket> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val gradesToRestaurants: MutableList<GradeVisitor> = mutableListOf(),
+    val gradesToRestaurants: List<GradeVisitor> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val gradesFromManagers: MutableList<GradeManager> = mutableListOf(),
+    val gradesFromManagers: List<GradeManager> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    val gradesAsManager: MutableList<GradeManager> = mutableListOf(),
+    val gradesAsManager: List<GradeManager> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
-    val createdBookingConstraints: MutableList<BookingConstraint> = mutableListOf(),
+    val createdBookingConstraints: List<BookingConstraint> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    val blackListEntries: MutableList<BlackList> = mutableListOf(),
+    val blackListEntries: List<BlackList> = listOf(),
 ) : UserDetails {
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return roles.map { SimpleGrantedAuthority(it.name) }.toMutableList()
