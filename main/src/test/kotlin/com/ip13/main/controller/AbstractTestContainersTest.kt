@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.servlet.MockMvc
@@ -24,6 +25,7 @@ import java.io.File
     properties = ["security.enabled=true"],
 )
 @AutoConfigureMockMvc
+@ActiveProfiles("tc-flyway")
 abstract class AbstractTestContainersTest {
     @Autowired
     lateinit var jdbc: JdbcTemplate
@@ -46,7 +48,7 @@ abstract class AbstractTestContainersTest {
         jdbc.execute("truncate table table_reserve_ticket cascade")
         jdbc.execute("truncate table restaurant cascade")
         jdbc.execute("truncate table restaurant_add_ticket cascade")
-        jdbc.execute("delete from user_t where id != 100")
+        jdbc.execute("truncate table user_t cascade")
     }
 
     fun loadAsString(filePath: String): String {

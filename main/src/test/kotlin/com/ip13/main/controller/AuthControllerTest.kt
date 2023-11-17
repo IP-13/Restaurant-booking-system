@@ -65,8 +65,7 @@ class AuthControllerTest: AbstractTestContainersTest() {
 
         val numOfUsersInDb = jdbc.queryForObject("select count(*) from user_t", Int::class.java)
 
-        // новый юзер и mega_admin
-        assertThat(numOfUsersInDb!!).isEqualTo(2)
+        assertThat(numOfUsersInDb!!).isEqualTo(1)
     }
 
     @Test
