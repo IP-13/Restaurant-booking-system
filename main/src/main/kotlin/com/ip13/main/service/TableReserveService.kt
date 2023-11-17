@@ -141,7 +141,8 @@ class TableReserveService(
 
         if (tableReserveTicket.status != TableReserveStatus.PROCESSING) {
             throw CommonException(
-                "Reservation with id ${dto.tableReserveTicketId} already processed. Status ${tableReserveTicket.status}",
+                "Reservation with id ${request.tableReserveTicketId} already processed. " +
+                        "Status ${tableReserveTicket.status}",
                 HttpStatus.BAD_REQUEST
             )
         }
@@ -159,10 +160,10 @@ class TableReserveService(
             managerComment = request.managerComment,
             status = request.status,
         )
-        
+
         save(processedTableReserveTicket)
 
-        return ReservationProcessResponseDto(
+        return ReservationProcessResponse(
             id = processedTableReserveTicket.id,
             status = processedTableReserveTicket.status,
         )
