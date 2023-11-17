@@ -64,7 +64,6 @@ class GradeVisitorServiceTest {
         every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        every { restaurantService.addGrade(defaultRestaurant, any()) } returns defaultRestaurant
         every { restaurantService.save(any()) } returns defaultRestaurant
         Assertions.assertEquals(TEST_GRADE.toFloat(), gradeVisitorService.gradeRestaurant(TEST_AUTH_HEADER, dto))
     }
@@ -93,7 +92,6 @@ class GradeVisitorServiceTest {
         every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns dick
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        every { restaurantService.addGrade(defaultRestaurant, any()) } returns defaultRestaurant
         assertThrows<CommonException> { gradeVisitorService.gradeRestaurant(TEST_AUTH_HEADER, dto) }
     }
 
@@ -130,7 +128,6 @@ class GradeVisitorServiceTest {
         every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        every { restaurantService.addGrade(defaultRestaurant, any()) } returns defaultRestaurant
         assertThrows<CommonException> { gradeVisitorService.gradeRestaurant(TEST_AUTH_HEADER, dto) }
     }
 
