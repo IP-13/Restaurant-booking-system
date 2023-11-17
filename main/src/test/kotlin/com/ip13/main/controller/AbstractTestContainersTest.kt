@@ -20,6 +20,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import org.testcontainers.containers.PostgreSQLContainer
 import java.io.File
 
+/**
+ * NOTE: test_db doesn't contain mega_admin
+ */
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
     properties = ["security.enabled=true"],
@@ -39,6 +42,11 @@ abstract class AbstractTestContainersTest {
     @Autowired
     lateinit var mockMvc: MockMvc
 
+    /**
+     * Truncates all tables and restores values of all id-sequences to 100. It's necessary for tests, because
+     * a bunch of methods take entity id as a parameter. Another way to do it for tests - always check currval
+     * of sequence, but it that case one cannot user static json for requests.
+     */
     @BeforeEach
     fun cleanUp() {
         jdbc.execute("truncate table black_list cascade")
@@ -49,6 +57,14 @@ abstract class AbstractTestContainersTest {
         jdbc.execute("truncate table restaurant cascade")
         jdbc.execute("truncate table restaurant_add_ticket cascade")
         jdbc.execute("truncate table user_t cascade")
+        jdbc.execute("select setval('black_list_id_seq', 100, false)")
+        jdbc.execute("select setval('booking_constraint_id_seq', 100, false)")
+        jdbc.execute("select setval('grade_manager_id_seq', 100, false)")
+        jdbc.execute("select setval('grade_visitor_id_seq', 100, false)")
+        jdbc.execute("select setval('table_reserve_ticket_id_seq', 100, false)")
+        jdbc.execute("select setval('restaurant_id_seq', 100, false)")
+        jdbc.execute("select setval('restaurant_add_ticket_id_seq', 100, false)")
+        jdbc.execute("select setval('user_t_id_seq', 100, false)")
     }
 
     fun loadAsString(filePath: String): String {
@@ -63,8 +79,7 @@ abstract class AbstractTestContainersTest {
             accept = MediaType.APPLICATION_JSON
             content = body
             with(
-                SecurityMockMvcRequestPostProcessors.user("ip13")
-                    .password("13579").authorities(SimpleGrantedAuthority(ADMIN))
+                SecurityMockMvcRequestPostProcessors.user("ip13").authorities(SimpleGrantedAuthority(ADMIN))
             )
         }.andExpect {
             MockMvcResultMatchers.status().`is`(200)
