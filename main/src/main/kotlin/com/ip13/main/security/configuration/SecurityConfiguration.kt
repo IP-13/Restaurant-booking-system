@@ -28,9 +28,6 @@ class SecurityConfiguration(
     val jwtRequestFilter: JwtRequestFilter,
     val authenticationConfiguration: AuthenticationConfiguration,
 ) {
-    // TODO() вынести из хард-кода
-    private val secret = "s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu"
-
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
