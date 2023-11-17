@@ -1,13 +1,13 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.GradeManagerRequestDto
+import com.ip13.main.model.dto.request.GradeManagerRequest
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.GradeManager
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.repository.GradeManagerRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -53,7 +53,7 @@ class GradeManagerServiceTest {
                 grade = TEST_GRADE
         )
         val defaultBlackList = BlackList(user = defaultUser)
-        val dto = GradeManagerRequestDto(
+        val dto = GradeManagerRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
@@ -79,7 +79,7 @@ class GradeManagerServiceTest {
                 restaurant = defaultRestaurant,
                 user = defaultUser
         )
-        val dto = GradeManagerRequestDto(
+        val dto = GradeManagerRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
@@ -111,7 +111,7 @@ class GradeManagerServiceTest {
                 user = defaultUser,
                 gradeManager = defaultGradeManager
         )
-        val dto = GradeManagerRequestDto(
+        val dto = GradeManagerRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT

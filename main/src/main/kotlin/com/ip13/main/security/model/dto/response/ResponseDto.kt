@@ -1,13 +1,13 @@
-package com.ip13.main.security.dto
+package com.ip13.main.security.model.dto.response
 
 import jakarta.validation.constraints.NotBlank
 
-data class RegisterResponseDto(
+data class RegisterResponse(
     @NotBlank
     val token: String,
 )
 
-data class LoginResponseDto(
+data class LoginResponse(
     @NotBlank
     val token: String,
 )

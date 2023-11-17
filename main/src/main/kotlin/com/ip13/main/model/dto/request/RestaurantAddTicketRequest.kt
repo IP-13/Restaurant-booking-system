@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.PositiveOrZero
 import jakarta.validation.constraints.Size
 
-data class RestaurantAddTicketRequestDto(
+data class RestaurantAddTicketRequest(
     @NotBlank(message = "Restaurant name can't be blank")
     val name: String,
     @Size(min = 3, max = 30, message = "Country name should be from 3 to 30 symbols")

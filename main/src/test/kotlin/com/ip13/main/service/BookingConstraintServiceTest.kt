@@ -1,11 +1,11 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.AddBookingConstraintRequestDto
+import com.ip13.main.model.dto.request.AddBookingConstraintRequest
 import com.ip13.main.model.entity.BookingConstraint
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.repository.BookingConstraintRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -35,7 +35,7 @@ class BookingConstraintServiceTest {
 
     @Test
     fun addCorrectConstraintTest() {
-        val dto = AddBookingConstraintRequestDto(TEST_RESTAURANT_ID, "TEST", LocalDateTime.now(),
+        val dto = AddBookingConstraintRequest(TEST_RESTAURANT_ID, "TEST", LocalDateTime.now(),
                 LocalDateTime.now().plusDays(1))
         val defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID, manager = User(TEST_USER_ID))
         val defaultUser = User(id = TEST_USER_ID)
@@ -56,7 +56,7 @@ class BookingConstraintServiceTest {
         every { userService.findByIdOrNull(TEST_USER_ID) } returns manager
         every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns notManager
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        val dto = AddBookingConstraintRequestDto(TEST_RESTAURANT_ID, "TEST", LocalDateTime.now(),
+        val dto = AddBookingConstraintRequest(TEST_RESTAURANT_ID, "TEST", LocalDateTime.now(),
                 LocalDateTime.now().plusDays(1))
         assertThrows<CommonException> {
             bookingConstraintService.addBookingConstraint(TEST_AUTH_HEADER, dto)

@@ -1,20 +1,21 @@
 package com.ip13.main.controller
 
-import com.ip13.main.model.dto.request.GradeManagerRequestDto
-import com.ip13.main.model.dto.request.GradeVisitorRequestDto
-import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
-import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
+import com.ip13.main.model.dto.request.GradeManagerRequest
+import com.ip13.main.model.dto.request.GradeVisitorRequest
+import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
+import com.ip13.main.model.dto.request.RestaurantProcessTicketRequest
 import com.ip13.main.model.dto.response.*
+import com.ip13.main.model.toRestaurantAddTicketResponse
 import com.ip13.main.service.GradeManagerService
 import com.ip13.main.service.GradeVisitorService
 import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
-import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
-import org.springframework.http.ResponseEntity
+import jakarta.validation.constraints.PositiveOrZero
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
+@Validated
 @RestController
 @RequestMapping("/restaurant", method = [RequestMethod.POST, RequestMethod.GET])
 class RestaurantController(
@@ -30,15 +31,11 @@ class RestaurantController(
         authHeader: String,
         @Valid
         @RequestBody(required = true)
-        restaurantAddTicketRequestDto: RestaurantAddTicketRequestDto,
-    ): ResponseEntity<RestaurantAddTicketResponseDto> {
+        request: RestaurantAddTicketRequest,
+    ): RestaurantCreateTicketResponse {
         log.debug("/restaurant/create_ticket endpoint invoked")
 
-        val response = restaurantAddTicketService.createTicket(authHeader, restaurantAddTicketRequestDto)
-
-        return ResponseEntity.ok(
-            response,
-        )
+        return restaurantAddTicketService.createTicket(authHeader, request)
     }
 
     @PostMapping("/process_ticket")
@@ -47,29 +44,27 @@ class RestaurantController(
         authHeader: String,
         @Valid
         @RequestBody(required = true)
-        dto: RestaurantProcessTicketRequestDto,
-    ): RestaurantProcessTicketResponseDto {
+        request: RestaurantProcessTicketRequest,
+    ): RestaurantProcessTicketResponse {
         log.debug("/restaurant/process_ticket endpoint invoked")
 
-        return restaurantAddTicketService.processRestaurantAddTicket(authHeader, dto)
+        return restaurantAddTicketService.processRestaurantAddTicket(authHeader, request)
     }
 
     @GetMapping("/show_tickets")
     fun showTickets(
+        @PositiveOrZero
         @RequestHeader(name = "page_number", required = true)
         pageNumber: Int,
+        @PositiveOrZero
         @RequestHeader(name = "page_size", required = true)
         pageSize: Int,
-    ): ShowTicketsResponseDto {
+    ): ShowTicketsResponse {
         log.debug("/restaurant/show_tickets endpoint invoked")
 
-        val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
+        val tickets = restaurantAddTicketService.getTickets(pageNumber, pageSize)
 
-        val tickets = restaurantAddTicketService.getTickets(pageRequest)
-
-        log.debug("tickets found\n{}", tickets.map { it::toString })
-
-        return ShowTicketsResponseDto(tickets)
+        return ShowTicketsResponse(tickets.map { it.toRestaurantAddTicketResponse() })
     }
 
     @GetMapping("/add_grade_visitor")
@@ -77,14 +72,14 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @Valid
-        @RequestBody
-        gradeVisitorRequestDto: GradeVisitorRequestDto,
-    ): GradeVisitorResponseDto {
+        @RequestBody(required = true)
+        request: GradeVisitorRequest,
+    ): GradeVisitorResponse {
         log.debug("/restaurant/add_grade_visitor endpoint invoked")
 
-        val newGrade = gradeVisitorService.gradeRestaurant(authHeader, gradeVisitorRequestDto)
+        val newGrade = gradeVisitorService.gradeRestaurant(authHeader, request)
 
-        return GradeVisitorResponseDto(newGrade)
+        return GradeVisitorResponse(newGrade)
     }
 
     @GetMapping("/add_grade_manager")
@@ -92,11 +87,11 @@ class RestaurantController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @Valid
-        @RequestBody
-        dto: GradeManagerRequestDto,
-    ): GradeManagerResponseDto {
+        @RequestBody(required = true)
+        request: GradeManagerRequest,
+    ): GradeManagerResponse {
         log.debug("/restaurant/add_grade_manager endpoint invoked")
 
-        return gradeManagerService.gradeUser(authHeader, dto)
+        return gradeManagerService.gradeUser(authHeader, request)
     }
 }

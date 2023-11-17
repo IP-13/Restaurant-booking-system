@@ -1,13 +1,12 @@
 package com.ip13.main.security.controller
 
-import com.ip13.main.security.dto.LoginDto
-import com.ip13.main.security.dto.LoginResponseDto
-import com.ip13.main.security.dto.RegisterDto
-import com.ip13.main.security.dto.RegisterResponseDto
+import com.ip13.main.security.model.dto.request.LoginRequest
+import com.ip13.main.security.model.dto.response.LoginResponse
+import com.ip13.main.security.model.dto.request.RegisterRequest
+import com.ip13.main.security.model.dto.response.RegisterResponse
 import com.ip13.main.security.service.AuthService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -24,25 +23,21 @@ class AuthController(
     fun register(
         @Valid
         @RequestBody
-        registerDto: RegisterDto,
-    ): ResponseEntity<RegisterResponseDto> {
+        request: RegisterRequest,
+    ): RegisterResponse {
         log.debug("/auth/register endpoint invoked")
 
-        return ResponseEntity.ok(
-            authService.register(registerDto = registerDto)
-        )
+        return authService.register(request = request)
     }
 
     @PostMapping("/login")
     fun login(
         @Valid
         @RequestBody
-        loginDto: LoginDto
-    ): ResponseEntity<LoginResponseDto> {
+        request: LoginRequest
+    ): LoginResponse {
         log.debug("/auth/login endpoint invoked")
 
-        return ResponseEntity.ok(
-            authService.login(loginDto = loginDto)
-        )
+        return authService.login(request = request)
     }
 }

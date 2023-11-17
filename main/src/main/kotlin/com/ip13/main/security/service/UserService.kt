@@ -2,9 +2,9 @@ package com.ip13.main.security.service
 
 import com.ip13.main.exceptionHandling.exception.AttemptToOverthrowMegaAdminException
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
-import com.ip13.main.model.dto.request.RoleAddRequestDto
-import com.ip13.main.model.dto.request.RoleDeleteRequestDto
-import com.ip13.main.security.entity.User
+import com.ip13.main.model.dto.request.RoleAddRequest
+import com.ip13.main.model.dto.request.RoleDeleteRequest
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatusCode
@@ -46,29 +46,29 @@ class UserService(
         return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id: $id not found")
     }
 
-    fun addRole(roleAddRequestDto: RoleAddRequestDto): Boolean {
-        val user = findByIdOrThrow(roleAddRequestDto.userId)
-        if (user.roles.contains(roleAddRequestDto.role)) {
+    fun addRole(roleAddRequest: RoleAddRequest): Boolean {
+        val user = findByIdOrThrow(roleAddRequest.userId)
+        if (user.roles.contains(roleAddRequest.role)) {
             return false
         }
-        val isAdded = user.roles.add(roleAddRequestDto.role)
+        val isAdded = user.roles.add(roleAddRequest.role)
         save(user)
         return isAdded
     }
 
-    fun deleteRole(roleDeleteRequestDto: RoleDeleteRequestDto): Boolean {
-        if (roleDeleteRequestDto.userId == 100) {
+    fun deleteRole(roleDeleteRequest: RoleDeleteRequest): Boolean {
+        if (roleDeleteRequest.userId == 100) {
             throw AttemptToOverthrowMegaAdminException(
                 "Who do you think you are? You cannot delete roles from mage_admin. Next time you'll be banned",
                 HttpStatusCode.valueOf(400)
             )
         }
 
-        val user = findByIdOrThrow(roleDeleteRequestDto.userId)
-        if (!user.roles.contains(roleDeleteRequestDto.role)) {
+        val user = findByIdOrThrow(roleDeleteRequest.userId)
+        if (!user.roles.contains(roleDeleteRequest.role)) {
             return false
         }
-        val isDeleted = user.roles.remove(roleDeleteRequestDto.role)
+        val isDeleted = user.roles.remove(roleDeleteRequest.role)
         save(user)
         return isDeleted
     }

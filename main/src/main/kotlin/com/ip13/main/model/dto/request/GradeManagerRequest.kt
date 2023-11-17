@@ -3,7 +3,7 @@ package com.ip13.main.model.dto.request
 import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 
-data class GradeManagerRequestDto(
+data class GradeManagerRequest(
     @Positive
     val tableReserveTicketId: Int,
     @Positive

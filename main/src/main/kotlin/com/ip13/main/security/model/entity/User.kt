@@ -1,4 +1,4 @@
-package com.ip13.main.security.entity
+package com.ip13.main.security.model.entity
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.ip13.main.model.entity.*

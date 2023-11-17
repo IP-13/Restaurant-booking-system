@@ -6,15 +6,13 @@ import jakarta.validation.constraints.PositiveOrZero
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
-data class TableReserveRequestDto(
+data class AddBookingConstraintRequest(
     @PositiveOrZero
     val restaurantId: Int = 0,
+    @Size(min = 5, max = 15, message = "Reason message should be from 5 to 15 symbols")
+    val reason: String? = null,
     @FutureOrPresent
     val fromDate: LocalDateTime = LocalDateTime.now(),
     @Future
     val tillDate: LocalDateTime = LocalDateTime.now(),
-    @PositiveOrZero
-    val numOfGuests: Int = 0,
-    @Size(max = 25, message = "User comment length should be less than 25 symbols")
-    val userComment: String? = null,
 )

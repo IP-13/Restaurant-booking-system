@@ -1,10 +1,14 @@
 package com.ip13.main.model
 
 import com.ip13.main.model.dto.request.*
+import com.ip13.main.model.dto.response.RestaurantAddTicketResponse
+import com.ip13.main.model.dto.response.RestaurantResponse
+import com.ip13.main.model.dto.response.TableReserveTicketResponse
 import com.ip13.main.model.entity.*
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.enums.TableReserveStatus
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.dto.response.UserResponse
+import com.ip13.main.security.model.entity.User
 import java.time.LocalDateTime
 
 fun RestaurantAddTicket.toRestaurant(): Restaurant {
@@ -25,7 +29,7 @@ fun RestaurantAddTicket.toRestaurant(): Restaurant {
     )
 }
 
-fun BlackListRequestDto.toBlackList(): BlackList {
+fun BlackListRequest.toBlackList(): BlackList {
     return BlackList(
         user = User(this.userId),
         fromDate = this.fromDate,
@@ -34,7 +38,7 @@ fun BlackListRequestDto.toBlackList(): BlackList {
     )
 }
 
-fun TableReserveRequestDto.toTableReserveTicket(
+fun TableReserveRequest.toTableReserveTicket(
     restaurant: Restaurant,
     user: User,
     managerComment: String? = null,
@@ -53,7 +57,7 @@ fun TableReserveRequestDto.toTableReserveTicket(
     )
 }
 
-fun RestaurantAddTicketRequestDto.toRestaurantAddTicket(user: User, status: RestaurantAddStatus): RestaurantAddTicket {
+fun RestaurantAddTicketRequest.toRestaurantAddTicket(user: User, status: RestaurantAddStatus): RestaurantAddTicket {
     return RestaurantAddTicket(
         name = this.name,
         country = this.country,
@@ -93,7 +97,7 @@ fun RestaurantAddTicket.updateRestaurantAddTicket(
     )
 }
 
-fun GradeVisitorRequestDto.toGradeVisitor(
+fun GradeVisitorRequest.toGradeVisitor(
     user: User,
     tableReserveTicket: TableReserveTicket,
     restaurant: Restaurant
@@ -107,12 +111,74 @@ fun GradeVisitorRequestDto.toGradeVisitor(
     )
 }
 
-fun AddBookingConstraintRequestDto.toBookingConstraint(restaurant: Restaurant, manager: User): BookingConstraint {
+fun AddBookingConstraintRequest.toBookingConstraint(restaurant: Restaurant, manager: User): BookingConstraint {
     return BookingConstraint(
         restaurant = restaurant,
         manager = manager,
         reason = this.reason,
         fromDate = this.fromDate,
         tillDate = this.tillDate,
+    )
+}
+
+fun User.toUserResponse(): UserResponse {
+    return UserResponse(
+        id = this.id,
+        username = this.username,
+        numOfGrades = this.numOfGrades,
+        sumOfGrades = this.sumOfGrades,
+        roles = this.roles,
+    )
+}
+
+fun Restaurant.toRestaurantResponse(): RestaurantResponse {
+    return RestaurantResponse(
+        id = this.id,
+        name = this.name,
+        country = this.country,
+        city = this.city,
+        street = this.street,
+        building = this.building,
+        entrance = this.entrance,
+        floor = this.floor,
+        description = this.description,
+        numOfGrades = this.numOfGrades,
+        sumOfGrades = this.sumOfGrades,
+    )
+}
+
+fun TableReserveTicket.toTableReserveTicketResponse(): TableReserveTicketResponse {
+    return TableReserveTicketResponse(
+        id = this.id,
+        restaurant = this.restaurant.toRestaurantResponse(),
+        user = this.user.toUserResponse(),
+        creationDate = this.creationDate,
+        fromDate = this.fromDate,
+        tillDate = this.tillDate,
+        numOfGuests = this.numOfGuests,
+        userComment = this.userComment,
+        manager = this.manager?.toUserResponse(),
+        managerComment = this.managerComment,
+        status = this.status
+    )
+}
+
+fun RestaurantAddTicket.toRestaurantAddTicketResponse(): RestaurantAddTicketResponse {
+    return RestaurantAddTicketResponse(
+        id = this.id,
+        name = this.name,
+        country = this.country,
+        city = this.city,
+        street = this.street,
+        building = this.building,
+        entrance = this.entrance,
+        floor = this.floor,
+        description = this.description,
+        user = this.user.toUserResponse(),
+        creationDate = this.creationDate,
+        status = this.status,
+        admin = this.admin?.toUserResponse(),
+        processingDate = this.processingDate,
+        adminComment = this.adminComment,
     )
 }

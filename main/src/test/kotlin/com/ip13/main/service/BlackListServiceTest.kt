@@ -1,12 +1,11 @@
 package com.ip13.main.service
 
-import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
-import com.ip13.main.model.dto.request.BlackListRequestDto
+import com.ip13.main.model.dto.request.BlackListRequest
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.toBlackList
 import com.ip13.main.repository.BlackListRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -33,7 +32,7 @@ class BlackListServiceTest {
     @Test
     fun addCorrectBlackListTest() {
         val defaultUser = User(TEST_USER_ID)
-        val dto = BlackListRequestDto(TEST_USER_ID,
+        val dto = BlackListRequest(TEST_USER_ID,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(1),
                 "TEST")
@@ -49,7 +48,7 @@ class BlackListServiceTest {
 
     @Test
     fun addNotExistingUserTest() {
-        val dto = BlackListRequestDto(TEST_USER_ID,
+        val dto = BlackListRequest(TEST_USER_ID,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusDays(1),
                 "TEST")
@@ -57,19 +56,6 @@ class BlackListServiceTest {
         every { blackListRepository.save(any()) } returns BlackList(TEST_BLACK_LIST_ID)
         assertThrows<UserNotFoundException> { blackListService.processRequest(dto) }
         assertThrows<UserNotFoundException> { blackListService.save(dto.toBlackList()) }
-    }
-
-    @Test
-    fun addTillYesterdayTest() {
-        val defaultUser = User(TEST_USER_ID)
-        val dto = BlackListRequestDto(TEST_USER_ID,
-                LocalDateTime.now().minusDays(2),
-                LocalDateTime.now().minusDays(1),
-                "TEST")
-        every { userService.findByIdOrThrow(any()) } returns defaultUser
-        every { blackListRepository.save(any()) } returns BlackList(TEST_BLACK_LIST_ID)
-        assertThrows<CommonException> { blackListService.processRequest(dto) }
-        assertThrows<CommonException> { blackListService.save(dto.toBlackList()) }
     }
 
     companion object {

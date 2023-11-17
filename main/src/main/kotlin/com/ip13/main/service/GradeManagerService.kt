@@ -1,12 +1,12 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.GradeManagerRequestDto
-import com.ip13.main.model.dto.response.GradeManagerResponseDto
+import com.ip13.main.model.dto.request.GradeManagerRequest
+import com.ip13.main.model.dto.response.GradeManagerResponse
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.GradeManager
 import com.ip13.main.repository.GradeManagerRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatus
@@ -23,12 +23,12 @@ class GradeManagerService(
 ) {
     private val log = getLogger(javaClass)
 
-    fun gradeUser(authHeader: String, dto: GradeManagerRequestDto): GradeManagerResponseDto {
+    fun gradeUser(authHeader: String, request: GradeManagerRequest): GradeManagerResponse {
         val manager = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("manager extracted from token\n{}", manager.toString())
 
-        val tableReserveTicket = tableReserveService.findByIdOrThrow(dto.tableReserveTicketId)
+        val tableReserveTicket = tableReserveService.findByIdOrThrow(request.tableReserveTicketId)
 
         log.debug("tableReserveTicket loaded from db\n{}", tableReserveTicket.toString())
 
@@ -52,8 +52,8 @@ class GradeManagerService(
             manager = manager,
             tableReserveTicket = tableReserveTicket,
             user = tableReserveTicket.user,
-            grade = dto.grade,
-            comment = dto.comment,
+            grade = request.grade,
+            comment = request.comment,
         )
 
         val userWithUpdatedGrades = User(
@@ -76,7 +76,7 @@ class GradeManagerService(
             isBadPerson,
         )
 
-        return GradeManagerResponseDto(newAverageGrade)
+        return GradeManagerResponse(newAverageGrade)
     }
 
     @Transactional

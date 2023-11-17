@@ -1,6 +1,6 @@
 package com.ip13.main.security.service
 
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders

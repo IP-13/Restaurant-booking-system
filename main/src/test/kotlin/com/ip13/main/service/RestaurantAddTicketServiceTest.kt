@@ -2,13 +2,13 @@ package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
-import com.ip13.main.model.dto.request.RestaurantAddTicketRequestDto
-import com.ip13.main.model.dto.request.RestaurantProcessTicketRequestDto
+import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
+import com.ip13.main.model.dto.request.RestaurantProcessTicketRequest
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.toRestaurant
 import com.ip13.main.repository.RestaurantAddTicketRepository
-import com.ip13.main.security.entity.User
+import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs
@@ -66,7 +66,7 @@ class RestaurantAddTicketServiceTest {
                 id = TEST_TICKET_ID,
                 user = defaultUser
         )
-        val requestDTO = RestaurantAddTicketRequestDto(
+        val requestDTO = RestaurantAddTicketRequest(
                 name = TEST_RESTAURANT_NAME,
                 country = TEST_RESTAURANT_COUNTRY,
                 city = TEST_RESTAURANT_CITY,
@@ -89,7 +89,7 @@ class RestaurantAddTicketServiceTest {
                 user = defaultUser,
                 status = RestaurantAddStatus.REJECTED
         )
-        val dto = RestaurantProcessTicketRequestDto(
+        val dto = RestaurantProcessTicketRequest(
                 restaurantAddTicketId = TEST_TICKET_ID,
                 status = RestaurantAddStatus.PROCESSING,
                 adminComment = null
@@ -110,7 +110,7 @@ class RestaurantAddTicketServiceTest {
                 user = defaultUser,
                 status = RestaurantAddStatus.ACCEPTED
         )
-        val dto = RestaurantProcessTicketRequestDto(
+        val dto = RestaurantProcessTicketRequest(
                 restaurantAddTicketId = TEST_TICKET_ID,
                 status = RestaurantAddStatus.ACCEPTED,
                 adminComment = null
@@ -138,7 +138,7 @@ class RestaurantAddTicketServiceTest {
                 user = defaultUser,
                 status = RestaurantAddStatus.REJECTED
         )
-        val dto = RestaurantProcessTicketRequestDto(
+        val dto = RestaurantProcessTicketRequest(
                 restaurantAddTicketId = TEST_TICKET_ID,
                 status = RestaurantAddStatus.REJECTED,
                 adminComment = null

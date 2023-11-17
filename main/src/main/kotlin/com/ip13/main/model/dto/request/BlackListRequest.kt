@@ -6,7 +6,7 @@ import jakarta.validation.constraints.PositiveOrZero
 import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
-data class BlackListRequestDto(
+data class BlackListRequest(
     @PositiveOrZero
     val userId: Int,
     @FutureOrPresent
