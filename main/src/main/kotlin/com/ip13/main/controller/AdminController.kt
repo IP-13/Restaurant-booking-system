@@ -1,19 +1,17 @@
 package com.ip13.main.controller
 
 import com.ip13.main.model.dto.request.BlackListRequest
+import com.ip13.main.model.dto.request.RestaurantProcessTicketRequest
 import com.ip13.main.model.dto.request.RoleAddRequest
 import com.ip13.main.model.dto.request.RoleDeleteRequest
-import com.ip13.main.model.dto.response.AddRoleResponse
-import com.ip13.main.model.dto.response.AddToBlackListResponse
-import com.ip13.main.model.dto.response.DeleteRoleResponse
+import com.ip13.main.model.dto.response.*
+import com.ip13.main.model.toRestaurantAddTicketResponse
 import com.ip13.main.security.service.UserService
 import com.ip13.main.service.BlackListService
+import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
-import jakarta.validation.constraints.Positive
-import org.springframework.http.ResponseEntity
-import org.springframework.security.core.Authentication
-import org.springframework.security.core.context.SecurityContextHolder
+import jakarta.validation.constraints.PositiveOrZero
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -23,8 +21,9 @@ import org.springframework.web.bind.annotation.*
 class AdminController(
     val userService: UserService,
     val blackListService: BlackListService,
+    val restaurantAddTicketService: RestaurantAddTicketService,
 ) {
-    private val logger = getLogger(javaClass)
+    private val log = getLogger(javaClass)
 
     @PostMapping("/add-role")
     fun addRole(
@@ -32,7 +31,7 @@ class AdminController(
         @RequestBody(required = true)
         request: RoleAddRequest,
     ): AddRoleResponse {
-        logger.debug("/admin/add-role endpoint invoked")
+        log.debug("/admin/add-role endpoint invoked")
 
         val isAdded = userService.addRole(request)
 
@@ -49,7 +48,7 @@ class AdminController(
         @RequestBody(required = true)
         request: RoleDeleteRequest,
     ): DeleteRoleResponse {
-        logger.debug("/admin/delete-role endpoint invoked")
+        log.debug("/admin/delete-role endpoint invoked")
 
         val isDeleted = userService.deleteRole(request)
 
@@ -66,10 +65,39 @@ class AdminController(
         @RequestBody(required = true)
         request: BlackListRequest
     ): AddToBlackListResponse {
-        logger.debug("/admin/add-to-black-list endpoint invoked")
+        log.debug("/admin/add-to-black-list endpoint invoked")
 
         val blackListId = blackListService.processRequest(request)
 
         return AddToBlackListResponse(blackListId)
+    }
+
+    @PostMapping("/process-ticket")
+    fun processTicketToAddRestaurant(
+        @RequestHeader(name = "Authorization", required = true)
+        authHeader: String,
+        @Valid
+        @RequestBody(required = true)
+        request: RestaurantProcessTicketRequest,
+    ): RestaurantProcessTicketResponse {
+        log.debug("/restaurant/process-ticket endpoint invoked")
+
+        return restaurantAddTicketService.processRestaurantAddTicket(authHeader, request)
+    }
+
+    @GetMapping("/show-tickets")
+    fun showTickets(
+        @PositiveOrZero
+        @RequestHeader(name = "page_number", required = true)
+        pageNumber: Int,
+        @PositiveOrZero
+        @RequestHeader(name = "page_size", required = true)
+        pageSize: Int,
+    ): ShowTicketsResponse {
+        log.debug("/restaurant/show-tickets endpoint invoked")
+
+        val tickets = restaurantAddTicketService.getTickets(pageNumber, pageSize)
+
+        return ShowTicketsResponse(tickets.map { it.toRestaurantAddTicketResponse() })
     }
 }

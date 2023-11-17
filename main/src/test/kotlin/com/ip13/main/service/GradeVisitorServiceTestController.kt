@@ -18,7 +18,7 @@ import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(MockKExtension::class)
-class GradeVisitorServiceTest {
+class GradeVisitorServiceTestController {
     @MockK
     private lateinit var gradeVisitorRepository: GradeVisitorRepository
 
