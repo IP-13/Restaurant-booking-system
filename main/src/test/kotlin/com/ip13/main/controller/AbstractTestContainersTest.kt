@@ -56,7 +56,7 @@ abstract class AbstractTestContainersTest {
     }
 
     fun registerDefaultUser() {
-        val body = loadAsString("json/default_user_register_dto.json")
+        val body = loadAsString("json/default_user_register.json")
 
         mockMvc.post("/auth/register") {
             contentType = MediaType.APPLICATION_JSON
