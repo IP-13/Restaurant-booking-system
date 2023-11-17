@@ -1,7 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.GradeVisitorRequest
+import com.ip13.main.model.dto.request.GradeRestaurantRequest
 import com.ip13.main.model.entity.GradeVisitor
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.toGradeVisitor
@@ -26,7 +26,7 @@ class GradeVisitorService(
         return gradeVisitorRepository.save(gradeVisitor).id
     }
 
-    fun gradeRestaurant(authHeader: String, request: GradeVisitorRequest): Float {
+    fun gradeRestaurant(authHeader: String, request: GradeRestaurantRequest): Float {
         val user = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("user extracted from token\n{}", user.toString())

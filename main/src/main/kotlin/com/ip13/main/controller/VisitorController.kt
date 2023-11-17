@@ -1,9 +1,9 @@
 package com.ip13.main.controller
 
-import com.ip13.main.model.dto.request.GradeVisitorRequest
+import com.ip13.main.model.dto.request.GradeRestaurantRequest
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
 import com.ip13.main.model.dto.request.TableReserveRequest
-import com.ip13.main.model.dto.response.GradeVisitorResponse
+import com.ip13.main.model.dto.response.GradeRestaurantResponse
 import com.ip13.main.model.dto.response.RestaurantCreateTicketResponse
 import com.ip13.main.model.dto.response.TableReserveResponse
 import com.ip13.main.service.GradeVisitorService
@@ -50,18 +50,18 @@ class VisitorController(
         return restaurantAddTicketService.createTicket(authHeader, request)
     }
 
-    @GetMapping("/add-grade-visitor")
-    fun addGradeVisitor(
+    @GetMapping("/grade-restaurant")
+    fun gradeRestaurant(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @Valid
         @RequestBody(required = true)
-        request: GradeVisitorRequest,
-    ): GradeVisitorResponse {
+        request: GradeRestaurantRequest,
+    ): GradeRestaurantResponse {
         log.debug("/restaurant/add-grade-visitor endpoint invoked")
 
         val newGrade = gradeVisitorService.gradeRestaurant(authHeader, request)
 
-        return GradeVisitorResponse(newGrade)
+        return GradeRestaurantResponse(newGrade)
     }
 }

@@ -1,10 +1,10 @@
 package com.ip13.main.controller
 
 import com.ip13.main.model.dto.request.AddBookingConstraintRequest
-import com.ip13.main.model.dto.request.GradeManagerRequest
+import com.ip13.main.model.dto.request.GradeVisitorRequest
 import com.ip13.main.model.dto.request.ReservationProcessRequest
 import com.ip13.main.model.dto.response.AddBookingConstraintResponse
-import com.ip13.main.model.dto.response.GradeManagerResponse
+import com.ip13.main.model.dto.response.GradeVisitorResponse
 import com.ip13.main.model.dto.response.ReservationProcessResponse
 import com.ip13.main.model.dto.response.ShowReservationsResponse
 import com.ip13.main.service.BookingConstraintService
@@ -68,16 +68,16 @@ class ManagerController(
         return tableReserveService.processReservation(authHeader, request)
     }
 
-    @GetMapping("/add-grade-manager")
-    fun addGradeManager(
+    @GetMapping("/grade-visitor")
+    fun gradeVisitor(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
         @Valid
         @RequestBody(required = true)
-        request: GradeManagerRequest,
-    ): GradeManagerResponse {
+        request: GradeVisitorRequest,
+    ): GradeVisitorResponse {
         log.debug("/restaurant/add_grade-manager endpoint invoked")
 
-        return gradeManagerService.gradeUser(authHeader, request)
+        return gradeManagerService.gradeVisitor(authHeader, request)
     }
 }

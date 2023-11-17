@@ -97,7 +97,7 @@ fun RestaurantAddTicket.updateRestaurantAddTicket(
     )
 }
 
-fun GradeVisitorRequest.toGradeVisitor(
+fun GradeRestaurantRequest.toGradeVisitor(
     user: User,
     tableReserveTicket: TableReserveTicket,
     restaurant: Restaurant

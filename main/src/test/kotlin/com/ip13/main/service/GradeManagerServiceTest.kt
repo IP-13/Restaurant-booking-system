@@ -1,7 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.GradeManagerRequest
+import com.ip13.main.model.dto.request.GradeVisitorRequest
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.GradeManager
 import com.ip13.main.model.entity.Restaurant
@@ -53,7 +53,7 @@ class GradeManagerServiceTest {
                 grade = TEST_GRADE
         )
         val defaultBlackList = BlackList(user = defaultUser)
-        val dto = GradeManagerRequest(
+        val dto = GradeVisitorRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
@@ -63,7 +63,7 @@ class GradeManagerServiceTest {
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
         every { gradeManagerRepository.save(any()) } returns defaultGradeManager
         every { blackListService.save(any()) } returns defaultBlackList.id
-        val response = gradeManagerService.gradeUser(TEST_AUTH_HEADER, dto)
+        val response = gradeManagerService.gradeVisitor(TEST_AUTH_HEADER, dto)
         assertAll(
                 { Assertions.assertEquals(TEST_GRADE.toFloat(), response.newAverageGrade) }
         )
@@ -79,14 +79,14 @@ class GradeManagerServiceTest {
                 restaurant = defaultRestaurant,
                 user = defaultUser
         )
-        val dto = GradeManagerRequest(
+        val dto = GradeVisitorRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
         )
         every { userService.getUserByTokenInHeader(any()) } returns User(TEST_MANAGER_ID + 1)
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
-        assertThrows<CommonException> { gradeManagerService.gradeUser(TEST_AUTH_HEADER, dto) }
+        assertThrows<CommonException> { gradeManagerService.gradeVisitor(TEST_AUTH_HEADER, dto) }
     }
 
     @Test
@@ -111,7 +111,7 @@ class GradeManagerServiceTest {
                 user = defaultUser,
                 gradeManager = defaultGradeManager
         )
-        val dto = GradeManagerRequest(
+        val dto = GradeVisitorRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
@@ -120,7 +120,7 @@ class GradeManagerServiceTest {
         every { userService.save(any()) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
         every { gradeManagerRepository.save(any()) } returns defaultGradeManager
-        assertThrows<CommonException> { gradeManagerService.gradeUser(TEST_AUTH_HEADER, dto) }
+        assertThrows<CommonException> { gradeManagerService.gradeVisitor(TEST_AUTH_HEADER, dto) }
     }
 
     companion object {

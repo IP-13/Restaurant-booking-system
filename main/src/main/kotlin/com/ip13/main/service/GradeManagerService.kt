@@ -1,8 +1,8 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.GradeManagerRequest
-import com.ip13.main.model.dto.response.GradeManagerResponse
+import com.ip13.main.model.dto.request.GradeVisitorRequest
+import com.ip13.main.model.dto.response.GradeVisitorResponse
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.GradeManager
 import com.ip13.main.repository.GradeManagerRepository
@@ -23,7 +23,7 @@ class GradeManagerService(
 ) {
     private val log = getLogger(javaClass)
 
-    fun gradeUser(authHeader: String, request: GradeManagerRequest): GradeManagerResponse {
+    fun gradeVisitor(authHeader: String, request: GradeVisitorRequest): GradeVisitorResponse {
         val manager = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("manager extracted from token\n{}", manager.toString())
@@ -76,7 +76,7 @@ class GradeManagerService(
             isBadPerson,
         )
 
-        return GradeManagerResponse(newAverageGrade)
+        return GradeVisitorResponse(newAverageGrade)
     }
 
     @Transactional

@@ -1,7 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.GradeVisitorRequest
+import com.ip13.main.model.dto.request.GradeRestaurantRequest
 import com.ip13.main.model.entity.GradeVisitor
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.TableReserveTicket
@@ -55,7 +55,7 @@ class GradeVisitorServiceTestController {
                 user = defaultUser
         )
         val defaultGradeVisitor = GradeVisitor(id = TEST_GRADE_VISITOR_ID)
-        val dto = GradeVisitorRequest(
+        val dto = GradeRestaurantRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
@@ -83,7 +83,7 @@ class GradeVisitorServiceTestController {
                 user = visitor
         )
         val defaultGradeVisitor = GradeVisitor(id = TEST_GRADE_VISITOR_ID)
-        val dto = GradeVisitorRequest(
+        val dto = GradeRestaurantRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
@@ -119,7 +119,7 @@ class GradeVisitorServiceTestController {
                 user = defaultUser,
                 gradeVisitor = defaultGradeVisitor
         )
-        val dto = GradeVisitorRequest(
+        val dto = GradeRestaurantRequest(
                 tableReserveTicketId = defaultTableReserveTicket.id,
                 grade = TEST_GRADE,
                 comment = TEST_COMMENT
