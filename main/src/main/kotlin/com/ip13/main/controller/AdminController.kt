@@ -43,11 +43,6 @@ class AdminController(
         }
     }
 
-    @GetMapping("/get_authentication")
-    fun getAuthentication(): ResponseEntity<Authentication> {
-        return ResponseEntity.ok(SecurityContextHolder.getContext().authentication)
-    }
-
     @PostMapping("/delete_role")
     fun deleteRole(
         @Valid
