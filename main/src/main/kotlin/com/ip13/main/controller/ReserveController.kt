@@ -24,7 +24,7 @@ class ReserveController(
 ) {
     private val log = getLogger(javaClass)
 
-    @PostMapping("/reserve_table")
+    @PostMapping("/reserve-table")
     fun reserveTable(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
@@ -32,12 +32,12 @@ class ReserveController(
         @RequestBody(required = true)
         request: TableReserveRequest
     ): TableReserveResponse {
-        log.debug("/reserve/reserve_table endpoint invoked")
+        log.debug("/reserve/reserve-table endpoint invoked")
 
         return tableReserveService.reserveTable(request, authHeader)
     }
 
-    @PostMapping("/add_booking_constraint")
+    @PostMapping("/add-booking-constraint")
     fun addBookingConstraint(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
@@ -45,12 +45,12 @@ class ReserveController(
         @RequestBody(required = true)
         request: AddBookingConstraintRequest,
     ): AddBookingConstraintResponse {
-        log.debug("/reserve/add_booking_constraint endpoint invoked")
+        log.debug("/reserve/add-booking-constraint endpoint invoked")
 
         return bookingConstraintService.addBookingConstraint(authHeader, request)
     }
 
-    @GetMapping("/show_reservations")
+    @GetMapping("/show-reservations")
     fun showRestaurant(
         @PositiveOrZero
         @RequestHeader(name = "page_number", required = true)
@@ -61,12 +61,12 @@ class ReserveController(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
     ): ShowReservationsResponse {
-        log.debug("/reserve/show_reservations endpoint invoked")
+        log.debug("/reserve/show-reservations endpoint invoked")
 
         return tableReserveService.getReservations(authHeader, pageNumber, pageSize)
     }
 
-    @PostMapping("/process_reservation")
+    @PostMapping("/process-reservation")
     fun processReservation(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
@@ -74,7 +74,7 @@ class ReserveController(
         @RequestBody(required = true)
         request: ReservationProcessRequest,
     ): ReservationProcessResponse {
-        log.debug("/reserve/process_reservation endpoint invoked")
+        log.debug("/reserve/process-reservation endpoint invoked")
 
         return tableReserveService.processReservation(authHeader, request)
     }

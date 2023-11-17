@@ -25,7 +25,7 @@ class RestaurantController(
 ) {
     private val log = getLogger(javaClass)
 
-    @PostMapping("/create_ticket")
+    @PostMapping("/create-ticket")
     fun createTicketToAddRestaurant(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
@@ -33,12 +33,12 @@ class RestaurantController(
         @RequestBody(required = true)
         request: RestaurantAddTicketRequest,
     ): RestaurantCreateTicketResponse {
-        log.debug("/restaurant/create_ticket endpoint invoked")
+        log.debug("/restaurant/create-ticket endpoint invoked")
 
         return restaurantAddTicketService.createTicket(authHeader, request)
     }
 
-    @PostMapping("/process_ticket")
+    @PostMapping("/process-ticket")
     fun processTicketToAddRestaurant(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
@@ -46,12 +46,12 @@ class RestaurantController(
         @RequestBody(required = true)
         request: RestaurantProcessTicketRequest,
     ): RestaurantProcessTicketResponse {
-        log.debug("/restaurant/process_ticket endpoint invoked")
+        log.debug("/restaurant/process-ticket endpoint invoked")
 
         return restaurantAddTicketService.processRestaurantAddTicket(authHeader, request)
     }
 
-    @GetMapping("/show_tickets")
+    @GetMapping("/show-tickets")
     fun showTickets(
         @PositiveOrZero
         @RequestHeader(name = "page_number", required = true)
@@ -60,14 +60,14 @@ class RestaurantController(
         @RequestHeader(name = "page_size", required = true)
         pageSize: Int,
     ): ShowTicketsResponse {
-        log.debug("/restaurant/show_tickets endpoint invoked")
+        log.debug("/restaurant/show-tickets endpoint invoked")
 
         val tickets = restaurantAddTicketService.getTickets(pageNumber, pageSize)
 
         return ShowTicketsResponse(tickets.map { it.toRestaurantAddTicketResponse() })
     }
 
-    @GetMapping("/add_grade_visitor")
+    @GetMapping("/add-grade-visitor")
     fun addGradeVisitor(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
@@ -75,14 +75,14 @@ class RestaurantController(
         @RequestBody(required = true)
         request: GradeVisitorRequest,
     ): GradeVisitorResponse {
-        log.debug("/restaurant/add_grade_visitor endpoint invoked")
+        log.debug("/restaurant/add-grade-visitor endpoint invoked")
 
         val newGrade = gradeVisitorService.gradeRestaurant(authHeader, request)
 
         return GradeVisitorResponse(newGrade)
     }
 
-    @GetMapping("/add_grade_manager")
+    @GetMapping("/add-grade-manager")
     fun addGradeManager(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
@@ -90,7 +90,7 @@ class RestaurantController(
         @RequestBody(required = true)
         request: GradeManagerRequest,
     ): GradeManagerResponse {
-        log.debug("/restaurant/add_grade_manager endpoint invoked")
+        log.debug("/restaurant/add_grade-manager endpoint invoked")
 
         return gradeManagerService.gradeUser(authHeader, request)
     }

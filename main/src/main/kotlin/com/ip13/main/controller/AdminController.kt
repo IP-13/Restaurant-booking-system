@@ -26,13 +26,13 @@ class AdminController(
 ) {
     private val logger = getLogger(javaClass)
 
-    @PostMapping("/add_role")
+    @PostMapping("/add-role")
     fun addRole(
         @Valid
         @RequestBody(required = true)
         request: RoleAddRequest,
     ): AddRoleResponse {
-        logger.debug("/admin/add_role endpoint invoked")
+        logger.debug("/admin/add-role endpoint invoked")
 
         val isAdded = userService.addRole(request)
 
@@ -43,13 +43,13 @@ class AdminController(
         }
     }
 
-    @PostMapping("/delete_role")
+    @PostMapping("/delete-role")
     fun deleteRole(
         @Valid
         @RequestBody(required = true)
         request: RoleDeleteRequest,
     ): DeleteRoleResponse {
-        logger.debug("/admin/delete_role endpoint invoked")
+        logger.debug("/admin/delete-role endpoint invoked")
 
         val isDeleted = userService.deleteRole(request)
 
@@ -60,13 +60,13 @@ class AdminController(
         }
     }
 
-    @PostMapping("/add_to_black_list")
+    @PostMapping("/add-to-black-list")
     fun addToBlackList(
         @Valid
         @RequestBody(required = true)
         request: BlackListRequest
     ): AddToBlackListResponse {
-        logger.debug("/admin/add_to_black_list endpoint invoked")
+        logger.debug("/admin/add-to-black-list endpoint invoked")
 
         val blackListId = blackListService.processRequest(request)
 
