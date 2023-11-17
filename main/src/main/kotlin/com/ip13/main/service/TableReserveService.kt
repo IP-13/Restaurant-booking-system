@@ -139,6 +139,13 @@ class TableReserveService(
             )
         }
 
+        if (tableReserveTicket.status != TableReserveStatus.PROCESSING) {
+            throw CommonException(
+                "Reservation with id ${dto.tableReserveTicketId} already processed. Status ${tableReserveTicket.status}",
+                HttpStatus.BAD_REQUEST
+            )
+        }
+
         val processedTableReserveTicket = TableReserveTicket(
             id = tableReserveTicket.id,
             restaurant = tableReserveTicket.restaurant,
@@ -152,8 +159,10 @@ class TableReserveService(
             managerComment = request.managerComment,
             status = request.status,
         )
+        
+        save(processedTableReserveTicket)
 
-        return ReservationProcessResponse(
+        return ReservationProcessResponseDto(
             id = processedTableReserveTicket.id,
             status = processedTableReserveTicket.status,
         )

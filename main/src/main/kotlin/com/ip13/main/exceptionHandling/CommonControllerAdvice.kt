@@ -44,6 +44,6 @@ class CommonControllerAdvice {
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidation(ex: MethodArgumentNotValidException): ResponseEntity<CommonResponse> {
         val message = "Look like you entered invalid data.\n${ex.message}"
-        return ResponseEntity(CommonResponse(ex.message), HttpStatus.BAD_REQUEST)
+        return ResponseEntity(CommonResponse(message), HttpStatus.BAD_REQUEST)
     }
 }
