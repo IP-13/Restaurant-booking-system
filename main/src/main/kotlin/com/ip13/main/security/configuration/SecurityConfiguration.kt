@@ -28,25 +28,15 @@ class SecurityConfiguration(
     val jwtRequestFilter: JwtRequestFilter,
     val authenticationConfiguration: AuthenticationConfiguration,
 ) {
-    // TODO() вынести из хард-кода
-    private val secret = "s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu"
-
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeHttpRequests {
                 authorize("/auth/register/**", hasAuthority(Role.ADMIN.name))
                 authorize("/auth/login/**", permitAll)
-                authorize("/admin/get_authentication", permitAll)
                 authorize("/admin/**", hasAuthority(Role.ADMIN.name))
-                authorize("/restaurant/process_ticket", hasAuthority(Role.ADMIN.name))
-                authorize("/restaurant/show_tickets", hasAuthority(Role.ADMIN.name))
-                authorize("/restaurant/add_grade_manager", hasAuthority(Role.MANAGER.name))
-                authorize("/restaurant/create_ticket", permitAll)
-                authorize("/restaurant/add_grade_visitor", permitAll)
-                authorize("/reserve/reserve_table", permitAll)
-                authorize("/reserve/**", hasAuthority(Role.MANAGER.name))
-                authorize(anyRequest, authenticated)
+                authorize("/manager/**", hasAuthority(Role.MANAGER.name))
+                authorize("/visitor/**", authenticated)
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS

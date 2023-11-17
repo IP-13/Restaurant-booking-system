@@ -10,11 +10,11 @@ import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-class AuthControllerTest: AbstractTestContainersTest() {
+class AuthControllerTest : AbstractTestContainersTest() {
     @Test
     @WithMockUser(authorities = [ADMIN])
     fun `should add new user to db when register successfully`() {
-        val body = loadAsString("json/default_user_register_dto.json")
+        val body = loadAsString("json/default_user_register.json")
 
         mockMvc.post("/auth/register") {
             contentType = MediaType.APPLICATION_JSON
@@ -47,7 +47,7 @@ class AuthControllerTest: AbstractTestContainersTest() {
     fun `should return 400 status code when register with username that already exists`() {
         registerDefaultUser()
 
-        val body = loadAsString("json/default_user_register_dto.json")
+        val body = loadAsString("json/default_user_register.json")
 
         mockMvc.post("/auth/register") {
             contentType = MediaType.APPLICATION_JSON
@@ -72,7 +72,7 @@ class AuthControllerTest: AbstractTestContainersTest() {
     fun `should return token when login with valid name and password`() {
         registerDefaultUser()
 
-        val body = loadAsString("json/default_user_register_dto.json")
+        val body = loadAsString("json/default_user_register.json")
 
         mockMvc.post("/auth/login") {
             contentType = MediaType.APPLICATION_JSON

@@ -24,30 +24,6 @@ class RestaurantService(
         return restaurantRepository.findByIdOrNull(id) ?: throw RestaurantNotFoundException("No restaurant with id $id")
     }
 
-    fun addGrade(restaurant: Restaurant, gradeVisitor: GradeVisitor): Restaurant {
-        val updatedGradesFromVisitors = restaurant.gradesFromVisitors.toMutableList()
-        updatedGradesFromVisitors.add(gradeVisitor)
-
-        return Restaurant(
-            id = restaurant.id,
-            restaurantAddTicket = restaurant.restaurantAddTicket,
-            manager = restaurant.manager,
-            name = restaurant.name,
-            country = restaurant.country,
-            city = restaurant.city,
-            street = restaurant.street,
-            building = restaurant.building,
-            entrance = restaurant.entrance,
-            floor = restaurant.floor,
-            description = restaurant.description,
-            numOfGrades = restaurant.numOfGrades + 1,
-            sumOfGrades = restaurant.sumOfGrades + gradeVisitor.grade,
-            tableReserveTickets = restaurant.tableReserveTickets,
-            gradesFromVisitors = updatedGradesFromVisitors,
-            bookingConstraints = restaurant.bookingConstraints,
-        )
-    }
-
     fun findByManagerId(managerId: Int): Restaurant {
         return restaurantRepository.findByManagerId(managerId)
     }

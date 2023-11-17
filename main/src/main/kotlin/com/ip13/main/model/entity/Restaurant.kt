@@ -30,7 +30,7 @@ class Restaurant(
     val tableReserveTickets: List<TableReserveTicket> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
-    val gradesFromVisitors: List<GradeVisitor> = listOf(),
+    val gradesFromVisitors: List<RestaurantGrade> = listOf(),
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     val bookingConstraints: List<BookingConstraint> = listOf(),

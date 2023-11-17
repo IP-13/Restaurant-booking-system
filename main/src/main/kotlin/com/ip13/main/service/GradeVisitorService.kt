@@ -1,10 +1,10 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.model.dto.request.GradeVisitorRequest
-import com.ip13.main.model.entity.GradeVisitor
+import com.ip13.main.model.dto.request.GradeRestaurantRequest
+import com.ip13.main.model.entity.RestaurantGrade
 import com.ip13.main.model.entity.Restaurant
-import com.ip13.main.model.toGradeVisitor
+import com.ip13.main.model.toRestaurantGrade
 import com.ip13.main.repository.GradeVisitorRepository
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
@@ -22,11 +22,11 @@ class GradeVisitorService(
 
     private val log = getLogger(javaClass)
 
-    fun save(gradeVisitor: GradeVisitor): Int {
-        return gradeVisitorRepository.save(gradeVisitor).id
+    fun save(restaurantGrade: RestaurantGrade): Int {
+        return gradeVisitorRepository.save(restaurantGrade).id
     }
 
-    fun gradeRestaurant(authHeader: String, request: GradeVisitorRequest): Float {
+    fun gradeRestaurant(authHeader: String, request: GradeRestaurantRequest): Float {
         val user = userService.getUserByTokenInHeader(authHeader)
 
         log.debug("user extracted from token\n{}", user.toString())
@@ -42,7 +42,7 @@ class GradeVisitorService(
             )
         }
 
-        if (tableReserveTicket.gradeVisitor != null) {
+        if (tableReserveTicket.restaurantGrade != null) {
             throw CommonException(
                 "You already left grade to table reserve ticket with id ${tableReserveTicket.id}",
                 HttpStatus.BAD_REQUEST
@@ -53,20 +53,44 @@ class GradeVisitorService(
 
         log.debug("Restaurant loaded from db\n{}", restaurant.toString())
 
-        val gradeVisitor = request.toGradeVisitor(user, tableReserveTicket, restaurant)
+        val restaurantGrade = request.toRestaurantGrade(user, tableReserveTicket, restaurant)
 
-        val updatedRestaurant = restaurantService.addGrade(restaurant, gradeVisitor)
+        val updatedRestaurant = addGrade(restaurant, restaurantGrade)
 
         log.debug("Updated restaurant\n{}", updatedRestaurant)
 
-        saveGradeVisitorAndRestaurantTransactional(updatedRestaurant, gradeVisitor)
+        saveGradeVisitorAndRestaurantTransactional(updatedRestaurant, restaurantGrade)
 
         return updatedRestaurant.sumOfGrades.toFloat() / updatedRestaurant.numOfGrades
     }
 
+    private fun addGrade(restaurant: Restaurant, restaurantGrade: RestaurantGrade): Restaurant {
+        val updatedGradesFromVisitors = restaurant.gradesFromVisitors.toMutableList()
+        updatedGradesFromVisitors.add(restaurantGrade)
+
+        return Restaurant(
+            id = restaurant.id,
+            restaurantAddTicket = restaurant.restaurantAddTicket,
+            manager = restaurant.manager,
+            name = restaurant.name,
+            country = restaurant.country,
+            city = restaurant.city,
+            street = restaurant.street,
+            building = restaurant.building,
+            entrance = restaurant.entrance,
+            floor = restaurant.floor,
+            description = restaurant.description,
+            numOfGrades = restaurant.numOfGrades + 1,
+            sumOfGrades = restaurant.sumOfGrades + restaurantGrade.grade,
+            tableReserveTickets = restaurant.tableReserveTickets,
+            gradesFromVisitors = updatedGradesFromVisitors,
+            bookingConstraints = restaurant.bookingConstraints,
+        )
+    }
+
     @Transactional
-    private fun saveGradeVisitorAndRestaurantTransactional(restaurant: Restaurant, gradeVisitor: GradeVisitor) {
-        save(gradeVisitor)
+    private fun saveGradeVisitorAndRestaurantTransactional(restaurant: Restaurant, restaurantGrade: RestaurantGrade) {
+        save(restaurantGrade)
         restaurantService.save(restaurant)
     }
 }
