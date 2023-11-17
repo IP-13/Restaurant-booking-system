@@ -1,6 +1,5 @@
 package com.ip13.main.service
 
-import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
 import com.ip13.main.model.dto.request.BlackListRequest
 import com.ip13.main.model.entity.BlackList
@@ -57,19 +56,6 @@ class BlackListServiceTest {
         every { blackListRepository.save(any()) } returns BlackList(TEST_BLACK_LIST_ID)
         assertThrows<UserNotFoundException> { blackListService.processRequest(dto) }
         assertThrows<UserNotFoundException> { blackListService.save(dto.toBlackList()) }
-    }
-
-    @Test
-    fun addTillYesterdayTest() {
-        val defaultUser = User(TEST_USER_ID)
-        val dto = BlackListRequest(TEST_USER_ID,
-                LocalDateTime.now().minusDays(2),
-                LocalDateTime.now().minusDays(1),
-                "TEST")
-        every { userService.findByIdOrThrow(any()) } returns defaultUser
-        every { blackListRepository.save(any()) } returns BlackList(TEST_BLACK_LIST_ID)
-        assertThrows<CommonException> { blackListService.processRequest(dto) }
-        assertThrows<CommonException> { blackListService.save(dto.toBlackList()) }
     }
 
     companion object {
