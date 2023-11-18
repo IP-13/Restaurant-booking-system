@@ -63,7 +63,7 @@ class JwtRequestFilter(
 
                 // username != null, if and only if jwt != null
                 if (tokenService.isTokenValid(jwt!!, user)) {
-                    log.debug(authentication.toString())
+                    log.debug("Authentication found\n{}", authentication.toString())
                     SecurityContextHolder.getContext().authentication = authentication
                 }
             }
