@@ -37,7 +37,7 @@ class TableReserveService(
 
         log.debug("manager extracted from token\n{}", manager.toString())
 
-        val restaurant = restaurantService.findByManagerId(manager.id)
+        val restaurant = restaurantService.findByManagerIdOrThrow(manager.id)
 
         log.debug("restaurant found by manager id\n{}", restaurant.toString())
 
