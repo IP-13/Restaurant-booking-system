@@ -5,7 +5,7 @@ import com.ip13.main.model.dto.request.GradeRestaurantRequest
 import com.ip13.main.model.entity.RestaurantGrade
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.TableReserveTicket
-import com.ip13.main.repository.GradeVisitorRepository
+import com.ip13.main.repository.RestaurantGradeRepository
 import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MockKExtension::class)
 class RestaurantGradeServiceTestController {
     @MockK
-    private lateinit var gradeVisitorRepository: GradeVisitorRepository
+    private lateinit var restaurantGradeRepository: RestaurantGradeRepository
 
     @MockK
     private lateinit var restaurantService: RestaurantService
@@ -32,13 +32,13 @@ class RestaurantGradeServiceTestController {
     private lateinit var tableReserveService: TableReserveService
 
     @InjectMockKs
-    private lateinit var gradeVisitorService: GradeVisitorService
+    private lateinit var restaurantGradeService: RestaurantGradeService
 
     @Test
     fun saveTest() {
         val defaultRestaurantGrade = RestaurantGrade(id = TEST_GRADE_VISITOR_ID)
-        every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
-        Assertions.assertEquals(TEST_GRADE_VISITOR_ID, gradeVisitorService.save(defaultRestaurantGrade))
+        every { restaurantGradeRepository.save(any()) } returns defaultRestaurantGrade
+        Assertions.assertEquals(TEST_GRADE_VISITOR_ID, restaurantGradeService.save(defaultRestaurantGrade))
     }
 
     @Test
@@ -60,12 +60,12 @@ class RestaurantGradeServiceTestController {
             grade = TEST_GRADE,
             comment = TEST_COMMENT
         )
-        every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
+        every { restaurantGradeRepository.save(any()) } returns defaultRestaurantGrade
         every { userService.loadUserByUsername(TEST_USERNAME) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
         every { restaurantService.save(any()) } returns defaultRestaurant
-        Assertions.assertEquals(TEST_GRADE.toFloat(), gradeVisitorService.gradeRestaurant(dto, TEST_USERNAME))
+        Assertions.assertEquals(TEST_GRADE.toFloat(), restaurantGradeService.gradeRestaurant(dto, TEST_USERNAME))
     }
 
     @Test
@@ -88,11 +88,11 @@ class RestaurantGradeServiceTestController {
             grade = TEST_GRADE,
             comment = TEST_COMMENT
         )
-        every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
+        every { restaurantGradeRepository.save(any()) } returns defaultRestaurantGrade
         every { userService.loadUserByUsername(TEST_USERNAME) } returns dick
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        assertThrows<CommonException> { gradeVisitorService.gradeRestaurant(dto, TEST_USERNAME) }
+        assertThrows<CommonException> { restaurantGradeService.gradeRestaurant(dto, TEST_USERNAME) }
     }
 
     @Test
@@ -124,11 +124,11 @@ class RestaurantGradeServiceTestController {
             grade = TEST_GRADE,
             comment = TEST_COMMENT
         )
-        every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
+        every { restaurantGradeRepository.save(any()) } returns defaultRestaurantGrade
         every { userService.loadUserByUsername(TEST_USERNAME) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        assertThrows<CommonException> { gradeVisitorService.gradeRestaurant(dto, TEST_USERNAME) }
+        assertThrows<CommonException> { restaurantGradeService.gradeRestaurant(dto, TEST_USERNAME) }
     }
 
     companion object {

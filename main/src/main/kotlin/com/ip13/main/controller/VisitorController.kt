@@ -6,7 +6,7 @@ import com.ip13.main.model.dto.request.TableReserveRequest
 import com.ip13.main.model.dto.response.GradeRestaurantResponse
 import com.ip13.main.model.dto.response.RestaurantCreateTicketResponse
 import com.ip13.main.model.dto.response.TableReserveResponse
-import com.ip13.main.service.GradeVisitorService
+import com.ip13.main.service.RestaurantGradeService
 import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
@@ -20,7 +20,7 @@ import java.security.Principal
 @RequestMapping("/visitor", method = [RequestMethod.POST, RequestMethod.GET])
 class VisitorController(
     private val restaurantAddTicketService: RestaurantAddTicketService,
-    private val gradeVisitorService: GradeVisitorService,
+    private val restaurantGradeService: RestaurantGradeService,
     private val tableReserveService: TableReserveService,
 ) {
     private val log = getLogger(javaClass)
@@ -58,7 +58,7 @@ class VisitorController(
     ): GradeRestaurantResponse {
         log.debug("/visitor/grade-restaurant endpoint invoked")
 
-        val newGrade = gradeVisitorService.gradeRestaurant(request, principal.name)
+        val newGrade = restaurantGradeService.gradeRestaurant(request, principal.name)
 
         return GradeRestaurantResponse(newGrade)
     }

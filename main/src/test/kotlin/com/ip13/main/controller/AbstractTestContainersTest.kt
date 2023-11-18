@@ -67,7 +67,7 @@ abstract class AbstractTestContainersTest {
         return File("src/test/resources/$filePath").readText()
     }
 
-    fun registerDefaultUser(
+    fun createDefaultUser(
         username: String = "ip13",
         password: String = "Ip13!",
         numOfGrades: Int = 0,

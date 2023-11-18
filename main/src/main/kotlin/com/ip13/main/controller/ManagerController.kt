@@ -8,7 +8,7 @@ import com.ip13.main.model.dto.response.GradeVisitorResponse
 import com.ip13.main.model.dto.response.ReservationProcessResponse
 import com.ip13.main.model.dto.response.ShowReservationsResponse
 import com.ip13.main.service.BookingConstraintService
-import com.ip13.main.service.GradeManagerService
+import com.ip13.main.service.VisitorGradeService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
@@ -23,7 +23,7 @@ import java.security.Principal
 class ManagerController(
     private val tableReserveService: TableReserveService,
     private val bookingConstraintService: BookingConstraintService,
-    private val gradeManagerService: GradeManagerService,
+    private val visitorGradeService: VisitorGradeService,
 ) {
     private val log = getLogger(javaClass)
 
@@ -75,6 +75,6 @@ class ManagerController(
     ): GradeVisitorResponse {
         log.debug("/manager/grade-visitor endpoint invoked")
 
-        return gradeManagerService.gradeVisitor(request, principal.name)
+        return visitorGradeService.gradeVisitor(request, principal.name)
     }
 }

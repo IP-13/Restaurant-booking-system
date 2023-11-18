@@ -5,7 +5,7 @@ import com.ip13.main.model.dto.request.GradeVisitorRequest
 import com.ip13.main.model.dto.response.GradeVisitorResponse
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.VisitorGrade
-import com.ip13.main.repository.GradeManagerRepository
+import com.ip13.main.repository.VisitorGradeRepository
 import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
@@ -15,8 +15,8 @@ import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDateTime
 
 @Service
-class GradeManagerService(
-    private val gradeManagerRepository: GradeManagerRepository,
+class VisitorGradeService(
+    private val visitorGradeRepository: VisitorGradeRepository,
     private val userService: UserService,
     private val blackListService: BlackListService,
     private val tableReserveService: TableReserveService,
@@ -85,7 +85,7 @@ class GradeManagerService(
         userWithUpdatedGrades: User,
         isBadPerson: Boolean,
     ) {
-        gradeManagerRepository.save(visitorGrade)
+        visitorGradeRepository.save(visitorGrade)
 
         userService.save(userWithUpdatedGrades)
 
