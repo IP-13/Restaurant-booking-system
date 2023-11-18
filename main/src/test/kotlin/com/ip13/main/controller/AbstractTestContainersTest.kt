@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
@@ -30,6 +31,9 @@ abstract class AbstractTestContainersTest {
 
     @Autowired
     lateinit var mockMvc: MockMvc
+
+    @Autowired
+    lateinit var passwordEncoder: PasswordEncoder
 
     @Autowired
     lateinit var userRepository: UserRepository
@@ -72,7 +76,7 @@ abstract class AbstractTestContainersTest {
     ): User {
         val user = User(
             username = username,
-            password = password,
+            password = passwordEncoder.encode(password),
             numOfGrades = numOfGrades,
             sumOfGrades = sumOfGrades,
             roles = roles,

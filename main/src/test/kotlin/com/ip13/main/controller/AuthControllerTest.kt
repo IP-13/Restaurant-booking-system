@@ -5,17 +5,12 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 class AuthControllerTest : AbstractTestContainersTest() {
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
-
     @Test
     @WithMockUser(authorities = [ADMIN])
     fun `should add new user to db when register successfully`() {
@@ -39,7 +34,7 @@ class AuthControllerTest : AbstractTestContainersTest() {
         val user = userRepository.findByUsername("ip13")!!
 
         assertAll(
-            { assertThat(passwordEncoder.matches("ip_13Q!", user.password)).isTrue() },
+            { assertThat(passwordEncoder.matches("Ip13!", user.password)).isTrue() },
             { assertThat(user.username).isEqualTo("ip13") },
             { assertThat(user.numOfGrades).isEqualTo(0) },
             { assertThat(user.sumOfGrades).isEqualTo(0) },
@@ -75,7 +70,7 @@ class AuthControllerTest : AbstractTestContainersTest() {
 
     @Test
     fun `should return token when login with valid name and password`() {
-        registerDefaultUser()
+        val user = registerDefaultUser()
 
         val body = loadAsString("json/default_user_register.json")
 
