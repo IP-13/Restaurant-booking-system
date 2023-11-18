@@ -19,6 +19,7 @@ import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Service
+import java.time.LocalDateTime
 
 @Service
 class TableReserveService(
@@ -70,7 +71,9 @@ class TableReserveService(
 
         val restaurant = restaurantService.findByIdOrThrow(request.restaurantId)
 
-        if (user.blackListEntries.isNotEmpty()) {
+        if (user.blackListEntries.any {
+                it.tillDate.isAfter(LocalDateTime.now())
+            }) {
             save(
                 request.toTableReserveTicket(
                     restaurant = restaurant,
