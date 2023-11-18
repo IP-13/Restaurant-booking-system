@@ -82,7 +82,6 @@ class TableReserveService(
 
             return TableReserveResponse(
                 status = TableReserveStatus.REJECTED,
-                comment = "You're in a black list for bad behaviour",
             )
 
         }
@@ -104,7 +103,6 @@ class TableReserveService(
 
             return TableReserveResponse(
                 status = TableReserveStatus.REJECTED,
-                comment = "Sorry, restaurant ${restaurant.id} is closed at that time",
             )
         }
 
@@ -119,7 +117,6 @@ class TableReserveService(
 
         return TableReserveResponse(
             status = TableReserveStatus.PROCESSING,
-            comment = "Your ticket successfully added"
         )
     }
 
