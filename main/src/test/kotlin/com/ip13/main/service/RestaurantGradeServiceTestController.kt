@@ -45,27 +45,27 @@ class RestaurantGradeServiceTestController {
     fun successfulGradeRestaurantTest() {
         val defaultUser = User(id = TEST_USER_ID)
         val defaultRestaurant = Restaurant(
-                id = TEST_RESTAURANT_ID,
-                sumOfGrades = TEST_GRADE,
-                numOfGrades = 1
+            id = TEST_RESTAURANT_ID,
+            sumOfGrades = TEST_GRADE,
+            numOfGrades = 1
         )
         val defaultTableReserveTicket = TableReserveTicket(
-                id = TEST_TABLE_RESERVE_ID,
-                restaurant = defaultRestaurant,
-                user = defaultUser
+            id = TEST_TABLE_RESERVE_ID,
+            restaurant = defaultRestaurant,
+            user = defaultUser
         )
         val defaultRestaurantGrade = RestaurantGrade(id = TEST_GRADE_VISITOR_ID)
         val dto = GradeRestaurantRequest(
-                tableReserveTicketId = defaultTableReserveTicket.id,
-                grade = TEST_GRADE,
-                comment = TEST_COMMENT
+            tableReserveTicketId = defaultTableReserveTicket.id,
+            grade = TEST_GRADE,
+            comment = TEST_COMMENT
         )
         every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
-        every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns defaultUser
+        every { userService.loadUserByUsername(TEST_USERNAME) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
         every { restaurantService.save(any()) } returns defaultRestaurant
-        Assertions.assertEquals(TEST_GRADE.toFloat(), gradeVisitorService.gradeRestaurant(TEST_AUTH_HEADER, dto))
+        Assertions.assertEquals(TEST_GRADE.toFloat(), gradeVisitorService.gradeRestaurant(dto, TEST_USERNAME))
     }
 
     @Test
@@ -73,62 +73,62 @@ class RestaurantGradeServiceTestController {
         val dick = User(id = TEST_USER_ID)
         val visitor = User(id = TEST_USER_ID + 1)
         val defaultRestaurant = Restaurant(
-                id = TEST_RESTAURANT_ID,
-                sumOfGrades = TEST_GRADE,
-                numOfGrades = 1
+            id = TEST_RESTAURANT_ID,
+            sumOfGrades = TEST_GRADE,
+            numOfGrades = 1
         )
         val defaultTableReserveTicket = TableReserveTicket(
-                id = TEST_TABLE_RESERVE_ID,
-                restaurant = defaultRestaurant,
-                user = visitor
+            id = TEST_TABLE_RESERVE_ID,
+            restaurant = defaultRestaurant,
+            user = visitor
         )
         val defaultRestaurantGrade = RestaurantGrade(id = TEST_GRADE_VISITOR_ID)
         val dto = GradeRestaurantRequest(
-                tableReserveTicketId = defaultTableReserveTicket.id,
-                grade = TEST_GRADE,
-                comment = TEST_COMMENT
+            tableReserveTicketId = defaultTableReserveTicket.id,
+            grade = TEST_GRADE,
+            comment = TEST_COMMENT
         )
         every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
-        every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns dick
+        every { userService.loadUserByUsername(TEST_USERNAME) } returns dick
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        assertThrows<CommonException> { gradeVisitorService.gradeRestaurant(TEST_AUTH_HEADER, dto) }
+        assertThrows<CommonException> { gradeVisitorService.gradeRestaurant(dto, TEST_USERNAME) }
     }
 
     @Test
     fun gradeGradedRestaurantTest() {
         val defaultUser = User(id = TEST_USER_ID)
         val defaultRestaurant = Restaurant(
-                id = TEST_RESTAURANT_ID,
-                sumOfGrades = TEST_GRADE,
-                numOfGrades = 1
+            id = TEST_RESTAURANT_ID,
+            sumOfGrades = TEST_GRADE,
+            numOfGrades = 1
         )
         var defaultTableReserveTicket = TableReserveTicket(
-                id = TEST_TABLE_RESERVE_ID,
-                restaurant = defaultRestaurant,
-                user = defaultUser
+            id = TEST_TABLE_RESERVE_ID,
+            restaurant = defaultRestaurant,
+            user = defaultUser
         )
         val defaultRestaurantGrade = RestaurantGrade(
-                id = TEST_GRADE_VISITOR_ID,
-                grade = TEST_GRADE,
-                tableReserveTicket = defaultTableReserveTicket
+            id = TEST_GRADE_VISITOR_ID,
+            grade = TEST_GRADE,
+            tableReserveTicket = defaultTableReserveTicket
         )
         defaultTableReserveTicket = TableReserveTicket(
-                id = TEST_TABLE_RESERVE_ID,
-                restaurant = defaultRestaurant,
-                user = defaultUser,
-                restaurantGrade = defaultRestaurantGrade
+            id = TEST_TABLE_RESERVE_ID,
+            restaurant = defaultRestaurant,
+            user = defaultUser,
+            restaurantGrade = defaultRestaurantGrade
         )
         val dto = GradeRestaurantRequest(
-                tableReserveTicketId = defaultTableReserveTicket.id,
-                grade = TEST_GRADE,
-                comment = TEST_COMMENT
+            tableReserveTicketId = defaultTableReserveTicket.id,
+            grade = TEST_GRADE,
+            comment = TEST_COMMENT
         )
         every { gradeVisitorRepository.save(any()) } returns defaultRestaurantGrade
-        every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns defaultUser
+        every { userService.loadUserByUsername(TEST_USERNAME) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(TEST_TABLE_RESERVE_ID) } returns defaultTableReserveTicket
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        assertThrows<CommonException> { gradeVisitorService.gradeRestaurant(TEST_AUTH_HEADER, dto) }
+        assertThrows<CommonException> { gradeVisitorService.gradeRestaurant(dto, TEST_USERNAME) }
     }
 
     companion object {
@@ -137,7 +137,7 @@ class RestaurantGradeServiceTestController {
         const val TEST_USER_ID = 17
         const val TEST_RESTAURANT_ID = 11
         const val TEST_GRADE = 5
-        const val TEST_AUTH_HEADER = "TEST_AUTH_HEADER"
+        const val TEST_USERNAME = "ip13"
         const val TEST_COMMENT = "TEST_COMMENT"
     }
 }

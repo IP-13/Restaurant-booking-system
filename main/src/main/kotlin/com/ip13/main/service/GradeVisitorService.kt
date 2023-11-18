@@ -26,8 +26,8 @@ class GradeVisitorService(
         return gradeVisitorRepository.save(restaurantGrade).id
     }
 
-    fun gradeRestaurant(authHeader: String, request: GradeRestaurantRequest): Float {
-        val user = userService.getUserByTokenInHeader(authHeader)
+    fun gradeRestaurant(request: GradeRestaurantRequest, username: String): Float {
+        val user = userService.loadUserByUsername(username)
 
         log.debug("user extracted from token\n{}", user.toString())
 

@@ -32,8 +32,8 @@ class TableReserveService(
         return tableReserveTicketRepository.save(tableReserveTicket)
     }
 
-    fun getReservations(authHeader: String, pageNumber: Int, pageSize: Int): ShowReservationsResponse {
-        val manager = userService.getUserByTokenInHeader(authHeader)
+    fun getReservations(pageNumber: Int, pageSize: Int, username: String): ShowReservationsResponse {
+        val manager = userService.loadUserByUsername(username)
 
         log.debug("manager extracted from token\n{}", manager.toString())
 
@@ -63,8 +63,8 @@ class TableReserveService(
             ?: throw TableReserveTicketNotFoundException("No table reserve ticket with id $id")
     }
 
-    fun reserveTable(request: TableReserveRequest, authHeader: String): TableReserveResponse {
-        val user = userService.getUserByTokenInHeader(authHeader)
+    fun reserveTable(request: TableReserveRequest, username: String): TableReserveResponse {
+        val user = userService.loadUserByUsername(username)
 
         log.debug("user extracted from token\n{}", user.toString())
 
@@ -120,8 +120,8 @@ class TableReserveService(
         )
     }
 
-    fun processReservation(authHeader: String, request: ReservationProcessRequest): ReservationProcessResponse {
-        val manager = userService.getUserByTokenInHeader(authHeader)
+    fun processReservation(request: ReservationProcessRequest, username: String): ReservationProcessResponse {
+        val manager = userService.loadUserByUsername(username)
 
         log.debug("manager extracted from token\n{}", manager.toString())
 

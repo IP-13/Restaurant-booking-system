@@ -49,8 +49,8 @@ class RestaurantAddTicketService(
             ?: throw RestaurantAddTicketNotFoundException("No restaurantAddTicket with id $id")
     }
 
-    fun createTicket(authHeader: String, request: RestaurantAddTicketRequest): RestaurantCreateTicketResponse {
-        val user = userService.getUserByTokenInHeader(authHeader)
+    fun createTicket(request: RestaurantAddTicketRequest, username: String): RestaurantCreateTicketResponse {
+        val user = userService.loadUserByUsername(username)
 
         log.debug("User found\n{}", user.toString())
 
@@ -60,8 +60,8 @@ class RestaurantAddTicketService(
     }
 
     fun processRestaurantAddTicket(
-        authHeader: String,
         request: RestaurantProcessTicketRequest,
+        username: String,
     ): RestaurantProcessTicketResponse {
         val restaurantAddTicket = findByIdOrThrow(request.restaurantAddTicketId)
 
@@ -74,7 +74,7 @@ class RestaurantAddTicketService(
             )
         }
 
-        val admin = userService.getUserByTokenInHeader(authHeader)
+        val admin = userService.loadUserByUsername(username)
 
         log.debug("Admin found\n{}", admin.toString())
 
@@ -87,7 +87,8 @@ class RestaurantAddTicketService(
         if (request.status == RestaurantAddStatus.ACCEPTED) {
             val restaurant = processedRestaurantAddTicket.toRestaurant()
 
-            val restaurantId = saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant)
+            val restaurantId =
+                saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant)
 
             return RestaurantProcessTicketResponse(RestaurantAddStatus.ACCEPTED, restaurantId)
         }

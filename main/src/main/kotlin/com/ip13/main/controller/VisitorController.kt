@@ -13,6 +13,7 @@ import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @Validated
 @RestController
@@ -26,41 +27,38 @@ class VisitorController(
 
     @PostMapping("/reserve-table")
     fun reserveTable(
-        @RequestHeader(name = "Authorization", required = true)
-        authHeader: String,
+        principal: Principal,
         @Valid
         @RequestBody(required = true)
         request: TableReserveRequest
     ): TableReserveResponse {
         log.debug("/visitor/reserve-table endpoint invoked")
 
-        return tableReserveService.reserveTable(request, authHeader)
+        return tableReserveService.reserveTable(request, principal.name)
     }
 
     @PostMapping("/create-ticket")
     fun createTicketToAddRestaurant(
-        @RequestHeader(name = "Authorization", required = true)
-        authHeader: String,
+        principal: Principal,
         @Valid
         @RequestBody(required = true)
         request: RestaurantAddTicketRequest,
     ): RestaurantCreateTicketResponse {
         log.debug("/visitor/create-ticket endpoint invoked")
 
-        return restaurantAddTicketService.createTicket(authHeader, request)
+        return restaurantAddTicketService.createTicket(request, principal.name)
     }
 
     @PostMapping("/grade-restaurant")
     fun gradeRestaurant(
-        @RequestHeader(name = "Authorization", required = true)
-        authHeader: String,
+        principal: Principal,
         @Valid
         @RequestBody(required = true)
         request: GradeRestaurantRequest,
     ): GradeRestaurantResponse {
         log.debug("/visitor/grade-restaurant endpoint invoked")
 
-        val newGrade = gradeVisitorService.gradeRestaurant(authHeader, request)
+        val newGrade = gradeVisitorService.gradeRestaurant(request, principal.name)
 
         return GradeRestaurantResponse(newGrade)
     }

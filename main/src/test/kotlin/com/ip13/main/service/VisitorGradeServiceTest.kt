@@ -40,32 +40,33 @@ class VisitorGradeServiceTest {
     fun successfulGradeUserTest() {
         val defaultUser = User(id = BookingConstraintServiceTest.TEST_USER_ID)
         val defaultManager = User(id = TEST_MANAGER_ID)
-        val defaultRestaurant = Restaurant(id = BookingConstraintServiceTest.TEST_RESTAURANT_ID, manager = defaultManager)
+        val defaultRestaurant =
+            Restaurant(id = BookingConstraintServiceTest.TEST_RESTAURANT_ID, manager = defaultManager)
         val defaultTableReserveTicket = TableReserveTicket(
-                id = TEST_TABLE_RESERVE_ID,
-                restaurant = defaultRestaurant,
-                user = defaultUser
+            id = TEST_TABLE_RESERVE_ID,
+            restaurant = defaultRestaurant,
+            user = defaultUser
         )
         val defaultVisitorGrade = VisitorGrade(
-                manager = defaultManager,
-                user = defaultUser,
-                tableReserveTicket = defaultTableReserveTicket,
-                grade = TEST_GRADE
+            manager = defaultManager,
+            user = defaultUser,
+            tableReserveTicket = defaultTableReserveTicket,
+            grade = TEST_GRADE
         )
         val defaultBlackList = BlackList(user = defaultUser)
         val dto = GradeVisitorRequest(
-                tableReserveTicketId = defaultTableReserveTicket.id,
-                grade = TEST_GRADE,
-                comment = TEST_COMMENT
+            tableReserveTicketId = defaultTableReserveTicket.id,
+            grade = TEST_GRADE,
+            comment = TEST_COMMENT
         )
-        every { userService.getUserByTokenInHeader(any()) } returns defaultManager
+        every { userService.loadUserByUsername(any()) } returns defaultManager
         every { userService.save(any()) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
         every { gradeManagerRepository.save(any()) } returns defaultVisitorGrade
         every { blackListService.save(any()) } returns defaultBlackList.id
-        val response = gradeManagerService.gradeVisitor(TEST_AUTH_HEADER, dto)
+        val response = gradeManagerService.gradeVisitor(dto, TEST_USERNAME)
         assertAll(
-                { Assertions.assertEquals(TEST_GRADE.toFloat(), response.newAverageGrade) }
+            { Assertions.assertEquals(TEST_GRADE.toFloat(), response.newAverageGrade) }
         )
     }
 
@@ -73,20 +74,21 @@ class VisitorGradeServiceTest {
     fun unauthorizedGradeUserTest() {
         val defaultUser = User(id = BookingConstraintServiceTest.TEST_USER_ID)
         val defaultManager = User(id = TEST_MANAGER_ID)
-        val defaultRestaurant = Restaurant(id = BookingConstraintServiceTest.TEST_RESTAURANT_ID, manager = defaultManager)
+        val defaultRestaurant =
+            Restaurant(id = BookingConstraintServiceTest.TEST_RESTAURANT_ID, manager = defaultManager)
         val defaultTableReserveTicket = TableReserveTicket(
-                id = TEST_TABLE_RESERVE_ID,
-                restaurant = defaultRestaurant,
-                user = defaultUser
+            id = TEST_TABLE_RESERVE_ID,
+            restaurant = defaultRestaurant,
+            user = defaultUser
         )
         val dto = GradeVisitorRequest(
-                tableReserveTicketId = defaultTableReserveTicket.id,
-                grade = TEST_GRADE,
-                comment = TEST_COMMENT
+            tableReserveTicketId = defaultTableReserveTicket.id,
+            grade = TEST_GRADE,
+            comment = TEST_COMMENT
         )
-        every { userService.getUserByTokenInHeader(any()) } returns User(TEST_MANAGER_ID + 1)
+        every { userService.loadUserByUsername(any()) } returns User(TEST_MANAGER_ID + 1)
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
-        assertThrows<CommonException> { gradeManagerService.gradeVisitor(TEST_AUTH_HEADER, dto) }
+        assertThrows<CommonException> { gradeManagerService.gradeVisitor(dto, TEST_USERNAME) }
     }
 
     @Test
@@ -95,32 +97,32 @@ class VisitorGradeServiceTest {
         val defaultManager = User(id = TEST_MANAGER_ID)
         val defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID, manager = defaultManager)
         var defaultTableReserveTicket = TableReserveTicket(
-                id = TEST_TABLE_RESERVE_ID,
-                restaurant = defaultRestaurant,
-                user = defaultUser
+            id = TEST_TABLE_RESERVE_ID,
+            restaurant = defaultRestaurant,
+            user = defaultUser
         )
         val defaultVisitorGrade = VisitorGrade(
-                manager = defaultManager,
-                user = defaultUser,
-                tableReserveTicket = defaultTableReserveTicket,
-                grade = TEST_GRADE
+            manager = defaultManager,
+            user = defaultUser,
+            tableReserveTicket = defaultTableReserveTicket,
+            grade = TEST_GRADE
         )
         defaultTableReserveTicket = TableReserveTicket(
-                id = TEST_TABLE_RESERVE_ID,
-                restaurant = defaultRestaurant,
-                user = defaultUser,
-                visitorGrade = defaultVisitorGrade
+            id = TEST_TABLE_RESERVE_ID,
+            restaurant = defaultRestaurant,
+            user = defaultUser,
+            visitorGrade = defaultVisitorGrade
         )
         val dto = GradeVisitorRequest(
-                tableReserveTicketId = defaultTableReserveTicket.id,
-                grade = TEST_GRADE,
-                comment = TEST_COMMENT
+            tableReserveTicketId = defaultTableReserveTicket.id,
+            grade = TEST_GRADE,
+            comment = TEST_COMMENT
         )
-        every { userService.getUserByTokenInHeader(any()) } returns defaultManager
+        every { userService.loadUserByUsername(any()) } returns defaultManager
         every { userService.save(any()) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
         every { gradeManagerRepository.save(any()) } returns defaultVisitorGrade
-        assertThrows<CommonException> { gradeManagerService.gradeVisitor(TEST_AUTH_HEADER, dto) }
+        assertThrows<CommonException> { gradeManagerService.gradeVisitor(dto, TEST_USERNAME) }
     }
 
     companion object {
@@ -128,7 +130,7 @@ class VisitorGradeServiceTest {
         const val TEST_MANAGER_ID = 17
         const val TEST_GRADE = 5
         const val TEST_RESTAURANT_ID = 11
-        const val TEST_AUTH_HEADER = "TEST_AUTH_HEADER"
+        const val TEST_USERNAME = "ip13"
         const val TEST_COMMENT = "TEST_COMMENT"
     }
 }

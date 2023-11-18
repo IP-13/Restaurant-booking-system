@@ -63,21 +63,21 @@ class RestaurantAddTicketServiceTest {
     fun createTicketTest() {
         val defaultUser = User(id = TEST_USER_ID)
         val defaultTicket = RestaurantAddTicket(
-                id = TEST_TICKET_ID,
-                user = defaultUser
+            id = TEST_TICKET_ID,
+            user = defaultUser
         )
         val requestDTO = RestaurantAddTicketRequest(
-                name = TEST_RESTAURANT_NAME,
-                country = TEST_RESTAURANT_COUNTRY,
-                city = TEST_RESTAURANT_CITY,
-                street = TEST_RESTAURANT_STREET,
-                building = TEST_RESTAURANT_BUILDING,
-                entrance = TEST_RESTAURANT_ENTRANCE,
-                floor = TEST_RESTAURANT_FLOOR
+            name = TEST_RESTAURANT_NAME,
+            country = TEST_RESTAURANT_COUNTRY,
+            city = TEST_RESTAURANT_CITY,
+            street = TEST_RESTAURANT_STREET,
+            building = TEST_RESTAURANT_BUILDING,
+            entrance = TEST_RESTAURANT_ENTRANCE,
+            floor = TEST_RESTAURANT_FLOOR
         )
-        every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns defaultUser
+        every { userService.loadUserByUsername(TEST_USERNAME) } returns defaultUser
         every { restaurantAddTicketRepository.save(any()) } returns defaultTicket
-        val responseDTO = restaurantAddTicketService.createTicket(TEST_AUTH_HEADER, requestDTO)
+        val responseDTO = restaurantAddTicketService.createTicket(requestDTO, TEST_USERNAME)
         Assertions.assertEquals(RestaurantAddStatus.PROCESSING, responseDTO.status)
     }
 
@@ -85,43 +85,43 @@ class RestaurantAddTicketServiceTest {
     fun notNewUpdateStatusTest() {
         val defaultUser = User(id = TEST_USER_ID)
         val defaultTicket = RestaurantAddTicket(
-                id = TEST_TICKET_ID,
-                user = defaultUser,
-                status = RestaurantAddStatus.REJECTED
+            id = TEST_TICKET_ID,
+            user = defaultUser,
+            status = RestaurantAddStatus.REJECTED
         )
         val dto = RestaurantProcessTicketRequest(
-                restaurantAddTicketId = TEST_TICKET_ID,
-                status = RestaurantAddStatus.PROCESSING,
-                adminComment = null
+            restaurantAddTicketId = TEST_TICKET_ID,
+            status = RestaurantAddStatus.PROCESSING,
+            adminComment = null
         )
         every { restaurantAddTicketRepository.findByIdOrNull(TEST_TICKET_ID) } returns defaultTicket
-        assertThrows<CommonException> { restaurantAddTicketService.processRestaurantAddTicket(TEST_AUTH_HEADER, dto) }
+        assertThrows<CommonException> { restaurantAddTicketService.processRestaurantAddTicket(dto, TEST_USERNAME) }
     }
 
     @Test
     fun successfulUpdateStatusAcceptedTest() {
         val defaultUser = User(id = TEST_USER_ID)
         val defaultTicket = RestaurantAddTicket(
-                id = TEST_TICKET_ID,
-                user = defaultUser
+            id = TEST_TICKET_ID,
+            user = defaultUser
         )
         val modifiedTicket = RestaurantAddTicket(
-                id = TEST_TICKET_ID,
-                user = defaultUser,
-                status = RestaurantAddStatus.ACCEPTED
+            id = TEST_TICKET_ID,
+            user = defaultUser,
+            status = RestaurantAddStatus.ACCEPTED
         )
         val dto = RestaurantProcessTicketRequest(
-                restaurantAddTicketId = TEST_TICKET_ID,
-                status = RestaurantAddStatus.ACCEPTED,
-                adminComment = null
+            restaurantAddTicketId = TEST_TICKET_ID,
+            status = RestaurantAddStatus.ACCEPTED,
+            adminComment = null
         )
-        every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns defaultUser
+        every { userService.loadUserByUsername(TEST_USERNAME) } returns defaultUser
         every { userService.addRole(any()) } returns true
         every { restaurantService.save(any()) } returns defaultTicket.toRestaurant()
         every { restaurantAddTicketRepository.findByIdOrNull(TEST_TICKET_ID) } returns defaultTicket
         every { restaurantAddTicketRepository.save(any()) } returns modifiedTicket
         every { restaurantService.save(defaultTicket.toRestaurant()) } returns defaultTicket.toRestaurant()
-        val response = restaurantAddTicketService.processRestaurantAddTicket(TEST_AUTH_HEADER, dto)
+        val response = restaurantAddTicketService.processRestaurantAddTicket(dto, TEST_USERNAME)
         Assertions.assertEquals(RestaurantAddStatus.ACCEPTED, response.status)
         Assertions.assertEquals(defaultTicket.toRestaurant().id, response.newRestaurantId)
     }
@@ -130,24 +130,24 @@ class RestaurantAddTicketServiceTest {
     fun successfulUpdateStatusRejectedTest() {
         val defaultUser = User(id = TEST_USER_ID)
         val defaultTicket = RestaurantAddTicket(
-                id = TEST_TICKET_ID,
-                user = defaultUser
+            id = TEST_TICKET_ID,
+            user = defaultUser
         )
         val modifiedTicket = RestaurantAddTicket(
-                id = TEST_TICKET_ID,
-                user = defaultUser,
-                status = RestaurantAddStatus.REJECTED
+            id = TEST_TICKET_ID,
+            user = defaultUser,
+            status = RestaurantAddStatus.REJECTED
         )
         val dto = RestaurantProcessTicketRequest(
-                restaurantAddTicketId = TEST_TICKET_ID,
-                status = RestaurantAddStatus.REJECTED,
-                adminComment = null
+            restaurantAddTicketId = TEST_TICKET_ID,
+            status = RestaurantAddStatus.REJECTED,
+            adminComment = null
         )
-        every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns defaultUser
+        every { userService.loadUserByUsername(TEST_USERNAME) } returns defaultUser
         every { userService.addRole(any()) } returns true
         every { restaurantAddTicketRepository.findByIdOrNull(TEST_TICKET_ID) } returns defaultTicket
         every { restaurantAddTicketRepository.save(any()) } returns modifiedTicket
-        val response = restaurantAddTicketService.processRestaurantAddTicket(TEST_AUTH_HEADER, dto)
+        val response = restaurantAddTicketService.processRestaurantAddTicket(dto, TEST_USERNAME)
         Assertions.assertEquals(RestaurantAddStatus.REJECTED, response.status)
         Assertions.assertNull(response.newRestaurantId)
     }
@@ -162,6 +162,6 @@ class RestaurantAddTicketServiceTest {
         const val TEST_RESTAURANT_BUILDING = 42
         const val TEST_RESTAURANT_ENTRANCE = 7
         const val TEST_RESTAURANT_FLOOR = 2
-        const val TEST_AUTH_HEADER = "TEST_AUTH_HEADER"
+        const val TEST_USERNAME = "ip13"
     }
 }

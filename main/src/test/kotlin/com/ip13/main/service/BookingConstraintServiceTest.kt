@@ -35,16 +35,18 @@ class BookingConstraintServiceTest {
 
     @Test
     fun addCorrectConstraintTest() {
-        val dto = AddBookingConstraintRequest(TEST_RESTAURANT_ID, "TEST", LocalDateTime.now(),
-                LocalDateTime.now().plusDays(1))
+        val dto = AddBookingConstraintRequest(
+            TEST_RESTAURANT_ID, "TEST", LocalDateTime.now(),
+            LocalDateTime.now().plusDays(1)
+        )
         val defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID, manager = User(TEST_USER_ID))
         val defaultUser = User(id = TEST_USER_ID)
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        every { userService.getUserByTokenInHeader(any()) } returns defaultUser
+        every { userService.loadUserByUsername(any()) } returns defaultUser
         every { bookingConstraintRepository.save(any()) } returns BookingConstraint(17)
-        val bcsReturned = bookingConstraintService.addBookingConstraint(TEST_AUTH_HEADER, dto)
+        val bcsReturned = bookingConstraintService.addBookingConstraint(dto, TEST_USERNAME)
         assertAll(
-                { Assertions.assertEquals(bcsReturned.id, 17) }
+            { Assertions.assertEquals(bcsReturned.id, 17) }
         )
     }
 
@@ -54,18 +56,20 @@ class BookingConstraintServiceTest {
         val notManager = User(id = TEST_USER_ID + 1)
         val defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID, manager = manager)
         every { userService.findByIdOrNull(TEST_USER_ID) } returns manager
-        every { userService.getUserByTokenInHeader(TEST_AUTH_HEADER) } returns notManager
+        every { userService.loadUserByUsername(TEST_USERNAME) } returns notManager
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        val dto = AddBookingConstraintRequest(TEST_RESTAURANT_ID, "TEST", LocalDateTime.now(),
-                LocalDateTime.now().plusDays(1))
+        val dto = AddBookingConstraintRequest(
+            TEST_RESTAURANT_ID, "TEST", LocalDateTime.now(),
+            LocalDateTime.now().plusDays(1)
+        )
         assertThrows<CommonException> {
-            bookingConstraintService.addBookingConstraint(TEST_AUTH_HEADER, dto)
+            bookingConstraintService.addBookingConstraint(dto, TEST_USERNAME)
         }
     }
 
     companion object {
         const val TEST_RESTAURANT_ID = 11
         const val TEST_USER_ID = 13
-        const val TEST_AUTH_HEADER = "TEST_AUTH_HEADER"
+        const val TEST_USERNAME = "ip13"
     }
 }
