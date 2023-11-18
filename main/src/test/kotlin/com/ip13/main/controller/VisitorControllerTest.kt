@@ -32,7 +32,7 @@ class VisitorControllerTest : AbstractTestContainersTest() {
     @Test
     @WithMockUser(username = "ip13", password = "Ip13!")
     fun `should return PROCESSING status on reserve table when no booking constraint and user not in black list`() {
-        val restaurant = createDefaultRestaurant()
+        createDefaultRestaurant()
 
         val body = loadAsString("json/reserve_table.json")
 
@@ -62,7 +62,7 @@ class VisitorControllerTest : AbstractTestContainersTest() {
 
     @Test
     fun createTicketTest() {
-
+        
     }
 
     @Test

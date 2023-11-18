@@ -102,16 +102,4 @@ class UserService(
         save(updatedUser)
         return isDeleted
     }
-
-    /**
-     * throw UserNotFoundException if you couldn't extract user from header
-     */
-    fun getUserByTokenInHeader(header: String): User {
-        return loadUserByUsername(tokenService.getUsername(getTokenFromHeader(header)))
-    }
-
-    private fun getTokenFromHeader(header: String): String {
-        // header starts with "Bearer ...token here..,"
-        return header.substring(7)
-    }
 }
