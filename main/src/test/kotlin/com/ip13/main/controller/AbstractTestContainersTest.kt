@@ -1,6 +1,5 @@
 package com.ip13.main.controller
 
-import com.ip13.main.security.repository.UserRepository
 import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
@@ -9,7 +8,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
@@ -32,12 +30,6 @@ import java.io.File
 abstract class AbstractTestContainersTest {
     @Autowired
     lateinit var jdbc: JdbcTemplate
-
-    @Autowired
-    lateinit var userRepository: UserRepository
-
-    @Autowired
-    lateinit var passwordEncoder: PasswordEncoder
 
     @Autowired
     lateinit var mockMvc: MockMvc

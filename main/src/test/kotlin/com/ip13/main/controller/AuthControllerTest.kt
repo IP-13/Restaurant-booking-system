@@ -5,12 +5,17 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers.containsString
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 class AuthControllerTest : AbstractTestContainersTest() {
+    @Autowired
+    lateinit var passwordEncoder: PasswordEncoder
+
     @Test
     @WithMockUser(authorities = [ADMIN])
     fun `should add new user to db when register successfully`() {
