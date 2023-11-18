@@ -14,6 +14,7 @@ import jakarta.validation.Valid
 import jakarta.validation.constraints.PositiveOrZero
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @Validated
 @RestController
@@ -74,15 +75,14 @@ class AdminController(
 
     @PostMapping("/process-ticket")
     fun processTicketToAddRestaurant(
-        @RequestHeader(name = "Authorization", required = true)
-        authHeader: String,
+        principal: Principal,
         @Valid
         @RequestBody(required = true)
         request: RestaurantProcessTicketRequest,
     ): RestaurantProcessTicketResponse {
         log.debug("/admin/process-ticket endpoint invoked")
 
-        return restaurantAddTicketService.processRestaurantAddTicket(authHeader, request)
+        return restaurantAddTicketService.processRestaurantAddTicket(request, principal.name)
     }
 
     @GetMapping("/show-tickets")

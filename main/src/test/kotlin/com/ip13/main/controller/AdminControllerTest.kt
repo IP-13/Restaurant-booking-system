@@ -5,12 +5,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertAll
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import org.testcontainers.shaded.org.hamcrest.core.IsEqual
 
 class AdminControllerTest : AbstractTestContainersTest() {
     @Test
@@ -18,7 +16,7 @@ class AdminControllerTest : AbstractTestContainersTest() {
     fun `test add role to non-existent user`() {
         val body = loadAsString("json/add_role_to_non_existent_user.json")
 
-        mockMvc.post("/admin/add_role") {
+        mockMvc.post("/admin/add-role") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = body
@@ -42,7 +40,7 @@ class AdminControllerTest : AbstractTestContainersTest() {
 
         val body = loadAsString("json/add_role_request.json")
 
-        mockMvc.post("/admin/add_role") {
+        mockMvc.post("/admin/add-role") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = body
@@ -74,7 +72,7 @@ class AdminControllerTest : AbstractTestContainersTest() {
 
         val addRoleBody = loadAsString("json/add_role_request.json")
 
-        mockMvc.post("/admin/add_role") {
+        mockMvc.post("/admin/add-role") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = addRoleBody
@@ -100,7 +98,7 @@ class AdminControllerTest : AbstractTestContainersTest() {
 
         val deleteRoleBody = loadAsString("json/delete_role_request.json")
 
-        mockMvc.post("/admin/delete_role") {
+        mockMvc.post("/admin/delete-role") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = deleteRoleBody
@@ -132,7 +130,7 @@ class AdminControllerTest : AbstractTestContainersTest() {
         // TODO() what to do with dates? Update test when date expires?
         val body = loadAsString("json/add_to_black_list_request.json")
 
-        mockMvc.post("/admin/add_to_black_list") {
+        mockMvc.post("/admin/add-to-black-list") {
             contentType = MediaType.APPLICATION_JSON
             accept = MediaType.APPLICATION_JSON
             content = body

@@ -23,8 +23,8 @@ class GradeManagerService(
 ) {
     private val log = getLogger(javaClass)
 
-    fun gradeVisitor(authHeader: String, request: GradeVisitorRequest): GradeVisitorResponse {
-        val manager = userService.getUserByTokenInHeader(authHeader)
+    fun gradeVisitor(request: GradeVisitorRequest, username: String): GradeVisitorResponse {
+        val manager = userService.loadUserByUsername(username)
 
         log.debug("manager extracted from token\n{}", manager.toString())
 

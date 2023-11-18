@@ -34,7 +34,7 @@ class AuthControllerTest : AbstractTestContainersTest() {
         val user = userRepository.findByUsername("ip13")!!
 
         assertAll(
-            { assertThat(passwordEncoder.matches("ip_13Q!", user.password)).isTrue() },
+            { assertThat(passwordEncoder.matches("Ip13!", user.password)).isTrue() },
             { assertThat(user.username).isEqualTo("ip13") },
             { assertThat(user.numOfGrades).isEqualTo(0) },
             { assertThat(user.sumOfGrades).isEqualTo(0) },
@@ -70,7 +70,7 @@ class AuthControllerTest : AbstractTestContainersTest() {
 
     @Test
     fun `should return token when login with valid name and password`() {
-        registerDefaultUser()
+        val user = registerDefaultUser()
 
         val body = loadAsString("json/default_user_register.json")
 

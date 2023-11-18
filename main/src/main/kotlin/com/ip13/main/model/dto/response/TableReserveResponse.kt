@@ -4,5 +4,4 @@ import com.ip13.main.model.enums.TableReserveStatus
 
 data class TableReserveResponse(
     val status: TableReserveStatus,
-    val comment: String? = null,
 )

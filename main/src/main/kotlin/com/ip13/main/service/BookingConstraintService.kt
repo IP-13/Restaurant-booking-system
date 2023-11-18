@@ -23,12 +23,12 @@ class BookingConstraintService(
         return bookingConstraintRepository.save(bookingConstraint)
     }
 
-    fun addBookingConstraint(authHeader: String, request: AddBookingConstraintRequest): AddBookingConstraintResponse {
+    fun addBookingConstraint(request: AddBookingConstraintRequest, username: String): AddBookingConstraintResponse {
         val restaurant = restaurantService.findByIdOrThrow(request.restaurantId)
 
         log.debug("Restaurant found\n{}", restaurant.toString())
 
-        val user = userService.getUserByTokenInHeader(authHeader)
+        val user = userService.loadUserByUsername(username)
 
         log.debug("user extracted from token\n{}", user.toString())
 
