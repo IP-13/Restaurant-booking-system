@@ -45,7 +45,7 @@ class AuthControllerTest : AbstractTestContainersTest() {
     @Test
     @WithMockUser(authorities = [ADMIN])
     fun `should return 400 status code when register with username that already exists`() {
-        registerDefaultUser()
+        createDefaultUser()
 
         val body = loadAsString("json/default_user_register.json")
 
@@ -70,7 +70,7 @@ class AuthControllerTest : AbstractTestContainersTest() {
 
     @Test
     fun `should return token when login with valid name and password`() {
-        val user = registerDefaultUser()
+        val user = createDefaultUser()
 
         val body = loadAsString("json/default_user_register.json")
 
@@ -92,7 +92,7 @@ class AuthControllerTest : AbstractTestContainersTest() {
 
     @Test
     fun `should return 400 status code when wrong password`() {
-        registerDefaultUser()
+        createDefaultUser()
 
         val body = loadAsString("json/default_user_with_wrong_password.json")
 

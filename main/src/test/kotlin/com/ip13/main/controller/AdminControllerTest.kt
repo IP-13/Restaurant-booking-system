@@ -36,7 +36,7 @@ class AdminControllerTest : AbstractTestContainersTest() {
     @Test
     @WithMockUser(authorities = [ADMIN])
     fun addRoleTest() {
-        registerDefaultUser()
+        createDefaultUser()
 
         val body = loadAsString("json/add_role_request.json")
 
@@ -68,7 +68,7 @@ class AdminControllerTest : AbstractTestContainersTest() {
     @Test
     @WithMockUser(authorities = [ADMIN])
     fun deleteRoleTest() {
-        registerDefaultUser()
+        createDefaultUser()
 
         val addRoleBody = loadAsString("json/add_role_request.json")
 
@@ -125,7 +125,7 @@ class AdminControllerTest : AbstractTestContainersTest() {
     @Test
     @WithMockUser(authorities = [ADMIN])
     fun addToBlackListTest() {
-        registerDefaultUser()
+        createDefaultUser()
 
         // TODO() what to do with dates? Update test when date expires?
         val body = loadAsString("json/add_to_black_list_request.json")

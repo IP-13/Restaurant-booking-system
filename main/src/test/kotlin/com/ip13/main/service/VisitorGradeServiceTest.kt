@@ -6,7 +6,7 @@ import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.entity.VisitorGrade
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.TableReserveTicket
-import com.ip13.main.repository.GradeManagerRepository
+import com.ip13.main.repository.VisitorGradeRepository
 import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.service.UserService
 import io.mockk.every
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(MockKExtension::class)
 class VisitorGradeServiceTest {
     @MockK
-    private lateinit var gradeManagerRepository: GradeManagerRepository
+    private lateinit var visitorGradeRepository: VisitorGradeRepository
 
     @MockK
     private lateinit var userService: UserService
@@ -34,7 +34,7 @@ class VisitorGradeServiceTest {
     private lateinit var tableReserveService: TableReserveService
 
     @InjectMockKs
-    private lateinit var gradeManagerService: GradeManagerService
+    private lateinit var visitorGradeService: VisitorGradeService
 
     @Test
     fun successfulGradeUserTest() {
@@ -62,9 +62,9 @@ class VisitorGradeServiceTest {
         every { userService.loadUserByUsername(any()) } returns defaultManager
         every { userService.save(any()) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
-        every { gradeManagerRepository.save(any()) } returns defaultVisitorGrade
+        every { visitorGradeRepository.save(any()) } returns defaultVisitorGrade
         every { blackListService.save(any()) } returns defaultBlackList.id
-        val response = gradeManagerService.gradeVisitor(dto, TEST_USERNAME)
+        val response = visitorGradeService.gradeVisitor(dto, TEST_USERNAME)
         assertAll(
             { Assertions.assertEquals(TEST_GRADE.toFloat(), response.newAverageGrade) }
         )
@@ -88,7 +88,7 @@ class VisitorGradeServiceTest {
         )
         every { userService.loadUserByUsername(any()) } returns User(TEST_MANAGER_ID + 1)
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
-        assertThrows<CommonException> { gradeManagerService.gradeVisitor(dto, TEST_USERNAME) }
+        assertThrows<CommonException> { visitorGradeService.gradeVisitor(dto, TEST_USERNAME) }
     }
 
     @Test
@@ -121,8 +121,8 @@ class VisitorGradeServiceTest {
         every { userService.loadUserByUsername(any()) } returns defaultManager
         every { userService.save(any()) } returns defaultUser
         every { tableReserveService.findByIdOrThrow(any()) } returns defaultTableReserveTicket
-        every { gradeManagerRepository.save(any()) } returns defaultVisitorGrade
-        assertThrows<CommonException> { gradeManagerService.gradeVisitor(dto, TEST_USERNAME) }
+        every { visitorGradeRepository.save(any()) } returns defaultVisitorGrade
+        assertThrows<CommonException> { visitorGradeService.gradeVisitor(dto, TEST_USERNAME) }
     }
 
     companion object {

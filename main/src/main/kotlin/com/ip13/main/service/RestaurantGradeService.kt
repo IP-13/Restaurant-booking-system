@@ -5,7 +5,7 @@ import com.ip13.main.model.dto.request.GradeRestaurantRequest
 import com.ip13.main.model.entity.RestaurantGrade
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.toRestaurantGrade
-import com.ip13.main.repository.GradeVisitorRepository
+import com.ip13.main.repository.RestaurantGradeRepository
 import com.ip13.main.security.service.UserService
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatus
@@ -13,8 +13,8 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
-class GradeVisitorService(
-    private val gradeVisitorRepository: GradeVisitorRepository,
+class RestaurantGradeService(
+    private val restaurantGradeRepository: RestaurantGradeRepository,
     private val restaurantService: RestaurantService,
     private val userService: UserService,
     private val tableReserveService: TableReserveService,
@@ -23,7 +23,7 @@ class GradeVisitorService(
     private val log = getLogger(javaClass)
 
     fun save(restaurantGrade: RestaurantGrade): Int {
-        return gradeVisitorRepository.save(restaurantGrade).id
+        return restaurantGradeRepository.save(restaurantGrade).id
     }
 
     fun gradeRestaurant(request: GradeRestaurantRequest, username: String): Float {
