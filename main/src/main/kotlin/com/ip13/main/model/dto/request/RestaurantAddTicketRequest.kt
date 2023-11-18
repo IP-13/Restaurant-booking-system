@@ -18,5 +18,5 @@ data class RestaurantAddTicketRequest(
     val entrance: Int?,
     val floor: Int?,
     @Size(max = 50, message = "Restaurant description should be less than 50 symbols")
-    val description: String? = null,
+    val description: String?,
 )
