@@ -68,7 +68,7 @@ class ManagerController(
         return tableReserveService.processReservation(authHeader, request)
     }
 
-    @GetMapping("/grade-visitor")
+    @PostMapping("/grade-visitor")
     fun gradeVisitor(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,

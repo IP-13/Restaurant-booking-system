@@ -50,7 +50,7 @@ class VisitorController(
         return restaurantAddTicketService.createTicket(authHeader, request)
     }
 
-    @GetMapping("/grade-restaurant")
+    @PostMapping("/grade-restaurant")
     fun gradeRestaurant(
         @RequestHeader(name = "Authorization", required = true)
         authHeader: String,
