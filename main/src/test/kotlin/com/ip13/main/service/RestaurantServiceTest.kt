@@ -47,10 +47,16 @@ class RestaurantServiceTest {
     }
 
     @Test
-    fun findByManagerIdTest() {
+    fun findByManagerIdOrThrowSuccessfulTest() {
         val defaultRestaurant = Restaurant()
         every { restaurantRepository.findByManagerId(TEST_MANAGER_ID) } returns defaultRestaurant
-        Assertions.assertEquals(defaultRestaurant, restaurantService.findByManagerId(TEST_MANAGER_ID))
+        Assertions.assertEquals(defaultRestaurant, restaurantService.findByManagerIdOrThrow(TEST_MANAGER_ID))
+    }
+
+    @Test
+    fun findByManagerIdOrThrowNotExistingTest() {
+        every { restaurantRepository.findByManagerId(TEST_MANAGER_ID) } returns null
+        assertThrows<RestaurantNotFoundException> { restaurantService.findByManagerIdOrThrow(TEST_MANAGER_ID) }
     }
 
     companion object {
