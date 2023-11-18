@@ -8,11 +8,11 @@ import java.time.LocalDateTime
 
 data class AddBookingConstraintRequest(
     @PositiveOrZero
-    val restaurantId: Int = 0,
+    val restaurantId: Int,
     @Size(min = 5, max = 15, message = "Reason message should be from 5 to 15 symbols")
-    val reason: String? = null,
+    val reason: String?,
     @FutureOrPresent
-    val fromDate: LocalDateTime = LocalDateTime.now(),
+    val fromDate: LocalDateTime,
     @Future
-    val tillDate: LocalDateTime = LocalDateTime.now(),
+    val tillDate: LocalDateTime,
 )
