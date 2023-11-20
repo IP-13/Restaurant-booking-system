@@ -73,7 +73,8 @@ class RestaurantAddTicketServiceTest {
             street = TEST_RESTAURANT_STREET,
             building = TEST_RESTAURANT_BUILDING,
             entrance = TEST_RESTAURANT_ENTRANCE,
-            floor = TEST_RESTAURANT_FLOOR
+            floor = TEST_RESTAURANT_FLOOR,
+            description = null,
         )
         every { userService.loadUserByUsername(TEST_USERNAME) } returns defaultUser
         every { restaurantAddTicketRepository.save(any()) } returns defaultTicket

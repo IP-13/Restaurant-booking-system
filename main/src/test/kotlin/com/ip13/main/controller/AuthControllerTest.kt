@@ -70,7 +70,7 @@ class AuthControllerTest : AbstractTestContainersTest() {
 
     @Test
     fun `should return token when login with valid name and password`() {
-        val user = createDefaultUser()
+        createDefaultUser()
 
         val body = loadAsString("json/default_user_register.json")
 

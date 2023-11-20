@@ -52,16 +52,16 @@ class TableReserveServiceTest {
     @Test
     fun getReservationsTest() {
         val defaultManager = User(
-                id = TEST_MANAGER_ID,
-                username = TEST_USER_NAME
+            id = TEST_MANAGER_ID,
+            username = TEST_USER_NAME
         )
         val defaultRestaurant1 = Restaurant(id = TEST_RESTAURANT_ID)
         val defaultRestaurant2 = Restaurant(id = TEST_RESTAURANT_ID + 1)
         val defaultTicket1 = TableReserveTicket(
-                restaurant = defaultRestaurant1
+            restaurant = defaultRestaurant1
         )
         val defaultTicket2 = TableReserveTicket(
-                restaurant = defaultRestaurant2
+            restaurant = defaultRestaurant2
         )
         val defaultTicketList = listOf(defaultTicket1, defaultTicket2)
         every { userService.loadUserByUsername(TEST_USER_NAME) } returns defaultManager
@@ -94,36 +94,55 @@ class TableReserveServiceTest {
     @Test
     fun reserveTableSuccessfulTest() {
         val defaultUser = User(
-                id = TEST_USER_ID,
-                username = TEST_USER_NAME
+            id = TEST_USER_ID,
+            username = TEST_USER_NAME
         )
         val defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID)
-        val request = TableReserveRequest(restaurantId = TEST_RESTAURANT_ID)
+        val request = TableReserveRequest(
+            restaurantId = TEST_RESTAURANT_ID,
+            fromDate = LocalDateTime.now(),
+            tillDate = LocalDateTime.now().plusDays(1),
+            numOfGuests = 1,
+            userComment = null,
+        )
         val ticket = request.toTableReserveTicket(defaultRestaurant, defaultUser)
         every { tableReserveTicketRepository.save(any()) } returns ticket
         every { userService.loadUserByUsername(TEST_USER_NAME) } returns defaultUser
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        Assertions.assertEquals(TableReserveStatus.PROCESSING, tableReserveService.reserveTable(request, TEST_USER_NAME).status)
+        Assertions.assertEquals(
+            TableReserveStatus.PROCESSING,
+            tableReserveService.reserveTable(request, TEST_USER_NAME).status
+        )
     }
 
     @Test
     fun reserveTableBlackListTest() {
         val defaultUser = User(
-                id = TEST_USER_ID,
-                username = TEST_USER_NAME,
-                blackListEntries = listOf(BlackList(
+            id = TEST_USER_ID,
+            username = TEST_USER_NAME,
+            blackListEntries = listOf(
+                BlackList(
                     id = 1,
                     fromDate = LocalDateTime.now().minusDays(1),
                     tillDate = LocalDateTime.now().plusDays(1)
-                ))
+                )
+            )
         )
         val defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID)
-        val request = TableReserveRequest(restaurantId = TEST_RESTAURANT_ID)
+        val request = TableReserveRequest(
+            restaurantId = TEST_RESTAURANT_ID, fromDate = LocalDateTime.now(),
+            tillDate = LocalDateTime.now().plusDays(1),
+            numOfGuests = 1,
+            userComment = null,
+        )
         val ticket = request.toTableReserveTicket(defaultRestaurant, defaultUser)
         every { tableReserveTicketRepository.save(any()) } returns ticket
         every { userService.loadUserByUsername(TEST_USER_NAME) } returns defaultUser
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        Assertions.assertEquals(TableReserveStatus.REJECTED, tableReserveService.reserveTable(request, TEST_USER_NAME).status)
+        Assertions.assertEquals(
+            TableReserveStatus.REJECTED,
+            tableReserveService.reserveTable(request, TEST_USER_NAME).status
+        )
     }
 
     @Test
@@ -131,62 +150,80 @@ class TableReserveServiceTest {
         val defaultUser = User(
             id = TEST_USER_ID,
             username = TEST_USER_NAME,
-            blackListEntries = listOf(BlackList(
-                id = 1,
-                fromDate = LocalDateTime.now().minusDays(2),
-                tillDate = LocalDateTime.now().minusDays(1)
-            ))
+            blackListEntries = listOf(
+                BlackList(
+                    id = 1,
+                    fromDate = LocalDateTime.now().minusDays(2),
+                    tillDate = LocalDateTime.now().minusDays(1)
+                )
+            )
         )
         val defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID)
-        val request = TableReserveRequest(restaurantId = TEST_RESTAURANT_ID)
+        val request = TableReserveRequest(
+            restaurantId = TEST_RESTAURANT_ID, fromDate = LocalDateTime.now(),
+            tillDate = LocalDateTime.now().plusDays(1),
+            numOfGuests = 1,
+            userComment = null,
+        )
         val ticket = request.toTableReserveTicket(defaultRestaurant, defaultUser)
         every { tableReserveTicketRepository.save(any()) } returns ticket
         every { userService.loadUserByUsername(TEST_USER_NAME) } returns defaultUser
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        Assertions.assertEquals(TableReserveStatus.PROCESSING, tableReserveService.reserveTable(request, TEST_USER_NAME).status)
+        Assertions.assertEquals(
+            TableReserveStatus.PROCESSING,
+            tableReserveService.reserveTable(request, TEST_USER_NAME).status
+        )
     }
 
     @Test
     fun reserveTableConstraintTest() {
         val defaultUser = User(
-                id = TEST_USER_ID,
-                username = TEST_USER_NAME,
+            id = TEST_USER_ID,
+            username = TEST_USER_NAME,
         )
         var defaultRestaurant = Restaurant(id = TEST_RESTAURANT_ID)
         val constraint = BookingConstraint(
-                restaurant = defaultRestaurant,
-                fromDate = LocalDateTime.now(),
-                tillDate = LocalDateTime.now().plusDays(1)
+            restaurant = defaultRestaurant,
+            fromDate = LocalDateTime.now(),
+            tillDate = LocalDateTime.now().plusDays(1)
         )
         defaultRestaurant = Restaurant(
-                id = TEST_RESTAURANT_ID,
-                bookingConstraints = listOf(constraint)
+            id = TEST_RESTAURANT_ID,
+            bookingConstraints = listOf(constraint)
         )
-        val request = TableReserveRequest(restaurantId = TEST_RESTAURANT_ID)
+        val request = TableReserveRequest(
+            restaurantId = TEST_RESTAURANT_ID, fromDate = LocalDateTime.now(),
+            tillDate = LocalDateTime.now().plusDays(1),
+            numOfGuests = 1,
+            userComment = null,
+        )
         val ticket = request.toTableReserveTicket(defaultRestaurant, defaultUser)
         every { tableReserveTicketRepository.save(any()) } returns ticket
         every { userService.loadUserByUsername(TEST_USER_NAME) } returns defaultUser
         every { restaurantService.findByIdOrThrow(TEST_RESTAURANT_ID) } returns defaultRestaurant
-        Assertions.assertEquals(TableReserveStatus.REJECTED, tableReserveService.reserveTable(request, TEST_USER_NAME).status)
+        Assertions.assertEquals(
+            TableReserveStatus.REJECTED,
+            tableReserveService.reserveTable(request, TEST_USER_NAME).status
+        )
     }
 
     @Test
     fun processReservationSuccessfulTest() {
         val manager = User(
-                id = TEST_MANAGER_ID,
-                username = TEST_USER_NAME
+            id = TEST_MANAGER_ID,
+            username = TEST_USER_NAME
         )
         val ticket = TableReserveTicket(
-                id = TEST_TICKET_ID,
-                restaurant = Restaurant(
-                        id = TEST_RESTAURANT_ID,
-                        manager = manager
-                )
+            id = TEST_TICKET_ID,
+            restaurant = Restaurant(
+                id = TEST_RESTAURANT_ID,
+                manager = manager
+            )
         )
         val request = ReservationProcessRequest(
-                tableReserveTicketId = TEST_TICKET_ID,
-                managerComment = null,
-                status = TableReserveStatus.ACCEPTED
+            tableReserveTicketId = TEST_TICKET_ID,
+            managerComment = null,
+            status = TableReserveStatus.ACCEPTED
         )
         every { userService.loadUserByUsername(TEST_USER_NAME) } returns manager
         every { tableReserveTicketRepository.findByIdOrNull(TEST_TICKET_ID) } returns ticket
@@ -198,23 +235,23 @@ class TableReserveServiceTest {
     @Test
     fun processReservationNotManagerTest() {
         val manager = User(
-                id = TEST_MANAGER_ID,
+            id = TEST_MANAGER_ID,
         )
         val notManager = User(
-                id = TEST_USER_ID,
-                username = TEST_USER_NAME
+            id = TEST_USER_ID,
+            username = TEST_USER_NAME
         )
         val ticket = TableReserveTicket(
-                id = TEST_TICKET_ID,
-                restaurant = Restaurant(
-                        id = TEST_RESTAURANT_ID,
-                        manager = manager
-                )
+            id = TEST_TICKET_ID,
+            restaurant = Restaurant(
+                id = TEST_RESTAURANT_ID,
+                manager = manager
+            )
         )
         val request = ReservationProcessRequest(
-                tableReserveTicketId = TEST_TICKET_ID,
-                managerComment = null,
-                status = TableReserveStatus.ACCEPTED
+            tableReserveTicketId = TEST_TICKET_ID,
+            managerComment = null,
+            status = TableReserveStatus.ACCEPTED
         )
         every { userService.loadUserByUsername(TEST_USER_NAME) } returns notManager
         every { tableReserveTicketRepository.findByIdOrNull(TEST_TICKET_ID) } returns ticket
@@ -225,21 +262,21 @@ class TableReserveServiceTest {
     @Test
     fun processReservationProcessedTest() {
         val manager = User(
-                id = TEST_MANAGER_ID,
-                username = TEST_USER_NAME
+            id = TEST_MANAGER_ID,
+            username = TEST_USER_NAME
         )
         val ticket = TableReserveTicket(
-                id = TEST_TICKET_ID,
-                restaurant = Restaurant(
-                        id = TEST_RESTAURANT_ID,
-                        manager = manager
-                ),
-                status = TableReserveStatus.REJECTED
+            id = TEST_TICKET_ID,
+            restaurant = Restaurant(
+                id = TEST_RESTAURANT_ID,
+                manager = manager
+            ),
+            status = TableReserveStatus.REJECTED
         )
         val request = ReservationProcessRequest(
-                tableReserveTicketId = TEST_TICKET_ID,
-                managerComment = null,
-                status = TableReserveStatus.ACCEPTED
+            tableReserveTicketId = TEST_TICKET_ID,
+            managerComment = null,
+            status = TableReserveStatus.ACCEPTED
         )
         every { userService.loadUserByUsername(TEST_USER_NAME) } returns manager
         every { tableReserveTicketRepository.findByIdOrNull(TEST_TICKET_ID) } returns ticket
