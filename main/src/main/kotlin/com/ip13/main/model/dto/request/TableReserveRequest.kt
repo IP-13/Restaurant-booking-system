@@ -4,14 +4,14 @@ import jakarta.validation.constraints.*
 import java.time.LocalDateTime
 
 data class TableReserveRequest(
-    @PositiveOrZero
+    @field:PositiveOrZero
     val restaurantId: Int,
-    @FutureOrPresent
+    @field:FutureOrPresent
     val fromDate: LocalDateTime,
-    @Future
+    @field:Future
     val tillDate: LocalDateTime,
-    @Positive
+    @field:Positive
     val numOfGuests: Int,
-    @Size(max = 25, message = "User comment length should be less than 25 symbols")
+    @field:Size(max = 25, message = "User comment length should be less than 25 symbols")
     val userComment: String?,
 )

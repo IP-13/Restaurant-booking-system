@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 
 data class GradeVisitorRequest(
-    @Positive
+    @field:Positive
     val tableReserveTicketId: Int,
-    @Min(1)
-    @Max(5)
+    @field:Min(1)
+    @field:Max(5)
     val grade: Int,
-    @Size(max = 25, message = "Comment length should be less than 25 symbols")
+    @field:Size(max = 25, message = "Comment length should be less than 25 symbols")
     val comment: String?,
 )

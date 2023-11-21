@@ -7,11 +7,11 @@ import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
 data class BlackListRequest(
-    @PositiveOrZero
+    @field:PositiveOrZero
     val userId: Int,
-    @FutureOrPresent
+    @field:Future
     val fromDate: LocalDateTime,
-    @Future
+    @field:Future
     val tillDate: LocalDateTime,
     @Size(min = 5, max = 15, message = "Reason message should be from 5 to 15 symbols")
     val reason: String?,

@@ -6,10 +6,10 @@ import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 
 data class ReservationProcessRequest(
-    @Positive
+    @field:Positive
     val tableReserveTicketId: Int,
-    @Size(max = 25, message = "Manager comment length should be less than 25 symbols")
+    @field:Size(max = 25, message = "Manager comment length should be less than 25 symbols")
     val managerComment: String?,
-    @NotNull
+    @field:NotNull
     val status: TableReserveStatus,
 )

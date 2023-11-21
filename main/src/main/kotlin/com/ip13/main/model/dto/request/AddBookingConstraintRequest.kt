@@ -7,12 +7,12 @@ import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
 data class AddBookingConstraintRequest(
-    @PositiveOrZero
+    @field:PositiveOrZero
     val restaurantId: Int,
-    @Size(min = 5, max = 15, message = "Reason message should be from 5 to 15 symbols")
+    @field:Size(min = 5, max = 15, message = "Reason message should be from 5 to 15 symbols")
     val reason: String?,
-    @FutureOrPresent
+    @field:FutureOrPresent
     val fromDate: LocalDateTime,
-    @Future
+    @field:Future
     val tillDate: LocalDateTime,
 )
