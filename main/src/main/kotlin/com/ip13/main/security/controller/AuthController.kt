@@ -7,11 +7,13 @@ import com.ip13.main.security.model.dto.response.RegisterResponse
 import com.ip13.main.security.service.AuthService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+@Validated
 @RestController
 @RequestMapping("/auth")
 class AuthController(

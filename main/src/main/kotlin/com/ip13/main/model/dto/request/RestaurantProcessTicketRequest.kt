@@ -6,10 +6,10 @@ import jakarta.validation.constraints.Positive
 import jakarta.validation.constraints.Size
 
 data class RestaurantProcessTicketRequest(
-    @Positive
+    @field:Positive
     val restaurantAddTicketId: Int,
-    @NotNull
+    @field:NotNull
     val status: RestaurantAddStatus,
-    @Size(max = 25, message = "Administrator comment length should be less than 25 symbols")
+    @field:Size(max = 25, message = "Administrator comment length should be less than 25 symbols")
     val adminComment: String?,
 )
