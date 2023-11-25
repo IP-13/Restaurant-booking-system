@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: booking-system
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://db:5432/db
