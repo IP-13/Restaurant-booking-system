@@ -1,0 +1,15 @@
+#!/bin/bash
+cd ..
+CL='\033[0;33m'
+NC='\033[0m'
+echo -e "${CL}gradle clean:${NC}"
+gradle clean
+echo
+echo -e "${CL}stop docker containers:${NC}"
+docker container stop app db eureka
+echo
+echo -e "${CL}remove docker containers:${NC}"
+docker container rm app db eureka
+echo
+echo -e "${CL}remove docker images:${NC}"
+docker image rm image:latest eureka:latest

@@ -1,0 +1,40 @@
+services:
+  eureka:
+    build: eureka-server
+    container_name: eureka
+    image: eureka
+    ports:
+      - 8761:8761
+
+  app:
+    build: booking-system
+    container_name: app
+    image: image
+    ports:
+      - "8000:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      eureka:
+        condition: service_started
+
+  db:
+    image: postgres:16.0
+    restart: always
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "9000:5432"
+    container_name: db
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./db:/var/lib/postgresql/data
+
+volumes:
+  db:

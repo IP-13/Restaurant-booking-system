@@ -1,0 +1,9 @@
+#!/bin/bash
+cd ..
+cd booking-system
+gradle build -x test
+cd ..
+cd eureka-server
+gradle build -x test
+cd ..
+docker compose up
