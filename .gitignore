@@ -10,4 +10,4 @@ build/
 out/
 
 # volume
-db
+db-volume
