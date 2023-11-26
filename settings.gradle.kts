@@ -4,3 +4,4 @@ plugins {
 rootProject.name = "Restaurant-booking-system"
 include("eureka-server")
 include("booking-system")
+include("gateway")

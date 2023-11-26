@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: gateway
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway:
+            nodeValue: TRACE
+            route:
+              RouteDefinitionLocator: INFO
