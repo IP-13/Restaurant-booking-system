@@ -6,12 +6,20 @@ services:
     ports:
       - 8761:8761
 
+  gateway:
+    build: gateway
+    container_name: gateway
+    image: gateway
+    ports:
+      - 8080:8080
+    depends_on:
+      eureka:
+        condition: service_started
+
   app:
     build: booking-system
     container_name: app
     image: image
-    ports:
-      - "8000:8080"
     depends_on:
       db:
         condition: service_healthy
@@ -25,8 +33,6 @@ services:
       POSTGRES_DB: db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    ports:
-      - "9000:5432"
     container_name: db
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
@@ -34,7 +40,7 @@ services:
       timeout: 1s
       retries: 2
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./db-volume:/var/lib/postgresql/data
 
 volumes:
   db:

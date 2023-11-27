@@ -6,4 +6,8 @@ cd ..
 cd eureka-server
 gradle build -x test
 cd ..
+cd gateway
+gradle build -x test
+cd ..
+
 docker compose up
