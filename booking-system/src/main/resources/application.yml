@@ -13,6 +13,13 @@ spring:
         format_sql: true
     show_sql: true
 
+info:
+  app:
+    name: ${spring.application.name}
+
+server:
+  port: 0
+
 security:
   secret: s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu
   lifeTimeSeconds: 300
@@ -22,3 +29,5 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:8761/eureka
+  instance:
+    preferIpAddress: true

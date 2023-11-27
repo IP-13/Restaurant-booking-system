@@ -6,10 +6,10 @@ echo -e "${CL}gradle clean:${NC}"
 gradle clean
 echo
 echo -e "${CL}stop docker containers:${NC}"
-docker container stop app db eureka
+docker container stop app db eureka gateway
 echo
 echo -e "${CL}remove docker containers:${NC}"
-docker container rm app db eureka
+docker container rm app db eureka gateway
 echo
 echo -e "${CL}remove docker images:${NC}"
-docker image rm image:latest eureka:latest
+docker image rm image:latest eureka:latest gateway:latest
