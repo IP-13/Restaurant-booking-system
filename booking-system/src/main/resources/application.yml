@@ -1,17 +1,6 @@
 spring:
   application:
     name: booking-system
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://db:5432/db
-    username: postgres
-    password: postgres
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show_sql: true
 
 info:
   app:
@@ -20,14 +9,22 @@ info:
 server:
   port: 0
 
-security:
-  secret: s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu
-  lifeTimeSeconds: 300
-  mega_admin: mega_admin
-
 eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka:8761/eureka
   instance:
     preferIpAddress: true
+
+spring.config.import: configserver:http://config-server:8888
+
+spring.cloud:
+    config:
+      failFast: true
+      retry:
+        initialInterval: 3000
+        maxInterval: 5000
+        maxAttempts: 20
+
+logging.level:
+  org.springframework.retry: trace
