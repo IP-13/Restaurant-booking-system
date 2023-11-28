@@ -3,10 +3,13 @@ cd ..
 cd booking-system
 gradle build -x test
 cd ..
-cd eureka-server
+cd eureka
 gradle build -x test
 cd ..
 cd gateway
+gradle build -x test
+cd ..
+cd config-server
 gradle build -x test
 cd ..
 

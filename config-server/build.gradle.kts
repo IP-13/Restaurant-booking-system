@@ -20,11 +20,8 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-    implementation("org.springframework.cloud:spring-cloud-starter-gateway")
-    implementation("org.springframework.cloud:spring-cloud-starter-config")
-    implementation("org.springframework.boot:spring-boot-starter-aop")
-    implementation("org.springframework.retry:spring-retry:2.0.4")
+    implementation("org.springframework.cloud:spring-cloud-config-server")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
 }
 
 extra["springCloudVersion"] = "2022.0.4"

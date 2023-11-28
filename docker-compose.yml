@@ -1,6 +1,6 @@
 services:
   eureka:
-    build: eureka-server
+    build: eureka
     container_name: eureka
     image: eureka
     ports:
@@ -27,13 +27,12 @@ services:
         condition: service_started
 
   db:
+    container_name: db
     image: postgres:16.0
-    restart: always
     environment:
       POSTGRES_DB: db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    container_name: db
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
       interval: 5s
@@ -41,6 +40,13 @@ services:
       retries: 2
     volumes:
       - ./db-volume:/var/lib/postgresql/data
+
+  config-server:
+    build: config-server
+    container_name: config-server
+    image: config-server
+    ports:
+      - 8888:8888
 
 volumes:
   db:
