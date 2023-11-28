@@ -5,6 +5,9 @@ services:
     image: eureka
     ports:
       - 8761:8761
+    depends_on:
+      config-server:
+        condition: service_healthy
 
   gateway:
     build: gateway
@@ -15,6 +18,8 @@ services:
     depends_on:
       eureka:
         condition: service_started
+      config-server:
+        condition: service_healthy
 
   app:
     build: booking-system
@@ -25,15 +30,16 @@ services:
         condition: service_healthy
       eureka:
         condition: service_started
+      config-server:
+        condition: service_healthy
 
   db:
+    container_name: db
     image: postgres:16.0
-    restart: always
     environment:
       POSTGRES_DB: db
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-    container_name: db
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
       interval: 5s
@@ -41,6 +47,19 @@ services:
       retries: 2
     volumes:
       - ./db-volume:/var/lib/postgresql/data
+
+  config-server:
+    build: config-server
+    container_name: config-server
+    image: config-server
+    ports:
+      - 8888:8888
+    healthcheck:
+      test: ["CMD", "curl", "-f", "localhost:8888"]
+      interval: 5s
+      timeout: 1s
+      start_period: 15s
+      retries: 2
 
 volumes:
   db:
