@@ -3,7 +3,7 @@ cd ..
 cd booking-system
 gradle build -x test
 cd ..
-cd eureka-server
+cd eureka
 gradle build -x test
 cd ..
 cd gateway
