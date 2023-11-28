@@ -1,13 +1,10 @@
 services:
   eureka:
-    build: eureka-server
+    build: eureka
     container_name: eureka
     image: eureka
     ports:
       - 8761:8761
-    depends_on:
-      config-server:
-        condition: service_healthy
 
   gateway:
     build: gateway
@@ -18,8 +15,6 @@ services:
     depends_on:
       eureka:
         condition: service_started
-      config-server:
-        condition: service_healthy
 
   app:
     build: booking-system
@@ -30,8 +25,6 @@ services:
         condition: service_healthy
       eureka:
         condition: service_started
-      config-server:
-        condition: service_healthy
 
   db:
     container_name: db
@@ -54,12 +47,6 @@ services:
     image: config-server
     ports:
       - 8888:8888
-    healthcheck:
-      test: ["CMD", "curl", "-f", "localhost:8888"]
-      interval: 5s
-      timeout: 1s
-      start_period: 15s
-      retries: 2
 
 volumes:
   db:
