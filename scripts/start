@@ -9,5 +9,8 @@ cd ..
 cd gateway
 gradle build -x test
 cd ..
+cd config-server
+gradle build -x test
+cd ..
 
 docker compose up
