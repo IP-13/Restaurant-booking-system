@@ -1,17 +1,19 @@
+version: "3.8"
+
 services:
   eureka:
     build: eureka
     container_name: eureka
     image: eureka
     ports:
-      - 8761:8761
+      - "8761:8761"
 
   gateway:
     build: gateway
     container_name: gateway
     image: gateway
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
       eureka:
         condition: service_started
@@ -41,12 +43,34 @@ services:
     volumes:
       - ./db-volume:/var/lib/postgresql/data
 
+  postgres-auth-service:
+    container_name: postgres-auth-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-auth-service-volume:/var/lib/postgresql/data
+
+  authorization-service:
+    build: authorization-service
+    container_name: authorization-service
+    image: authorization-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-auth-service:
+        condition: service_healthy
+
   config-server:
     build: config-server
     container_name: config-server
     image: config-server
     ports:
-      - 8888:8888
-
-volumes:
-  db:
+      - "8888:8888"

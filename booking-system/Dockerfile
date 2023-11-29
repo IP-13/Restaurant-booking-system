@@ -12,5 +12,5 @@
 #ENTRYPOINT ["java", "-jar", "/app/build/libs/main-1.0.0.jar"]
 
 FROM amazoncorretto:17-alpine-jdk
-COPY build/libs/*.jar main-1.0.0.jar
-ENTRYPOINT ["java", "-jar","/main-1.0.0.jar"]
+COPY build/libs/booking-system-1.0.0.jar booking-system-1.0.0.jar
+ENTRYPOINT ["java", "-jar","/booking-system-1.0.0.jar"]

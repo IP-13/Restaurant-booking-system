@@ -21,28 +21,20 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("org.flywaydb:flyway-core:9.22.3")
-    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
     implementation("org.springframework.cloud:spring-cloud-starter-config")
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.retry:spring-retry:2.0.4")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.testcontainers:testcontainers:1.19.1")
-    testImplementation("org.testcontainers:junit-jupiter:1.19.1")
-    testImplementation("org.testcontainers:postgresql:1.19.1")
-    testImplementation("org.springframework.security:spring-security-test:6.1.4")
-    testImplementation("io.mockk:mockk:1.13.8")
 }
 
 extra["springCloudVersion"] = "2022.0.4"

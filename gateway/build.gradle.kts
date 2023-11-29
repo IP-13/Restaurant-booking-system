@@ -35,6 +35,14 @@ dependencyManagement {
     }
 }
 
+tasks.compileKotlin {
+    kotlinOptions {
+        // support for nullable types
+        freeCompilerArgs += "-Xjsr305=strict"
+        jvmTarget = "17"
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
 }

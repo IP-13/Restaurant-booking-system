@@ -3,4 +3,5 @@ tasks.register("clean") {
     delete("eureka/build")
     delete("gateway/build")
     delete("config-server/build")
+    delete("authorization-service/build")
 }

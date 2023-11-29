@@ -8,7 +8,3 @@ build/
 *.iml
 *.ipr
 out/
-
-# volume
-db-volume
-postgres-auth-service-volume
