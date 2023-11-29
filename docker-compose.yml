@@ -1,17 +1,19 @@
+version: "3.8"
+
 services:
   eureka:
     build: eureka
     container_name: eureka
     image: eureka
     ports:
-      - 8761:8761
+      - "8761:8761"
 
   gateway:
     build: gateway
     container_name: gateway
     image: gateway
     ports:
-      - 8080:8080
+      - "8080:8080"
     depends_on:
       eureka:
         condition: service_started
@@ -41,12 +43,20 @@ services:
     volumes:
       - ./db-volume:/var/lib/postgresql/data
 
+  authorization-service:
+    build: authorization-service
+    container_name: authorization-service
+    image: authorization-service
+    depends_on:
+      eureka:
+        condition: service_started
+
   config-server:
     build: config-server
     container_name: config-server
     image: config-server
     ports:
-      - 8888:8888
+      - "8888:8888"
 
 volumes:
   db:
