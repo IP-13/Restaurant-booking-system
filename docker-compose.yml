@@ -43,6 +43,21 @@ services:
     volumes:
       - ./db-volume:/var/lib/postgresql/data
 
+  postgres-auth-service:
+    container_name: postgres-auth-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-auth-service-volume:/var/lib/postgresql/data
+
   authorization-service:
     build: authorization-service
     container_name: authorization-service
@@ -50,6 +65,8 @@ services:
     depends_on:
       eureka:
         condition: service_started
+      postgres-auth-service:
+        condition: service_healthy
 
   config-server:
     build: config-server
@@ -57,6 +74,3 @@ services:
     image: config-server
     ports:
       - "8888:8888"
-
-volumes:
-  db:

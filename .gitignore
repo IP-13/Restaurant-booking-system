@@ -11,3 +11,4 @@ out/
 
 # volume
 db-volume
+postgres-auth-service-volume
