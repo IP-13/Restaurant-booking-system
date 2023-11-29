@@ -5,7 +5,6 @@ plugins {
     id("io.spring.dependency-management") version "1.1.4"
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
-    jacoco
 }
 
 group = "com.ip13"
@@ -69,13 +68,6 @@ tasks.test {
 tasks.jar {
     manifest {
         attributes["Main-Class"] = "com.ip13.main.MainApplication"
-    }
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-    reports {
-        html.outputLocation = layout.buildDirectory.dir("jacocoReport")
     }
 }
 
