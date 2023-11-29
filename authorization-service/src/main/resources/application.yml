@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: authorization-service
+
+info:
+  app:
+    name: ${spring.application.name}
+
+server:
+  port: 0
+
+spring.config.import: configserver:http://config-server:8888
+
+spring.cloud:
+  config:
+    failFast: true
+    retry:
+      initialInterval: 3000
+      maxInterval: 5000
+      maxAttempts: 20
+
+logging.level:
+  org.springframework.retry: trace
