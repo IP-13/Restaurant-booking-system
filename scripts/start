@@ -15,5 +15,8 @@ cd ..
 cd authorization-service
 gradle build -x test
 cd ..
+cd admin-service
+gradle build -x test
+cd ..
 
 docker compose up
