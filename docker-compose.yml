@@ -20,8 +20,8 @@ services:
 
   app:
     build: booking-system
-    container_name: app
-    image: image
+    container_name: booking-system
+    image: booking-system
     depends_on:
       db:
         condition: service_healthy
@@ -74,3 +74,11 @@ services:
     image: config-server
     ports:
       - "8888:8888"
+
+  admin-service:
+    build: admin-service
+    container_name: admin-service
+    image: admin-service
+    depends_on:
+      eureka:
+        condition: service_started
