@@ -57,4 +57,8 @@ class AuthService(
             token = tokenService.createToken(user),
         )
     }
+
+    fun loadByUsername(username: String): User? {
+        return userService.loadByUsernameOrNull(username)
+    }
 }
