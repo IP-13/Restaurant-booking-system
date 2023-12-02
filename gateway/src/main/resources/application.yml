@@ -32,3 +32,4 @@ logging:
             nodeValue: TRACE
             route:
               RouteDefinitionLocator: INFO
+    reactor.netty.http.client: DEBUG

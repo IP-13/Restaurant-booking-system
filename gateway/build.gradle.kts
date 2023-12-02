@@ -20,11 +20,29 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.springframework.boot:spring-boot-starter")
+
+    // webflux
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+    // actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    // eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+
+    // gateway
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
+
+    // cloud config
     implementation("org.springframework.cloud:spring-cloud-starter-config")
+    // for retries to cloud config
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.retry:spring-retry:2.0.4")
+
+    // jwt token
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
