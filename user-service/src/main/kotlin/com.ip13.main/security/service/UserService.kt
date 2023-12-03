@@ -1,6 +1,7 @@
 package com.ip13.main.security.service
 
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
+import com.ip13.main.security.model.dto.request.UpdateUserRequest
 import com.ip13.main.security.model.entity.User
 import com.ip13.main.security.repository.UserRepository
 import org.springframework.beans.factory.annotation.Value
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(
     private val userRepository: UserRepository,
-    private val tokenService: TokenService,
 ) : UserDetailsService {
     @Value("\${security.secret}")
     private lateinit var megaAdmin: String
@@ -48,5 +48,14 @@ class UserService(
      */
     fun findByIdOrThrow(id: Int): User {
         return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id: $id not found")
+    }
+
+    fun updateUser(updateUserRequest: UpdateUserRequest): User {
+        return userRepository.updateUser(
+            updateUserRequest.id,
+            updateUserRequest.numOfGrades,
+            updateUserRequest.sumOfGrades,
+            updateUserRequest.roles.map { it.name }
+        )
     }
 }

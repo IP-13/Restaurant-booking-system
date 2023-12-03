@@ -5,8 +5,11 @@ import com.ip13.main.exceptionHandling.exception.UserNotFoundException
 import com.ip13.main.security.model.dto.request.LoginRequest
 import com.ip13.main.security.model.dto.response.LoginResponse
 import com.ip13.main.security.model.dto.request.RegisterRequest
+import com.ip13.main.security.model.dto.request.UpdateUserRequest
 import com.ip13.main.security.model.dto.response.RegisterResponse
+import com.ip13.main.security.model.dto.response.UserResponse
 import com.ip13.main.security.model.entity.User
+import com.ip13.main.security.model.toUserResponse
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatus
 import org.springframework.http.HttpStatusCode
@@ -60,5 +63,9 @@ class AuthService(
 
     fun loadByUsername(username: String): User? {
         return userService.loadByUsernameOrNull(username)
+    }
+
+    fun updateUser(updateUserRequest: UpdateUserRequest): UserResponse {
+        return userService.updateUser(updateUserRequest).toUserResponse()
     }
 }

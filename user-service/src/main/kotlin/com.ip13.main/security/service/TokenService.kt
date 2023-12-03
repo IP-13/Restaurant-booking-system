@@ -50,12 +50,7 @@ class TokenService {
         }
     }
 
-    fun isTokenValid(token: String, user: User): Boolean {
-        val username = getUsername(token)
-        return (username == user.username && !isTokenExpired(token))
-    }
-
-    private fun isTokenExpired(token: String): Boolean {
+    fun isTokenExpired(token: String): Boolean {
         return getAllClaims(token).expiration.before(Date())
     }
 

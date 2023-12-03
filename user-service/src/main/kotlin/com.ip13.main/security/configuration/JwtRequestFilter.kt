@@ -1,4 +1,4 @@
-package com.ip13.main.security.config
+package com.ip13.main.security.configuration
 
 import com.ip13.main.exceptionHandling.exception.TokenNotFoundException
 import com.ip13.main.security.service.TokenService
@@ -10,7 +10,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.server.ServerWebExchange
 import org.springframework.web.server.WebFilter
 import org.springframework.web.server.WebFilterChain
@@ -19,7 +18,6 @@ import reactor.core.publisher.Mono
 @Component
 class JwtRequestFilter(
     val tokenService: TokenService,
-    val webClient: WebClient,
 ) : WebFilter {
     private val log = getLogger(javaClass)
 
