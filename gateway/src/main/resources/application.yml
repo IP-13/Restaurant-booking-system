@@ -21,8 +21,8 @@ spring:
         locator:
           lowerCaseServiceId: true
       routes:
-        - id: authorization-service
-          uri: lb://authorization-service
+        - id: user-service
+          uri: lb://user-service
           predicates:
             - Path=/auth/**
           filters:
