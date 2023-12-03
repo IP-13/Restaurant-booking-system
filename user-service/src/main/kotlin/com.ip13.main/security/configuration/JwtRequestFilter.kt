@@ -22,35 +22,41 @@ class JwtRequestFilter(
     private val log = getLogger(javaClass)
 
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
-        val header = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.first()
+        val authentication = try {
+            val header = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.first()
 
-        val token = tokenService.getTokenFromHeader(header) ?: throw TokenNotFoundException()
+            val token = tokenService.getTokenFromHeader(header) ?: throw TokenNotFoundException()
 
-        if (tokenService.isTokenExpired(token)) {
-            throw ExpiredJwtException(null, null, "token expired")
-        }
+            if (tokenService.isTokenExpired(token)) {
+                throw ExpiredJwtException(null, null, "token expired")
+            }
 
-        val username = try {
-            tokenService.getUsername(token)
-        } catch (ex: SignatureException) {
-            log.debug("Wrong signature")
-        }
+            val username = try {
+                tokenService.getUsername(token)
+            } catch (ex: SignatureException) {
+                log.debug("Wrong signature")
+            }
 
-        log.debug("username extracted: {}", username)
+            log.debug("username extracted: {}", username)
 
-        // TODO() в auth-service выполняется запрос, но потом приходит ответ 403 FORBIDDEN
+            // TODO() в auth-service выполняется запрос, но потом приходит ответ 403 FORBIDDEN
 //        webClient.get().uri("/auth/user/ip13").headers { it.setBearerAuth(token) }.retrieve()
 //            .bodyToMono(User::class.java).log().subscribe(::println)
 
-        val authorities = tokenService.getRoles(token).map { GrantedAuthority { it } }
+            val authorities = tokenService.getRoles(token).map { GrantedAuthority { it } }
 
-        val authentication = UsernamePasswordAuthenticationToken(
-            username,
-            null,
-            authorities,
-        )
+            val authentication = UsernamePasswordAuthenticationToken(
+                username,
+                null,
+                authorities,
+            )
 
-        log.debug("Authentication found\n{}", authentication.toString())
+            log.debug("Authentication found\n{}", authentication.toString())
+
+            authentication
+        } catch (_: TokenNotFoundException) {
+            return chain.filter(exchange)
+        }
 
         return chain.filter(exchange).contextWrite { ReactiveSecurityContextHolder.withAuthentication(authentication) }
     }

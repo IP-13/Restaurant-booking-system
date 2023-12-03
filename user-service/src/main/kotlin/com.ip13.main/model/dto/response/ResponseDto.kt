@@ -1,4 +1,4 @@
-package com.ip13.main.security.model.dto.response
+package com.ip13.main.model.dto.response
 
 data class RegisterResponse(
     val token: String,

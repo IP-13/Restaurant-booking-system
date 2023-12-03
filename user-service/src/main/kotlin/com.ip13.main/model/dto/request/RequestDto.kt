@@ -1,6 +1,6 @@
-package com.ip13.main.security.model.dto.request
+package com.ip13.main.model.dto.request
 
-import com.ip13.main.security.model.validation.Password
+import com.ip13.main.model.validation.Password
 import jakarta.validation.constraints.NotBlank
 
 data class RegisterRequest(

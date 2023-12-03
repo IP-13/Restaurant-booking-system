@@ -1,4 +1,4 @@
-package com.ip13.main.security.model.validation
+package com.ip13.main.model.validation
 
 import jakarta.validation.ConstraintValidator
 import jakarta.validation.ConstraintValidatorContext

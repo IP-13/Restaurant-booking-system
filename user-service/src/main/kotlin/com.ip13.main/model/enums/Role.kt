@@ -1,4 +1,4 @@
-package com.ip13.main.security.model.enums
+package com.ip13.main.model.enums
 
 enum class Role {
     MANAGER,

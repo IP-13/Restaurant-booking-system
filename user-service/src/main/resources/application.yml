@@ -1,17 +1,14 @@
-spring.application.name: authorization-service
+spring.application.name: user-service
 
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres-auth-service:5432/db
+  r2dbc:
+    url: r2dbc:postgresql://postgres-user-service:5432/db
     username: postgres
     password: postgres
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
-    show_sql: true
+  flyway:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://postgres-user-service:5432/db
 
 eureka:
   client:
@@ -35,4 +32,8 @@ spring.cloud:
       maxAttempts: 20
 
 logging.level:
-  org.springframework.retry: trace
+  org.springframework:
+    nodeValue: TRACE
+    retry: TRACE
+
+spring.jackson.serialization.indent_output: true

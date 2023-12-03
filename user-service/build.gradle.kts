@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
+    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
     implementation("org.postgresql:r2dbc-postgresql:1.0.2.RELEASE")
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("org.flywaydb:flyway-core:9.22.3")
