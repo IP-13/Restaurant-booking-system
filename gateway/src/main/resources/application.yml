@@ -1,6 +1,4 @@
-spring:
-  application:
-    name: gateway
+spring.application.name: gateway
 
 info:
   app:
@@ -9,21 +7,39 @@ info:
 server:
   port: 8080
 
-spring.config.import: configserver:http://config-server:8888
-
-spring.cloud:
-  config:
-    failFast: true
-    retry:
-      initialInterval: 3000
-      maxInterval: 5000
-      maxAttempts: 20
+spring:
+  config.import: configserver:http://config-server:8888
+  cloud:
+    config:
+      failFast: true
+      retry:
+        initialInterval: 3000
+        maxInterval: 5000
+        maxAttempts: 20
+    gateway:
+      discovery:
+        locator:
+          lowerCaseServiceId: true
+      routes:
+        - id: authorization-service
+          uri: lb://authorization-service
+          predicates:
+            - Path=/auth/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
+        - id: admin-service
+          uri: lb://admin-service
+          predicates:
+            - Path=/admin/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: false
+                role: ADMIN
 
 logging.level:
-  org.springframework.retry: trace
-
-logging:
-  level:
     root: INFO
     org:
       springframework:
@@ -32,4 +48,12 @@ logging:
             nodeValue: TRACE
             route:
               RouteDefinitionLocator: INFO
+        retry: TRACE
     reactor.netty.http.client: DEBUG
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka
+  instance:
+    preferIpAddress: true
