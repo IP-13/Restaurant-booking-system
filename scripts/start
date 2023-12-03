@@ -12,10 +12,7 @@ cd ..
 cd config-server
 gradle build -x test
 cd ..
-cd authorization-service
-gradle build -x test
-cd ..
-cd admin-service
+cd user-service
 gradle build -x test
 cd ..
 
