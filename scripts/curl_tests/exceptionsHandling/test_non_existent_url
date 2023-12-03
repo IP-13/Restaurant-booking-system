@@ -1,2 +1,0 @@
-#!/bin/bash
-curl http://localhost:8000/non_existent_url

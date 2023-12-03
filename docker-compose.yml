@@ -20,8 +20,8 @@ services:
 
   app:
     build: booking-system
-    container_name: app
-    image: image
+    container_name: booking-system
+    image: booking-system
     depends_on:
       db:
         condition: service_healthy
@@ -43,8 +43,8 @@ services:
     volumes:
       - ./db-volume:/var/lib/postgresql/data
 
-  postgres-auth-service:
-    container_name: postgres-auth-service
+  postgres-user-service:
+    container_name: postgres-user-service
     image: postgres:16.0
     environment:
       POSTGRES_DB: db
@@ -56,16 +56,16 @@ services:
       timeout: 1s
       retries: 2
     volumes:
-      - ./postgres-auth-service-volume:/var/lib/postgresql/data
+      - ./postgres-user-service-volume:/var/lib/postgresql/data
 
-  authorization-service:
-    build: authorization-service
-    container_name: authorization-service
-    image: authorization-service
+  user-service:
+    build: user-service
+    container_name: user-service
+    image: user-service
     depends_on:
       eureka:
         condition: service_started
-      postgres-auth-service:
+      postgres-user-service:
         condition: service_healthy
 
   config-server:

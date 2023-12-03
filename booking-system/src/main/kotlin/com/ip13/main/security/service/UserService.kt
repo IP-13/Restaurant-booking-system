@@ -17,7 +17,7 @@ class UserService(
     private val userRepository: UserRepository,
     private val tokenService: TokenService,
 ) : UserDetailsService {
-    @Value("\${security.secret}")
+    @Value("\${security.mega_admin}")
     private lateinit var megaAdmin: String
 
     /**
