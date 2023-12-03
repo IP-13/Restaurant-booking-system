@@ -31,7 +31,7 @@ class AuthController(
         @RequestBody
         request: RegisterRequest,
     ): RegisterResponse {
-        log.debug("/auth/register endpoint invoked")
+        log.debug("/auth/registration endpoint invoked")
 
         return authService.register(request = request)
     }

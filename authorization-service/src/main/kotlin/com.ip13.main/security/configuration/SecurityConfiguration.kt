@@ -24,7 +24,8 @@ class SecurityConfiguration(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeHttpRequests {
-                authorize("/auth/register/**", hasAuthority(Role.ADMIN.name))
+                authorize("/auth/registration/**", hasAuthority(Role.ADMIN.name))
+                authorize("/auth/user/**", hasAuthority(Role.ADMIN.name))
                 authorize("/auth/login/**", permitAll)
             }
             sessionManagement {
