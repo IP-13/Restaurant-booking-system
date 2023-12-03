@@ -1,13 +1,28 @@
+spring.application.name: authorization-service
+
 spring:
-  application:
-    name: authorization-service
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres-auth-service:5432/db
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show_sql: true
 
-info:
-  app:
-    name: ${spring.application.name}
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka:8761/eureka
+  instance:
+    preferIpAddress: true
 
-server:
-  port: 0
+info.app.name: ${spring.application.name}
+
+server.port: 0
 
 spring.config.import: configserver:http://config-server:8888
 
