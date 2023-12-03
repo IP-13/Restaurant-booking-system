@@ -4,14 +4,14 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %yellow(%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n)
+                %yellow(GATEWAY %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n)
             </pattern>
         </encoder>
     </appender>
     <appender name="DEBUG" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>
-                %magenta(%-5level %d{HH:mm:ss.SSS} [%thread] %logger{50}.%M - %msg%n)
+                %magenta(GATEWAY %d{HH:mm:ss.SSS} [%thread] %-5level %logger{50}.%M - %msg%n)
             </pattern>
         </encoder>
     </appender>
