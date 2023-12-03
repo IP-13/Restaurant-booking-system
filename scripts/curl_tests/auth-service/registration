@@ -1,0 +1,2 @@
+#!/bin/bash
+curl -d @registration.json -H 'Content-Type: application/json' -H "Authorization: Bearer $(cat ../jwt-token/mega-admin-token)" http://localhost:8080/auth/registration

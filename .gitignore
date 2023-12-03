@@ -12,3 +12,6 @@ out/
 # volume
 db-volume
 postgres-auth-service-volume
+
+# jwt tokens for curl tests
+scripts/curl_tests/jwt-token
