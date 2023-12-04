@@ -1,6 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
+import com.ip13.main.model.dto.request.RoleAddRequest
 import com.ip13.main.model.entity.User
 import com.ip13.main.repository.UserRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -39,5 +40,27 @@ class UserService(
      */
     fun findByIdOrThrow(id: Int): User {
         return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id: $id not found")
+    }
+
+    fun addRole(request: RoleAddRequest): Boolean {
+        val user = findByIdOrThrow(request.userId)
+        if (user.roles.contains(request.role)) {
+            return false
+        }
+        val updatedRoles = user.roles.toMutableList()
+
+        val isAdded = updatedRoles.add(request.role)
+
+        val updatedUser = User(
+            id = user.id,
+            username = user.username,
+            password = user.password,
+            numOfGrades = user.numOfGrades,
+            sumOfGrades = user.sumOfGrades,
+            roles = updatedRoles,
+        )
+
+        save(updatedUser)
+        return isAdded
     }
 }

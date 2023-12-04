@@ -2,6 +2,8 @@ package com.ip13.main.controller
 
 import com.ip13.main.model.dto.request.LoginRequest
 import com.ip13.main.model.dto.request.RegisterRequest
+import com.ip13.main.model.dto.request.RoleAddRequest
+import com.ip13.main.model.dto.response.AddRoleResponse
 import com.ip13.main.model.dto.response.LoginResponse
 import com.ip13.main.model.dto.response.RegisterResponse
 import com.ip13.main.model.dto.response.UserResponse
@@ -27,6 +29,22 @@ class AuthController(
 ) {
     private val log = getLogger(javaClass)
 
+    @PostMapping("/role")
+    fun addRole(
+        @Valid
+        @RequestBody(required = true)
+        request: RoleAddRequest,
+    ): AddRoleResponse {
+        log.debug("/admin/add-role endpoint invoked")
+
+        val isAdded = userService.addRole(request)
+
+        return if (isAdded) {
+            AddRoleResponse("Role ${request.role} successfully added to user ${request.userId}")
+        } else {
+            AddRoleResponse("User ${request.userId} already has role ${request.role}")
+        }
+    }
 
     @GetMapping("/user/{id}")
     fun getUserById(

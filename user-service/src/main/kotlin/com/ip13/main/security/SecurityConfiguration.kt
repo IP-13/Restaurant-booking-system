@@ -24,8 +24,9 @@ class SecurityConfiguration(
         http {
             authorizeHttpRequests {
                 authorize("/auth/registration/**", hasAuthority(Role.ADMIN.name))
+                authorize("/auth/role/**", hasAuthority(Role.ADMIN.name))
                 authorize("/auth/login/**", permitAll)
-                authorize("/auth/user/**", permitAll)
+                authorize("/auth/user/**", hasAuthority(Role.ADMIN.name))
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
