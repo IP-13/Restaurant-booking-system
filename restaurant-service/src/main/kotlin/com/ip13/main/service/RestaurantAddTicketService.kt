@@ -93,7 +93,11 @@ class RestaurantAddTicketService(
             val restaurant = processedRestaurantAddTicket.toRestaurant()
 
             val restaurantId =
-                saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant, authHeader)
+                saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant)
+
+            userClient.addRole(authHeader, RoleAddRequest(processedRestaurantAddTicket.userId, Role.MANAGER))
+
+            log.debug("after saving restaurant and updated restaurant add ticket. Restaurant id: {}", restaurantId)
 
             return RestaurantProcessTicketResponse(RestaurantAddStatus.ACCEPTED, restaurantId)
         }
@@ -107,10 +111,8 @@ class RestaurantAddTicketService(
     private fun saveRestaurantAddTicketAndRestaurantTransactional(
         updatedRestaurantAddTicket: RestaurantAddTicket,
         restaurant: Restaurant,
-        authHeader: String,
     ): Int {
         save(updatedRestaurantAddTicket)
-        userClient.addRole(authHeader, RoleAddRequest(updatedRestaurantAddTicket.userId, Role.MANAGER))
         return restaurantService.save(restaurant).id
     }
 

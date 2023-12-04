@@ -26,5 +26,5 @@ interface UserClient {
         authHeader: String,
         @RequestBody
         roleAddRequest: RoleAddRequest
-    ): AddRoleResponse
+    ): String
 }

@@ -35,16 +35,20 @@ class AuthController(
         @Valid
         @RequestBody(required = true)
         request: RoleAddRequest,
-    ): AddRoleResponse {
-        log.debug("/admin/add-role endpoint invoked")
+    ): String {
+        log.debug("/auth/role endpoint invoked")
+        log.debug("request: {}", request)
 
         val isAdded = userService.addRole(request)
 
-        return if (isAdded) {
+        val response = if (isAdded) {
             AddRoleResponse("Role ${request.role} successfully added to user ${request.userId}")
         } else {
             AddRoleResponse("User ${request.userId} already has role ${request.role}")
         }
+
+        log.debug("response: {}", response)
+        return response.response
     }
 
     @GetMapping("/user/{id}")
