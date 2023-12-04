@@ -1,4 +1,4 @@
-package com.ip13.main.service
+package com.ip13.main.security
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
