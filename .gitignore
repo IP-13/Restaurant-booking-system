@@ -10,7 +10,6 @@ build/
 out/
 
 # volume
-db-volume
 postgres-user-service-volume
 
 # jwt token for curl tests
