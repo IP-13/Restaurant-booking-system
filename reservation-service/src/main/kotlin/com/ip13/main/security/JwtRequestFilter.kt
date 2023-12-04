@@ -55,7 +55,7 @@ class JwtRequestFilter(
                     authorities,
                 )
 
-                if (tokenService.isTokenExpired(jwt)) {
+                if (!tokenService.isTokenExpired(jwt)) {
                     log.debug("Authentication found\n{}", authentication.toString())
                     SecurityContextHolder.getContext().authentication = authentication
                 }
