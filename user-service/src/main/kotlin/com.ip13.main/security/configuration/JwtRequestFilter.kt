@@ -1,7 +1,7 @@
 package com.ip13.main.security.configuration
 
 import com.ip13.main.exceptionHandling.exception.TokenNotFoundException
-import com.ip13.main.security.service.TokenService
+import com.ip13.main.service.TokenService
 import com.ip13.main.util.getLogger
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.security.SignatureException

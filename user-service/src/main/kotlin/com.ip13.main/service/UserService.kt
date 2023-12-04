@@ -1,10 +1,10 @@
-package com.ip13.main.security.service
+package com.ip13.main.service
 
 import com.ip13.main.model.dto.request.UpdateUserRequest
 import com.ip13.main.model.dto.response.UserResponse
 import com.ip13.main.model.entity.User
 import com.ip13.main.model.toUserResponse
-import com.ip13.main.security.repository.UserRepository
+import com.ip13.main.repository.UserRepository
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service

@@ -1,4 +1,4 @@
-package com.ip13.main.security.repository
+package com.ip13.main.repository
 
 import com.ip13.main.model.entity.User
 import org.springframework.data.r2dbc.repository.Modifying

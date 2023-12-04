@@ -3,9 +3,8 @@ plugins {
 }
 rootProject.name = "Restaurant-booking-system"
 include("eureka")
-include("booking-system")
 include("gateway")
 include("config-server")
 include("user-service")
-//include("restaurant-service")
-//include("reservation-service")
+include("reservation-service")
+include("restaurant-service")

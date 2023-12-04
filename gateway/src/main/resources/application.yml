@@ -38,14 +38,6 @@ spring:
               args:
                 isOpen: false
                 role: ADMIN
-        - id: black-list-service
-          uri: lb:://black-list-service
-          predicates:
-            - Path=/black-list/**
-          filters:
-            - name: RoleCheckerFilter
-              args:
-                isOpen: true
 
 logging.level:
     root: INFO

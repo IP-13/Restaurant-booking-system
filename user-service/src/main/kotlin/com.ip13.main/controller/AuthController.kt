@@ -7,8 +7,8 @@ import com.ip13.main.model.dto.response.LoginResponse
 import com.ip13.main.model.dto.response.RegisterResponse
 import com.ip13.main.model.dto.response.UserResponse
 import com.ip13.main.model.entity.User
-import com.ip13.main.security.service.AuthService
-import com.ip13.main.security.service.UserService
+import com.ip13.main.service.AuthService
+import com.ip13.main.service.UserService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated

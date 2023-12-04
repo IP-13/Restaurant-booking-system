@@ -1,4 +1,4 @@
-package com.ip13.main.security.service
+package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.UserNotFoundException
