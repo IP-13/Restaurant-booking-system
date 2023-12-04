@@ -1,6 +1,7 @@
 package com.ip13.main.model
 
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
+import com.ip13.main.model.dto.response.RestaurantResponse
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.model.enums.RestaurantAddStatus
@@ -61,5 +62,23 @@ fun RestaurantAddTicket.toRestaurant(): Restaurant {
         description = this.description,
         numOfGrades = 0,
         sumOfGrades = 0,
+    )
+}
+
+fun Restaurant.toRestaurantResponse(): RestaurantResponse {
+    return RestaurantResponse(
+        id = this.id,
+        restaurantAddTicketId = this.restaurantAddTicket.id,
+        managerId = this.managerId,
+        name = this.name,
+        country = this.country,
+        city = this.city,
+        street = this.street,
+        building = this.building,
+        entrance = this.entrance,
+        floor = this.floor,
+        description = this.description,
+        numOfGrades = this.numOfGrades,
+        sumOfGrades = this.sumOfGrades,
     )
 }
