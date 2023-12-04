@@ -1,11 +1,11 @@
 spring.application.name: reservation-service
 
+info.app.name: ${spring.application.name}
 
-# TODO db configure
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres-auth-service:5432/db
+    url: jdbc:postgresql://postgres-reservation-service:5432/db
     username: postgres
     password: postgres
   jpa:
@@ -21,8 +21,6 @@ eureka:
       defaultZone: http://eureka:8761/eureka
   instance:
     preferIpAddress: true
-
-info.app.name: ${spring.application.name}
 
 server.port: 0
 
