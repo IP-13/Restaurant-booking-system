@@ -1,4 +1,4 @@
-package com.ip13.main.service
+package com.ip13.main.security
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
@@ -10,7 +10,7 @@ import java.security.Key
 import java.util.*
 
 @Service
-class TokenService {
+class TokenUtils {
     @Value("\${security.secret}")
     private lateinit var secret: String
 
