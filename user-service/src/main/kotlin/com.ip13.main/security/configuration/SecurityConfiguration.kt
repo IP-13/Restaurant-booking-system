@@ -39,7 +39,7 @@ class SecurityConfiguration(
     fun reactiveAuthenticationManager(): ReactiveAuthenticationManager {
         val authenticationManager = UserDetailsRepositoryReactiveAuthenticationManager(userDetailsService)
         authenticationManager.setPasswordEncoder(passwordEncoder())
-        return ReactiveAuthenticationManager { Mono.empty() }
+        return authenticationManager
     }
 
     @Bean
