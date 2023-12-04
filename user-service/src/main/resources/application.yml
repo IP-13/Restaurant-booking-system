@@ -1,15 +1,16 @@
 spring.application.name: user-service
 
 spring:
-  r2dbc:
-    url: r2dbc:postgresql://postgres-user-service:5432/db
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres-user-service:5432/db
     username: postgres
     password: postgres
-  flyway:
-    user: postgres
-    password: postgres
-    url: jdbc:postgresql://postgres-user-service:5432/db
-
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show_sql: true
 eureka:
   client:
     serviceUrl:
