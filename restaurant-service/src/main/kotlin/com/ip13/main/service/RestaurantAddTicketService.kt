@@ -2,8 +2,8 @@ package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
-import com.ip13.main.feign.UserClient
-import com.ip13.main.feign.dto.RoleAddRequest
+import com.ip13.main.feign.userClient.UserClient
+import com.ip13.main.feign.userClient.dto.RoleAddRequest
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequest
 import com.ip13.main.model.dto.response.RestaurantCreateTicketResponse

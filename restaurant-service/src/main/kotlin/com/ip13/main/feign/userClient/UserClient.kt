@@ -1,7 +1,7 @@
-package com.ip13.main.feign
+package com.ip13.main.feign.userClient
 
-import com.ip13.main.feign.dto.RoleAddRequest
-import com.ip13.main.feign.dto.User
+import com.ip13.main.feign.userClient.dto.RoleAddRequest
+import com.ip13.main.feign.userClient.dto.User
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.*
 

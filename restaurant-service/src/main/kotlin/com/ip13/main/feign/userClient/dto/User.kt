@@ -1,4 +1,4 @@
-package com.ip13.main.feign.dto
+package com.ip13.main.feign.userClient.dto
 
 import com.ip13.main.model.enums.Role
 import jakarta.persistence.*
