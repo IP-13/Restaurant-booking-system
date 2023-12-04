@@ -12,5 +12,11 @@ cd ..
 cd user-service
 gradle build -x test
 cd ..
+cd reservation-service
+gradle build -x test
+cd ..
+cd restaurant-service
+gradle build -x test
+cd ..
 
 docker compose up

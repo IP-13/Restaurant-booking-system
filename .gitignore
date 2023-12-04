@@ -11,6 +11,8 @@ out/
 
 # volume
 postgres-user-service-volume
+postgres-reservation-service-volume
+postgres-restaurant-service-volume
 
 # jwt token for curl tests
 scripts/curl_tests/jwt-token

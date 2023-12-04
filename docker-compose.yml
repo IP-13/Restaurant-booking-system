@@ -18,6 +18,13 @@ services:
       eureka:
         condition: service_started
 
+  config-server:
+    build: config-server
+    container_name: config-server
+    image: config-server
+    ports:
+      - "8888:8888"
+
   postgres-user-service:
     container_name: postgres-user-service
     image: postgres:16.0
@@ -43,9 +50,52 @@ services:
       postgres-user-service:
         condition: service_healthy
 
-  config-server:
-    build: config-server
-    container_name: config-server
-    image: config-server
-    ports:
-      - "8888:8888"
+  postgres-reservation-service:
+    container_name: postgres-reservation-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-reservation-service-volume:/var/lib/postgresql/data
+
+  reservation-service:
+    build: reservation-service
+    container_name: reservation-service
+    image: reservation-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-reservation-service:
+        condition: service_healthy
+
+  postgres-restaurant-service:
+    container_name: postgres-restaurant-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-restaurant-service-volume:/var/lib/postgresql/data
+
+  restaurant-service:
+    build: restaurant-service
+    container_name: restaurant-service
+    image: restaurant-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-restaurant-service:
+        condition: service_healthy
