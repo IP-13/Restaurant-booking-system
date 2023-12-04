@@ -1,5 +1,6 @@
 package com.ip13.main.security.configuration
 
+import com.ip.main.security.configuration.JwtRequestFilter
 import com.ip13.main.security.model.enums.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
