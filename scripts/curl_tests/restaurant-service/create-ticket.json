@@ -1,0 +1,10 @@
+{
+  "name": "Dou",
+  "country": "Russia",
+  "city": "Saint-Petersburg",
+  "street": "Nevskiy Prospect",
+  "building": 13,
+  "entrance": 13,
+  "floor": -2,
+  "description": "You're reading description"
+}
