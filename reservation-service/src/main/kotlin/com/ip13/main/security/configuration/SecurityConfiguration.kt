@@ -1,6 +1,6 @@
 package com.ip13.main.security.configuration
 
-import com.ip.main.security.configuration.JwtRequestFilter
+import com.ip13.main.security.configuration.JwtRequestFilter
 import com.ip13.main.security.model.enums.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfiguration(
-    val jwtRequestFilter: JwtRequestFilter,
+    val jwtRequestFilter: com.ip13.main.security.configuration.JwtRequestFilter,
     val authenticationConfiguration: AuthenticationConfiguration,
 ) {
     @Bean
