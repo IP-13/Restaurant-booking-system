@@ -3,7 +3,6 @@ package com.ip13.main.model
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
-import com.ip13.main.model.entity.User
 import com.ip13.main.model.enums.RestaurantAddStatus
 import java.time.LocalDateTime
 
