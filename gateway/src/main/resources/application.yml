@@ -29,15 +29,6 @@ spring:
             - name: RoleCheckerFilter
               args:
                 isOpen: true
-        - id: admin-service
-          uri: lb://admin-service
-          predicates:
-            - Path=/admin/**
-          filters:
-            - name: RoleCheckerFilter
-              args:
-                isOpen: false
-                role: ADMIN
 
 logging.level:
     root: INFO
