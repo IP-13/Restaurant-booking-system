@@ -19,6 +19,10 @@ class UserService(
         return userRepository.findByUsername(username) ?: throw UserNotFoundException("No user with name \'$username\'")
     }
 
+    fun loadByUsernameOrNull(username: String): User? {
+        return userRepository.findByUsername(username)
+    }
+
     fun save(user: User): User {
         return userRepository.save(user)
     }

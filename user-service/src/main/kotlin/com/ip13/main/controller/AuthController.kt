@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 
 @Validated
@@ -53,6 +54,15 @@ class AuthController(
     ): UserResponse? {
         return userService.findByIdOrNull(id)?.toUserResponse()
     }
+
+    @GetMapping("/user/username")
+    fun getUserByUsername(
+        @RequestParam
+        username: String,
+    ): UserResponse? {
+        return userService.loadByUsernameOrNull(username)?.toUserResponse()
+    }
+
 
     @PostMapping("/registration")
     fun register(
