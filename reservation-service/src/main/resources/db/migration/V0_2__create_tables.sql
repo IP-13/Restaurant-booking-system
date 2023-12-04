@@ -20,7 +20,7 @@ create table if not exists restaurant_grade (
     user_id int,
     table_reserve_ticket_id int references table_reserve_ticket(id),
     -- ресторан, которому пользователь ставит оценку
-    restaurant_id int references restaurant(id),
+    restaurant_id int,
     grade int not null,
     comment text
 );
