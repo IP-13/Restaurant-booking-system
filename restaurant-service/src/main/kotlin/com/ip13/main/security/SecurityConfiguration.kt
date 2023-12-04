@@ -1,5 +1,6 @@
 package com.ip13.main.security
 
+import com.ip13.main.model.enums.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -22,7 +23,8 @@ class SecurityConfiguration(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeHttpRequests {
-                authorize("/**", permitAll)
+                authorize("/restaurant/create-ticket", authenticated)
+                authorize("/restaurant/process-ticket", hasAuthority(Role.ADMIN.name))
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS

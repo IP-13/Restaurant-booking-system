@@ -1,6 +1,5 @@
 package com.ip13.main.security
 
-import com.ip13.main.service.TokenService
 import com.ip13.main.util.getLogger
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.security.SignatureException
@@ -15,7 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 
 @Component
 class JwtRequestFilter(
-    val tokenService: TokenService,
+    val tokenUtils: TokenUtils,
 ) : OncePerRequestFilter() {
     private val log = getLogger(javaClass)
 
@@ -29,11 +28,11 @@ class JwtRequestFilter(
 
             log.debug("header extracted: {}", header)
 
-            val jwt = tokenService.getTokenFromHeader(header)
+            val jwt = tokenUtils.getTokenFromHeader(header)
 
             val username = if (jwt != null) {
                 try {
-                    tokenService.getUsername(jwt)
+                    tokenUtils.getUsername(jwt)
                 } catch (ex: ExpiredJwtException) {
                     log.debug("Jwt token has expired")
                 } catch (ex: SignatureException) {
@@ -45,9 +44,9 @@ class JwtRequestFilter(
 
             log.debug("username extracted: {}", username)
 
-            if (username != null && SecurityContextHolder.getContext().authentication == null) {
+            if (username != null) {
                 // username != null, if and only if jwt != null
-                val authorities = tokenService.getRoles(jwt!!).map { GrantedAuthority { it } }
+                val authorities = tokenUtils.getRoles(jwt!!).map { GrantedAuthority { it } }
 
                 val authentication = UsernamePasswordAuthenticationToken(
                     username,
@@ -55,7 +54,7 @@ class JwtRequestFilter(
                     authorities,
                 )
 
-                if (tokenService.isTokenExpired(jwt)) {
+                if (!tokenUtils.isTokenExpired(jwt)) {
                     log.debug("Authentication found\n{}", authentication.toString())
                     SecurityContextHolder.getContext().authentication = authentication
                 }
