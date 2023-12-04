@@ -1,12 +1,10 @@
-package com.ip13.main.security.service
+package com.ip13.main.service
 
-import com.ip13.main.security.model.entity.User
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.stereotype.Service
 import java.security.Key
 import java.util.*
@@ -15,23 +13,6 @@ import java.util.*
 class TokenService {
     @Value("\${security.secret}")
     private lateinit var secret: String
-
-    @Value("\${security.lifeTimeSeconds}")
-    private lateinit var lifeTimeSeconds: String
-
-    fun createToken(user: User): String {
-        val roles = user.authorities.map(GrantedAuthority::getAuthority).toList()
-
-        val claims = mapOf<String, Any>("roles" to roles)
-
-        return Jwts.builder()
-            .setClaims(claims)
-            .setSubject(user.username)
-            .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + lifeTimeSeconds.toLong() * 1000))
-            .signWith(createSignInKey())
-            .compact()
-    }
 
     fun getUsername(token: String): String {
         return getAllClaims(token).subject
@@ -50,12 +31,7 @@ class TokenService {
         }
     }
 
-    fun isTokenValid(token: String, user: User): Boolean {
-        val username = getUsername(token)
-        return (username == user.username && !isTokenExpired(token))
-    }
-
-    private fun isTokenExpired(token: String): Boolean {
+    fun isTokenExpired(token: String): Boolean {
         return getAllClaims(token).expiration.before(Date())
     }
 
