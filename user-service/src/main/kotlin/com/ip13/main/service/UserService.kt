@@ -59,8 +59,6 @@ class UserService(
             id = user.id,
             username = user.username,
             password = user.password,
-            numOfGrades = user.numOfGrades,
-            sumOfGrades = user.sumOfGrades,
             roles = updatedRoles,
         )
 

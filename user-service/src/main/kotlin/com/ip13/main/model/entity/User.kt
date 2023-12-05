@@ -15,8 +15,6 @@ class User(
     // поля private, чтобы можно было без ошибок переопределить методы getPassword, getUsername
     private val username: String = "",
     private val password: String = "",
-    val numOfGrades: Int = 0,
-    val sumOfGrades: Int = 0,
     @Enumerated(value = EnumType.STRING)
     val roles: List<Role> = listOf(),
 ) : UserDetails {
@@ -62,7 +60,6 @@ class User(
     }
 
     override fun toString(): String {
-        return "User(id=$id, username='$username', password='$password', numOfGrades=$numOfGrades, " +
-                "sumOfGrades=$sumOfGrades, roles=$roles)"
+        return "User(id=$id, username='$username', password='$password', roles=$roles)"
     }
 }
