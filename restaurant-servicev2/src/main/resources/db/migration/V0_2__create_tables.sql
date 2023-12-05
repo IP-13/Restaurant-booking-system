@@ -28,8 +28,6 @@ create table if not exists restaurant (
     entrance int,
     floor int,
     description text,
-    num_of_grades int not null,
-    sum_of_grades int not null
 );
 
 create table if not exists table_reserve_ticket (
