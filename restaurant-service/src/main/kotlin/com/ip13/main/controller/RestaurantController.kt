@@ -10,15 +10,20 @@ import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.service.RestaurantService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
+@Validated
 @RestController
 @RequestMapping("/restaurant")
 class RestaurantController(
@@ -58,8 +63,20 @@ class RestaurantController(
     @GetMapping("/id/{id}")
     fun getRestaurantById(
         @PathVariable
-        restaurantId: Int,
+        id: Int,
     ): RestaurantResponse? {
-        return restaurantService.findByIdOrNull(restaurantId)?.toRestaurantResponse()
+        return restaurantService.findByIdOrNull(id)?.toRestaurantResponse()
+    }
+
+    @PostMapping("/grade/{id}")
+    fun addGrade(
+        @PathVariable
+        id: Int,
+        @RequestParam
+        @Min(1)
+        @Max(5)
+        grade: Int,
+    ): Int {
+        return restaurantService.addGrade(id, grade)
     }
 }
