@@ -51,6 +51,9 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+    // for web client
+    implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
