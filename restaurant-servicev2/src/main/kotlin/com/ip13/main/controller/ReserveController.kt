@@ -6,6 +6,8 @@ import com.ip13.main.model.dto.request.TableReserveRequest
 import com.ip13.main.model.dto.response.AddBookingConstraintResponse
 import com.ip13.main.model.dto.response.ReservationProcessResponse
 import com.ip13.main.model.dto.response.TableReserveResponse
+import com.ip13.main.service.BookingConstraintService
+import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated
@@ -15,11 +17,16 @@ import java.security.Principal
 @Validated
 @RestController
 @RequestMapping("/reservation")
-class ReserveController {
+class ReserveController(
+    private val tableReserveService: TableReserveService,
+    private val bookingConstraintService: BookingConstraintService,
+) {
     private val log = getLogger(javaClass)
 
     @PostMapping("/reserve-table")
     fun reserveTable(
+        @RequestHeader(value = "Authorization")
+        authHeader: String,
         principal: Principal,
         @Valid
         @RequestBody(required = true)
@@ -27,7 +34,7 @@ class ReserveController {
     ): TableReserveResponse {
         log.debug("/reservation/reserve-table endpoint invoked")
 
-        return tableReserveService.reserveTable(request, principal.name)
+        return tableReserveService.reserveTable(request, principal.name, authHeader)
     }
 
     @PostMapping("/process-reservation")

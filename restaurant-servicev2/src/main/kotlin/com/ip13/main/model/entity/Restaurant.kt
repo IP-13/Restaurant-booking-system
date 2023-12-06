@@ -1,5 +1,6 @@
 package com.ip13.main.model.entity
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
@@ -19,6 +20,12 @@ class Restaurant(
     val entrance: Int? = null,
     val floor: Int? = null,
     val description: String? = null,
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    val tableReserveTickets: List<TableReserveTicket> = listOf(),
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    val bookingConstraints: List<BookingConstraint> = listOf(),
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

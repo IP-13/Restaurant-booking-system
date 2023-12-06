@@ -12,6 +12,4 @@ data class RestaurantResponse(
     val entrance: Int?,
     val floor: Int?,
     val description: String?,
-    val numOfGrades: Int,
-    val sumOfGrades: Int,
 )

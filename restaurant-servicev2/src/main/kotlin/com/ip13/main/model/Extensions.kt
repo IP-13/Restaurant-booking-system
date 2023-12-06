@@ -1,10 +1,15 @@
 package com.ip13.main.model
 
+import com.ip13.main.model.dto.request.AddBookingConstraintRequest
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
+import com.ip13.main.model.dto.request.TableReserveRequest
 import com.ip13.main.model.dto.response.RestaurantResponse
+import com.ip13.main.model.entity.BookingConstraint
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
+import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.model.enums.RestaurantAddStatus
+import com.ip13.main.model.enums.TableReserveStatus
 import java.time.LocalDateTime
 
 fun RestaurantAddTicketRequest.toRestaurantAddTicket(userId: Int, status: RestaurantAddStatus): RestaurantAddTicket {
@@ -60,8 +65,6 @@ fun RestaurantAddTicket.toRestaurant(): Restaurant {
         entrance = this.entrance,
         floor = this.floor,
         description = this.description,
-        numOfGrades = 0,
-        sumOfGrades = 0,
     )
 }
 
@@ -78,7 +81,34 @@ fun Restaurant.toRestaurantResponse(): RestaurantResponse {
         entrance = this.entrance,
         floor = this.floor,
         description = this.description,
-        numOfGrades = this.numOfGrades,
-        sumOfGrades = this.sumOfGrades,
+    )
+}
+
+fun TableReserveRequest.toTableReserveTicket(
+    restaurant: Restaurant,
+    userId: Int,
+    managerComment: String? = null,
+    status: TableReserveStatus = TableReserveStatus.PROCESSING,
+): TableReserveTicket {
+    return TableReserveTicket(
+        restaurant = restaurant,
+        userId = userId,
+        creationDate = LocalDateTime.now(),
+        fromDate = this.fromDate,
+        tillDate = this.tillDate,
+        numOfGuests = this.numOfGuests,
+        userComment = this.userComment,
+        managerComment = managerComment,
+        status = status,
+    )
+}
+
+fun AddBookingConstraintRequest.toBookingConstraint(restaurant: Restaurant, managerId: Int): BookingConstraint {
+    return BookingConstraint(
+        restaurant = restaurant,
+        managerId = managerId,
+        reason = this.reason,
+        fromDate = this.fromDate,
+        tillDate = this.tillDate,
     )
 }

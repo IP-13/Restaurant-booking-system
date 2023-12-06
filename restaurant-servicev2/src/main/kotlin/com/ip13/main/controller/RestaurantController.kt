@@ -6,6 +6,8 @@ import com.ip13.main.model.dto.response.RestaurantAddTicketResponse
 import com.ip13.main.model.dto.response.RestaurantProcessTicketResponse
 import com.ip13.main.model.dto.response.RestaurantResponse
 import com.ip13.main.model.toRestaurantResponse
+import com.ip13.main.service.RestaurantAddTicketService
+import com.ip13.main.service.RestaurantService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated
