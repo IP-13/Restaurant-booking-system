@@ -46,7 +46,7 @@ resilience4j:
   retry:
     instances:
       user-service-retry:
-        max-attempts: 2
+        max-attempts: 5
         wait-duration: 3000
 
   circuitbreaker:
@@ -56,7 +56,7 @@ resilience4j:
         sliding-window-size: 5
         failure-rate-threshold: 80
         minimum-number-of-calls: 5
-        wait-duration-in-open-state: 10000
-        max-wait-duration-in-half-open-state: 5000
+        wait-duration-in-open-state: 10s
+        max-wait-duration-in-half-open-state: 5s
         automatic-transition-from-open-to-half-open-enabled: true
         permitted-number-of-calls-in-half-open-state: 2
