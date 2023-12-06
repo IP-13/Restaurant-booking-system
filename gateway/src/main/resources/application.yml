@@ -33,6 +33,7 @@ spring:
           uri: lb://restaurant-service
           predicates:
             - Path=/restaurant/**
+            - Path=/reservation/**
           filters:
             - name: RoleCheckerFilter
               args:
