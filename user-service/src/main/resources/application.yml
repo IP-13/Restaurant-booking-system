@@ -40,4 +40,7 @@ logging.level:
 spring.jackson.serialization.indent_output: true
 
 management.endpoint.gateway.enabled: true
-management.endpoints.web.exposure.include: gateway
+management.endpoints.web.exposure.include:
+  - gateway
+  - refresh
+  - health
