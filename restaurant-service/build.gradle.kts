@@ -44,6 +44,9 @@ dependencies {
     // feign
     implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
 
+    // resilience4f
+    implementation("org.springframework.cloud:spring-cloud-starter-circuitbreaker-resilience4j")
+
     // for retries to config-server
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.retry:spring-retry:2.0.4")
