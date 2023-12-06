@@ -36,3 +36,27 @@ spring.cloud:
 
 logging.level:
   org.springframework.retry: trace
+
+spring:cloud:openfeign:client:config:
+  user-service:
+    connect-timeout: 2000
+    read-timeout: 2000
+
+resilience4j:
+  retry:
+    instances:
+      user-service-retry:
+        max-attempts: 2
+        wait-duration: 3000
+
+  circuitbreaker:
+    instances:
+      user-service-breaker:
+        sliding-window-type: count-based
+        sliding-window-size: 5
+        failure-rate-threshold: 80
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 10000
+        max-wait-duration-in-half-open-state: 5000
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 2

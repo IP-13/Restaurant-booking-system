@@ -17,6 +17,7 @@ import com.ip13.main.model.toRestaurantAddTicket
 import com.ip13.main.model.updateRestaurantAddTicket
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.util.getLogger
+import feign.FeignException
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -83,19 +84,26 @@ class RestaurantAddTicketService(
         if (request.status == RestaurantAddStatus.ACCEPTED) {
             val restaurant = processedRestaurantAddTicket.toRestaurant()
 
-            // TODO transaction
-            val restaurantId =
-                saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant)
+            try {
+                userClient.addRole(
+                    authHeader,
+                    RoleAddRequest(processedRestaurantAddTicket.username, Role.MANAGER)
+                )
 
-            // request to another microservice
-            userClient.addRole(authHeader, RoleAddRequest(processedRestaurantAddTicket.username, Role.MANAGER))
-            // transaction
+                val restaurantId =
+                    saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant)
 
-            log.debug("after saving restaurant and updated restaurant add ticket. Restaurant id: {}", restaurantId)
+                log.debug("after saving restaurant and updated restaurant add ticket. Restaurant id: {}", restaurantId)
 
-            return RestaurantProcessTicketResponse(RestaurantAddStatus.ACCEPTED, restaurantId)
+                return RestaurantProcessTicketResponse(RestaurantAddStatus.ACCEPTED, restaurantId)
+            } catch (_: FeignException) {
+                log.debug("no response received from user-service")
+
+                return RestaurantProcessTicketResponse(request.status, 0)
+            }
         }
 
+        // if status not ACCEPTED, then just save ticket
         save(processedRestaurantAddTicket)
 
         return RestaurantProcessTicketResponse(request.status, null)
