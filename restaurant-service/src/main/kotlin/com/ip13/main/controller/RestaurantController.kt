@@ -25,8 +25,6 @@ class RestaurantController(
 
     @PostMapping("/create-ticket")
     fun createTicketToAddRestaurant(
-        @RequestHeader(value = "Authorization")
-        authHeader: String,
         principal: Principal,
         @Valid
         @RequestBody(required = true)
@@ -34,7 +32,7 @@ class RestaurantController(
     ): RestaurantAddTicketResponse {
         log.debug("/restaurant/create-ticket endpoint invoked")
 
-        return restaurantAddTicketService.createTicket(request, principal.name, authHeader)
+        return restaurantAddTicketService.createTicket(request, principal.name)
     }
 
     @PostMapping("/process-ticket")

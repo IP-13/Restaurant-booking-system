@@ -22,11 +22,6 @@ class RestaurantService(
         return restaurantRepository.findByIdOrNull(id) ?: throw RestaurantNotFoundException("No restaurant with id $id")
     }
 
-    fun findByManagerIdOrThrow(managerId: Int): Restaurant {
-        return restaurantRepository.findByManagerId(managerId)
-            ?: throw RestaurantNotFoundException("No restaurant with manager with id $managerId")
-    }
-
     fun addGrade(id: Int, grade: Int): Int {
         return restaurantRepository.addGrade(id, grade)
     }

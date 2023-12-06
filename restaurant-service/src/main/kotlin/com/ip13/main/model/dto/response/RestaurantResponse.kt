@@ -3,7 +3,7 @@ package com.ip13.main.model.dto.response
 data class RestaurantResponse(
     val id: Int,
     val restaurantAddTicketId: Int,
-    val managerId: Int,
+    val managerName: String,
     val name: String,
     val country: String,
     val city: String,

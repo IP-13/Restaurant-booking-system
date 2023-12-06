@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service
 @Service
 class TableReserveService(
     private val tableReserveTicketRepository: TableReserveTicketRepository,
-    private val userClient: UserClient,
     private val restaurantService: RestaurantService,
 ) {
     private val log = getLogger(javaClass)
@@ -40,11 +39,7 @@ class TableReserveService(
             ?: throw TableReserveTicketNotFoundException("No table reserve ticket with id $id")
     }
 
-    fun reserveTable(request: TableReserveRequest, username: String, authHeader: String): TableReserveResponse {
-        val user = userClient.getUserByUsername(authHeader = authHeader, username = username)
-
-        log.debug("user extracted from token\n{}", user.toString())
-
+    fun reserveTable(request: TableReserveRequest, username: String): TableReserveResponse {
         val restaurant = restaurantService.findByIdOrThrow(request.restaurantId)
 
         // TODO request to grade-service
@@ -75,7 +70,7 @@ class TableReserveService(
             save(
                 request.toTableReserveTicket(
                     restaurant = restaurant,
-                    userId = user.id,
+                    username = username,
                     managerComment = "Sorry, restaurant ${restaurant.id} is closed at that time",
                     status = TableReserveStatus.REJECTED
                 )
@@ -89,7 +84,7 @@ class TableReserveService(
         save(
             request.toTableReserveTicket(
                 restaurant = restaurant,
-                userId = user.id,
+                username = username,
                 managerComment = null,
                 status = TableReserveStatus.PROCESSING
             )
@@ -102,13 +97,8 @@ class TableReserveService(
 
     fun processReservation(
         request: ReservationProcessRequest,
-        username: String,
-        authHeader: String,
+        managerName: String,
     ): ReservationProcessResponse {
-        val manager = userClient.getUserByUsername(authHeader = authHeader, username = username)
-
-        log.debug("manager extracted from token\n{}", manager.toString())
-
         val tableReserveTicket = findByIdOrThrow(request.tableReserveTicketId)
 
         log.debug("TableReserveTicket found\n{}", tableReserveTicket)
@@ -117,7 +107,7 @@ class TableReserveService(
 
         log.debug("Restaurant received from restaurant-service \n{}", restaurant.toString())
 
-        if (restaurant.managerId != manager.id) {
+        if (restaurant.managerName != managerName) {
             throw CommonException(
                 "You don't work in restaurant ${restaurant.id}",
                 HttpStatus.BAD_REQUEST
@@ -135,13 +125,13 @@ class TableReserveService(
         val processedTableReserveTicket = TableReserveTicket(
             id = tableReserveTicket.id,
             restaurant = tableReserveTicket.restaurant,
-            userId = tableReserveTicket.userId,
+            username = tableReserveTicket.username,
             creationDate = tableReserveTicket.creationDate,
             fromDate = tableReserveTicket.fromDate,
             tillDate = tableReserveTicket.tillDate,
             numOfGuests = tableReserveTicket.numOfGuests,
             userComment = tableReserveTicket.userComment,
-            managerId = manager.id,
+            managerName = managerName,
             managerComment = request.managerComment,
             status = request.status,
         )

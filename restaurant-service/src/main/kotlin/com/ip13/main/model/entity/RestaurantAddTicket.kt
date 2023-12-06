@@ -18,11 +18,11 @@ class RestaurantAddTicket(
     val entrance: Int? = null,
     val floor: Int? = null,
     val description: String? = null,
-    val userId: Int = 0,
+    val username: String = "",
     val creationDate: LocalDateTime = LocalDateTime.now(),
     @Enumerated(EnumType.STRING)
     val status: RestaurantAddStatus = RestaurantAddStatus.PROCESSING,
-    val adminId: Int? = null,
+    val adminName: String? = null,
     val processingDate: LocalDateTime? = null,
     val adminComment: String? = null,
     @JsonIgnore
@@ -43,10 +43,10 @@ class RestaurantAddTicket(
         if (entrance != other.entrance) return false
         if (floor != other.floor) return false
         if (description != other.description) return false
-        if (userId != other.userId) return false
+        if (username != other.username) return false
         if (creationDate != other.creationDate) return false
         if (status != other.status) return false
-        if (adminId != other.adminId) return false
+        if (adminName != other.adminName) return false
         if (processingDate != other.processingDate) return false
         if (adminComment != other.adminComment) return false
 
@@ -62,10 +62,10 @@ class RestaurantAddTicket(
         result = 31 * result + (entrance ?: 0)
         result = 31 * result + (floor ?: 0)
         result = 31 * result + (description?.hashCode() ?: 0)
-        result = 31 * result + userId
+        result = 31 * result + username.hashCode()
         result = 31 * result + creationDate.hashCode()
         result = 31 * result + status.hashCode()
-        result = 31 * result + (adminId ?: 0)
+        result = 31 * result + (adminName?.hashCode() ?: 0)
         result = 31 * result + (processingDate?.hashCode() ?: 0)
         result = 31 * result + (adminComment?.hashCode() ?: 0)
         return result
@@ -73,8 +73,8 @@ class RestaurantAddTicket(
 
     override fun toString(): String {
         return "RestaurantAddTicket(id=$id, name='$name', country='$country', city='$city', street='$street', " +
-                "building=$building, entrance=$entrance, floor=$floor, description=$description, userId=$userId, " +
-                "creationDate=$creationDate, status=$status, adminId=$adminId, processingDate=$processingDate," +
+                "building=$building, entrance=$entrance, floor=$floor, description=$description, userId=$username, " +
+                "creationDate=$creationDate, status=$status, adminId=$adminName, processingDate=$processingDate," +
                 " adminComment=$adminComment)"
     }
 }

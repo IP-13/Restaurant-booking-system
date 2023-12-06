@@ -25,8 +25,6 @@ class ReserveController(
 
     @PostMapping("/reserve-table")
     fun reserveTable(
-        @RequestHeader(value = "Authorization")
-        authHeader: String,
         principal: Principal,
         @Valid
         @RequestBody(required = true)
@@ -34,13 +32,11 @@ class ReserveController(
     ): TableReserveResponse {
         log.debug("/reservation/reserve-table endpoint invoked")
 
-        return tableReserveService.reserveTable(request, principal.name, authHeader)
+        return tableReserveService.reserveTable(request, principal.name)
     }
 
     @PostMapping("/process-reservation")
     fun processReservation(
-        @RequestHeader(value = "Authorization")
-        authHeader: String,
         principal: Principal,
         @Valid
         @RequestBody(required = true)
@@ -48,13 +44,11 @@ class ReserveController(
     ): ReservationProcessResponse {
         log.debug("/reservation/process-reservation endpoint invoked")
 
-        return tableReserveService.processReservation(request, principal.name, authHeader)
+        return tableReserveService.processReservation(request, principal.name)
     }
 
     @PostMapping("/add-booking-constraint")
     fun addBookingConstraint(
-        @RequestHeader(value = "Authorization")
-        authHeader: String,
         principal: Principal,
         @Valid
         @RequestBody(required = true)
@@ -62,6 +56,6 @@ class ReserveController(
     ): AddBookingConstraintResponse {
         log.debug("/reservation/add-booking-constraint endpoint invoked")
 
-        return bookingConstraintService.addBookingConstraint(request, principal.name, authHeader)
+        return bookingConstraintService.addBookingConstraint(request, principal.name)
     }
 }

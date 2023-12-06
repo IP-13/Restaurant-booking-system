@@ -11,7 +11,7 @@ class Restaurant(
     @OneToOne
     @JoinColumn(name = "restaurant_add_ticket_id")
     val restaurantAddTicket: RestaurantAddTicket = RestaurantAddTicket(),
-    val managerId: Int = 0,
+    val managerName: String = "",
     val name: String = "",
     val country: String = "",
     val city: String = "",
@@ -34,7 +34,7 @@ class Restaurant(
         other as Restaurant
 
         if (restaurantAddTicket != other.restaurantAddTicket) return false
-        if (managerId != other.managerId) return false
+        if (managerName != other.managerName) return false
         if (name != other.name) return false
         if (country != other.country) return false
         if (city != other.city) return false
@@ -49,7 +49,7 @@ class Restaurant(
 
     override fun hashCode(): Int {
         var result = restaurantAddTicket.hashCode()
-        result = 31 * result + managerId
+        result = 31 * result + managerName.hashCode()
         result = 31 * result + name.hashCode()
         result = 31 * result + country.hashCode()
         result = 31 * result + city.hashCode()
@@ -62,7 +62,7 @@ class Restaurant(
     }
 
     override fun toString(): String {
-        return "Restaurant(id=$id, restaurantAddTicket=$restaurantAddTicket, managerId=$managerId, name='$name'," +
+        return "Restaurant(id=$id, restaurantAddTicket=$restaurantAddTicket, managerId=$managerName, name='$name'," +
                 " country='$country', city='$city', street='$street', building=$building, entrance=$entrance," +
                 " floor=$floor, description=$description)"
     }

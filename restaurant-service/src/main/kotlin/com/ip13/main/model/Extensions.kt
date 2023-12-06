@@ -12,7 +12,10 @@ import com.ip13.main.model.enums.RestaurantAddStatus
 import com.ip13.main.model.enums.TableReserveStatus
 import java.time.LocalDateTime
 
-fun RestaurantAddTicketRequest.toRestaurantAddTicket(userId: Int, status: RestaurantAddStatus): RestaurantAddTicket {
+fun RestaurantAddTicketRequest.toRestaurantAddTicket(
+    username: String,
+    status: RestaurantAddStatus
+): RestaurantAddTicket {
     return RestaurantAddTicket(
         name = this.name,
         country = this.country,
@@ -22,7 +25,7 @@ fun RestaurantAddTicketRequest.toRestaurantAddTicket(userId: Int, status: Restau
         entrance = this.entrance,
         floor = this.floor,
         description = this.description,
-        userId = userId,
+        username = username,
         creationDate = LocalDateTime.now(),
         status = status,
     )
@@ -30,7 +33,7 @@ fun RestaurantAddTicketRequest.toRestaurantAddTicket(userId: Int, status: Restau
 
 fun RestaurantAddTicket.updateRestaurantAddTicket(
     status: RestaurantAddStatus,
-    adminId: Int,
+    adminName: String,
     adminComment: String?,
 ): RestaurantAddTicket {
     return RestaurantAddTicket(
@@ -43,10 +46,10 @@ fun RestaurantAddTicket.updateRestaurantAddTicket(
         entrance = this.entrance,
         floor = this.floor,
         description = this.description,
-        userId = this.userId,
+        username = this.username,
         creationDate = this.creationDate,
         status = status,
-        adminId = adminId,
+        adminName = adminName,
         processingDate = LocalDateTime.now(),
         adminComment = adminComment,
     )
@@ -56,7 +59,7 @@ fun RestaurantAddTicket.toRestaurant(): Restaurant {
     return Restaurant(
         restaurantAddTicket = this,
         // при успешной обработке, пользователь создавший заявку становится менеджером ресторана.
-        managerId = this.userId,
+        managerName = this.username,
         name = this.name,
         country = this.country,
         city = this.city,
@@ -72,7 +75,7 @@ fun Restaurant.toRestaurantResponse(): RestaurantResponse {
     return RestaurantResponse(
         id = this.id,
         restaurantAddTicketId = this.restaurantAddTicket.id,
-        managerId = this.managerId,
+        managerName = this.managerName,
         name = this.name,
         country = this.country,
         city = this.city,
@@ -86,13 +89,13 @@ fun Restaurant.toRestaurantResponse(): RestaurantResponse {
 
 fun TableReserveRequest.toTableReserveTicket(
     restaurant: Restaurant,
-    userId: Int,
+    username: String,
     managerComment: String? = null,
     status: TableReserveStatus = TableReserveStatus.PROCESSING,
 ): TableReserveTicket {
     return TableReserveTicket(
         restaurant = restaurant,
-        userId = userId,
+        username = username,
         creationDate = LocalDateTime.now(),
         fromDate = this.fromDate,
         tillDate = this.tillDate,
@@ -103,10 +106,10 @@ fun TableReserveRequest.toTableReserveTicket(
     )
 }
 
-fun AddBookingConstraintRequest.toBookingConstraint(restaurant: Restaurant, managerId: Int): BookingConstraint {
+fun AddBookingConstraintRequest.toBookingConstraint(restaurant: Restaurant, managerName: String): BookingConstraint {
     return BookingConstraint(
         restaurant = restaurant,
-        managerId = managerId,
+        managerName = managerName,
         reason = this.reason,
         fromDate = this.fromDate,
         tillDate = this.tillDate,

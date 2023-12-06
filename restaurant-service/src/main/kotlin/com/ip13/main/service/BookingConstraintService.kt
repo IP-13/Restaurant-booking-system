@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service
 class BookingConstraintService(
     private val bookingConstraintRepository: BookingConstraintRepository,
     private val restaurantService: RestaurantService,
-    private val userClient: UserClient,
 ) {
     private val log = getLogger(javaClass)
 
@@ -25,25 +24,20 @@ class BookingConstraintService(
 
     fun addBookingConstraint(
         request: AddBookingConstraintRequest,
-        username: String,
-        authHeader: String,
+        managerName: String,
     ): AddBookingConstraintResponse {
         val restaurant = restaurantService.findByIdOrThrow(request.restaurantId)
 
         log.debug("Restaurant found\n{}", restaurant.toString())
 
-        val manager = userClient.getUserByUsername(authHeader = authHeader, username = username)
-
-        log.debug("user extracted from token\n{}", manager.toString())
-
-        if (restaurant.managerId != manager.id) {
+        if (restaurant.managerName != managerName) {
             throw CommonException(
-                "User ${manager.id} is not manager of restaurant ${restaurant.id}",
+                "User $managerName is not manager of restaurant ${restaurant.id}",
                 HttpStatus.BAD_REQUEST
             )
         }
 
-        val bookingConstraint = request.toBookingConstraint(restaurant, manager.id)
+        val bookingConstraint = request.toBookingConstraint(restaurant, managerName)
 
         return AddBookingConstraintResponse(
             id = save(bookingConstraint).id

@@ -11,7 +11,7 @@ class BookingConstraint(
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     val restaurant: Restaurant = Restaurant(),
-    val managerId: Int = 0,
+    val managerName: String = "",
     val reason: String? = null,
     val fromDate: LocalDateTime = LocalDateTime.now(),
     val tillDate: LocalDateTime = LocalDateTime.now(),
@@ -23,7 +23,7 @@ class BookingConstraint(
         other as BookingConstraint
 
         if (restaurant != other.restaurant) return false
-        if (managerId != other.managerId) return false
+        if (managerName != other.managerName) return false
         if (reason != other.reason) return false
         if (fromDate != other.fromDate) return false
         if (tillDate != other.tillDate) return false
@@ -33,7 +33,7 @@ class BookingConstraint(
 
     override fun hashCode(): Int {
         var result = restaurant.hashCode()
-        result = 31 * result + managerId
+        result = 31 * result + managerName.hashCode()
         result = 31 * result + (reason?.hashCode() ?: 0)
         result = 31 * result + fromDate.hashCode()
         result = 31 * result + tillDate.hashCode()
@@ -41,7 +41,7 @@ class BookingConstraint(
     }
 
     override fun toString(): String {
-        return "BookingConstraint(id=$id, restaurant=$restaurant, managerId=$managerId, reason=$reason, " +
+        return "BookingConstraint(id=$id, restaurant=$restaurant, managerId=$managerName, reason=$reason, " +
                 "fromDate=$fromDate, tillDate=$tillDate)"
     }
 }

@@ -52,20 +52,15 @@ class RestaurantAddTicketService(
     fun createTicket(
         request: RestaurantAddTicketRequest,
         username: String,
-        authHeader: String,
     ): RestaurantAddTicketResponse {
-        val user = userClient.getUserByUsername(authHeader = authHeader, username = username)
-
-        log.debug("User found\n{}", user.toString())
-
-        val restaurantAddTicket = save(request.toRestaurantAddTicket(user.id, RestaurantAddStatus.PROCESSING))
+        val restaurantAddTicket = save(request.toRestaurantAddTicket(username, RestaurantAddStatus.PROCESSING))
 
         return RestaurantAddTicketResponse(restaurantAddTicket.status)
     }
 
     fun processRestaurantAddTicket(
         request: RestaurantProcessTicketRequest,
-        username: String,
+        adminName: String,
         authHeader: String,
     ): RestaurantProcessTicketResponse {
         val restaurantAddTicket = findByIdOrThrow(request.restaurantAddTicketId)
@@ -79,13 +74,9 @@ class RestaurantAddTicketService(
             )
         }
 
-        val admin = userClient.getUserByUsername(authHeader = authHeader, username = username)
-
-        log.debug("Admin found\n{}", admin.toString())
-
         val processedRestaurantAddTicket = restaurantAddTicket.updateRestaurantAddTicket(
             status = request.status,
-            adminId = admin.id,
+            adminName = adminName,
             adminComment = request.adminComment,
         )
 
@@ -97,7 +88,7 @@ class RestaurantAddTicketService(
                 saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant)
 
             // request to another microservice
-            userClient.addRole(authHeader, RoleAddRequest(processedRestaurantAddTicket.userId, Role.MANAGER))
+            userClient.addRole(authHeader, RoleAddRequest(processedRestaurantAddTicket.username, Role.MANAGER))
             // transaction
 
             log.debug("after saving restaurant and updated restaurant add ticket. Restaurant id: {}", restaurantId)

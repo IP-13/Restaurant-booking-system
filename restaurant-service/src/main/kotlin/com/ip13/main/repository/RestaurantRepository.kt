@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface RestaurantRepository : CrudRepository<Restaurant, Int> {
-    fun findByManagerId(managerId: Int): Restaurant?
-
     @Modifying
     @Query(
         "update restaurant set num_of_grades = num_of_grades+1, sum_of_grades = sum_of_grades + :grade where id = :id",
