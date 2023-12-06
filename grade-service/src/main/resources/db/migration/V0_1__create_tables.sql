@@ -12,7 +12,7 @@ create table restaurant(
 
 create table if not exists restaurant_grade (
     id int generated always as identity(start with 100 increment by 100) primary key,
-    username int references user_t(username),
+    username varchar(50) references user_t(username),
     table_reserve_ticket_id int,
     -- ресторан, которому пользователь ставит оценку
     restaurant_id int references restaurant(id),
@@ -22,10 +22,10 @@ create table if not exists restaurant_grade (
 
 create table if not exists visitor_grade (
     id int generated always as identity(start with 100 increment by 100) primary key,
-    manager_name int references user_t(username),
+    manager_name varchar(50) references user_t(username),
     table_reserve_ticket_id int,
     -- пользователь, которому менеджер ставит оценку
-    username int references user_t(username),
+    username varchar(50) references user_t(username),
     grade int not null,
     comment text
 );
