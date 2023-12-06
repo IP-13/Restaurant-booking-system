@@ -7,9 +7,11 @@ import com.ip13.main.model.dto.request.ReservationProcessRequest
 import com.ip13.main.model.dto.request.TableReserveRequest
 import com.ip13.main.model.dto.response.ReservationProcessResponse
 import com.ip13.main.model.dto.response.TableReserveResponse
+import com.ip13.main.model.dto.response.TableReserveTicketResponse
 import com.ip13.main.model.entity.TableReserveTicket
 import com.ip13.main.model.enums.TableReserveStatus
 import com.ip13.main.model.toTableReserveTicket
+import com.ip13.main.model.toTableReserveTicketResponse
 import com.ip13.main.repository.TableReserveTicketRepository
 import com.ip13.main.util.getLogger
 import org.springframework.data.repository.findByIdOrNull
@@ -27,8 +29,8 @@ class TableReserveService(
         return tableReserveTicketRepository.save(tableReserveTicket)
     }
 
-    fun findByIdOrNull(id: Int): TableReserveTicket? {
-        return tableReserveTicketRepository.findByIdOrNull(id)
+    fun findByIdOrNull(id: Int): TableReserveTicketResponse? {
+        return tableReserveTicketRepository.findByIdOrNull(id)?.toTableReserveTicketResponse()
     }
 
     /**

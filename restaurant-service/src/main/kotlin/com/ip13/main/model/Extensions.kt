@@ -4,6 +4,7 @@ import com.ip13.main.model.dto.request.AddBookingConstraintRequest
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
 import com.ip13.main.model.dto.request.TableReserveRequest
 import com.ip13.main.model.dto.response.RestaurantResponse
+import com.ip13.main.model.dto.response.TableReserveTicketResponse
 import com.ip13.main.model.entity.BookingConstraint
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
@@ -113,5 +114,21 @@ fun AddBookingConstraintRequest.toBookingConstraint(restaurant: Restaurant, mana
         reason = this.reason,
         fromDate = this.fromDate,
         tillDate = this.tillDate,
+    )
+}
+
+fun TableReserveTicket.toTableReserveTicketResponse(): TableReserveTicketResponse {
+    return TableReserveTicketResponse(
+        id = this.id,
+        restaurantId = this.restaurant.id,
+        username = this.username,
+        creationDate = this.creationDate,
+        fromDate = this.fromDate,
+        tillDate = this.tillDate,
+        numOfGuests = this.numOfGuests,
+        userComment = this.userComment,
+        managerName = this.managerName,
+        managerComment = this.managerComment,
+        status = this.status
     )
 }

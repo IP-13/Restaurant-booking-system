@@ -6,6 +6,8 @@ import com.ip13.main.model.dto.request.TableReserveRequest
 import com.ip13.main.model.dto.response.AddBookingConstraintResponse
 import com.ip13.main.model.dto.response.ReservationProcessResponse
 import com.ip13.main.model.dto.response.TableReserveResponse
+import com.ip13.main.model.dto.response.TableReserveTicketResponse
+import com.ip13.main.model.toTableReserveTicketResponse
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger
@@ -57,5 +59,13 @@ class ReserveController(
         log.debug("/reservation/add-booking-constraint endpoint invoked")
 
         return bookingConstraintService.addBookingConstraint(request, principal.name)
+    }
+
+    @GetMapping("/table-reserve-ticket/{id}")
+    fun getTableReserveTicketById(
+        @PathVariable
+        id: Int,
+    ): TableReserveTicketResponse? {
+        return tableReserveService.findByIdOrNull(id)
     }
 }
