@@ -2,7 +2,7 @@ package com.ip13.main.controller
 
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequest
-import com.ip13.main.model.dto.response.RestaurantCreateTicketResponse
+import com.ip13.main.model.dto.response.RestaurantAddTicketResponse
 import com.ip13.main.model.dto.response.RestaurantProcessTicketResponse
 import com.ip13.main.model.dto.response.RestaurantResponse
 import com.ip13.main.model.toRestaurantResponse
@@ -29,7 +29,7 @@ class RestaurantController(
         @Valid
         @RequestBody(required = true)
         request: RestaurantAddTicketRequest,
-    ): RestaurantCreateTicketResponse {
+    ): RestaurantAddTicketResponse {
         log.debug("/restaurant/create-ticket endpoint invoked")
 
         return restaurantAddTicketService.createTicket(request, principal.name, authHeader)

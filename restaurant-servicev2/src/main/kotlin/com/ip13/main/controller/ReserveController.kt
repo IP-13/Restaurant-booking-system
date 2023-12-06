@@ -1,5 +1,12 @@
 package com.ip13.main.controller
 
+import com.ip13.main.model.dto.request.AddBookingConstraintRequest
+import com.ip13.main.model.dto.request.ReservationProcessRequest
+import com.ip13.main.model.dto.request.TableReserveRequest
+import com.ip13.main.model.dto.response.AddBookingConstraintResponse
+import com.ip13.main.model.dto.response.ReservationProcessResponse
+import com.ip13.main.model.dto.response.TableReserveResponse
+import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
@@ -9,6 +16,8 @@ import java.security.Principal
 @RestController
 @RequestMapping("/reservation")
 class ReserveController {
+    private val log = getLogger(javaClass)
+
     @PostMapping("/reserve-table")
     fun reserveTable(
         principal: Principal,
