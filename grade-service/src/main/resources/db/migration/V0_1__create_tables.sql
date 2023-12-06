@@ -8,7 +8,7 @@ create table restaurant(
     id int generated always as identity(start with 100 increment by 100) primary key,
     num_of_grades int not null,
     sum_of_grades int not null
-)
+);
 
 create table if not exists restaurant_grade (
     id int generated always as identity(start with 100 increment by 100) primary key,
