@@ -10,7 +10,6 @@ import org.springframework.security.core.userdetails.UserDetails
 @Table(name = "user_t")
 class User(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     // поля private, чтобы можно было без ошибок переопределить методы getPassword, getUsername
     private val username: String = "",
     private val password: String = "",

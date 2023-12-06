@@ -51,11 +51,13 @@ class AuthController(
         return response.response
     }
 
-    @GetMapping("/user/username")
+    @GetMapping("/user/{username}")
     fun getUserByUsername(
-        @RequestParam
+        @PathVariable
         username: String,
     ): UserResponse? {
+        log.debug("/auth/user endpoint invoked")
+
         return userService.loadByUsernameOrNull(username)?.toUserResponse()
     }
 
