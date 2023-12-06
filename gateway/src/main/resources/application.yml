@@ -37,6 +37,14 @@ spring:
             - name: RoleCheckerFilter
               args:
                 isOpen: true
+        - id: grade-service
+          uri: lb://grade-service
+          predicates:
+            - Path=/grade/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
 
 logging.level:
     root: INFO
