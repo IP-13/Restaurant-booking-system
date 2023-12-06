@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*
 class AuthController(
     val authService: AuthService,
     val userService: UserService,
+    private val workloadEmulator: WorkloadEmulator,
 ) {
     private val log = getLogger(javaClass)
 
@@ -33,7 +34,7 @@ class AuthController(
     ): String {
         log.debug("/auth/role endpoint invoked")
 
-        WorkloadEmulator.emulateWorkload()
+        workloadEmulator.emulateWorkload()
 
         val isAdded = userService.addRole(request)
 
@@ -53,7 +54,7 @@ class AuthController(
     ): UserResponse? {
         log.debug("/auth/user endpoint invoked")
 
-        WorkloadEmulator.emulateWorkload()
+        workloadEmulator.emulateWorkload()
 
         return userService.loadByUsernameOrNull(username)?.toUserResponse()
     }
