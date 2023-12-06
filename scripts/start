@@ -1,21 +1,18 @@
 #!/bin/bash
 cd ..
+cd config-server
+gradle build -x test
+cd ..
 cd eureka
 gradle build -x test
 cd ..
 cd gateway
 gradle build -x test
 cd ..
-cd config-server
+cd restaurant-service
 gradle build -x test
 cd ..
 cd user-service
-gradle build -x test
-cd ..
-cd reservation-service
-gradle build -x test
-cd ..
-cd restaurant-service
 gradle build -x test
 cd ..
 
