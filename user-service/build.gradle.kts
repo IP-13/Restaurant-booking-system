@@ -36,6 +36,9 @@ dependencies {
     // web mvc
     implementation("org.springframework.boot:spring-boot-starter-web")
 
+    // actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
     // eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
