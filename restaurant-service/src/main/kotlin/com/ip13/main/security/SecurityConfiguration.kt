@@ -28,6 +28,7 @@ class SecurityConfiguration(
                 authorize("/reservation/reserve-table", authenticated)
                 authorize("/reservation/process-reservation", hasAuthority(Role.MANAGER.name))
                 authorize("/reservation/add-booking-constraint", hasAuthority(Role.MANAGER.name))
+                authorize("/reservation/table-reserve-ticket/**", authenticated)
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
