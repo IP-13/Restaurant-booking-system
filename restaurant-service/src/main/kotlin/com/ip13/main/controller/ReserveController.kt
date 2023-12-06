@@ -66,6 +66,8 @@ class ReserveController(
         @PathVariable
         id: Int,
     ): TableReserveTicketResponse? {
+        log.debug("/reservation/table-reserve-ticket endpoint invoked")
+
         return tableReserveService.findByIdOrNull(id)
     }
 }
