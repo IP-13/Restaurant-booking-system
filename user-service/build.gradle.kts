@@ -54,6 +54,9 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+    // https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common
+    implementation("org.glassfish.jersey.core:jersey-common:3.1.4")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
