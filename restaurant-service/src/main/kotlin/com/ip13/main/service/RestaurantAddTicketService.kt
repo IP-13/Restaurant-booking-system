@@ -6,7 +6,7 @@ import com.ip13.main.feign.userClient.UserClient
 import com.ip13.main.feign.userClient.dto.RoleAddRequest
 import com.ip13.main.model.dto.request.RestaurantAddTicketRequest
 import com.ip13.main.model.dto.request.RestaurantProcessTicketRequest
-import com.ip13.main.model.dto.response.RestaurantCreateTicketResponse
+import com.ip13.main.model.dto.response.RestaurantAddTicketResponse
 import com.ip13.main.model.dto.response.RestaurantProcessTicketResponse
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantAddTicket
@@ -53,14 +53,14 @@ class RestaurantAddTicketService(
         request: RestaurantAddTicketRequest,
         username: String,
         authHeader: String,
-    ): RestaurantCreateTicketResponse {
+    ): RestaurantAddTicketResponse {
         val user = userClient.getUserByUsername(authHeader = authHeader, username = username)
 
         log.debug("User found\n{}", user.toString())
 
         val restaurantAddTicket = save(request.toRestaurantAddTicket(user.id, RestaurantAddStatus.PROCESSING))
 
-        return RestaurantCreateTicketResponse(restaurantAddTicket.status)
+        return RestaurantAddTicketResponse(restaurantAddTicket.status)
     }
 
     fun processRestaurantAddTicket(
@@ -92,10 +92,13 @@ class RestaurantAddTicketService(
         if (request.status == RestaurantAddStatus.ACCEPTED) {
             val restaurant = processedRestaurantAddTicket.toRestaurant()
 
+            // TODO transaction
             val restaurantId =
                 saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant)
 
+            // request to another microservice
             userClient.addRole(authHeader, RoleAddRequest(processedRestaurantAddTicket.userId, Role.MANAGER))
+            // transaction
 
             log.debug("after saving restaurant and updated restaurant add ticket. Restaurant id: {}", restaurantId)
 

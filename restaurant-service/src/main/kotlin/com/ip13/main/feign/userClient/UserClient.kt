@@ -5,7 +5,7 @@ import com.ip13.main.feign.userClient.dto.User
 import org.springframework.cloud.openfeign.FeignClient
 import org.springframework.web.bind.annotation.*
 
-@FeignClient(value = "user-service")
+@FeignClient(name = "user-service")
 interface UserClient {
     @GetMapping("/auth/user/username")
     fun getUserByUsername(

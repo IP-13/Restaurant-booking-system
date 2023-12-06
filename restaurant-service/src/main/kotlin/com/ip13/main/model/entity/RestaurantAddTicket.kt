@@ -62,10 +62,10 @@ class RestaurantAddTicket(
         result = 31 * result + (entrance ?: 0)
         result = 31 * result + (floor ?: 0)
         result = 31 * result + (description?.hashCode() ?: 0)
-        result = 31 * result + userId.hashCode()
+        result = 31 * result + userId
         result = 31 * result + creationDate.hashCode()
         result = 31 * result + status.hashCode()
-        result = 31 * result + (adminId?.hashCode() ?: 0)
+        result = 31 * result + (adminId ?: 0)
         result = 31 * result + (processingDate?.hashCode() ?: 0)
         result = 31 * result + (adminComment?.hashCode() ?: 0)
         return result
@@ -73,8 +73,8 @@ class RestaurantAddTicket(
 
     override fun toString(): String {
         return "RestaurantAddTicket(id=$id, name='$name', country='$country', city='$city', street='$street', " +
-                "building=$building, entrance=$entrance, floor=$floor, description=$description, user=$userId, " +
-                "creationDate=$creationDate, status=$status, admin=$adminId, processingDate=$processingDate, " +
-                "adminComment=$adminComment)"
+                "building=$building, entrance=$entrance, floor=$floor, description=$description, userId=$userId, " +
+                "creationDate=$creationDate, status=$status, adminId=$adminId, processingDate=$processingDate," +
+                " adminComment=$adminComment)"
     }
 }
