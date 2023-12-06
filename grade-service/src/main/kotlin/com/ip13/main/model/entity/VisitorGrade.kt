@@ -4,10 +4,10 @@ import org.springframework.data.annotation.Id
 
 data class VisitorGrade(
     @Id
-    val id: Int,
-    val managerId: Int,
+    val id: Int = 0,
+    val managerName: String,
     val tableReserveTicketId: Int,
-    val userId: Int,
+    val username: String,
     val grade: Int,
     val comment: String?,
 )

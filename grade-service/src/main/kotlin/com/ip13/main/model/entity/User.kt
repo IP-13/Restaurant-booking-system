@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id
 
 data class User(
     @Id
-    val id: Int,
+    val username: String,
     val numOfGrades: Int,
     val sumOfGrades: Int,
 )
