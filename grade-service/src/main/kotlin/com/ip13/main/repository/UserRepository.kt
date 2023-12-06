@@ -20,4 +20,10 @@ interface UserRepository : ReactiveCrudRepository<User, String> {
         @Param("grade")
         grade: Int
     ): Int
+
+    @Query("SELECT num_of_grades * 1.0 / sum_of_grades FROM user_t WHERE username = :username")
+    fun getGrade(
+        @Param("username")
+        username: String
+    ): Float
 }

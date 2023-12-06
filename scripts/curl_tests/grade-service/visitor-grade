@@ -1,0 +1,3 @@
+#!/bin/bash
+curl -d @visitor-grade.json -H "Content-Type: application/json" -H "Authorization: Bearer $(cat ../jwt-token/token)" \
+http://localhost:8080/grade/user
