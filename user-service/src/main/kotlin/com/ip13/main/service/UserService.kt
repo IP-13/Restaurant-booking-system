@@ -27,10 +27,6 @@ class UserService(
         return userRepository.save(user)
     }
 
-    fun findByIdOrNull(id: Int): User? {
-        return userRepository.findByIdOrNull(id)
-    }
-
     fun findAll(): List<User> {
         return userRepository.findAll().toList()
     }
@@ -39,15 +35,8 @@ class UserService(
         return userRepository.existsByUsername(name)
     }
 
-    /**
-     * throw UserNotFoundException if user with that id doesn't exist
-     */
-    fun findByIdOrThrow(id: Int): User {
-        return userRepository.findByIdOrNull(id) ?: throw UserNotFoundException("User with id: $id not found")
-    }
-
     fun addRole(request: RoleAddRequest): Boolean {
-        val user = findByIdOrThrow(request.userId)
+        val user = loadUserByUsername(request.username)
         if (user.roles.contains(request.role)) {
             return false
         }
@@ -56,7 +45,6 @@ class UserService(
         val isAdded = updatedRoles.add(request.role)
 
         val updatedUser = User(
-            id = user.id,
             username = user.username,
             password = user.password,
             roles = updatedRoles,

@@ -5,8 +5,7 @@ import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.PositiveOrZero
 
 data class RoleAddRequest(
-    @field:PositiveOrZero
-    val userId: Int,
+    val username: String,
     @field:NotNull
     val role: Role,
 )

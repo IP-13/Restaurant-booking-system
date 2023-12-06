@@ -42,21 +42,13 @@ class AuthController(
         val isAdded = userService.addRole(request)
 
         val response = if (isAdded) {
-            AddRoleResponse("Role ${request.role} successfully added to user ${request.userId}")
+            AddRoleResponse("Role ${request.role} successfully added to user ${request.username}")
         } else {
-            AddRoleResponse("User ${request.userId} already has role ${request.role}")
+            AddRoleResponse("User ${request.username} already has role ${request.role}")
         }
 
         log.debug("response: {}", response)
         return response.response
-    }
-
-    @GetMapping("/user/{id}")
-    fun getUserById(
-        @PathVariable
-        id: Int,
-    ): UserResponse? {
-        return userService.findByIdOrNull(id)?.toUserResponse()
     }
 
     @GetMapping("/user/username")
