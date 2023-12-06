@@ -7,7 +7,7 @@ import kotlin.random.Random
 object WorkloadEmulator {
     private val log = getLogger(javaClass)
 
-    @Value("emulate-workload.fail-probability")
+    @Value("\${emulate-workload.fail-probability}")
     private lateinit var probability: String
 
     /**
@@ -15,7 +15,7 @@ object WorkloadEmulator {
      * @throws BadRequestException
      */
     fun emulateWorkload() {
-        if (probability.toFloat() < Random.nextFloat()) {
+        if (probability.toDouble() < Random.nextDouble()) {
             log.debug("Workload is too high. Server cannot handle it")
             throw BadRequestException()
         }
