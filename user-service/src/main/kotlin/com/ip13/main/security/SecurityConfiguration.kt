@@ -27,6 +27,7 @@ class SecurityConfiguration(
                 authorize("/auth/role/**", hasAuthority(Role.ADMIN.name))
                 authorize("/auth/login/**", permitAll)
                 authorize("/auth/user/**", authenticated)
+                authorize(anyRequest, authenticated)
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
