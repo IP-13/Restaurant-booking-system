@@ -8,14 +8,15 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface UserRepository : ReactiveCrudRepository<User, Int> {
+interface UserRepository : ReactiveCrudRepository<User, String> {
     @Modifying
     @Query(
-        "UPDATE user_t SET num_of_grades = num_of_grades + 1, sum_of_grades = sum_of_grades + :grade WHERE id = :id"
+        "UPDATE user_t SET num_of_grades = num_of_grades + 1, sum_of_grades = sum_of_grades + :grade" +
+                " WHERE username = :username"
     )
     fun addGrade(
-        @Param("id")
-        id: Int,
+        @Param("username")
+        username: String,
         @Param("grade")
         grade: Int
     ): Int
