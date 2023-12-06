@@ -38,3 +38,6 @@ logging.level:
     retry: TRACE
 
 spring.jackson.serialization.indent_output: true
+
+management.endpoint.gateway.enabled: true
+management.endpoints.web.exposure.include: gateway

@@ -12,7 +12,7 @@ class WorkloadEmulator {
     private val log = getLogger(javaClass)
 
     @Value("\${emulate-workload.fail-probability}")
-    private lateinit var probability: String
+    lateinit var probability: String
 
     /**
      * Emulate workload to test circuit-breaker
