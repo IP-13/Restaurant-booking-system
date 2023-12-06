@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails
 class User(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int = 0,
     // поля private, чтобы можно было без ошибок переопределить методы getPassword, getUsername
     private val username: String = "",
     private val password: String = "",
@@ -60,6 +59,6 @@ class User(
     }
 
     override fun toString(): String {
-        return "User(id=$id, username='$username', password='$password', roles=$roles)"
+        return "User(username='$username', password='$password', roles=$roles)"
     }
 }

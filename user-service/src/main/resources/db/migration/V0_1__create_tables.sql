@@ -1,6 +1,5 @@
 create table if not exists user_t (
-    id int generated always as identity(start with 100 increment by 100) primary key,
-    username varchar(50) not null unique,
+    username varchar(50) primary key,
     password text not null,
     roles text[]
 );

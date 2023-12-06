@@ -5,7 +5,6 @@ import com.ip13.main.model.entity.User
 
 fun User.toUserResponse(): UserResponse {
     return UserResponse(
-        id = this.id,
         username = this.username,
         roles = this.roles
     )
