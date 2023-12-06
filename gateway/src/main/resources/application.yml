@@ -32,8 +32,7 @@ spring:
         - id: restaurant-service
           uri: lb://restaurant-service
           predicates:
-            - Path=/restaurant/**
-            - Path=/reservation/**
+            - Path=/restaurant/**, /reservation/**
           filters:
             - name: RoleCheckerFilter
               args:
