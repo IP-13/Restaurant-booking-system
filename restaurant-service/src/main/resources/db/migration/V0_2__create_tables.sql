@@ -27,7 +27,7 @@ create table if not exists restaurant (
     building int not null,
     entrance int,
     floor int,
-    description text,
+    description text
 );
 
 create table if not exists table_reserve_ticket (
