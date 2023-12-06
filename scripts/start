@@ -9,6 +9,9 @@ cd ..
 cd gateway
 gradle build -x test
 cd ..
+cd grade-service
+gradle build -x test
+cd ..
 cd restaurant-service
 gradle build -x test
 cd ..
