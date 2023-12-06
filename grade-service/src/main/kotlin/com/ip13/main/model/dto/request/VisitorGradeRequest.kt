@@ -1,6 +1,6 @@
 package com.ip13.main.model.dto.request
 
-data class RestaurantGradeDto(
+data class VisitorGradeRequest(
     val tableReserveTicketId: Int,
     val grade: Int,
     val comment: Int,

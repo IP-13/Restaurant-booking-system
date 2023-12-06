@@ -31,7 +31,25 @@ class UserClient {
 
 
         return WebClient.builder().filter(reactorLoadBalancerExchangeFilterFunction)
-            .baseUrl("http://user-service/auth")
+            .baseUrl("http://user-service")
+            .clientConnector(ReactorClientHttpConnector(httpClient))
+            .build()
+    }
+
+    @Bean
+    @Qualifier("restaurantServiceClient")
+    fun restaurantServiceClient(): WebClient {
+        val httpClient = HttpClient
+            .create()
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000)
+            .doOnConnected {
+                it.addHandlerLast(ReadTimeoutHandler(5000, TimeUnit.MILLISECONDS))
+                it.addHandlerLast(WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS))
+            }
+
+
+        return WebClient.builder().filter(reactorLoadBalancerExchangeFilterFunction)
+            .baseUrl("http://restaurant-service")
             .clientConnector(ReactorClientHttpConnector(httpClient))
             .build()
     }
