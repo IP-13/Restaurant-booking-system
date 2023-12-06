@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.*
 
 @FeignClient(name = "user-service")
 interface UserClient {
-    @GetMapping("/auth/user/username")
+    @GetMapping("/auth/user/{username}")
     fun getUserByUsername(
         @RequestHeader(value = "Authorization")
         authHeader: String,
-        @RequestParam
+        @PathVariable
         username: String
     ): User
 
