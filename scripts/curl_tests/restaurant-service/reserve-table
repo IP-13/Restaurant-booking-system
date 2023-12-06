@@ -1,0 +1,3 @@
+#!/bin/bash
+curl -d @reserve-table.json -H "Content-Type: application/json" -H "Authorization: Bearer $(cat ../jwt-token/token)" \
+http://localhost:8080/reservation/reserve-table
