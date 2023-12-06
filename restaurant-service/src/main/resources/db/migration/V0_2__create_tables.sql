@@ -11,7 +11,7 @@ create table if not exists restaurant_add_ticket (
     username varchar(50),
     creation_date timestamp not null,
     status restaurant_add_status,
-    adminName varchar(50),
+    admin_name varchar(50),
     processing_date timestamp,
     admin_comment text
 );
@@ -19,7 +19,7 @@ create table if not exists restaurant_add_ticket (
 create table if not exists restaurant (
     id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_add_ticket_id int references restaurant_add_ticket(id),
-    managerName varchar(50),
+    manager_name varchar(50),
     name varchar(50) not null,
     country text not null,
     city text not null,
@@ -42,7 +42,7 @@ create table if not exists table_reserve_ticket (
     till_date timestamp not null,
     num_of_guests int not null,
     user_comment text,
-    managerName varchar(50),
+    manager_name varchar(50),
     manager_comment text,
     status reserve_table_status
 );
@@ -50,7 +50,7 @@ create table if not exists table_reserve_ticket (
 create table if not exists booking_constraint (
     id int generated always as identity(start with 100 increment by 100) primary key,
     restaurant_id int references restaurant(id),
-    managerName varchar(50),
+    manager_name varchar(50),
     reason text not null,
     from_date timestamp not null,
     till_date timestamp not null
