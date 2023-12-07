@@ -24,7 +24,7 @@ spring:
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/auth/**
+            - Path=/auth/**, /user-actuator/**
           filters:
             - name: RoleCheckerFilter
               args:
