@@ -13,8 +13,6 @@ import com.ip13.main.service.UserService
 import com.ip13.main.util.WorkloadEmulator
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
-import org.springframework.cloud.context.restart.RestartEndpoint
-import org.springframework.cloud.endpoint.RefreshEndpoint
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
@@ -25,7 +23,6 @@ class AuthController(
     private val authService: AuthService,
     private val userService: UserService,
     private val workloadEmulator: WorkloadEmulator,
-    private val restartEndpoint: RefreshEndpoint
 ) {
     private val log = getLogger(javaClass)
 
@@ -82,12 +79,5 @@ class AuthController(
         log.debug("/auth/login endpoint invoked")
 
         return authService.login(request = request)
-    }
-
-    @GetMapping("/refresh")
-    fun refresh() {
-        log.debug("old fail-probability: {}", workloadEmulator.probability)
-        restartEndpoint.refresh()
-        log.debug("updated fail-probability: {}", workloadEmulator.probability)
     }
 }
