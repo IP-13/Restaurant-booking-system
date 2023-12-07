@@ -10,8 +10,10 @@ import org.springframework.boot.actuate.health.HealthComponent
 import org.springframework.boot.actuate.health.HealthEndpoint
 import org.springframework.boot.actuate.info.InfoEndpoint
 import org.springframework.boot.actuate.metrics.MetricsEndpoint
+import org.springframework.boot.actuate.metrics.MetricsEndpoint.MetricDescriptor
 import org.springframework.cloud.endpoint.RefreshEndpoint
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
@@ -54,6 +56,14 @@ class ActuatorController(
     @GetMapping("/metrics")
     fun metrics(): MetricsEndpoint.MetricNamesDescriptor {
         return metricsEndpoint.listNames()
+    }
+
+    @GetMapping("/metrics/{metric}")
+    fun certainMetric(
+        @PathVariable
+        metric: String,
+    ): MetricDescriptor {
+        return metricsEndpoint.metric(metric, null)
     }
 
     @GetMapping("/info")
