@@ -99,7 +99,7 @@ class RestaurantAddTicketService(
             } catch (_: FeignException) {
                 log.debug("no response received from user-service")
 
-                return RestaurantProcessTicketResponse(request.status, 0)
+                return RestaurantProcessTicketResponse(RestaurantAddStatus.TRY_ONE_MORE_TIME, -1)
             }
         }
 
