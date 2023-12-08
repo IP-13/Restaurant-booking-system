@@ -54,6 +54,9 @@ dependencies {
 
     // for web client
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
+
+    // for deserializing in web client
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
