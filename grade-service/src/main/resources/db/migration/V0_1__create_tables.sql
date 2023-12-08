@@ -1,5 +1,6 @@
 create table user_t(
-    username varchar(50) primary key,
+    id int generated always as identity(start with 100 increment by 100) primary key,
+    username varchar(50) unique,
     num_of_grades int not null,
     sum_of_grades int not null
 );
