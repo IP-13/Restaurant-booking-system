@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 import reactor.core.publisher.Mono
 
 @Repository
-interface UserRepository : ReactiveCrudRepository<User, String> {
+interface UserRepository : ReactiveCrudRepository<User, Int> {
     @Modifying
     @Query(
         "UPDATE user_t SET num_of_grades = num_of_grades + 1, sum_of_grades = sum_of_grades + :grade" +
@@ -27,4 +27,6 @@ interface UserRepository : ReactiveCrudRepository<User, String> {
         @Param("username")
         username: String
     ): Mono<Float>
+
+    fun findByUsername(username: String): Mono<User>
 }
