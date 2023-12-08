@@ -48,7 +48,8 @@ class Config {
             }
 
 
-        return WebClient.builder().filter(reactorLoadBalancerExchangeFilterFunction)
+        return WebClient.builder()
+            .filter(reactorLoadBalancerExchangeFilterFunction)
             .baseUrl("http://restaurant-service")
             .clientConnector(ReactorClientHttpConnector(httpClient))
             .build()
