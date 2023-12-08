@@ -6,6 +6,7 @@ import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Mono
 
 @Repository
 interface UserRepository : ReactiveCrudRepository<User, String> {
@@ -19,11 +20,11 @@ interface UserRepository : ReactiveCrudRepository<User, String> {
         username: String,
         @Param("grade")
         grade: Int
-    ): Int
+    ): Mono<Int>
 
     @Query("SELECT num_of_grades * 1.0 / sum_of_grades FROM user_t WHERE username = :username")
     fun getGrade(
         @Param("username")
         username: String
-    ): Float
+    ): Mono<Float>
 }
