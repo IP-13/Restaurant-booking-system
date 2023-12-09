@@ -19,10 +19,7 @@ import reactor.core.publisher.Mono
 
 @Component
 class VisitorGradeHandler(
-    private val userServiceClient: WebClient,
     private val restaurantServiceWebClient: RestaurantServiceWebClient,
-    private val restaurantGradeRepository: RestaurantGradeRepository,
-    private val restaurantRepository: RestaurantRepository,
     private val userHandler: UserHandler,
     private val visitorGradeRepository: VisitorGradeRepository,
 ) {
