@@ -6,6 +6,7 @@ import org.springframework.data.r2dbc.repository.Query
 import org.springframework.data.repository.query.Param
 import org.springframework.data.repository.reactive.ReactiveCrudRepository
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Mono
 
 @Repository
 interface RestaurantRepository : ReactiveCrudRepository<Restaurant, Int> {
@@ -18,5 +19,11 @@ interface RestaurantRepository : ReactiveCrudRepository<Restaurant, Int> {
         id: Int,
         @Param("grade")
         grade: Int
-    ): Int
+    ): Mono<Int>
+
+    @Query("SELECT sum_of_grades * 1.0 / num_of_grades FROM restaurant WHERE id = :id")
+    fun getGrade(
+        @Param("id")
+        id: Int
+    ): Mono<Float>
 }
