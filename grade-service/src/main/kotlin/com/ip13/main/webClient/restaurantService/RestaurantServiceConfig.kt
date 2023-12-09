@@ -14,7 +14,7 @@ import reactor.netty.http.client.HttpClient
 import java.util.concurrent.TimeUnit
 
 @Configuration
-class Config {
+class RestaurantServiceConfig {
     @Autowired
     private lateinit var reactorLoadBalancerExchangeFilterFunction: ReactorLoadBalancerExchangeFilterFunction
 
