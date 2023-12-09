@@ -12,18 +12,21 @@ import reactor.core.publisher.Mono
 interface RestaurantRepository : ReactiveCrudRepository<Restaurant, Int> {
     @Modifying
     @Query(
-        "UPDATE restaurant SET num_of_grades = num_of_grades + 1, sum_of_grades = sum_of_grades + :grade WHERE id = :id"
+        "UPDATE restaurant SET num_of_grades = num_of_grades + 1, sum_of_grades = sum_of_grades + :grade " +
+                "WHERE restaurant_id = :restaurant_id"
     )
     fun addGrade(
-        @Param("id")
-        id: Int,
+        @Param("restaurant_id")
+        restaurantId: Int,
         @Param("grade")
         grade: Int
     ): Mono<Int>
 
-    @Query("SELECT sum_of_grades * 1.0 / num_of_grades FROM restaurant WHERE id = :id")
+    @Query("SELECT sum_of_grades * 1.0 / num_of_grades FROM restaurant WHERE restaurant_id = :restaurant_id")
     fun getGrade(
-        @Param("id")
-        id: Int
+        @Param("restaurant_id")
+        restaurantId: Int
     ): Mono<Float>
+
+    fun findByRestaurantId(restaurantId: Int): Mono<Restaurant>
 }
