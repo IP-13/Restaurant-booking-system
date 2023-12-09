@@ -13,6 +13,7 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component
@@ -90,7 +91,7 @@ class RestaurantGradeHandler(
     }
 
     fun getGrade(request: ServerRequest): Mono<ServerResponse> {
-        log.debug("in grade visitor method")
+        log.debug("in get grade restaurant method")
         return ServerResponse
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
