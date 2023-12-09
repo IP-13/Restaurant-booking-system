@@ -1,7 +1,7 @@
 package com.ip13.main.handler
 
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFound
-import com.ip13.main.model.dto.request.RestaurantGradeRequest
+import com.ip13.main.model.dto.request.VisitorGradeRequest
 import com.ip13.main.model.entity.User
 import com.ip13.main.model.entity.VisitorGrade
 import com.ip13.main.repository.RestaurantGradeRepository
@@ -35,7 +35,7 @@ class VisitorGradeHandler(
             .contentType(MediaType.APPLICATION_JSON)
             .body(
                 request
-                    .bodyToMono(RestaurantGradeRequest::class.java)
+                    .bodyToMono(VisitorGradeRequest::class.java)
                     .flatMap { req ->
                         restaurantServiceWebClient
                             .getTableReserveTicket(
