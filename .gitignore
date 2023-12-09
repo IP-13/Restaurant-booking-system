@@ -16,4 +16,4 @@ postgres-grade-service-volume
 postgres-black-list-service-volume
 
 # jwt token for curl tests
-scripts/curl_tests/jwt-token
+scripts/curl_tests/token

@@ -1,6 +1,6 @@
 #!/bin/bash
-rm -rf ../jwt-token/token
+rm -token
 curl -d @login-mega-admin.json -H 'Content-Type: application/json' http://localhost:8080/auth/login \
 | jq  -r .token \
-> ../jwt-token/token
-cat ../jwt-token/token
+> token
+cat token

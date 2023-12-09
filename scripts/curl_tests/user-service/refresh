@@ -1,2 +1,0 @@
-#!/bin/bash
-curl -H "Content-Type: application/json" -H "Authorization: Bearer $(cat ../jwt-token/token)" http://localhost:8080/user-actuator/refresh

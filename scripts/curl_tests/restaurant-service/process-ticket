@@ -1,3 +1,0 @@
-#!/bin/bash
-curl -d @process-ticket.json -H "Content-Type: application/json" -H "Authorization: Bearer $(cat ../jwt-token/token)" \
-http://localhost:8080/restaurant/process-ticket
