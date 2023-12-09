@@ -2,8 +2,10 @@ package com.ip13.main.handler
 
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.repository.RestaurantRepository
+import org.springframework.stereotype.Component
 import reactor.core.publisher.Mono
 
+@Component
 class RestaurantHandler(
     private val restaurantRepository: RestaurantRepository,
 ) {
