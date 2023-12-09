@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id
 
 data class Restaurant(
     @Id
-    val id: Int,
+    val id: Int = 0,
     val numOfGrades: Int,
     val sumOfGrades: Int,
 )
