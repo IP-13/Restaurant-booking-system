@@ -9,8 +9,8 @@ import reactor.core.publisher.Mono
 class RestaurantHandler(
     private val restaurantRepository: RestaurantRepository,
 ) {
-    fun findById(id: Int): Mono<Restaurant> {
-        return restaurantRepository.findById(id)
+    fun findByRestaurantId(restaurantId: Int): Mono<Restaurant> {
+        return restaurantRepository.findByRestaurantId(restaurantId)
     }
 
     fun addGrade(id: Int, grade: Int): Mono<Int> {
