@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="/org/springframework/boot/logging/logback/base.xml"/>
+    <appender name="DEBUG" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %magenta(BLACK-LIST-SERVICE %d{HH:mm:ss.SSS} [%thread] %-5level %logger{50}.%M - %msg%n)
+            </pattern>
+        </encoder>
+    </appender>
+    <logger name="com.ip13.main" level="debug" additivity="false">
+        <appender-ref ref="DEBUG"/>
+    </logger>
+</configuration>

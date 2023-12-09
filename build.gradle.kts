@@ -5,4 +5,5 @@ tasks.register("clean") {
     delete("grade-service/build")
     delete("restaurant-service/build")
     delete("user-service/build")
+    delete("black-list-service/build")
 }
