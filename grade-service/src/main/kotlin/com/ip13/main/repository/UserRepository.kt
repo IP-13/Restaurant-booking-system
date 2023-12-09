@@ -22,7 +22,7 @@ interface UserRepository : ReactiveCrudRepository<User, Int> {
         grade: Int
     ): Mono<Int>
 
-    @Query("SELECT num_of_grades * 1.0 / sum_of_grades FROM user_t WHERE username = :username")
+    @Query("SELECT sum_of_grades * 1.0 / num_of_grades FROM user_t WHERE username = :username")
     fun getGrade(
         @Param("username")
         username: String
