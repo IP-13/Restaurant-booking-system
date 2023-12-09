@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id
 data class RestaurantGrade(
     @Id
     val id: Int = 0,
-    val username: Int,
+    val username: String,
     val tableReserveTicketId: Int,
     val restaurantId: Int,
     val grade: Int,
