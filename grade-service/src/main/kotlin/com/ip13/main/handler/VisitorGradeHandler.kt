@@ -44,10 +44,13 @@ class VisitorGradeHandler(
                             )
                             .log()
                             .flatMap { ticket ->
-                                // save manager
-                                log.debug("saving manager")
+                                // save manager in no exists
                                 request.principal().flatMap { principal ->
                                     userHandler.findByUsername(principal.name)
+                                        .flatMap {
+                                            log.debug("manager found")
+                                            Mono.just(it)
+                                        }
                                         .switchIfEmpty(
                                             userHandler.save(
                                                 User(
@@ -109,9 +112,9 @@ class VisitorGradeHandler(
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
             .body(
-                userHandler.findByUsername(request.pathVariable("username")),
+                userHandler.getGrade(request.pathVariable("username")),
                 Float::class.java
             )
     }
-    
+
 }

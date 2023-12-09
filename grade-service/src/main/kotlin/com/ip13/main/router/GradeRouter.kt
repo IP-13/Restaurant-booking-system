@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.RequestPredicates.*
 import org.springframework.web.reactive.function.server.RouterFunction
+import org.springframework.web.reactive.function.server.RouterFunctions.nest
 import org.springframework.web.reactive.function.server.RouterFunctions.route
 import org.springframework.web.reactive.function.server.ServerResponse
 
@@ -13,9 +14,13 @@ import org.springframework.web.reactive.function.server.ServerResponse
 class GradeRouter {
     @Bean
     fun routes(handler: VisitorGradeHandler): RouterFunction<ServerResponse> {
-        return route(
-            POST("/grade/visitor").and(accept(MediaType.APPLICATION_JSON)),
-            handler::gradeVisitor
+        return nest(
+            path("/grade/visitor"),
+            nest(
+                (accept(MediaType.APPLICATION_JSON)),
+                route(POST(""), handler::gradeVisitor)
+                    .andRoute(GET("/{username}"), handler::getGrade)
+            )
         )
     }
 }
