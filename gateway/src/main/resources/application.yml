@@ -47,7 +47,7 @@ spring:
               args:
                 isOpen: true
         - id: black-list-service
-          uri: lb://black-list
+          uri: lb://black-list-service
           predicates:
             - Path=/black-list/**
           filters:
