@@ -23,12 +23,9 @@ class SecurityConfiguration(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeHttpRequests {
-                authorize("/restaurant/create-ticket", authenticated)
-                authorize("/restaurant/process-ticket", hasAuthority(Role.ADMIN.name))
-                authorize("/reservation/reserve-table", authenticated)
-                authorize("/reservation/process-reservation", hasAuthority(Role.MANAGER.name))
-                authorize("/reservation/add-booking-constraint", hasAuthority(Role.MANAGER.name))
-                authorize("/reservation/table-reserve-ticket/**", authenticated)
+                authorize("/black-list/get-all", hasAuthority(Role.ADMIN.name))
+                authorize("/black-list/add", hasAuthority(Role.ADMIN.name))
+                authorize("/black-list/**", authenticated)
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
