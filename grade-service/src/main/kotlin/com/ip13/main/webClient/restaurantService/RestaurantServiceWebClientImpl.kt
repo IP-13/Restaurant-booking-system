@@ -3,9 +3,11 @@ package com.ip13.main.webClient.restaurantService
 import com.ip13.main.webClient.restaurantService.dto.TableReserveTicket
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
+import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
 
+@Component
 class RestaurantServiceWebClientImpl(
     private val restaurantServiceClient: WebClient,
 ) : RestaurantServiceWebClient {
