@@ -99,3 +99,28 @@ services:
         condition: service_started
       postgres-restaurant-service:
         condition: service_healthy
+
+  postgres-black-list-service:
+    container_name: postgres-black-list-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-black-list-service-volume:/var/lib/postgresql/data
+
+  black-list-service:
+    build: black-list-service
+    container_name: black-list-service
+    image: black-list-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-black-list-service:
+        condition: service_healthy

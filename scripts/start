@@ -18,5 +18,8 @@ cd ..
 cd user-service
 gradle build -x test
 cd ..
+cd black-list-service
+gradle build -x test
+cd ..
 
 docker compose up
