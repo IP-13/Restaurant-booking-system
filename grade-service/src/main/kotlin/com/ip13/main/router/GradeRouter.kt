@@ -10,28 +10,36 @@ import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions.nest
 import org.springframework.web.reactive.function.server.RouterFunctions.route
 import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.coRouter
 
 @Configuration
-class GradeRouter {
+class GradeRouter(
+    private val restaurantGradeHandler: RestaurantGradeHandler,
+    private val visitorGradeHandler: VisitorGradeHandler,
+) {
     @Bean
-    fun routes(
-        visitorGradeHandler: VisitorGradeHandler,
-        restaurantGradeHandler: RestaurantGradeHandler,
-    ): RouterFunction<ServerResponse> {
+    fun routesVisitor(): RouterFunction<ServerResponse> {
         return nest(
             accept(MediaType.APPLICATION_JSON),
             nest(
-                path("/grade"),
-                nest(
-                    path("/visitor"),
-                    route(POST(""), visitorGradeHandler::gradeVisitor)
-                        .andRoute(GET("/{username}"), visitorGradeHandler::getGrade)
-                ).andNest(
-                    path("/restaurant"),
-                    route(POST(""), restaurantGradeHandler::gradeRestaurant)
-                        .andRoute(GET("{id}"), restaurantGradeHandler::getGrade)
-                )
+                path("/grade/visitor"),
+                route(POST(""), visitorGradeHandler::gradeVisitor)
+                    .andRoute(GET("/{username}"), visitorGradeHandler::getGrade)
             )
         )
+    }
+
+    @Bean
+    fun routersRestaurant() = coRouter {
+        "/grade".nest {
+            accept(MediaType.APPLICATION_JSON).nest {
+                "/restaurant".nest {
+                    POST("", restaurantGradeHandler::gradeRestaurant)
+                    "/{id}".nest {
+                        GET("", restaurantGradeHandler::getGrade)
+                    }
+                }
+            }
+        }
     }
 }
