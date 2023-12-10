@@ -4,15 +4,12 @@ import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFound
 import com.ip13.main.model.dto.request.VisitorGradeRequest
 import com.ip13.main.model.entity.User
 import com.ip13.main.model.entity.VisitorGrade
-import com.ip13.main.repository.RestaurantGradeRepository
-import com.ip13.main.repository.RestaurantRepository
 import com.ip13.main.repository.VisitorGradeRepository
 import com.ip13.main.util.getLogger
 import com.ip13.main.webClient.restaurantService.RestaurantServiceWebClient
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
