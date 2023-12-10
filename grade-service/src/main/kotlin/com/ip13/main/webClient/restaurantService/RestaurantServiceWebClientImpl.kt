@@ -6,6 +6,7 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.client.WebClient
 import org.springframework.web.reactive.function.client.awaitBody
+import org.springframework.web.reactive.function.client.awaitBodyOrNull
 import reactor.core.publisher.Mono
 
 @Component
@@ -25,7 +26,7 @@ class RestaurantServiceWebClientImpl(
             .bodyToMono(TableReserveTicket::class.java)
     }
 
-    override suspend fun suspendGetTableReserveTicket(id: Int, authHeader: String) =
+    override suspend fun suspendGetTableReserveTicketOrNull(id: Int, authHeader: String) =
         restaurantServiceClient
             .get()
             .uri("/reservation/table-reserve-ticket/$id")
@@ -35,5 +36,5 @@ class RestaurantServiceWebClientImpl(
                 authHeader,
             )
             .retrieve()
-            .awaitBody<TableReserveTicket>()
+            .awaitBodyOrNull<TableReserveTicket>()
 }

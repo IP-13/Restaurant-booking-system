@@ -6,5 +6,5 @@ import reactor.core.publisher.Mono
 interface RestaurantServiceWebClient {
     fun getTableReserveTicket(id: Int, authHeader: String): Mono<TableReserveTicket>
 
-    suspend fun suspendGetTableReserveTicket(id: Int, authHeader: String): TableReserveTicket
+    suspend fun suspendGetTableReserveTicketOrNull(id: Int, authHeader: String): TableReserveTicket?
 }
