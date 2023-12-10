@@ -6,8 +6,8 @@ import com.ip13.main.repository.UserCoRepository
 class UserCoHandler(
     private val userCoRepository: UserCoRepository,
 ) {
-    suspend fun findByUsername(username: String): User {
-        return userCoRepository.findByUsername(username)
+    suspend fun findByUsernameOrNull(username: String): User? {
+        return userCoRepository.findByUsernameOrNull(username)
     }
 
     suspend fun addGrade(username: String, grade: Int): Int {
