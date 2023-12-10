@@ -57,6 +57,10 @@ dependencies {
 
     // for deserializing in web client
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
+
+    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 }
 
 extra["springCloudVersion"] = "2022.0.4"

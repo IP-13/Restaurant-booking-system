@@ -13,90 +13,78 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
-import reactor.core.publisher.Mono
+import org.springframework.web.reactive.function.server.awaitBody
+import org.springframework.web.reactive.function.server.bodyValueAndAwait
 
 @Component
 class RestaurantGradeHandler(
     private val restaurantGradeRepository: RestaurantGradeRepository,
-    private val restaurantHandler: RestaurantHandler,
-    private val userHandler: UserHandler,
+    private val restaurantCoHandler: RestaurantCoHandler,
+    private val userCoHandler: UserCoHandler,
     private val restaurantServiceWebClient: RestaurantServiceWebClient,
 ) {
     private val log = getLogger(javaClass)
 
-    fun gradeRestaurant(request: ServerRequest): Mono<ServerResponse> {
+    suspend fun gradeRestaurant(request: ServerRequest): ServerResponse {
         log.debug("in grade restaurant method")
+
+        val requestBody = request.awaitBody(RestaurantGradeRequest::class)
+        val tableReserveTicket = restaurantServiceWebClient.suspendGetTableReserveTicketOrNull(
+            requestBody.tableReserveTicketId,
+            request.headers().header(HttpHeaders.AUTHORIZATION).first()
+        )
+
+        if (tableReserveTicket == null) {
+            throw TableReserveTicketNotFound()
+        }
+
+        val restaurant = restaurantCoHandler.findByRestaurantIdOrNull(tableReserveTicket.restaurantId)
+
+        if (restaurant == null) {
+            restaurantCoHandler.save(
+                Restaurant(
+                    restaurantId = tableReserveTicket.restaurantId,
+                    numOfGrades = 1,
+                    sumOfGrades = requestBody.grade,
+                )
+            )
+        }
+
+        if (userCoHandler.findByUsernameOrNull(tableReserveTicket.username) == null) {
+            userCoHandler.save(
+                User(
+                    username = tableReserveTicket.username,
+                    numOfGrades = 0,
+                    sumOfGrades = 0,
+                )
+            )
+        }
+
+        restaurantGradeRepository.save(
+            RestaurantGrade(
+                username = tableReserveTicket.username,
+                tableReserveTicketId = requestBody.tableReserveTicketId,
+                restaurantId = tableReserveTicket.restaurantId,
+                grade = requestBody.grade,
+                comment = requestBody.comment,
+            )
+        )
+
         return ServerResponse
             .ok()
-            .contentType(MediaType.APPLICATION_JSON)
-            .body(
-                request
-                    .bodyToMono(RestaurantGradeRequest::class.java)
-                    .flatMap { req ->
-                        restaurantServiceWebClient
-                            .getTableReserveTicket(
-                                req.tableReserveTicketId,
-                                request.headers().header(HttpHeaders.AUTHORIZATION).first()
-                            )
-                            .log()
-                            .flatMap { ticket ->
-                                restaurantHandler.findByRestaurantId(ticket.restaurantId)
-                                    .flatMap { restaurant ->
-                                        log.debug("restaurant found")
-                                        restaurantHandler.addGrade(restaurant.restaurantId, req.grade)
-                                        Mono.just(restaurant)
-                                    }
-                                    .switchIfEmpty(
-                                        restaurantHandler.save(
-                                            Restaurant(
-                                                restaurantId = ticket.restaurantId,
-                                                numOfGrades = 1,
-                                                sumOfGrades = req.grade,
-                                            )
-                                        )
-                                    )
-                                    .flatMap {
-                                        userHandler.findByUsername(ticket.username)
-                                            .switchIfEmpty(
-                                                userHandler.save(
-                                                    User(
-                                                        username = ticket.username,
-                                                        numOfGrades = 0,
-                                                        sumOfGrades = 0,
-                                                    )
-                                                )
-                                            ).flatMap {
-                                                restaurantGradeRepository.save(
-                                                    RestaurantGrade(
-                                                        username = ticket.username,
-                                                        tableReserveTicketId = req.tableReserveTicketId,
-                                                        restaurantId = ticket.restaurantId,
-                                                        grade = req.grade,
-                                                        comment = req.comment,
-                                                    )
-                                                )
-                                            }
-                                    }
-                                    .flatMap {
-                                        log.debug("Getting updated grade from db")
-                                        restaurantHandler.getGrade(ticket.restaurantId)
-                                    }
-                            }
-                            .switchIfEmpty(Mono.error(TableReserveTicketNotFound()))
-                            .log()
-                    },
-                Float::class.java
+            .contentType(MediaType.APPLICATION_NDJSON)
+            .bodyValueAndAwait(
+                restaurantCoHandler.getGrade(tableReserveTicket.restaurantId)
             )
     }
 
-    fun getGrade(request: ServerRequest): Mono<ServerResponse> {
+    suspend fun getGrade(request: ServerRequest): ServerResponse {
         log.debug("in get grade restaurant method")
         return ServerResponse
             .ok()
             .contentType(MediaType.APPLICATION_JSON)
-            .body(
-                restaurantHandler.getGrade(request.pathVariable("id").toInt()),
-                Float::class.java
+            .bodyValueAndAwait(
+                restaurantCoHandler.getGrade(request.pathVariable("id").toInt())
             )
     }
 }
