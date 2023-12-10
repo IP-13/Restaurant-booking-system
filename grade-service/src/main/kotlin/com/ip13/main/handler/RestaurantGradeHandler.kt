@@ -8,13 +8,16 @@ import com.ip13.main.model.entity.User
 import com.ip13.main.repository.RestaurantGradeRepository
 import com.ip13.main.util.getLogger
 import com.ip13.main.webClient.restaurantService.RestaurantServiceWebClient
+import kotlinx.coroutines.reactor.awaitSingle
 import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.awaitBody
 import org.springframework.web.reactive.function.server.bodyValueAndAwait
+import org.springframework.web.server.ResponseStatusException
 
 @Component
 class RestaurantGradeHandler(
@@ -38,9 +41,16 @@ class RestaurantGradeHandler(
             throw TableReserveTicketNotFound()
         }
 
-        val restaurant = restaurantCoHandler.findByRestaurantIdOrNull(tableReserveTicket.restaurantId)
+        log.debug("after checking tableReserveTicket")
 
-        if (restaurant == null) {
+        if (tableReserveTicket.username != request.principal().awaitSingle().name) {
+            throw ResponseStatusException(
+                HttpStatus.METHOD_NOT_ALLOWED,
+                "Attempt to grade ticket which doesn't belong to you"
+            )
+        }
+
+        if (restaurantCoHandler.findByRestaurantIdOrNull(tableReserveTicket.restaurantId) == null) {
             restaurantCoHandler.save(
                 Restaurant(
                     restaurantId = tableReserveTicket.restaurantId,
