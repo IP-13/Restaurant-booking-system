@@ -27,5 +27,5 @@ interface RestaurantCoRepository: CoroutineCrudRepository<Restaurant, Int> {
         restaurantId: Int
     ): Float
 
-    suspend fun findByRestaurantIdOrNull(restaurantId: Int): Restaurant?
+    suspend fun findByRestaurantId(restaurantId: Int): Restaurant?
 }

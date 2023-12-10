@@ -27,5 +27,5 @@ interface UserCoRepository : CoroutineCrudRepository<User, Int> {
         username: String
     ): Float
 
-    suspend fun findByUsernameOrNull(username: String): User?
+    suspend fun findByUsername(username: String): User?
 }

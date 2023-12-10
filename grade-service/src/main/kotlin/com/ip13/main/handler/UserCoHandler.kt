@@ -9,7 +9,7 @@ class UserCoHandler(
     private val userCoRepository: UserCoRepository,
 ) {
     suspend fun findByUsernameOrNull(username: String): User? {
-        return userCoRepository.findByUsernameOrNull(username)
+        return userCoRepository.findByUsername(username)
     }
 
     suspend fun addGrade(username: String, grade: Int): Int {

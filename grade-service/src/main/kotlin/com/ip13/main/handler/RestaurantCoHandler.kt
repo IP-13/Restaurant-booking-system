@@ -9,7 +9,7 @@ class RestaurantCoHandler(
     private val restaurantCoRepository: RestaurantCoRepository,
 ) {
     suspend fun findByRestaurantIdOrNull(restaurantId: Int): Restaurant? {
-        return restaurantCoRepository.findByRestaurantIdOrNull(restaurantId)
+        return restaurantCoRepository.findByRestaurantId(restaurantId)
     }
 
     suspend fun addGrade(id: Int, grade: Int): Int {
