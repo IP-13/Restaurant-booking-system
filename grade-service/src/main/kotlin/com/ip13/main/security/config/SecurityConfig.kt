@@ -19,7 +19,6 @@ class SecurityConfig(
     fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
             .authorizeExchange { exchanges ->
-//                exchanges.pathMatchers("/auth/login/**").authenticated()
                 exchanges.anyExchange().authenticated()
             }
             .csrf { it.disable() }
