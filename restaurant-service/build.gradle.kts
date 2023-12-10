@@ -35,6 +35,12 @@ dependencies {
     // web mvc
     implementation("org.springframework.boot:spring-boot-starter-web")
 
+    // webflux
+    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+    // loadbalancer
+    implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
+
     // eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
 
