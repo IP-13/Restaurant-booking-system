@@ -11,7 +11,7 @@ class BlackList(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int = 0,
-    val userId: Int = 0,
+    val username: String = "",
     val fromDate: LocalDateTime = LocalDateTime.now(),
     val tillDate: LocalDateTime = LocalDateTime.now(),
     val reason: String? = null,
@@ -22,7 +22,7 @@ class BlackList(
 
         other as BlackList
 
-        if (userId != other.userId) return false
+        if (username != other.username) return false
         if (fromDate != other.fromDate) return false
         if (tillDate != other.tillDate) return false
         if (reason != other.reason) return false
@@ -31,7 +31,7 @@ class BlackList(
     }
 
     override fun hashCode(): Int {
-        var result = userId
+        var result = username.hashCode()
         result = 31 * result + fromDate.hashCode()
         result = 31 * result + tillDate.hashCode()
         result = 31 * result + (reason?.hashCode() ?: 0)
@@ -39,6 +39,6 @@ class BlackList(
     }
 
     override fun toString(): String {
-        return "BlackList(id=$id, userId=$userId, fromDate=$fromDate, tillDate=$tillDate, reason=$reason)"
+        return "BlackList(id=$id, userId=$username, fromDate=$fromDate, tillDate=$tillDate, reason=$reason)"
     }
 }

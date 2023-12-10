@@ -22,14 +22,14 @@ class BlackListController(
 ) {
     private val log = getLogger(javaClass)
 
-    @GetMapping("/get/{userId}", produces = [MediaType.APPLICATION_NDJSON_VALUE])
+    @GetMapping("/get/{username}", produces = [MediaType.APPLICATION_NDJSON_VALUE])
     fun getByUserId(
         @PathVariable
-        userId: Int
+        username: String
     ): Flux<BlackList> {
-        log.debug("/black-list/get/{} endpoint invoked", userId)
+        log.debug("/black-list/get/{} endpoint invoked", username)
 
-        return Flux.fromIterable(blackListService.findByUserId(userId))
+        return Flux.fromIterable(blackListService.findByUsername(username))
     }
 
     @PostMapping("/add", produces = [MediaType.APPLICATION_NDJSON_VALUE])

@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface BlackListRepository : CrudRepository<BlackList, Int> {
-    fun findByUserId(userId: Int): List<BlackList>
+    fun findByUsername(username: String): List<BlackList>
 }

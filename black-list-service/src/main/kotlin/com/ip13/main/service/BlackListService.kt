@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service
 class BlackListService(
     private val blackListRepository: BlackListRepository,
 ) {
-    fun findByUserId(userId: Int): List<BlackList> {
-        return blackListRepository.findByUserId(userId)
+    fun findByUsername(username: String): List<BlackList> {
+        return blackListRepository.findByUsername(username)
     }
 
     fun findAll(): Iterable<BlackList> {
