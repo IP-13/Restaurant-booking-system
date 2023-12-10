@@ -1,68 +1,58 @@
 package com.ip13.main.security
 
+import com.ip13.main.exceptionHandling.exception.TokenNotFoundException
 import com.ip13.main.util.getLogger
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.security.SignatureException
-import jakarta.servlet.FilterChain
-import jakarta.servlet.http.HttpServletRequest
-import jakarta.servlet.http.HttpServletResponse
+import org.springframework.http.HttpHeaders
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Component
-import org.springframework.web.filter.OncePerRequestFilter
+import org.springframework.web.server.ServerWebExchange
+import org.springframework.web.server.WebFilter
+import org.springframework.web.server.WebFilterChain
+import reactor.core.publisher.Mono
 
 @Component
 class JwtRequestFilter(
     val tokenUtils: TokenUtils,
-) : OncePerRequestFilter() {
+) : WebFilter {
     private val log = getLogger(javaClass)
 
-    override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        filterChain: FilterChain
-    ) {
-        try {
-            val header = request.getHeader("Authorization")
+    override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
+        val authentication = try {
+            val header = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.first()
 
-            log.debug("header extracted: {}", header)
+            val token = tokenUtils.getTokenFromHeader(header) ?: throw TokenNotFoundException()
 
-            val jwt = tokenUtils.getTokenFromHeader(header)
+            if (tokenUtils.isTokenExpired(token)) {
+                throw ExpiredJwtException(null, null, "token expired")
+            }
 
-            val username = if (jwt != null) {
-                try {
-                    tokenUtils.getUsername(jwt)
-                } catch (ex: ExpiredJwtException) {
-                    log.debug("Jwt token has expired")
-                } catch (ex: SignatureException) {
-                    log.debug("Wrong signature")
-                }
-            } else {
-                null
+            val username = try {
+                tokenUtils.getUsername(token)
+            } catch (ex: SignatureException) {
+                log.debug("Wrong signature")
             }
 
             log.debug("username extracted: {}", username)
 
-            if (username != null) {
-                // username != null, if and only if jwt != null
-                val authorities = tokenUtils.getRoles(jwt!!).map { GrantedAuthority { it } }
+            val authorities = tokenUtils.getRoles(token).map { SimpleGrantedAuthority(it) }
 
-                val authentication = UsernamePasswordAuthenticationToken(
-                    username,
-                    null,
-                    authorities,
-                )
+            val authentication = UsernamePasswordAuthenticationToken(
+                username,
+                null,
+                authorities,
+            )
 
-                if (!tokenUtils.isTokenExpired(jwt)) {
-                    log.debug("Authentication found\n{}", authentication.toString())
-                    SecurityContextHolder.getContext().authentication = authentication
-                }
-            }
-        } catch (_: Exception) {
-            log.debug("No \"Authorization\" header found")
+            log.debug("Authentication found\n{}", authentication.toString())
+
+            authentication
+        } catch (_: TokenNotFoundException) {
+            return chain.filter(exchange)
         }
 
-        filterChain.doFilter(request, response)
+        return chain.filter(exchange).contextWrite { ReactiveSecurityContextHolder.withAuthentication(authentication) }
     }
 }

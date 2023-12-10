@@ -3,45 +3,37 @@ package com.ip13.main.security
 import com.ip13.main.security.enums.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.security.authentication.AuthenticationManager
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.invoke
-import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.authentication.ReactiveAuthenticationManager
+import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder
+import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
-import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
+import org.springframework.security.web.server.SecurityWebFilterChain
+import reactor.core.publisher.Mono
 
+@EnableWebFluxSecurity
 @Configuration
-@EnableWebSecurity
-class SecurityConfiguration(
-    val jwtRequestFilter: JwtRequestFilter,
-    val authenticationConfiguration: AuthenticationConfiguration,
+class SecurityConfig(
+    private val jwtRequestFilter: JwtRequestFilter,
 ) {
     @Bean
-    fun filterChain(http: HttpSecurity): SecurityFilterChain {
-        http {
-            authorizeHttpRequests {
-                authorize("/black-list/get-all", hasAuthority(Role.ADMIN.name))
-                authorize("/black-list/add", hasAuthority(Role.ADMIN.name))
-                authorize("/black-list/**", authenticated)
+    fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
+        return http
+            .authorizeExchange { exchanges ->
+                exchanges.pathMatchers("/black-list/get-all").hasAuthority(Role.ADMIN.name)
+                exchanges.pathMatchers("/black-list/add").hasAuthority(Role.ADMIN.name)
+                exchanges.pathMatchers("/black-list/**").authenticated()
             }
-            sessionManagement {
-                sessionCreationPolicy = SessionCreationPolicy.STATELESS
-            }
-            csrf {
-                disable()
-            }
-            addFilterBefore<UsernamePasswordAuthenticationFilter>(jwtRequestFilter)
-        }
-
-        return http.build()
+            .csrf { it.disable() }
+            .httpBasic { it.disable() }
+            .formLogin { it.disable() }
+            .addFilterBefore(jwtRequestFilter, SecurityWebFiltersOrder.AUTHENTICATION)
+            .build()
     }
 
     @Bean
-    fun authenticationManager(): AuthenticationManager {
-        return authenticationConfiguration.getAuthenticationManager()
+    fun reactiveAuthenticationManager(): ReactiveAuthenticationManager {
+        return ReactiveAuthenticationManager { Mono.empty() }
     }
 
     @Bean
