@@ -6,6 +6,8 @@ import com.ip13.main.model.entity.User
 import com.ip13.main.model.entity.VisitorGrade
 import com.ip13.main.repository.VisitorGradeRepository
 import com.ip13.main.util.getLogger
+import com.ip13.main.webClient.blackListService.BlackListServiceWebClient
+import com.ip13.main.webClient.blackListService.dto.BlackListRequest
 import com.ip13.main.webClient.restaurantService.RestaurantServiceWebClient
 import org.springframework.http.HttpHeaders
 import org.springframework.http.MediaType
@@ -13,10 +15,12 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
+import java.time.LocalDateTime
 
 @Component
 class VisitorGradeHandler(
     private val restaurantServiceWebClient: RestaurantServiceWebClient,
+    private val blackListServiceWebClient: BlackListServiceWebClient,
     private val userHandler: UserHandler,
     private val visitorGradeRepository: VisitorGradeRepository,
 ) {
@@ -87,7 +91,20 @@ class VisitorGradeHandler(
                                                 ).log()
                                             }.flatMap {
                                                 log.debug("Getting updated grade from db")
-                                                userHandler.getGrade(ticket.username)
+                                                userHandler.getGrade(ticket.username).flatMap { grade ->
+                                                    if (grade < 3.0) {
+                                                        blackListServiceWebClient.addToBlackList(
+                                                            BlackListRequest(
+                                                                username = ticket.username,
+                                                                fromDate = LocalDateTime.now(),
+                                                                tillDate = LocalDateTime.now().plusMonths(3),
+                                                                reason = "Average grade less than 3.0"
+                                                            ),
+                                                            request.headers().header(HttpHeaders.AUTHORIZATION).first()
+                                                        )
+                                                    }
+                                                    Mono.just(grade)
+                                                }
                                             }
                                         }
                                 }
