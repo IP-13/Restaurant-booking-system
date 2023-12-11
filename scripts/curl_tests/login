@@ -1,0 +1,6 @@
+#!/bin/bash
+rm token
+curl -d @login.json -H "Content-Type: application/json" http://localhost:8080/auth/login \
+| jq  -r .token \
+> token
+cat token

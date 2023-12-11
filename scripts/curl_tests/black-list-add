@@ -1,0 +1,3 @@
+#!/bin/bash
+curl -d @black-list-add.json -H "Content-Type: application/json" -H "Authorization: Bearer $(cat token)" \
+http://localhost:8080/black-list/add

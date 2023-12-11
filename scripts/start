@@ -1,6 +1,6 @@
 #!/bin/bash
 cd ..
-cd booking-system
+cd config-server
 gradle build -x test
 cd ..
 cd eureka
@@ -9,10 +9,16 @@ cd ..
 cd gateway
 gradle build -x test
 cd ..
-cd config-server
+cd grade-service
+gradle build -x test
+cd ..
+cd restaurant-service
 gradle build -x test
 cd ..
 cd user-service
+gradle build -x test
+cd ..
+cd black-list-service
 gradle build -x test
 cd ..
 

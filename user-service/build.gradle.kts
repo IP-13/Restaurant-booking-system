@@ -20,22 +20,46 @@ repositories {
 }
 
 dependencies {
+    // spring boot starter
     implementation("org.springframework.boot:spring-boot-starter")
-    implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
-    implementation("org.postgresql:r2dbc-postgresql:1.0.2.RELEASE")
+
+    // spring data jpa and postgres
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
     implementation("org.postgresql:postgresql:42.6.0")
     implementation("org.flywaydb:flyway-core:9.22.3")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+
+    // reflection
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+
+    // web mvc
+    implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // actuator
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+
+    // eureka
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
+
+    // config server
     implementation("org.springframework.cloud:spring-cloud-starter-config")
+
+    // for retries to config-server
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.retry:spring-retry:2.0.4")
+
+    // security and jwt
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+    implementation("org.glassfish.jersey.core:jersey-common:3.1.4")
+
+    // loadbalancer
+    implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
+
 }
 
 extra["springCloudVersion"] = "2022.0.4"

@@ -1,9 +1,9 @@
 tasks.register("clean") {
-    delete("booking-system/build")
+    delete("config-server/build")
     delete("eureka/build")
     delete("gateway/build")
-    delete("config-server/build")
-    delete("user-service/build")
+    delete("grade-service/build")
     delete("restaurant-service/build")
-    delete("reservation-service/build")
+    delete("user-service/build")
+    delete("black-list-service/build")
 }

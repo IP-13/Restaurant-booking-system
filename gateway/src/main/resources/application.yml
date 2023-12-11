@@ -21,23 +21,39 @@ spring:
         locator:
           lowerCaseServiceId: true
       routes:
+        # NOTE: RoleCheckerFilter required for each route
         - id: user-service
           uri: lb://user-service
           predicates:
-            - Path=/auth/**
+            - Path=/auth/**, /user-actuator/**
           filters:
             - name: RoleCheckerFilter
               args:
                 isOpen: true
-        - id: admin-service
-          uri: lb://admin-service
+        - id: restaurant-service
+          uri: lb://restaurant-service
           predicates:
-            - Path=/admin/**
+            - Path=/restaurant/**, /reservation/**
           filters:
             - name: RoleCheckerFilter
               args:
-                isOpen: false
-                role: ADMIN
+                isOpen: true
+        - id: grade-service
+          uri: lb://grade-service
+          predicates:
+            - Path=/grade/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
+        - id: black-list-service
+          uri: lb://black-list-service
+          predicates:
+            - Path=/black-list/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
 
 logging.level:
     root: INFO

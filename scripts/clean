@@ -6,10 +6,14 @@ echo -e "${CL}gradle clean:${NC}"
 gradle clean
 echo
 echo -e "${CL}stop docker containers:${NC}"
-docker container stop booking-system db eureka gateway config-server user-service postgres-user-service
+docker container stop eureka gateway config-server postgres-user-service user-service \
+postgres-restaurant-service restaurant-service postgres-grade-service grade-service \
+postgres-black-list-service black-list-service
 echo
 echo -e "${CL}remove docker containers:${NC}"
-docker container rm booking-system db eureka gateway config-server user-service postgres-user-service
+docker container rm eureka gateway config-server postgres-user-service user-service \
+postgres-restaurant-service restaurant-service postgres-grade-service grade-service \
+postgres-black-list-service black-list-service
 echo
 echo -e "${CL}remove docker images:${NC}"
-docker image rm booking-system eureka gateway config-server user-service
+docker image rm eureka gateway config-server user-service restaurant-service grade-service black-list-service
