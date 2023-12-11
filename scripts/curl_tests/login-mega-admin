@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -token
+rm token
 curl -d @login-mega-admin.json -H 'Content-Type: application/json' http://localhost:8080/auth/login \
 | jq  -r .token \
 > token
