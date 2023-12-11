@@ -93,6 +93,7 @@ class VisitorGradeHandler(
                                                 log.debug("Getting updated grade from db")
                                                 userHandler.getGrade(ticket.username).flatMap { grade ->
                                                     if (grade < 3.0) {
+                                                        log.debug("Adding ${ticket.username} to black list")
                                                         blackListServiceWebClient.addToBlackList(
                                                             BlackListRequest(
                                                                 username = ticket.username,
