@@ -23,7 +23,7 @@ class BlackListController(
     private val log = getLogger(javaClass)
 
     @GetMapping("/get/{username}", produces = [MediaType.APPLICATION_NDJSON_VALUE])
-    fun getByUserId(
+    fun getByUsername(
         @PathVariable
         username: String
     ): Flux<BlackList> {
