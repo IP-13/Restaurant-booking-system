@@ -1,7 +1,6 @@
 package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
-import com.ip13.main.feign.userClient.UserClient
 import com.ip13.main.model.dto.request.AddBookingConstraintRequest
 import com.ip13.main.model.dto.response.AddBookingConstraintResponse
 import com.ip13.main.model.entity.BookingConstraint

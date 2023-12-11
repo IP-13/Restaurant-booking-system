@@ -2,7 +2,7 @@ package com.ip13.main.service
 
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFoundException
-import com.ip13.main.feign.userClient.UserClient
+import com.ip13.main.webClient.blackListClient.BlackListServiceWebClient
 import com.ip13.main.model.dto.request.ReservationProcessRequest
 import com.ip13.main.model.dto.request.TableReserveRequest
 import com.ip13.main.model.dto.response.ReservationProcessResponse
@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service
 class TableReserveService(
     private val tableReserveTicketRepository: TableReserveTicketRepository,
     private val restaurantService: RestaurantService,
+    private val blackListServiceWebClient: BlackListServiceWebClient,
 ) {
     private val log = getLogger(javaClass)
 
@@ -41,27 +42,33 @@ class TableReserveService(
             ?: throw TableReserveTicketNotFoundException("No table reserve ticket with id $id")
     }
 
-    fun reserveTable(request: TableReserveRequest, username: String): TableReserveResponse {
+    fun reserveTable(
+        request: TableReserveRequest,
+        username: String,
+        authHeader: String,
+    ): TableReserveResponse {
         val restaurant = restaurantService.findByIdOrThrow(request.restaurantId)
 
-        // TODO request to grade-service
-//        if (user.blackListEntries.any {
-//                it.tillDate.isAfter(LocalDateTime.now())
-//            }) {
-//            save(
-//                request.toTableReserveTicket(
-//                    restaurant = restaurant,
-//                    userId = user,
-//                    managerComment = "You're in a black list for bad behaviour",
-//                    status = TableReserveStatus.REJECTED
-//                )
-//            )
-//
-//            return TableReserveResponse(
-//                status = TableReserveStatus.REJECTED,
-//            )
-//
-//        }
+        val blackListEntries =
+            blackListServiceWebClient.getBlackListByUsername(authHeader = authHeader, username = username)
+
+        if (blackListEntries?.isNotEmpty() != false) {
+            val managerComment = "You're in a black list for bad behaviour"
+
+            save(
+                request.toTableReserveTicket(
+                    restaurant = restaurant,
+                    username = username,
+                    managerComment = managerComment,
+                    status = TableReserveStatus.REJECTED
+                )
+            )
+
+            return TableReserveResponse(
+                status = TableReserveStatus.REJECTED,
+                managerComment = managerComment,
+            )
+        }
 
         val bookingConstraints = restaurant.bookingConstraints.filter {
             request.fromDate < it.tillDate && request.fromDate >= it.fromDate ||
@@ -69,17 +76,20 @@ class TableReserveService(
         }
 
         if (bookingConstraints.isNotEmpty()) {
+            val managerComment = "Sorry, restaurant ${restaurant.id} is closed at that time"
+
             save(
                 request.toTableReserveTicket(
                     restaurant = restaurant,
                     username = username,
-                    managerComment = "Sorry, restaurant ${restaurant.id} is closed at that time",
+                    managerComment = managerComment,
                     status = TableReserveStatus.REJECTED
                 )
             )
 
             return TableReserveResponse(
                 status = TableReserveStatus.REJECTED,
+                managerComment = managerComment,
             )
         }
 
@@ -94,6 +104,7 @@ class TableReserveService(
 
         return TableReserveResponse(
             status = TableReserveStatus.PROCESSING,
+            managerComment = null,
         )
     }
 

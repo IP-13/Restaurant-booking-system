@@ -27,6 +27,8 @@ class ReserveController(
 
     @PostMapping("/reserve-table")
     fun reserveTable(
+        @RequestHeader(value = "Authorization")
+        authHeader: String,
         principal: Principal,
         @Valid
         @RequestBody(required = true)
@@ -34,7 +36,7 @@ class ReserveController(
     ): TableReserveResponse {
         log.debug("/reservation/reserve-table endpoint invoked")
 
-        return tableReserveService.reserveTable(request, principal.name)
+        return tableReserveService.reserveTable(request, principal.name, authHeader)
     }
 
     @PostMapping("/process-reservation")

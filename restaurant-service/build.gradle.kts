@@ -62,6 +62,9 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+    // for deserializing in web client
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
