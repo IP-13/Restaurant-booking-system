@@ -65,6 +65,15 @@ dependencies {
 
     // for deserializing in web client
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
+
+    // tests
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.testcontainers:testcontainers:1.19.1")
+    testImplementation("org.testcontainers:junit-jupiter:1.19.1")
+    testImplementation("org.testcontainers:postgresql:1.19.1")
+    testImplementation("org.springframework.security:spring-security-test:6.1.4")
+    testImplementation("io.mockk:mockk:1.13.8")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
