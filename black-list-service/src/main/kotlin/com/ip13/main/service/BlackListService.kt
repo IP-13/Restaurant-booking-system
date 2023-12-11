@@ -1,6 +1,6 @@
 package com.ip13.main.service
 
-import com.ip13.main.BlackListRepository
+import com.ip13.main.repository.BlackListRepository
 import com.ip13.main.model.dto.BlackListRequest
 import com.ip13.main.model.entity.BlackList
 import com.ip13.main.model.toBlackList
