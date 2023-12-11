@@ -55,20 +55,30 @@ class VisitorGradeHandler(
                                     .flatMap { ticket ->
                                         // save manager in no exists
                                         request.principal().flatMap { principal ->
-                                            userHandler.findByUsername(principal.name)
-                                                .flatMap {
-                                                    log.debug("manager found")
-                                                    Mono.just(it)
-                                                }
-                                                .switchIfEmpty(
-                                                    userHandler.save(
-                                                        User(
-                                                            username = principal.name,
-                                                            numOfGrades = 0,
-                                                            sumOfGrades = 0,
-                                                        )
+                                            if (ticket.managerName != principal.name) {
+                                                Mono.error(
+                                                    CommonException(
+                                                        "Attempt to grade ticket which doesn't belong to you",
+                                                        HttpStatus.METHOD_NOT_ALLOWED
                                                     )
                                                 )
+                                            } else {
+
+                                                userHandler.findByUsername(principal.name)
+                                                    .flatMap {
+                                                        log.debug("manager found")
+                                                        Mono.just(it)
+                                                    }
+                                                    .switchIfEmpty(
+                                                        userHandler.save(
+                                                            User(
+                                                                username = principal.name,
+                                                                numOfGrades = 0,
+                                                                sumOfGrades = 0,
+                                                            )
+                                                        )
+                                                    )
+                                            }
                                         }.flatMap {
                                             log.debug("Checking if user exists")
                                             userHandler.findByUsername(ticket.username)
