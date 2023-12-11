@@ -1,5 +1,6 @@
 package com.ip13.main.webClient.blackListService
 
+import com.ip13.main.util.getLogger
 import com.ip13.main.webClient.blackListService.dto.BlackListRequest
 import com.ip13.main.webClient.blackListService.dto.BlackListResponse
 import org.springframework.http.HttpHeaders
@@ -12,11 +13,15 @@ import reactor.core.publisher.Mono
 class BlackListServiceWebClientImpl(
     private val blackListServiceClient: WebClient,
 ) : BlackListServiceWebClient {
-    override fun addToBlackList(blackListRequest: BlackListRequest, authHeader: String): Mono<BlackListResponse> =
-        blackListServiceClient
+    private val log = getLogger(javaClass)
+
+    override fun addToBlackList(blackListRequest: BlackListRequest, authHeader: String): Mono<BlackListResponse> {
+        log.debug("sending request to black list service")
+
+        return blackListServiceClient
             .post()
             .uri("/black-list/add")
-            .accept(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_NDJSON)
             .header(
                 HttpHeaders.AUTHORIZATION,
                 authHeader,
@@ -24,4 +29,5 @@ class BlackListServiceWebClientImpl(
             .bodyValue(blackListRequest)
             .retrieve()
             .bodyToMono(BlackListResponse::class.java)
+    }
 }

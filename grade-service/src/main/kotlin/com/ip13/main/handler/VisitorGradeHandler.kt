@@ -91,23 +91,23 @@ class VisitorGradeHandler(
                                                 ).log()
                                             }.flatMap {
                                                 log.debug("Getting updated grade from db")
-                                                userHandler.getGrade(ticket.username).flatMap { grade ->
-                                                    if (grade < 3.0) {
-                                                        log.debug("Adding ${ticket.username} to black list")
-                                                        blackListServiceWebClient.addToBlackList(
-                                                            BlackListRequest(
-                                                                username = ticket.username,
-                                                                fromDate = LocalDateTime.now(),
-                                                                tillDate = LocalDateTime.now().plusMonths(3),
-                                                                reason = "Average grade less than 3.0"
-                                                            ),
-                                                            request.headers().header(HttpHeaders.AUTHORIZATION).first()
-                                                        )
-                                                    }
-                                                    Mono.just(grade)
-                                                }
+                                                userHandler.getGrade(ticket.username)
                                             }
                                         }
+                                }.flatMap { grade ->
+                                    if (grade < 3.0) {
+                                        log.debug("Adding ${ticket.username} to black list")
+                                        blackListServiceWebClient.addToBlackList(
+                                            BlackListRequest(
+                                                username = ticket.username,
+                                                fromDate = LocalDateTime.now(),
+                                                tillDate = LocalDateTime.now().plusMonths(3),
+                                                reason = "Average grade less than 3.0"
+                                            ),
+                                            request.headers().header(HttpHeaders.AUTHORIZATION).first()
+                                        ).subscribe()
+                                    }
+                                    Mono.just(grade)
                                 }
                             }
                             .switchIfEmpty(Mono.error(TableReserveTicketNotFound()))
