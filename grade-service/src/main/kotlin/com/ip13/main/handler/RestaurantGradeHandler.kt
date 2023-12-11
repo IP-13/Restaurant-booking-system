@@ -1,5 +1,6 @@
 package com.ip13.main.handler
 
+import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFound
 import com.ip13.main.model.dto.request.RestaurantGradeRequest
 import com.ip13.main.model.entity.Restaurant
@@ -39,6 +40,13 @@ class RestaurantGradeHandler(
 
         if (tableReserveTicket == null) {
             throw TableReserveTicketNotFound()
+        }
+
+        if (restaurantGradeRepository.existsByTableReserveTicketId(tableReserveTicket.id)) {
+            throw CommonException(
+                "ticket with id ${tableReserveTicket.id} already graded",
+                HttpStatus.BAD_REQUEST
+            )
         }
 
         log.debug("after checking tableReserveTicket")
