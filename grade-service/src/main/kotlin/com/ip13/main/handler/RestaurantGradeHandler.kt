@@ -6,7 +6,7 @@ import com.ip13.main.model.dto.request.RestaurantGradeRequest
 import com.ip13.main.model.entity.Restaurant
 import com.ip13.main.model.entity.RestaurantGrade
 import com.ip13.main.model.entity.User
-import com.ip13.main.repository.RestaurantGradeRepository
+import com.ip13.main.repository.RestaurantGradeCoRepository
 import com.ip13.main.util.getLogger
 import com.ip13.main.webClient.restaurantService.RestaurantServiceWebClient
 import kotlinx.coroutines.reactor.awaitSingle
@@ -22,7 +22,7 @@ import org.springframework.web.server.ResponseStatusException
 
 @Component
 class RestaurantGradeHandler(
-    private val restaurantGradeRepository: RestaurantGradeRepository,
+    private val restaurantGradeCoRepository: RestaurantGradeCoRepository,
     private val restaurantCoHandler: RestaurantCoHandler,
     private val userCoHandler: UserCoHandler,
     private val restaurantServiceWebClient: RestaurantServiceWebClient,
@@ -42,7 +42,7 @@ class RestaurantGradeHandler(
             throw TableReserveTicketNotFound()
         }
 
-        if (restaurantGradeRepository.existsByTableReserveTicketId(tableReserveTicket.id)) {
+        if (restaurantGradeCoRepository.existsByTableReserveTicketId(tableReserveTicket.id)) {
             throw CommonException(
                 "ticket with id ${tableReserveTicket.id} already graded",
                 HttpStatus.BAD_REQUEST
@@ -78,7 +78,7 @@ class RestaurantGradeHandler(
             )
         }
 
-        restaurantGradeRepository.save(
+        restaurantGradeCoRepository.save(
             RestaurantGrade(
                 username = tableReserveTicket.username,
                 tableReserveTicketId = requestBody.tableReserveTicketId,
