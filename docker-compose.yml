@@ -7,6 +7,8 @@ services:
     image: eureka
     ports:
       - "8761:8761"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
 
   gateway:
     build: gateway
@@ -17,6 +19,8 @@ services:
     depends_on:
       eureka:
         condition: service_started
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
 
   config-server:
     build: config-server
@@ -24,6 +28,8 @@ services:
     image: config-server
     ports:
       - "8888:8888"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
 
   postgres-user-service:
     container_name: postgres-user-service
@@ -49,6 +55,8 @@ services:
         condition: service_started
       postgres-user-service:
         condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
 
   postgres-restaurant-service:
     container_name: postgres-restaurant-service
@@ -74,6 +82,8 @@ services:
         condition: service_started
       postgres-restaurant-service:
         condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
 
   postgres-grade-service:
     container_name: postgres-grade-service
@@ -99,6 +109,8 @@ services:
         condition: service_started
       postgres-restaurant-service:
         condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
 
   postgres-black-list-service:
     container_name: postgres-black-list-service
@@ -124,3 +136,5 @@ services:
         condition: service_started
       postgres-black-list-service:
         condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
