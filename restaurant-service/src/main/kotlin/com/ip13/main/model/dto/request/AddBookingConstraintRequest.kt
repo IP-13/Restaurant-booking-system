@@ -10,7 +10,7 @@ data class AddBookingConstraintRequest(
     @field:PositiveOrZero
     val restaurantId: Int,
     @field:Size(min = 5, max = 15, message = "Reason message should be from 5 to 15 symbols")
-    val reason: String?,
+    val reason: String,
     @field:FutureOrPresent
     val fromDate: LocalDateTime,
     @field:Future
