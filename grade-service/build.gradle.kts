@@ -61,6 +61,17 @@ dependencies {
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+    // tests
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.testcontainers:testcontainers:1.19.1")
+    testImplementation("org.testcontainers:junit-jupiter:1.19.1")
+    testImplementation("org.testcontainers:postgresql:1.19.1")
+    testImplementation("org.springframework.security:spring-security-test:6.1.4")
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("org.mockito:mockito-core:5.8.0")
+    testImplementation("io.projectreactor:reactor-test:3.6.0")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
