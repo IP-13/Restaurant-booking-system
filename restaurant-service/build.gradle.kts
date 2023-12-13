@@ -74,6 +74,9 @@ dependencies {
     testImplementation("org.testcontainers:postgresql:1.19.1")
     testImplementation("org.springframework.security:spring-security-test:6.1.4")
     testImplementation("io.mockk:mockk:1.13.8")
+
+    // to mock eureka in tests
+    testImplementation("org.wiremock:wiremock:3.3.1")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
