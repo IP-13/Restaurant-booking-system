@@ -46,91 +46,87 @@ class VisitorGradeHandler(
                                     )
                                 )
                             } else {
-                                restaurantServiceWebClient
-                                    .getTableReserveTicket(
-                                        req.tableReserveTicketId,
-                                        request.headers().header(HttpHeaders.AUTHORIZATION).first()
-                                    )
-                                    .log()
-                                    .flatMap { ticket ->
-                                        // save manager in no exists
-                                        request.principal().flatMap { principal ->
-                                            if (ticket.managerName != principal.name) {
-                                                Mono.error(
-                                                    CommonException(
-                                                        "Attempt to grade ticket which doesn't belong to you",
-                                                        HttpStatus.METHOD_NOT_ALLOWED
-                                                    )
+                                restaurantServiceWebClient.getTableReserveTicket(
+                                    req.tableReserveTicketId,
+                                    request.headers().header(HttpHeaders.AUTHORIZATION).first()
+                                ).log().flatMap { ticket ->
+                                    // save manager in no exists
+                                    request.principal().flatMap { principal ->
+                                        if (ticket.managerName != principal.name) {
+                                            Mono.error(
+                                                CommonException(
+                                                    "Attempt to grade ticket which doesn't belong to you",
+                                                    HttpStatus.METHOD_NOT_ALLOWED
                                                 )
-                                            } else {
-
-                                                userHandler.findByUsername(principal.name)
-                                                    .flatMap {
-                                                        log.debug("manager found")
-                                                        Mono.just(it)
-                                                    }
-                                                    .switchIfEmpty(
-                                                        userHandler.save(
-                                                            User(
-                                                                username = principal.name,
-                                                                numOfGrades = 0,
-                                                                sumOfGrades = 0,
-                                                            )
-                                                        )
-                                                    )
-                                            }
-                                        }.flatMap {
-                                            log.debug("Checking if user exists")
-                                            userHandler.findByUsername(ticket.username)
+                                            )
+                                        } else {
+                                            userHandler.findByUsername(principal.name)
                                                 .flatMap {
-                                                    log.debug("User found. Adding grade")
-                                                    userHandler.addGrade(ticket.username, req.grade)
+                                                    log.debug("manager found")
+                                                    Mono.just(it)
                                                 }
                                                 .switchIfEmpty(
                                                     userHandler.save(
                                                         User(
-                                                            username = ticket.username,
-                                                            numOfGrades = 1,
-                                                            sumOfGrades = req.grade
+                                                            username = principal.name,
+                                                            numOfGrades = 0,
+                                                            sumOfGrades = 0,
                                                         )
-                                                    ).flatMap {
-                                                        log.debug("User not found. Saving user")
-                                                        Mono.just(it.sumOfGrades)
-                                                    }
+                                                    )
                                                 )
-                                                .flatMap {
-                                                    log.debug("Saving visitor grade to db")
-                                                    request.principal().flatMap { principal ->
-                                                        visitorGradeRepository.save(
-                                                            VisitorGrade(
-                                                                managerName = principal.name,
-                                                                tableReserveTicketId = req.tableReserveTicketId,
-                                                                username = ticket.username,
-                                                                grade = req.grade,
-                                                                comment = req.comment,
-                                                            )
-                                                        ).log()
-                                                    }.flatMap {
-                                                        log.debug("Getting updated grade from db")
-                                                        userHandler.getGrade(ticket.username)
-                                                    }
-                                                }
-                                        }.flatMap { grade ->
-                                            if (grade < 3.0) {
-                                                log.debug("Adding ${ticket.username} to black list")
-                                                blackListServiceWebClient.addToBlackList(
-                                                    BlackListRequest(
-                                                        username = ticket.username,
-                                                        fromDate = LocalDateTime.now(),
-                                                        tillDate = LocalDateTime.now().plusMonths(3),
-                                                        reason = "Average grade less than 3.0"
-                                                    ),
-                                                    request.headers().header(HttpHeaders.AUTHORIZATION).first()
-                                                ).subscribe()
-                                            }
-                                            Mono.just(grade)
                                         }
+                                    }.flatMap {
+                                        log.debug("Checking if user exists")
+                                        userHandler.findByUsername(ticket.username)
+                                            .flatMap {
+                                                log.debug("User found. Adding grade")
+                                                userHandler.addGrade(ticket.username, req.grade)
+                                            }
+                                            .switchIfEmpty(
+                                                userHandler.save(
+                                                    User(
+                                                        username = ticket.username,
+                                                        numOfGrades = 1,
+                                                        sumOfGrades = req.grade
+                                                    )
+                                                ).flatMap {
+                                                    log.debug("User not found. Saving user")
+                                                    Mono.just(it.sumOfGrades)
+                                                }
+                                            )
+                                            .flatMap {
+                                                log.debug("Saving visitor grade to db")
+                                                request.principal().flatMap { principal ->
+                                                    visitorGradeRepository.save(
+                                                        VisitorGrade(
+                                                            managerName = principal.name,
+                                                            tableReserveTicketId = req.tableReserveTicketId,
+                                                            username = ticket.username,
+                                                            grade = req.grade,
+                                                            comment = req.comment,
+                                                        )
+                                                    ).log()
+                                                }.flatMap {
+                                                    log.debug("Getting updated grade from db")
+                                                    userHandler.getGrade(ticket.username)
+                                                }
+                                            }
+                                    }.flatMap { grade ->
+                                        if (grade < 3.0) {
+                                            log.debug("Adding ${ticket.username} to black list")
+                                            blackListServiceWebClient.addToBlackList(
+                                                BlackListRequest(
+                                                    username = ticket.username,
+                                                    fromDate = LocalDateTime.now(),
+                                                    tillDate = LocalDateTime.now().plusMonths(3),
+                                                    reason = "Average grade less than 3.0"
+                                                ),
+                                                request.headers().header(HttpHeaders.AUTHORIZATION).first()
+                                            ).subscribe()
+                                        }
+                                        Mono.just(grade)
                                     }
+                                }
                                     .switchIfEmpty(Mono.error(TableReserveTicketNotFound()))
                                     .log()
                             }
