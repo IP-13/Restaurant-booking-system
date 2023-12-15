@@ -22,10 +22,6 @@ import javax.sql.DataSource
 
 @ExtendWith(MockitoExtension::class)
 class RestaurantControllerTest : AbstractTestContainer() {
-
-    @Autowired
-    lateinit var dataSource: DataSource
-
     @Autowired
     lateinit var restaurantAddTicketRepository: RestaurantAddTicketRepository
 
@@ -130,15 +126,6 @@ class RestaurantControllerTest : AbstractTestContainer() {
                 )
             }
         }
-    }
-
-    private fun executeSqlScript(sqlFileName: String) {
-        val resourceDatabasePopulator = ResourceDatabasePopulator()
-        resourceDatabasePopulator.addScripts(
-            ClassPathResource(sqlFileName),
-        )
-        resourceDatabasePopulator.setSeparator("@@")
-        resourceDatabasePopulator.execute(dataSource)
     }
 
     companion object {

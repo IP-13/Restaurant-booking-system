@@ -4,18 +4,24 @@ import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.core.io.ClassPathResource
 import org.springframework.jdbc.core.JdbcTemplate
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.springframework.test.web.servlet.MockMvc
 import org.testcontainers.containers.PostgreSQLContainer
 import java.io.File
+import javax.sql.DataSource
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @ActiveProfiles("test")
 abstract class AbstractTestContainer {
+    @Autowired
+    private lateinit var dataSource: DataSource
+
     @Autowired
     lateinit var jdbc: JdbcTemplate
 
@@ -64,4 +70,12 @@ abstract class AbstractTestContainer {
         }
     }
 
+    protected fun executeSqlScript(sqlFileName: String) {
+        val resourceDatabasePopulator = ResourceDatabasePopulator()
+        resourceDatabasePopulator.addScripts(
+            ClassPathResource(sqlFileName),
+        )
+        resourceDatabasePopulator.setSeparator("@@")
+        resourceDatabasePopulator.execute(dataSource)
+    }
 }

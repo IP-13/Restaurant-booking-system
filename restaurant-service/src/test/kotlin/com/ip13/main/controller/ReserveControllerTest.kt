@@ -1,7 +1,5 @@
 package com.ip13.main.controller
 
-import com.ip13.main.model.entity.Restaurant
-import com.ip13.main.model.entity.RestaurantAddTicket
 import com.ip13.main.repository.RestaurantAddTicketRepository
 import com.ip13.main.repository.RestaurantRepository
 import com.ip13.main.webClient.blackListClient.BlackListServiceWebClient
@@ -32,7 +30,7 @@ class ReserveControllerTest : AbstractTestContainer() {
     @Test
     @WithMockUser(username = USERNAME)
     fun `reserve table successful`() {
-        createRestaurant()
+        executeSqlScript("/sql/create_restaurant.sql")
 
         Mockito.`when`(
             blackListServiceWebClient.getBlackListByUsername(
@@ -41,7 +39,7 @@ class ReserveControllerTest : AbstractTestContainer() {
             )
         ).thenReturn(listOf())
 
-        val body = loadAsString("json/reserve-table.json")
+        val body = loadAsString("/json/reserve-table.json")
 
         mockMvc.post("/reservation/reserve-table") {
             contentType = MediaType.APPLICATION_JSON
@@ -64,7 +62,7 @@ class ReserveControllerTest : AbstractTestContainer() {
     @Test
     @WithMockUser(username = USERNAME)
     fun `reserve table in non-existent restaurant`() {
-        val body = loadAsString("json/reserve-table.json")
+        val body = loadAsString("/json/reserve-table.json")
 
         mockMvc.post("/reservation/reserve-table") {
             contentType = MediaType.APPLICATION_JSON
@@ -87,7 +85,7 @@ class ReserveControllerTest : AbstractTestContainer() {
     @Test
     @WithMockUser(username = USERNAME)
     fun `reserve table when in black list`() {
-        createRestaurant()
+        executeSqlScript("/sql/create_restaurant.sql")
 
         Mockito.`when`(
             blackListServiceWebClient.getBlackListByUsername(
@@ -106,7 +104,7 @@ class ReserveControllerTest : AbstractTestContainer() {
             )
         )
 
-        val body = loadAsString("json/reserve-table.json")
+        val body = loadAsString("/json/reserve-table.json")
 
         mockMvc.post("/reservation/reserve-table") {
             contentType = MediaType.APPLICATION_JSON
@@ -132,14 +130,41 @@ class ReserveControllerTest : AbstractTestContainer() {
         }
     }
 
-    private fun createRestaurant(restaurantAddTicket: RestaurantAddTicket = RestaurantAddTicket()) {
-        restaurantAddTicketRepository.save(restaurantAddTicket)
-        val restaurant = Restaurant(restaurantAddTicket = restaurantAddTicket)
-        restaurantRepository.save(restaurant)
+    @Test
+    @WithMockUser(username = MANAGER_NAME, authorities = [MANAGER])
+    fun processReservationSuccessfullyTest() {
+        executeSqlScript("/sql/create_restaurant.sql")
+        executeSqlScript("/sql/create-reservation.sql")
+
+        val body = loadAsString("/json/process-reservation.json")
+
+        mockMvc.post("/reservation/process-reservation") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+            header("Authorization", AUTH_HEADER)
+        }.andExpect {
+            content {
+                status { isEqualTo(200) }
+                jsonPath(
+                    "status",
+                    CoreMatchers.equalTo(
+                        "ACCEPTED"
+                    )
+                )
+                jsonPath(
+                    "id",
+                    CoreMatchers.equalTo(
+                        100
+                    )
+                )
+            }
+        }
     }
 
     companion object {
         private const val AUTH_HEADER = "Bearer 123"
-        private const val USERNAME = "ip13"
+        private const val USERNAME = "username"
+        private const val MANAGER_NAME = "ip13"
     }
 }
