@@ -162,6 +162,35 @@ class ReserveControllerTest : AbstractTestContainer() {
         }
     }
 
+    @Test
+    @WithMockUser(username = MANAGER_NAME, authorities = [MANAGER])
+    fun `when process already processed reservation should return error in response`() {
+        executeSqlScript("/sql/create_restaurant.sql")
+        executeSqlScript("/sql/create-processed-reservation.sql")
+
+        val body = loadAsString("/json/process-reservation.json")
+
+        mockMvc.post("/reservation/process-reservation") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+            header("Authorization", AUTH_HEADER)
+        }.andExpect {
+            content {
+                status { isEqualTo(400) }
+                content {
+                    json(
+                        """
+                            {"message":"com.ip13.main.exceptionHandling.exception.CommonException: Reservation with id 100 already processed. Status ACCEPTED"}
+                        """.trimIndent(),
+                        true
+                    )
+                }
+            }
+        }
+    }
+
+
     companion object {
         private const val AUTH_HEADER = "Bearer 123"
         private const val USERNAME = "username"
