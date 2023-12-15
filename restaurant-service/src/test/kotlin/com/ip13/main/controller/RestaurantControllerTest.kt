@@ -15,6 +15,7 @@ import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator
 import org.springframework.security.test.context.support.WithMockUser
+import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import javax.sql.DataSource
 
@@ -92,6 +93,40 @@ class RestaurantControllerTest : AbstractTestContainer() {
                     CoreMatchers.equalTo(
                         100
                     )
+                )
+            }
+        }
+    }
+
+    @Test
+    @WithMockUser
+    fun getByIdTest() {
+        executeSqlScript("/sql/create_restaurant.sql")
+
+        mockMvc.get("/restaurant/id/100") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            header("Authorization", AUTH_HEADER)
+        }.andExpect {
+            status { isEqualTo(200) }
+            content {
+                json(
+                    """
+                        {
+                            "id":100,
+                            "restaurantAddTicketId":100,
+                            "managerName":"ip13",
+                            "name":"codex",
+                            "country":"Russia",
+                            "city":"Saint-Petersburg",
+                            "street":"Windy",
+                            "building":1,
+                            "entrance":4,
+                            "floor":3,
+                            "description":null
+                        }
+                    """.trimIndent(),
+                    true
                 )
             }
         }
