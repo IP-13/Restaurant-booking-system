@@ -1,0 +1,1 @@
+insert into restaurant (restaurant_id, num_of_grades, sum_of_grades) values (100, 4, 15);

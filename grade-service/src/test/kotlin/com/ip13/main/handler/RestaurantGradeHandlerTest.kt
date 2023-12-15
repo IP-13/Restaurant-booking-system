@@ -70,6 +70,25 @@ class RestaurantGradeHandlerTest : AbstractTestContainers() {
             .verifyComplete()
     }
 
+    @Test
+    @RunSql(["/sql/create_new_tables.sql", "/sql/add_restaurant.sql"])
+    @WithMockUser
+    fun `get user grade by username`() {
+        val restaurantId = 100
+
+        val response = webTestClient.get()
+            .uri("/grade/restaurant/$restaurantId")
+            .header("Authorization", AUTH_HEADER)
+            .exchange()
+            .expectStatus().isOk
+            .expectHeader().valueEquals("Content-Type", "application/json")
+            .returnResult(Float::class.java).responseBody
+
+        StepVerifier.create(response)
+            .expectNext(3.75f)
+            .verifyComplete()
+    }
+
     companion object {
         private const val AUTH_HEADER = "Bearer 123"
         private const val USERNAME = "ip13"
