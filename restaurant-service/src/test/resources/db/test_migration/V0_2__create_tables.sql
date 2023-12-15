@@ -44,7 +44,7 @@ create table if not exists table_reserve_ticket (
     user_comment text,
     manager_name varchar(50),
     manager_comment text,
-    status reserve_table_status not null
+    status reserve_table_status
 );
 
 create table if not exists booking_constraint (

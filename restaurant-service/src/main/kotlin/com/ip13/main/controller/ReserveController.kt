@@ -7,7 +7,6 @@ import com.ip13.main.model.dto.response.AddBookingConstraintResponse
 import com.ip13.main.model.dto.response.ReservationProcessResponse
 import com.ip13.main.model.dto.response.TableReserveResponse
 import com.ip13.main.model.dto.response.TableReserveTicketResponse
-import com.ip13.main.model.toTableReserveTicketResponse
 import com.ip13.main.service.BookingConstraintService
 import com.ip13.main.service.TableReserveService
 import com.ip13.main.util.getLogger

@@ -1,0 +1,2 @@
+insert into restaurant_add_ticket (name, country, city, street, building, entrance, floor, username, creation_date, status) values ('codex', 'Russia', 'Saint-Petersburg', 'Windy', 1, 4, 3, 'ip13', '2023-12-15 16:26:14.866118+03', 'PROCESSING');
+insert into restaurant (restaurant_add_ticket_id, manager_name, name, country, city, street, building, entrance, floor) values (100, 'ip13', 'codex', 'Russia', 'Saint-Petersburg', 'Windy', 1, 4, 3);

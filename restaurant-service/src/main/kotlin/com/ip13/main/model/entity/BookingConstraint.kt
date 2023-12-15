@@ -12,7 +12,7 @@ class BookingConstraint(
     @JoinColumn(name = "restaurant_id")
     val restaurant: Restaurant = Restaurant(),
     val managerName: String = "",
-    val reason: String? = null,
+    val reason: String = "",
     val fromDate: LocalDateTime = LocalDateTime.now(),
     val tillDate: LocalDateTime = LocalDateTime.now(),
 ) {
@@ -34,7 +34,7 @@ class BookingConstraint(
     override fun hashCode(): Int {
         var result = restaurant.hashCode()
         result = 31 * result + managerName.hashCode()
-        result = 31 * result + (reason?.hashCode() ?: 0)
+        result = 31 * result + reason.hashCode()
         result = 31 * result + fromDate.hashCode()
         result = 31 * result + tillDate.hashCode()
         return result
