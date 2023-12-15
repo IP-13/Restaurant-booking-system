@@ -49,7 +49,7 @@ class JwtRequestFilter(
             log.debug("Authentication found\n{}", authentication.toString())
 
             authentication
-        } catch (_: TokenNotFoundException) {
+        } catch (_: Exception) {
             return chain.filter(exchange)
         }
 

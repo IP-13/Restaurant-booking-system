@@ -11,6 +11,8 @@ spring.cloud.config.enabled: false
 security:
   secret: s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu
 
+eureka.client.enabled: false
+
 server:
   error:
     includeStacktrace: ALWAYS
