@@ -69,7 +69,24 @@ class VisitorGradeHandlerTest : AbstractTestContainers() {
             .expectNext(grade.toFloat())
             .verifyComplete()
     }
-    
+
+    @Test
+    @RunSql(["/sql/create_new_tables.sql", "/sql/add_user_grade.sql"])
+    @WithMockUser(username = MANAGER_NAME)
+    fun `get user grade by username`() {
+        val response = webTestClient.get()
+            .uri("/grade/visitor/$USERNAME")
+            .header("Authorization", AUTH_HEADER)
+            .exchange()
+            .expectStatus().isOk
+            .expectHeader().valueEquals("Content-Type", "application/json")
+            .returnResult(Float::class.java).responseBody
+
+        StepVerifier.create(response)
+            .expectNext(4.5f)
+            .verifyComplete()
+    }
+
     companion object {
         private const val AUTH_HEADER = "Bearer 123456"
         private const val MANAGER_NAME = "ip13"
