@@ -190,6 +190,30 @@ class ReserveControllerTest : AbstractTestContainer() {
         }
     }
 
+    @Test
+    @WithMockUser(username = MANAGER_NAME, authorities = [MANAGER])
+    fun addBookingConstraintTest() {
+        executeSqlScript("/sql/create_restaurant.sql")
+
+        val body = loadAsString("/json/add-booking-constraint.json")
+
+        mockMvc.post("/reservation/add-booking-constraint") {
+            contentType = MediaType.APPLICATION_JSON
+            accept = MediaType.APPLICATION_JSON
+            content = body
+            header("Authorization", AUTH_HEADER)
+        }.andExpect {
+            content {
+                status { isEqualTo(200) }
+                content {
+                    json(
+                        "{\"id\":100}",
+                        true
+                    )
+                }
+            }
+        }
+    }
 
     companion object {
         private const val AUTH_HEADER = "Bearer 123"
