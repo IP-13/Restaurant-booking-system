@@ -1,14 +1,12 @@
 package com.ip13.main.handler
 
-import com.ip13.main.model.dto.request.RestaurantGradeRequest
 import com.ip13.main.model.dto.request.VisitorGradeRequest
-import com.ip13.main.repository.RestaurantCoRepository
+import com.ip13.main.repository.UserRepository
 import com.ip13.main.sql.RunSql
 import com.ip13.main.webClient.blackListService.BlackListServiceWebClient
 import com.ip13.main.webClient.restaurantService.RestaurantServiceWebClient
 import com.ip13.main.webClient.restaurantService.dto.TableReserveStatus
 import com.ip13.main.webClient.restaurantService.dto.TableReserveTicket
-import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,9 +16,10 @@ import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
 import java.time.LocalDateTime
 
-class RestaurantGradeHandlerTest : AbstractTestContainers() {
+
+class VisitorGradeHandlerTest : AbstractTestContainers() {
     @Autowired
-    private lateinit var restaurantCoRepository: RestaurantCoRepository
+    lateinit var userRepository: UserRepository
 
     @MockBean
     lateinit var restaurantServiceWebClient: RestaurantServiceWebClient
@@ -30,12 +29,12 @@ class RestaurantGradeHandlerTest : AbstractTestContainers() {
 
     @Test
     @RunSql(["/sql/create_new_tables.sql"])
-    @WithMockUser(username = USERNAME)
-    fun gradeRestaurantSuccessfulTest() {
-        runBlocking {
-            Mockito.`when`(
-                restaurantServiceWebClient.suspendGetTableReserveTicketOrNull(100, AUTH_HEADER)
-            ).thenReturn(
+    @WithMockUser(username = MANAGER_NAME)
+    fun gradeVisitorSuccessfulTest() {
+        Mockito.`when`(
+            restaurantServiceWebClient.getTableReserveTicket(100, AUTH_HEADER)
+        ).thenReturn(
+            Mono.just(
                 TableReserveTicket(
                     id = 100,
                     restaurantId = 100,
@@ -45,23 +44,24 @@ class RestaurantGradeHandlerTest : AbstractTestContainers() {
                     tillDate = LocalDateTime.now(),
                     numOfGuests = 3,
                     userComment = null,
-                    managerName = null,
+                    managerName = MANAGER_NAME,
                     managerComment = null,
                     status = TableReserveStatus.PROCESSING,
                 )
             )
-        }
+        )
 
         val grade = 3
-        val body = RestaurantGradeRequest(100, grade, "toxic")
+
+        val body = VisitorGradeRequest(100, grade, "toxic")
 
         val response = webTestClient.post()
-            .uri("/grade/restaurant")
+            .uri("/grade/visitor")
             .header("Authorization", AUTH_HEADER)
             .body(Mono.just(body), VisitorGradeRequest::class.java)
             .exchange()
             .expectStatus().isOk
-            .expectHeader().valueEquals("Content-Type", "application/x-ndjson")
+            .expectHeader().valueEquals("Content-Type", "application/json")
             .returnResult(Float::class.java).responseBody
 
         // first grade, new average grade equals to it
@@ -69,9 +69,10 @@ class RestaurantGradeHandlerTest : AbstractTestContainers() {
             .expectNext(grade.toFloat())
             .verifyComplete()
     }
-
+    
     companion object {
-        private const val AUTH_HEADER = "Bearer 123"
-        private const val USERNAME = "ip13"
+        private const val AUTH_HEADER = "Bearer 123456"
+        private const val MANAGER_NAME = "ip13"
+        private const val USERNAME = "username"
     }
 }
