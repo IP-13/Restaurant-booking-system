@@ -1,10 +1,7 @@
 package com.ip13.main.service
 
 import com.ip13.main.util.getLogger
-import io.minio.BucketExistsArgs
-import io.minio.MakeBucketArgs
-import io.minio.MinioClient
-import io.minio.PutObjectArgs
+import io.minio.*
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -26,6 +23,25 @@ class MinioService(
         minioClient.putObject(
             PutObjectArgs.builder()
                 .stream(stream, stream.available().toLong(), -1)
+                .bucket(bucket)
+                .`object`(filename)
+                .build()
+        )
+    }
+
+    fun download(bucket: String, objectName: String, filename: String) {
+        minioClient.downloadObject(
+            DownloadObjectArgs.builder()
+                .bucket(bucket)
+                .`object`(objectName)
+                .filename(filename)
+                .build()
+        )
+    }
+
+    fun delete(bucket: String, filename: String) {
+        minioClient.removeObject(
+            RemoveObjectArgs.builder()
                 .bucket(bucket)
                 .`object`(filename)
                 .build()
