@@ -1,5 +1,6 @@
 package com.ip13.main.controller
 
+import com.ip13.main.model.dto.DownloadRequest
 import com.ip13.main.service.MinioService
 import com.ip13.main.util.getLogger
 import jakarta.validation.constraints.NotNull
@@ -7,6 +8,7 @@ import org.springframework.http.MediaType
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import java.security.Principal
 
 @Validated
 @RestController
@@ -18,6 +20,7 @@ class MinioController(
 
     @PostMapping("/upload/{bucket}", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     fun upload(
+        principal: Principal,
         @RequestPart
         @NotNull
         multipartFile: MultipartFile,
@@ -27,25 +30,23 @@ class MinioController(
     ) {
         log.debug("/file/upload/{} endpoint invoked", bucket)
 
-        minioService.upload(multipartFile, bucket)
+        minioService.upload(multipartFile, bucket, principal.name)
     }
 
-    @GetMapping("/download")
+    @PostMapping("/download")
     fun download(
-        @RequestParam
-        bucket: String,
-        @RequestParam
-        objectName: String,
-        @RequestParam
-        filename: String,
+        principal: Principal,
+        @RequestBody
+        downloadRequest: DownloadRequest,
     ) {
         log.debug("/file/download endpoint invoked")
 
-        minioService.download(bucket = bucket, objectName = objectName, filename = filename)
+        minioService.download(downloadRequest, principal.name)
     }
 
     @DeleteMapping("/delete")
     fun delete(
+        principal: Principal,
         @RequestParam
         bucket: String,
         @RequestParam
@@ -53,6 +54,6 @@ class MinioController(
     ) {
         log.debug("/file/delete endpoint invoked")
 
-        minioService.delete(bucket = bucket, filename = filename)
+        minioService.delete(bucketName = bucket, objectName = filename, currUsername = principal.name)
     }
 }

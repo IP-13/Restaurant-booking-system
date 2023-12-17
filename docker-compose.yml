@@ -172,13 +172,12 @@ services:
     environment:
       - MINIO_ROOT_USER=minio_admin
       - MINIO_ROOT_PASSWORD=minio_admin
+      - MINIO_VOLUMES=/mnt/data
     command: server ~/minio --console-address :9001
     ports:
       - '9001:9001'
       - '9000:9000'
     volumes:
-      - ./minio-volume:/data
-
-volumes:
-  minio:
-    driver: local
+      - type: bind
+        source: minio-volume
+        target: /mnt/data
