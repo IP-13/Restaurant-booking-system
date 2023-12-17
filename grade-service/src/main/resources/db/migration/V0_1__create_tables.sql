@@ -1,10 +1,10 @@
-create table user_t(
+create table if not exists user_t(
     username varchar(50) unique,
     num_of_grades int not null,
     sum_of_grades int not null
 );
 
-create table restaurant(
+create table if not exists restaurant(
     restaurant_id int unique,
     num_of_grades int not null,
     sum_of_grades int not null
