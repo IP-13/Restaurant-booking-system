@@ -54,6 +54,14 @@ spring:
             - name: RoleCheckerFilter
               args:
                 isOpen: true
+        - id: file-service
+          uri: lb://file-service
+          predicates:
+            - Path=/file/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
 
 logging.level:
     root: INFO

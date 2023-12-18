@@ -138,3 +138,46 @@ services:
         condition: service_healthy
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
+
+  postgres-file-service:
+    container_name: postgres-file-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-file-service-volume:/var/lib/postgresql/data
+
+  file-service:
+    build: file-service
+    container_name: file-service
+    image: file-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-file-service:
+        condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      - MINIO_ROOT_USER=minio_admin
+      - MINIO_ROOT_PASSWORD=minio_admin
+      - MINIO_VOLUMES=/mnt/data
+    command: server ~/minio --console-address :9001
+    ports:
+      - '9001:9001'
+      - '9000:9000'
+    volumes:
+      - type: bind
+        source: minio-volume
+        target: /mnt/data

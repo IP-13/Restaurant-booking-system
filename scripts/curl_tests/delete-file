@@ -1,0 +1,3 @@
+#!/bin/bash
+curl -i -H "Content-Type: application/json" -H "Authorization: Bearer $(cat token)" -X DELETE \
+'http://localhost:8080/file/delete?bucket=json&filename=visitor-grade.json'
