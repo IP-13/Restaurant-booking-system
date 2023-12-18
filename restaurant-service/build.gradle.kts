@@ -66,6 +66,9 @@ dependencies {
     // for deserializing in web client
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
 
+    // open api
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+
     // tests
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
