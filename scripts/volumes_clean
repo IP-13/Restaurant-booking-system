@@ -2,3 +2,4 @@
 cd ..
 sudo rm -rf postgres-user-service-volume postgres-restaurant-service-volume postgres-grade-service-volume \
 postgres-black-list-service-volume postgres-file-service-volume minio-volume
+mkdir minio-volume
