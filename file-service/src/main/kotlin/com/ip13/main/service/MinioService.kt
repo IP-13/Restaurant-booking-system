@@ -1,6 +1,6 @@
 package com.ip13.main.service
 
-import com.ip13.main.FileInfoRepository
+import com.ip13.main.repository.FileInfoRepository
 import com.ip13.main.model.dto.DownloadRequest
 import com.ip13.main.model.entity.FileInfo
 import com.ip13.main.model.entity.FileInfoId

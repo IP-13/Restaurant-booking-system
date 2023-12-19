@@ -1,0 +1,39 @@
+spring.application.name: grade-service
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5435/db
+    username: postgres
+    password: postgres
+  flyway:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5435/db
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true
+
+info.app.name: ${spring.application.name}
+
+server.port: 0
+
+spring.config.import: configserver:http://localhost:8888
+
+spring.cloud:
+  config:
+    failFast: true
+    retry:
+      initialInterval: 3000
+      maxInterval: 5000
+      maxAttempts: 20
+
+logging.level:
+  org.springframework:
+    nodeValue: TRACE
+    retry: TRACE
+
+spring.jackson.serialization.indent_output: true

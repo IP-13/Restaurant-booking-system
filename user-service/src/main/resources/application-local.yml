@@ -1,0 +1,49 @@
+spring.application.name: user-service
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/db
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show_sql: true
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true
+
+info.app.name: ${spring.application.name}
+
+server.port: 0
+
+spring.config.import: configserver:http://localhost:8888
+
+spring.cloud:
+  config:
+    failFast: true
+    retry:
+      initialInterval: 3000
+      maxInterval: 5000
+      maxAttempts: 20
+
+logging.level:
+  org.springframework:
+    nodeValue: TRACE
+    retry: TRACE
+
+spring.jackson.serialization.indent_output: true
+
+management.endpoint.gateway.enabled: true
+management.endpoints.web.exposure.include:
+  - refresh
+  - health
+  - flyway
+  - beans
+  - metrics
+  - info
