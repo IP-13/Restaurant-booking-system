@@ -181,3 +181,7 @@ services:
       - type: bind
         source: minio-volume
         target: /mnt/data
+
+networks:
+  restaurant-booking-system_default:
+    external: true
