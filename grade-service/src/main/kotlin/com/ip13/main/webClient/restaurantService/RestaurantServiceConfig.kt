@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 @Configuration
 class RestaurantServiceConfig {
     @Autowired
-    private lateinit var reactorLoadBalancerExchangeFilterFunction: ReactorLoadBalancerExchangeFilterFunction
+    private lateinit var webClientBuilder: WebClient.Builder
 
     @Bean
     @Qualifier("restaurantServiceClient")
@@ -29,8 +29,7 @@ class RestaurantServiceConfig {
                 it.addHandlerLast(WriteTimeoutHandler(5000, TimeUnit.MILLISECONDS))
             }
 
-        return WebClient.builder()
-            .filter(reactorLoadBalancerExchangeFilterFunction)
+        return webClientBuilder
             .baseUrl("http://restaurant-service")
             .clientConnector(ReactorClientHttpConnector(httpClient))
             .build()

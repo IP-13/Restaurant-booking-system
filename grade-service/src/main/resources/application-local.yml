@@ -37,3 +37,4 @@ logging.level:
     retry: TRACE
 
 spring.jackson.serialization.indent_output: true
+spring.cloud.loadbalancer.ribbon.enabled: false

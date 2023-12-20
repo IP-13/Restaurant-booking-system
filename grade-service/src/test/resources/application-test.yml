@@ -16,3 +16,5 @@ eureka.client.enabled: false
 server:
   error:
     includeStacktrace: ALWAYS
+
+spring.cloud.loadbalancer.ribbon.enabled: false
