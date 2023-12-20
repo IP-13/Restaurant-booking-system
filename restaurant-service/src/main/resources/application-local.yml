@@ -60,3 +60,5 @@ resilience4j:
         max-wait-duration-in-half-open-state: 5s
         automatic-transition-from-open-to-half-open-enabled: true
         permitted-number-of-calls-in-half-open-state: 2
+
+spring.cloud.loadbalancer.ribbon.enabled: false
