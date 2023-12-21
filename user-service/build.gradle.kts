@@ -82,7 +82,7 @@ tasks.test {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "com.ip13.main.MainApplication"
+        attributes["Main-Class"] = "com.ip13.main.Main"
     }
 }
 
