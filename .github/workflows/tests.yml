@@ -13,11 +13,18 @@ jobs:
     - uses: actions/checkout@v4
     - uses: actions/setup-java@v4
       with:
+        distribution: 'corretto'
         java-version: '17'
         cache: 'gradle'
         cache-dependency-path: | # optional
-          sub-project/*.gradle*
-          sub-project/**/gradle-wrapper.properties
+          black-list-service/*.gradle*
+          config-server/*.gradle*
+          eureka/*.gradle*
+          file-service/*.gradle*
+          gateway/*.gradle*
+          grade-service/*.gradle*
+          restaurant-service/*.gradle*
+          user-service/*.gradle*
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
