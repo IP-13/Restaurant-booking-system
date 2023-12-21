@@ -1,0 +1,11 @@
+package com.ip13.main
+
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.Test
+
+class BrokenTest {
+    @Test
+    fun brokenTest() {
+        Assertions.assertThat(10).isEqualTo(20)
+    }
+}
