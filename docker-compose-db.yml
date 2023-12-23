@@ -1,36 +1,6 @@
 version: "3.8"
 
 services:
-  eureka:
-    build: eureka
-    container_name: eureka
-    image: eureka
-    ports:
-      - "8761:8761"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=prod"
-
-  gateway:
-    build: gateway
-    container_name: gateway
-    image: gateway
-    ports:
-      - "8080:8080"
-    depends_on:
-      eureka:
-        condition: service_started
-    environment:
-      - "SPRING_PROFILES_ACTIVE=prod"
-
-  config-server:
-    build: config-server
-    container_name: config-server
-    image: config-server
-    ports:
-      - "8888:8888"
-    environment:
-      - "SPRING_PROFILES_ACTIVE=prod"
-
   postgres-user-service:
     container_name: postgres-user-service
     image: postgres:16.0
@@ -43,20 +13,10 @@ services:
       interval: 5s
       timeout: 1s
       retries: 2
+    ports:
+      - '5433:5432'
     volumes:
       - ./postgres-user-service-volume:/var/lib/postgresql/data
-
-  user-service:
-    build: user-service
-    container_name: user-service
-    image: user-service
-    depends_on:
-      eureka:
-        condition: service_started
-      postgres-user-service:
-        condition: service_healthy
-    environment:
-      - "SPRING_PROFILES_ACTIVE=prod"
 
   postgres-restaurant-service:
     container_name: postgres-restaurant-service
@@ -70,20 +30,10 @@ services:
       interval: 5s
       timeout: 1s
       retries: 2
+    ports:
+      - '5434:5432'
     volumes:
       - ./postgres-restaurant-service-volume:/var/lib/postgresql/data
-
-  restaurant-service:
-    build: restaurant-service
-    container_name: restaurant-service
-    image: restaurant-service
-    depends_on:
-      eureka:
-        condition: service_started
-      postgres-restaurant-service:
-        condition: service_healthy
-    environment:
-      - "SPRING_PROFILES_ACTIVE=prod"
 
   postgres-grade-service:
     container_name: postgres-grade-service
@@ -97,20 +47,10 @@ services:
       interval: 5s
       timeout: 1s
       retries: 2
+    ports:
+      - '5435:5432'
     volumes:
       - ./postgres-grade-service-volume:/var/lib/postgresql/data
-
-  grade-service:
-    build: grade-service
-    container_name: grade-service
-    image: grade-service
-    depends_on:
-      eureka:
-        condition: service_started
-      postgres-restaurant-service:
-        condition: service_healthy
-    environment:
-      - "SPRING_PROFILES_ACTIVE=prod"
 
   postgres-black-list-service:
     container_name: postgres-black-list-service
@@ -124,20 +64,10 @@ services:
       interval: 5s
       timeout: 1s
       retries: 2
+    ports:
+      - '5436:5432'
     volumes:
       - ./postgres-black-list-service-volume:/var/lib/postgresql/data
-
-  black-list-service:
-    build: black-list-service
-    container_name: black-list-service
-    image: black-list-service
-    depends_on:
-      eureka:
-        condition: service_started
-      postgres-black-list-service:
-        condition: service_healthy
-    environment:
-      - "SPRING_PROFILES_ACTIVE=prod"
 
   postgres-file-service:
     container_name: postgres-file-service
@@ -151,20 +81,10 @@ services:
       interval: 5s
       timeout: 1s
       retries: 2
+    ports:
+      - '5437:5432'
     volumes:
       - ./postgres-file-service-volume:/var/lib/postgresql/data
-
-  file-service:
-    build: file-service
-    container_name: file-service
-    image: file-service
-    depends_on:
-      eureka:
-        condition: service_started
-      postgres-file-service:
-        condition: service_healthy
-    environment:
-      - "SPRING_PROFILES_ACTIVE=prod"
 
   minio:
     image: minio/minio
@@ -181,7 +101,3 @@ services:
       - type: bind
         source: minio-volume
         target: /mnt/data
-
-networks:
-  restaurant-booking-system_default:
-    external: true

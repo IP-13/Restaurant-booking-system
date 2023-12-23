@@ -1,0 +1,83 @@
+spring.application.name: gateway
+
+info:
+  app:
+    name: ${spring.application.name}
+
+server:
+  port: 8080
+
+spring:
+  config.import: configserver:http://localhost:8888
+  cloud:
+    config:
+      failFast: true
+      retry:
+        initialInterval: 3000
+        maxInterval: 5000
+        maxAttempts: 20
+    gateway:
+      discovery:
+        locator:
+          lowerCaseServiceId: true
+      routes:
+        # NOTE: RoleCheckerFilter required for each route
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/auth/**, /user-actuator/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
+        - id: restaurant-service
+          uri: lb://restaurant-service
+          predicates:
+            - Path=/restaurant/**, /reservation/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
+        - id: grade-service
+          uri: lb://grade-service
+          predicates:
+            - Path=/grade/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
+        - id: black-list-service
+          uri: lb://black-list-service
+          predicates:
+            - Path=/black-list/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
+        - id: file-service
+          uri: lb://file-service
+          predicates:
+            - Path=/file/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
+
+logging.level:
+    root: INFO
+    org:
+      springframework:
+        cloud:
+          gateway:
+            nodeValue: TRACE
+            route:
+              RouteDefinitionLocator: INFO
+        retry: TRACE
+    reactor.netty.http.client: DEBUG
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    preferIpAddress: true

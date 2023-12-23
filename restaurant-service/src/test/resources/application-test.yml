@@ -23,3 +23,5 @@ spring.cloud.config.enabled: false
 
 security:
   secret: s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu
+
+spring.cloud.loadbalancer.ribbon.enabled: false

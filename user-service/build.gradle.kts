@@ -55,8 +55,6 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
-    implementation("org.glassfish.jersey.core:jersey-common:3.1.4")
-
     // loadbalancer
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
 
@@ -84,7 +82,7 @@ tasks.test {
 
 tasks.jar {
     manifest {
-        attributes["Main-Class"] = "com.ip13.main.MainApplication"
+        attributes["Main-Class"] = "com.ip13.main.Main"
     }
 }
 

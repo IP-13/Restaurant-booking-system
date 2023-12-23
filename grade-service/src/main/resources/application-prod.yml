@@ -16,6 +16,7 @@ eureka:
       defaultZone: http://eureka:8761/eureka
   instance:
     preferIpAddress: true
+    instanceId: ${spring.application.name}:${random.int[1,100]}
 
 info.app.name: ${spring.application.name}
 
@@ -37,3 +38,4 @@ logging.level:
     retry: TRACE
 
 spring.jackson.serialization.indent_output: true
+spring.cloud.loadbalancer.ribbon.enabled: false

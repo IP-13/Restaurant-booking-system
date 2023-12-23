@@ -1,20 +1,19 @@
-spring.application.name: file-service
+spring.application.name: grade-service
 
 spring:
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://postgres-file-service:5432/db
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5435/db
     username: postgres
     password: postgres
-  jpa:
-    properties:
-      hibernate:
-        format_sql: true
-    show_sql: true
+  flyway:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5435/db
+
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://eureka:8761/eureka
+      defaultZone: http://localhost:8761/eureka
   instance:
     preferIpAddress: true
     instanceId: ${spring.application.name}:${random.int[1,100]}
@@ -23,7 +22,7 @@ info.app.name: ${spring.application.name}
 
 server.port: 0
 
-spring.config.import: configserver:http://config-server:8888
+spring.config.import: configserver:http://localhost:8888
 
 spring.cloud:
   config:
@@ -39,12 +38,4 @@ logging.level:
     retry: TRACE
 
 spring.jackson.serialization.indent_output: true
-
-management.endpoint.gateway.enabled: true
-management.endpoints.web.exposure.include:
-  - refresh
-  - health
-  - flyway
-  - beans
-  - metrics
-  - info
+spring.cloud.loadbalancer.ribbon.enabled: false
