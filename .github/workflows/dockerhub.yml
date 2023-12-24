@@ -22,7 +22,8 @@ jobs:
         with:
           image: ${{ secrets.DOCKERHUB_USERNAME }}/restaurant-booking-system
           tags: 0.0.$GITHUB_RUN_NUMBER, latest
-          dockerfile: /black-list-service , /config-server
+          dockerfile: /black-list-service
+          dockerfile: /config-server
           registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
