@@ -7,9 +7,6 @@ on:
 jobs:
   dockerhub:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Restaurant-booking-system
     steps:
       - run: pwd
       - run : ls
