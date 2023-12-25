@@ -29,5 +29,10 @@ jobs:
           file: ./user-service/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
-      - run:
-          ssh ip13@${{ secrets.SERVER_IP }} ls -la
+      - name: Deploy on remote server
+        uses: D3rHase/ssh-command-action@v0.2.2
+        with:
+          host: ${{secrets.SSH_HOST}}
+          user: ${{secrets.SHH_USER}}
+          private_key: ${{secrets.SHH_PRIVATE_KEY}}
+          command: ls -la
