@@ -6,7 +6,7 @@ env:
 on:
   push:
     paths:
-      - $SERVICE_NAME/**
+      - user-service/**
     branches: [ "main" ]
 
 jobs:
