@@ -28,4 +28,4 @@ jobs:
           context: ./user-service
           file: ./user-service/Dockerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
