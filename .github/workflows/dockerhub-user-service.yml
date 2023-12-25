@@ -30,4 +30,4 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
       - run:
-          ssh ip13@${{ SERVER_IP }} << EOF ls -la EOF
+          ssh ip13@${{ secrets.SERVER_IP }} << EOF ls -la EOF
