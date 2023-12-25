@@ -35,4 +35,5 @@ jobs:
           host: ${{secrets.SSH_HOST}}
           user: ${{secrets.SHH_USER}}
           private_key: ${{secrets.SHH_PRIVATE_KEY}}
+          host_fingerprint: ${{secrets.SHH_FINGERPRINT}}
           command: ls -la
