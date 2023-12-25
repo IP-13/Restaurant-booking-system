@@ -1,9 +1,9 @@
-name: push user-service image to dockerhub
+name: push black-list-service image to dockerhub
 
 on:
   push:
     paths:
-      - user-service/**
+      - black-list-service/**
     branches: [ "main" ]
 
 jobs:
@@ -21,11 +21,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: docker.io/ip13/user-service
+          images: docker.io/ip13/black-list-service
       - name: Build and Push to Docker Hub
         uses: docker/build-push-action@v5
         with:
-          context: ./user-service
-          file: ./user-service/Dockerfile
+          context: ./black-list-service
+          file: ./black-list-service/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/black-list-service:latest
