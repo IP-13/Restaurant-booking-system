@@ -24,14 +24,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: docker.io/ip13/$SERVICE_NAME
+          images: docker.io/ip13/${{ env.SERVICE_NAME }}
       - name: Build and Push to Docker Hub
         uses: docker/build-push-action@v5
         with:
-          context: ./$SERVICE_NAME
-          file: ./$SERVICE_NAME/Dockerfile
+          context: ./${{ env.SERVICE_NAME }}
+          file: ./${{ env.SERVICE_NAME }}/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/$SERVICE_NAME:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
         with:
@@ -42,7 +42,8 @@ jobs:
             cd ${{ secrets.PROJECT_DIR }}
             ls -la
             git pull
-            docker container stop $(docker ps --filter name=$SERVICE_NAME -aq)
-            docker container rm $(docker ps --filter name=$SERVICE_NAME -aq)
-            docker pull ip13/$SERVICE_NAME
-            docker run --network=restaurant-booking-system_default -e "SPRING_PROFILES_ACTIVE=prod" --name $SERVICE_NAME ip13/$SERVICE_NAME
+            docker container stop $(docker ps --filter name=${{ env.SERVICE_NAME }} -aq)
+            docker container rm $(docker ps --filter name=${{ env.SERVICE_NAME }} -aq)
+            docker pull ip13/${{ env.SERVICE_NAME }}
+            docker run --network=restaurant-booking-system_default -e "SPRING_PROFILES_ACTIVE=prod" \
+              --name ${{ env.SERVICE_NAME }} ip13/${{ env.SERVICE_NAME }}
