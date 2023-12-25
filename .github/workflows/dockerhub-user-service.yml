@@ -30,11 +30,11 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
       - name: Deploy using ssh
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{secrets.SSH_HOST}}
-          username: ${{secrets.SHH_USER}}
-          key: ${{secrets.SHH_PRIVATE_KEY}}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SHH_USER }}
+          key: ${{ secrets.SHH_PRIVATE_KEY }}
           port: 22
           script: |
             ls -la
