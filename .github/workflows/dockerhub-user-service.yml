@@ -9,8 +9,8 @@ on:
 jobs:
   dockerhub:
     runs-on: ubuntu-latest
-    env:
-      working-directory: user-service
+#    env:
+#      working-directory: user-service
     defaults:
       run:
         working-directory: user-service
