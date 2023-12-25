@@ -3,7 +3,7 @@ name: push to dockerhub
 on:
   push:
     paths:
-      - user-service
+      - user-service/**
     branches: [ "main" ]
 
 jobs:
