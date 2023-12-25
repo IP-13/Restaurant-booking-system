@@ -33,8 +33,9 @@ jobs:
         uses: appleboy/ssh-action@v0.1.4
         with:
           host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SHH_USER }}
-          key: ${{ secrets.SHH_PRIVATE_KEY }}
+          username: root
+          password: ip13
+#          key: ${{ secrets.SHH_PRIVATE_KEY }}
           script: |
             ls -la
 #      - run: mkdir "$HOME/.ssh"
