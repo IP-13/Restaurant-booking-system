@@ -29,10 +29,12 @@ jobs:
           file: ./user-service/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
-      - name: Deploy on remote server
-        uses: D3rHase/ssh-command-action@v0.2.2
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
         with:
           host: ${{secrets.SSH_HOST}}
-          user: ${{secrets.SHH_USER}}
-          private_key: ${{secrets.SHH_PRIVATE_KEY}}
-          command: ls -la
+          username: ${{secrets.SHH_USER}}
+          key: ${{secrets.SHH_PRIVATE_KEY}}
+          port: 22
+          script: |
+            ls -la
