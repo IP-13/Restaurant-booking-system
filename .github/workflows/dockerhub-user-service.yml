@@ -1,20 +1,23 @@
 name: push to dockerhub
 
 on:
-  push: 
+  push:
+    paths:
+      - user-service
     branches: [ "main" ]
 
 jobs:
   dockerhub:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./user-service
     strategy:
       fail-fast: false
       matrix:
         include:
           - dockerfile: ./user-service/Dockerfile
-            image: docker.io/ip13/restaurant-booking-system
-          - dockerfile: ./config-server/Dockerfile
-            image: docker.io/ip13/restaurant-booking-system
+            image: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/restaurant-booking-system
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -28,7 +31,7 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ matrix.image }}
-      - name: Build and push Docker image Drill4Net.Agent.Service
+      - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
