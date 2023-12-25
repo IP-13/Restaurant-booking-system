@@ -27,7 +27,8 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
   eureka:
-    build: eureka
+    build:
+      dockerfile: eureka/Dockerfile-local
     container_name: eureka
     image: eureka
     ports:
@@ -36,7 +37,8 @@ services:
       - "SPRING_PROFILES_ACTIVE=prod"
 
   gateway:
-    build: gateway
+    build:
+      dockerfile: gateway/Dockerfile-local
     container_name: gateway
     image: gateway
     ports:
@@ -48,7 +50,8 @@ services:
       - "SPRING_PROFILES_ACTIVE=prod"
 
   config-server:
-    build: config-server
+    build:
+      dockerfile: config-server/Dockerfile-local
     container_name: config-server
     image: config-server
     ports:
@@ -72,7 +75,8 @@ services:
       - ./postgres-user-service-volume:/var/lib/postgresql/data
 
   user-service:
-    build: user-service
+    build:
+      dockerfile: user-service/Dockerfile-local
     container_name: user-service
     image: user-service
     depends_on:
@@ -99,7 +103,8 @@ services:
       - ./postgres-restaurant-service-volume:/var/lib/postgresql/data
 
   restaurant-service:
-    build: restaurant-service
+    build:
+      dockerfile: restaurant-service/Dockerfile-local
     container_name: restaurant-service
     image: restaurant-service
     depends_on:
@@ -126,7 +131,8 @@ services:
       - ./postgres-grade-service-volume:/var/lib/postgresql/data
 
   grade-service:
-    build: grade-service
+    build:
+      dockerfile: grade-service/Dockerfile-local
     container_name: grade-service
     image: grade-service
     depends_on:
@@ -153,7 +159,8 @@ services:
       - ./postgres-black-list-service-volume:/var/lib/postgresql/data
 
   black-list-service:
-    build: black-list-service
+    build:
+      dockerfile: black-list-service/Dockerfile-local
     container_name: black-list-service
     image: black-list-service
     depends_on:
@@ -180,7 +187,8 @@ services:
       - ./postgres-file-service-volume:/var/lib/postgresql/data
 
   file-service:
-    build: file-service
+    build:
+      dockerfile: file-service/Dockerfile-local
     container_name: file-service
     image: file-service
     depends_on:
