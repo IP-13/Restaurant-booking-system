@@ -1,9 +1,12 @@
 name: push user-service image to dockerhub
 
+env:
+  SERVICE_NAME: user-service
+
 on:
   push:
     paths:
-      - user-service/**
+      - $SERVICE_NAME/**
     branches: [ "main" ]
 
 jobs:
@@ -21,14 +24,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: docker.io/ip13/user-service
-#      - name: Build and Push to Docker Hub
-#        uses: docker/build-push-action@v5
-#        with:
-#          context: ./user-service
-#          file: ./user-service/Dockerfile
-#          push: true
-#          tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
+          images: docker.io/ip13/$SERVICE_NAME
+      - name: Build and Push to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          context: ./$SERVICE_NAME
+          file: ./$SERVICE_NAME/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/$SERVICE_NAME:latest
       - name: Deploy using ssh
         uses: appleboy/ssh-action@master
         with:
@@ -36,9 +39,10 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
+            cd ${{ secrets.PROJECT_DIR }}
             ls -la
-#      - run: mkdir "$HOME/.ssh"
-#      - run: echo "${{ secrets.SSH_PUBLIC_KEY }}" > "$HOME/.ssh/id_rsa.pub"
-#      - run: chmod 600 "$HOME/.ssh/id_rsa.pub"
-#      - run: cat "$HOME/.ssh/id_rsa.pub"
-#      - run: ssh -i $HOME/.ssh/id_rsa.pub -o StrictHostKeyChecking=no ip13@84.201.189.82 ls -la
+            git pull
+            docker container stop $(docker ps --filter name=$SERVICE_NAME -aq)
+            docker container rm $(docker ps --filter name=$SERVICE_NAME -aq)
+            docker pull ip13/$SERVICE_NAME
+            docker run --network=restaurant-booking-system_default -e "SPRING_PROFILES_ACTIVE=prod" --name $SERVICE_NAME ip13/$SERVICE_NAME
