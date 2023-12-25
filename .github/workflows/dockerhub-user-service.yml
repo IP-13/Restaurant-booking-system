@@ -33,3 +33,4 @@ jobs:
           repository: restaurant-booking-system
           context: .
           push: true
+          tags: user/app:latest
