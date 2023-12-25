@@ -1,0 +1,179 @@
+version: "3.8"
+
+services:
+  eureka:
+    container_name: eureka
+    image: ip13/eureka
+    ports:
+      - "8761:8761"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  gateway:
+    container_name: gateway
+    image: ip13/gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      eureka:
+        condition: service_started
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  config-server:
+    container_name: config-server
+    image: ip13/config-server
+    ports:
+      - "8888:8888"
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  postgres-user-service:
+    container_name: postgres-user-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-user-service-volume:/var/lib/postgresql/data
+
+  user-service:
+    container_name: user-service
+    image: ip13/user-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-user-service:
+        condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  postgres-restaurant-service:
+    container_name: postgres-restaurant-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-restaurant-service-volume:/var/lib/postgresql/data
+
+  restaurant-service:
+    container_name: restaurant-service
+    image: ip13/restaurant-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-restaurant-service:
+        condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  postgres-grade-service:
+    container_name: postgres-grade-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-grade-service-volume:/var/lib/postgresql/data
+
+  grade-service:
+    container_name: grade-service
+    image: ip13/grade-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-restaurant-service:
+        condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  postgres-black-list-service:
+    container_name: postgres-black-list-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-black-list-service-volume:/var/lib/postgresql/data
+
+  black-list-service:
+    container_name: black-list-service
+    image: ip13/black-list-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-black-list-service:
+        condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  postgres-file-service:
+    container_name: postgres-file-service
+    image: postgres:16.0
+    environment:
+      POSTGRES_DB: db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-U", "postgres" ]
+      interval: 5s
+      timeout: 1s
+      retries: 2
+    volumes:
+      - ./postgres-file-service-volume:/var/lib/postgresql/data
+
+  file-service:
+    container_name: file-service
+    image: ip13/file-service
+    depends_on:
+      eureka:
+        condition: service_started
+      postgres-file-service:
+        condition: service_healthy
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    environment:
+      - MINIO_ROOT_USER=minio_admin
+      - MINIO_ROOT_PASSWORD=minio_admin
+      - MINIO_VOLUMES=/mnt/data
+    command: server ~/minio --console-address :9001
+    ports:
+      - '9001:9001'
+      - '9000:9000'
+    volumes:
+      - type: bind
+        source: minio-volume
+        target: /mnt/data
+
+networks:
+  restaurant-booking-system_default:
+    external: true
