@@ -24,3 +24,5 @@ jobs:
         with:
           context: ./user-service
           file: ./user-service/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
