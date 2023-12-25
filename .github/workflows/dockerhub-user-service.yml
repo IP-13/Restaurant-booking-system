@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./user-service
+        working-directory: user-service
     steps:
       - run : pwd
       - run : ls -la
