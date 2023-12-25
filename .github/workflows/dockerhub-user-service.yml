@@ -27,11 +27,9 @@ jobs:
       - run: pwd
       - run: ls -la
       - name: Build and push Docker image
-        uses: mr-smithers-excellent/docker-build-push@v5
+        uses: docker/build-push-action@v5
         with:
           registry: docker.io
-          dockerfile: .
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/restaurant-booking-system
-          tags: 0.0.$GITHUB_RUN_NUMBER, latest
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: restaurant-booking-system
+          context: .
+          push: true
