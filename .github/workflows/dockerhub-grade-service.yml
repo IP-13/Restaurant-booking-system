@@ -6,6 +6,9 @@ on:
       - grade-service/**
     branches: [ "main" ]
 
+env:
+  SERVICE_NAME: grade-service
+
 jobs:
   dockerhub:
     runs-on: ubuntu-latest
@@ -21,11 +24,26 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: docker.io/ip13/grade-service
+          images: docker.io/ip13/${{ env.SERVICE_NAME }}
       - name: Build and Push to Docker Hub
         uses: docker/build-push-action@v5
         with:
-          context: ./grade-service
-          file: ./grade-service/Dockerfile
+          context: ./${{ env.SERVICE_NAME }}
+          file: ./${{ env.SERVICE_NAME }}/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/grade-service:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.PROJECT_DIR }}
+            ls -la
+            git pull
+            docker container stop $(docker ps -a --format '{{.Names}}' | grep ^${{ env.SERVICE_NAME }})
+            docker container rm $(docker ps -a --filter name=${{ env.SERVICE_NAME }}* -aq)
+            docker pull ip13/${{ env.SERVICE_NAME }}
+            docker run --network=restaurant-booking-system_default -e "SPRING_PROFILES_ACTIVE=prod" \
+              --name ${{ env.SERVICE_NAME }} -d ip13/${{ env.SERVICE_NAME }}

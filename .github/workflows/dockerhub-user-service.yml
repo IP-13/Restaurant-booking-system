@@ -1,13 +1,13 @@
 name: push user-service image to dockerhub
 
-env:
-  SERVICE_NAME: user-service
-
 on:
   push:
     paths:
       - user-service/**
     branches: [ "main" ]
+
+env:
+  SERVICE_NAME: user-service
 
 jobs:
   dockerhub:
@@ -46,4 +46,4 @@ jobs:
             docker container rm $(docker ps -a --filter name=${{ env.SERVICE_NAME }}* -aq)
             docker pull ip13/${{ env.SERVICE_NAME }}
             docker run --network=restaurant-booking-system_default -e "SPRING_PROFILES_ACTIVE=prod" \
-              --name ${{ env.SERVICE_NAME }} ip13/${{ env.SERVICE_NAME }}
+              --name ${{ env.SERVICE_NAME }} -d ip13/${{ env.SERVICE_NAME }}
