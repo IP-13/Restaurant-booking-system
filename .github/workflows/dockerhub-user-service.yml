@@ -29,16 +29,16 @@ jobs:
 #          file: ./user-service/Dockerfile
 #          push: true
 #          tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
-#      - name: Deploy using ssh
-#        uses: appleboy/ssh-action@v0.1.4
-#        with:
-#          host: ${{ secrets.SSH_HOST }}
-#          username: ${{ secrets.SHH_USER }}
-#          key: ${{ secrets.SHH_PRIVATE_KEY }}
-#          script: |
-#            ls -la
-      - run: mkdir "$HOME/.ssh"
-      - run: echo "${{ secrets.SSH_PUBLIC_KEY }}" > "$HOME/.ssh/id_rsa.pub"
-      - run: chmod 600 "$HOME/.ssh/id_rsa.pub"
-      - run: cat "$HOME/.ssh/id_rsa.pub"
-      - run: ssh -i $HOME/.ssh/id_rsa.pub -o StrictHostKeyChecking=no ip13@84.201.189.82 ls -la
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SHH_USER }}
+          key: ${{ secrets.SHH_PRIVATE_KEY }}
+          script: |
+            ls -la
+#      - run: mkdir "$HOME/.ssh"
+#      - run: echo "${{ secrets.SSH_PUBLIC_KEY }}" > "$HOME/.ssh/id_rsa.pub"
+#      - run: chmod 600 "$HOME/.ssh/id_rsa.pub"
+#      - run: cat "$HOME/.ssh/id_rsa.pub"
+#      - run: ssh -i $HOME/.ssh/id_rsa.pub -o StrictHostKeyChecking=no ip13@84.201.189.82 ls -la
