@@ -30,6 +30,7 @@ jobs:
         uses: mr-smithers-excellent/docker-build-push@v5
         with:
           registry: docker.io
+          dockerfile: Dockerfile
           image: ${{ secrets.DOCKERHUB_USERNAME }}/restaurant-booking-system
           tags: 0.0.$GITHUB_RUN_NUMBER, latest
           username: ${{ secrets.DOCKERHUB_USERNAME }}
