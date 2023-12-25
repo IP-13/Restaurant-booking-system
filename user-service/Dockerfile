@@ -4,6 +4,6 @@ WORKDIR /home/gradle/src
 RUN gradle build -x test --no-daemon
 
 FROM amazoncorretto:17-alpine-jdk
-RUN echo ${PWD} && ls -la
+RUN echo ${PWD} && ls -l
 COPY --from=build /home/gradle/src/build/libs/user-service-1.0.0.jar user-service-1.0.0.jar
 ENTRYPOINT ["java", "-jar","/user-service-1.0.0.jar"]
