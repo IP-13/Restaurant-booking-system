@@ -29,3 +29,5 @@ jobs:
           file: ./user-service/Dockerfile
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/user-service:latest
+      - run:
+          ssh ip13@${{ SERVER_IP }} << EOF ls -la EOF
