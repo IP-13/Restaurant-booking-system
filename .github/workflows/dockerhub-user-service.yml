@@ -9,9 +9,9 @@ on:
 jobs:
   dockerhub:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: user-service
+#    defaults:
+#      run:
+#        working-directory: user-service
     steps:
       - run : pwd
       - run : ls -la
