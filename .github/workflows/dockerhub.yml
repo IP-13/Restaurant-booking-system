@@ -12,9 +12,9 @@ jobs:
       matrix:
         include:
           - dockerfile: ./user-service
-            image: ${{ secrets.DOCKERHUB_USERNAME }}/restaurant-booking-system/user-service
+            image: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/restaurant-booking-system/user-service
           - dockerfile: ./config-server
-            image: ${{ secrets.DOCKERHUB_USERNAME }}/restaurant-booking-system/config-server
+            image: docker.io/${{ secrets.DOCKERHUB_USERNAME }}/restaurant-booking-system/config-server
     steps:
       - name: Checkout
         uses: actions/checkout@v3
