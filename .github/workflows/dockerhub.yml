@@ -11,9 +11,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./user-service
+          - dockerfile: ./user-service/Dockerfile
             image: docker.io/ip13/restaurant-booking-system/user-service
-          - dockerfile: ./config-server
+          - dockerfile: ./config-server/Dockerfile
             image: docker.io/ip13/restaurant-booking-system/config-server
     steps:
       - name: Checkout
