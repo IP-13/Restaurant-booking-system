@@ -42,8 +42,8 @@ jobs:
             cd ${{ secrets.PROJECT_DIR }}
             ls -la
             git pull
-            docker container stop $(docker ps --filter name=${{ env.SERVICE_NAME }} -aq)
-            docker container rm $(docker ps --filter name=${{ env.SERVICE_NAME }} -aq)
+            docker container stop $(docker ps -a --format '{{.Names}}' | grep ^${{ env.SERVICE_NAME }})
+            docker container rm $(docker ps -a --filter name=${{ env.SERVICE_NAME }}* -aq)
             docker pull ip13/${{ env.SERVICE_NAME }}
             docker run --network=restaurant-booking-system_default -e "SPRING_PROFILES_ACTIVE=prod" \
               --name ${{ env.SERVICE_NAME }} ip13/${{ env.SERVICE_NAME }}
