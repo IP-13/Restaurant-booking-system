@@ -28,7 +28,8 @@ services:
 
   eureka:
     build:
-      dockerfile: eureka/Dockerfile-local
+      context: eureka
+      dockerfile: Dockerfile-local
     container_name: eureka
     image: eureka
     ports:
@@ -38,7 +39,8 @@ services:
 
   gateway:
     build:
-      dockerfile: gateway/Dockerfile-local
+      context: gateway
+      dockerfile: Dockerfile-local
     container_name: gateway
     image: gateway
     ports:
@@ -51,7 +53,8 @@ services:
 
   config-server:
     build:
-      dockerfile: config-server/Dockerfile-local
+      context: config-server
+      dockerfile: Dockerfile-local
     container_name: config-server
     image: config-server
     ports:
@@ -76,7 +79,8 @@ services:
 
   user-service:
     build:
-      dockerfile: user-service/Dockerfile-local
+      context: user-service
+      dockerfile: Dockerfile-local
     container_name: user-service
     image: user-service
     depends_on:
@@ -104,7 +108,8 @@ services:
 
   restaurant-service:
     build:
-      dockerfile: restaurant-service/Dockerfile-local
+      context: restaurant-service
+      dockerfile: Dockerfile-local
     container_name: restaurant-service
     image: restaurant-service
     depends_on:
@@ -132,7 +137,8 @@ services:
 
   grade-service:
     build:
-      dockerfile: grade-service/Dockerfile-local
+      context: grade-service
+      dockerfile: Dockerfile-local
     container_name: grade-service
     image: grade-service
     depends_on:
@@ -160,7 +166,8 @@ services:
 
   black-list-service:
     build:
-      dockerfile: black-list-service/Dockerfile-local
+      context: black-list-service
+      dockerfile: Dockerfile-local
     container_name: black-list-service
     image: black-list-service
     depends_on:
@@ -188,7 +195,8 @@ services:
 
   file-service:
     build:
-      dockerfile: file-service/Dockerfile-local
+      context: file-service
+      dockerfile: Dockerfile-local
     container_name: file-service
     image: file-service
     depends_on:
