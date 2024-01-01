@@ -58,6 +58,8 @@ dependencies {
     // loadbalancer
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
 
+    // open api
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
 }
 
 extra["springCloudVersion"] = "2022.0.4"

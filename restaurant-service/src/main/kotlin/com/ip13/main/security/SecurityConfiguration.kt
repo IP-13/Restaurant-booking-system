@@ -30,6 +30,8 @@ class SecurityConfiguration(
                 authorize("/reservation/process-reservation", hasAuthority(Role.MANAGER.name))
                 authorize("/reservation/add-booking-constraint", hasAuthority(Role.MANAGER.name))
                 authorize("/reservation/table-reserve-ticket/**", authenticated)
+                authorize("/swagger-ui/**", permitAll)
+                authorize("/v3/api-docs/**", permitAll)
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS

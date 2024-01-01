@@ -39,3 +39,5 @@ logging.level:
 
 spring.jackson.serialization.indent_output: true
 spring.cloud.loadbalancer.ribbon.enabled: false
+
+springdoc.swagger-ui.path: /swagger-ui/index.html

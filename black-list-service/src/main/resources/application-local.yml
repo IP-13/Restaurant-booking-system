@@ -49,3 +49,5 @@ management.endpoints.web.exposure.include:
   - beans
   - metrics
   - info
+
+springdoc.swagger-ui.path: /swagger-ui/index.html

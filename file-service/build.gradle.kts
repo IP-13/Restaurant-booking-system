@@ -60,6 +60,9 @@ dependencies {
 
     // minio
     implementation("io.minio:minio:8.5.7")
+
+    // open api
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
