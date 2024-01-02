@@ -55,6 +55,9 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
+    // open api
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+
     // loadbalancer
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
 

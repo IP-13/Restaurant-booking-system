@@ -62,6 +62,9 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
+    // open api
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
+
     // tests
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

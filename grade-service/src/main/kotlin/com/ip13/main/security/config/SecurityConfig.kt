@@ -19,6 +19,8 @@ class SecurityConfig(
     fun filterChain(http: ServerHttpSecurity): SecurityWebFilterChain {
         return http
             .authorizeExchange { exchanges ->
+                exchanges.pathMatchers("/swagger-ui/**").permitAll()
+                exchanges.pathMatchers("/v3/api-docs/**").permitAll()
                 exchanges.anyExchange().authenticated()
             }
             .csrf { it.disable() }
