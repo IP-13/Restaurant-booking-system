@@ -21,8 +21,8 @@ class SwaggerConfig {
                 )
         )
         .info(
-            Info().title("char-service")
-                .description("char-service api")
+            Info().title("chat-service")
+                .description("chat-service api")
                 .version("1.0.0")
         )
 }
