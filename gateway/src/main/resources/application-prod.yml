@@ -62,6 +62,14 @@ spring:
             - name: RoleCheckerFilter
               args:
                 isOpen: true
+        - id: chat-service
+          uri: lb://chat-service
+          predicates:
+            - Path=/chat/**
+          filters:
+            - name: RoleCheckerFilter
+              args:
+                isOpen: true
 
 logging.level:
     root: INFO
