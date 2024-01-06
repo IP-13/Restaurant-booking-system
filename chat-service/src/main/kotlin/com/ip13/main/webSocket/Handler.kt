@@ -20,8 +20,9 @@ class Handler : WebSocketHandler {
 
     override fun afterConnectionEstablished(session: WebSocketSession) {
         log.info("[{}] connection established with session id {}", LocalDateTime.now(), session.id)
-        undeliveredMessages[session.principal?.name]?.forEach { session.sendMessage(TextMessage(it)) }
-            ?: throw RuntimeException("No principal")
+        val username = session.principal?.name ?: throw RuntimeException("No principal")
+        sessions[username] = session
+        undeliveredMessages[username]?.forEach { session.sendMessage(TextMessage(it)) }
     }
 
     /**
@@ -31,7 +32,13 @@ class Handler : WebSocketHandler {
      * payload - message
      */
     override fun handleMessage(session: WebSocketSession, webSocketMessage: WebSocketMessage<*>) {
-        val (receiver, payload) = parsePayload(webSocketMessage.payload as String)
+        val (receiver, payload) = try {
+            parsePayload(webSocketMessage.payload as String)
+        } catch (ex: RuntimeException) {
+            log.info(ex.message)
+            session.sendMessage(TextMessage(ex.message ?: "Parse error"))
+            return
+        }
 
         val author = session.principal?.name ?: throw RuntimeException("No principal")
         val message = "$author: $payload"
@@ -44,8 +51,10 @@ class Handler : WebSocketHandler {
         log.info("[{}] Error occurred on session {}", LocalDateTime.now(), session.id)
 
 
-    override fun afterConnectionClosed(session: WebSocketSession, closeStatus: CloseStatus) =
+    override fun afterConnectionClosed(session: WebSocketSession, closeStatus: CloseStatus) {
         log.info("[{}] Connection closed on session {}, status {}", LocalDateTime.now(), session.id, closeStatus.code)
+        sessions.remove(session.principal!!.name)
+    }
 
     override fun supportsPartialMessages(): Boolean = false
 
