@@ -223,6 +223,18 @@ services:
         source: minio-volume
         target: /mnt/data
 
+  chat-service:
+    build:
+      context: chat-service
+      dockerfile: Dockerfile-local
+    container_name: chat-service
+    image: chat-service
+    depends_on:
+      eureka:
+        condition: service_started
+    environment:
+      - "SPRING_PROFILES_ACTIVE=prod"
+
 networks:
   restaurant-booking-system_default:
     external: true

@@ -1,0 +1,2 @@
+#!/bin/bash
+wscat -H "Authorization: Bearer $(cat token)" -c localhost:8080/chat
