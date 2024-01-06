@@ -24,10 +24,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter")
 
     // spring data jpa and postgres
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.postgresql:postgresql:42.6.0")
-    implementation("org.flywaydb:flyway-core:9.22.3")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+//    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+//    implementation("org.postgresql:postgresql:42.6.0")
+//    implementation("org.flywaydb:flyway-core:9.22.3")
+//    implementation("org.springframework.boot:spring-boot-starter-validation")
 
     // reflection
     implementation("org.jetbrains.kotlin:kotlin-reflect")

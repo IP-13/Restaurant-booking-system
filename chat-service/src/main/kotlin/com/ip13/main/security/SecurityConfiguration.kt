@@ -23,15 +23,7 @@ class SecurityConfiguration(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         http {
             authorizeHttpRequests {
-                authorize("/restaurant/create-ticket", authenticated)
-                authorize("/restaurant/process-ticket", hasAuthority(Role.ADMIN.name))
-                authorize("/restaurant/id/**", authenticated)
-                authorize("/reservation/reserve-table", authenticated)
-                authorize("/reservation/process-reservation", hasAuthority(Role.MANAGER.name))
-                authorize("/reservation/add-booking-constraint", hasAuthority(Role.MANAGER.name))
-                authorize("/reservation/table-reserve-ticket/**", authenticated)
-                authorize("/swagger-ui/**", permitAll)
-                authorize("/v3/api-docs/**", permitAll)
+                authorize(anyRequest, permitAll)
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS
