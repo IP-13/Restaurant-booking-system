@@ -7,4 +7,5 @@ tasks.register("clean") {
     delete("user-service/build")
     delete("black-list-service/build")
     delete("file-service/build")
+    delete("chat-service/build")
 }

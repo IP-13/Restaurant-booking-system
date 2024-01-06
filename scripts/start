@@ -24,5 +24,8 @@ cd ..
 cd file-service
 gradle build -x test
 cd ..
+cd chat-service
+gradle build -x test
+cd ..
 
 docker compose up
