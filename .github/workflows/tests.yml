@@ -23,6 +23,7 @@ jobs:
           grade-service/*.gradle*
           restaurant-service/*.gradle*
           user-service/*.gradle*
+          chat-service/*.gradle*
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
