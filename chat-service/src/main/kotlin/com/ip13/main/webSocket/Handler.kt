@@ -1,6 +1,8 @@
 package com.ip13.main.webSocket
 
+import com.ip13.main.event.BlackListNotificationEvent
 import com.ip13.main.util.getLogger
+import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.web.socket.CloseStatus
 import org.springframework.web.socket.TextMessage
 import org.springframework.web.socket.WebSocketHandler
@@ -18,6 +20,17 @@ class Handler : WebSocketHandler {
     private val sessions = mutableMapOf<String, WebSocketSession>()
     private val undeliveredMessages = mutableMapOf<String, MutableList<String>>()
 
+    @KafkaListener(topics = [BAD_PEOPLE_TOPIC])
+    fun handleNotification(event: BlackListNotificationEvent) {
+        log.info("[${LocalDateTime.now()}] Event received: $event")
+
+        val message = "${event.senderName}: ${event.message}"
+
+        sessions[event.receiverName]?.sendMessage(TextMessage(message))
+            ?: undeliveredMessages[event.receiverName]?.add(message)
+            ?: undeliveredMessages.put(event.receiverName, mutableListOf(message))
+    }
+
     override fun afterConnectionEstablished(session: WebSocketSession) {
         log.info("[{}] connection established with session id {}", LocalDateTime.now(), session.id)
         val username = session.principal?.name ?: throw RuntimeException("No principal")
@@ -26,8 +39,7 @@ class Handler : WebSocketHandler {
     }
 
     /**
-     * message received in form:
-     * userTo: payload
+     * message received in form: 'userTo: payload'
      * userTo - name of receiver
      * payload - message
      */
@@ -69,5 +81,9 @@ class Handler : WebSocketHandler {
         } else {
             splitList[0] to splitList[1]
         }
+    }
+
+    companion object {
+        private const val BAD_PEOPLE_TOPIC = "bad-people"
     }
 }

@@ -11,6 +11,7 @@ spring:
       hibernate:
         format_sql: true
     show_sql: true
+
 eureka:
   client:
     serviceUrl:
@@ -50,3 +51,10 @@ management.endpoints.web.exposure.include:
   - info
 
 springdoc.swagger-ui.path: /swagger-ui/index.html
+
+spring.kafka:
+  bootstrap-servers: kafka:9092
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties.spring.json.type.mapping: black-list-event:com.ip13.main.event.BlackListNotificationEvent

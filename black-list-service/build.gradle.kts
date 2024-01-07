@@ -60,6 +60,9 @@ dependencies {
 
     // open api
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
+
+    // kafka
+    implementation("org.springframework.kafka:spring-kafka:3.1.1")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
