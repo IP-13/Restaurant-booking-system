@@ -31,3 +31,11 @@ spring.jackson.serialization.indent_output: true
 spring.cloud.loadbalancer.ribbon.enabled: false
 
 springdoc.swagger-ui.path: /swagger-ui/index.html
+
+spring.kafka:
+  bootstrap-servers: localhost:9092
+  consumer:
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    group-id: black-list
+    properties.spring.json.type.mapping: black-list-event:com.ip13.main.event.BlackListNotificationEvent

@@ -72,6 +72,9 @@ dependencies {
     // web-socket
     implementation("org.springframework.boot:spring-boot-starter-websocket")
 
+    // kafka
+    implementation("org.springframework.kafka:spring-kafka:3.1.1")
+
     // tests
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
