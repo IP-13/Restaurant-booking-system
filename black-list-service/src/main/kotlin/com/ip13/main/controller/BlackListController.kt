@@ -5,14 +5,10 @@ import com.ip13.main.model.entity.BlackList
 import com.ip13.main.service.BlackListService
 import com.ip13.main.util.getLogger
 import org.springframework.http.MediaType
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import java.security.Principal
 import java.time.Duration
 
 @RestController
@@ -34,12 +30,13 @@ class BlackListController(
 
     @PostMapping("/add", produces = [MediaType.APPLICATION_NDJSON_VALUE])
     fun add(
+        principal: Principal,
         @RequestBody
         request: BlackListRequest,
     ): Mono<BlackList> {
         log.debug("/black-list/add endpoint invoked")
 
-        return Mono.just(blackListService.save(request))
+        return Mono.just(blackListService.save(request, principal.name))
     }
 
     @GetMapping("/get-all", produces = [MediaType.APPLICATION_NDJSON_VALUE])
