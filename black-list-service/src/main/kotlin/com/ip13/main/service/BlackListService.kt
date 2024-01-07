@@ -34,6 +34,6 @@ class BlackListService(
     }
 
     companion object {
-        private const val topic = "bad people"
+        private const val topic = "bad-people"
     }
 }
