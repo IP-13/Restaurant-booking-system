@@ -50,3 +50,9 @@ management.endpoints.web.exposure.include:
   - info
 
 springdoc.swagger-ui.path: /swagger-ui/index.html
+
+spring.kafka:
+  bootstrap-servers: kafka:9092
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
