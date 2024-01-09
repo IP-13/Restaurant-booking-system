@@ -234,7 +234,3 @@ services:
         condition: service_started
     environment:
       - "SPRING_PROFILES_ACTIVE=prod"
-
-networks:
-  restaurant-booking-system_default:
-    external: true
