@@ -7,7 +7,7 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
@@ -46,7 +46,7 @@ class JwtRequestFilter(
 
             if (username != null) {
                 // username != null, if and only if jwt != null
-                val authorities = tokenUtils.getRoles(jwt!!).map { GrantedAuthority { it } }
+                val authorities = tokenUtils.getRoles(jwt!!).map { SimpleGrantedAuthority(it) }
 
                 val authentication = UsernamePasswordAuthenticationToken(
                     username,
