@@ -50,7 +50,7 @@ management.endpoints.web.exposure.include:
   - metrics
   - info
 
-springdoc.swagger-ui.path: /swagger-ui/index.html
+springdoc.swagger-ui.path: /black-list/swagger
 
 spring.kafka:
   bootstrap-servers: localhost:9092
