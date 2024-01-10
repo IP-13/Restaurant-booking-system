@@ -27,9 +27,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
   eureka:
-    build:
-      context: eureka
-      dockerfile: Dockerfile-local
+    build: eureka
     container_name: eureka
     image: eureka
     ports:
@@ -38,9 +36,7 @@ services:
       - "SPRING_PROFILES_ACTIVE=prod"
 
   gateway:
-    build:
-      context: gateway
-      dockerfile: Dockerfile-local
+    build: gateway
     container_name: gateway
     image: gateway
     ports:
@@ -52,9 +48,7 @@ services:
       - "SPRING_PROFILES_ACTIVE=prod"
 
   config-server:
-    build:
-      context: config-server
-      dockerfile: Dockerfile-local
+    build: config-server
     container_name: config-server
     image: config-server
     ports:
@@ -78,9 +72,7 @@ services:
       - ./postgres-user-service-volume:/var/lib/postgresql/data
 
   user-service:
-    build:
-      context: user-service
-      dockerfile: Dockerfile-local
+    build: user-service
     container_name: user-service
     image: user-service
     depends_on:
@@ -107,9 +99,7 @@ services:
       - ./postgres-restaurant-service-volume:/var/lib/postgresql/data
 
   restaurant-service:
-    build:
-      context: restaurant-service
-      dockerfile: Dockerfile-local
+    build: restaurant-service
     container_name: restaurant-service
     image: restaurant-service
     depends_on:
@@ -136,9 +126,7 @@ services:
       - ./postgres-grade-service-volume:/var/lib/postgresql/data
 
   grade-service:
-    build:
-      context: grade-service
-      dockerfile: Dockerfile-local
+    build: grade-service
     container_name: grade-service
     image: grade-service
     depends_on:
@@ -165,9 +153,7 @@ services:
       - ./postgres-black-list-service-volume:/var/lib/postgresql/data
 
   black-list-service:
-    build:
-      context: black-list-service
-      dockerfile: Dockerfile-local
+    build: black-list-service
     container_name: black-list-service
     image: black-list-service
     depends_on:
@@ -194,9 +180,7 @@ services:
       - ./postgres-file-service-volume:/var/lib/postgresql/data
 
   file-service:
-    build:
-      context: file-service
-      dockerfile: Dockerfile-local
+    build: file-service
     container_name: file-service
     image: file-service
     depends_on:
@@ -224,9 +208,7 @@ services:
         target: /mnt/data
 
   chat-service:
-    build:
-      context: chat-service
-      dockerfile: Dockerfile-local
+    build: chat-service
     container_name: chat-service
     image: chat-service
     depends_on:
