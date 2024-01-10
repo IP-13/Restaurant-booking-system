@@ -22,6 +22,7 @@ class SecurityConfig(
             .authorizeExchange { exchanges ->
                 exchanges.pathMatchers("/black-list/get-all").hasAuthority(Role.ADMIN.name)
                 exchanges.pathMatchers("/black-list/add").hasAnyAuthority(Role.ADMIN.name, Role.MANAGER.name)
+                exchanges.pathMatchers("/black-list/swagger").permitAll()
                 exchanges.pathMatchers("/black-list/**").authenticated()
                 exchanges.pathMatchers("/swagger-ui/**").permitAll()
                 exchanges.pathMatchers("/v3/api-docs/**").permitAll()
