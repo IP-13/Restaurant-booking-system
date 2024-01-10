@@ -1,13 +1,13 @@
-name: push grade-service image to dockerhub
+name: push restaurant-service image to dockerhub
 
 on:
   push:
     paths:
-      - grade-service/**
+      - restaurant-service/**
     branches: [ "main" ]
 
 env:
-  SERVICE_NAME: grade-service
+  SERVICE_NAME: restaurant-service
 
 jobs:
   dockerhub:
@@ -29,7 +29,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./${{ env.SERVICE_NAME }}
-          file: ./${{ env.SERVICE_NAME }}/Dockerfile
+          file: ./${{ env.SERVICE_NAME }}/Dockerfile-github-actions
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest
       - name: Deploy using ssh

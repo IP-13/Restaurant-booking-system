@@ -1,9 +1,9 @@
-name: push gateway image to dockerhub
+name: push config-server image to dockerhub
 
 on:
   push:
     paths:
-      - gateway/**
+      - config-server/**
     branches: [ "main" ]
 
 jobs:
@@ -21,11 +21,11 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: docker.io/ip13/gateway
+          images: docker.io/ip13/config-server
       - name: Build and Push to Docker Hub
         uses: docker/build-push-action@v5
         with:
-          context: ./gateway
-          file: ./gateway/Dockerfile
+          context: ./config-server
+          file: ./config-server/Dockerfile-github-actions
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/gateway:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/config-server:latest

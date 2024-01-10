@@ -26,6 +26,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./eureka
-          file: ./eureka/Dockerfile
+          file: ./eureka/Dockerfile-github-actions
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/eureka:latest
