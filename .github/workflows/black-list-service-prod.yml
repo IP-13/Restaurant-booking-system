@@ -29,7 +29,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./${{ env.SERVICE_NAME }}
-          file: ./${{ env.SERVICE_NAME }}/Dockerfile
+          file: ./${{ env.SERVICE_NAME }}/Dockerfile-github-actions
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.SERVICE_NAME }}:latest
       - name: Deploy using ssh
