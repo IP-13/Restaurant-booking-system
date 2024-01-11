@@ -40,6 +40,9 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+    // open api
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
 }
 
 extra["springCloudVersion"] = "2022.0.4"

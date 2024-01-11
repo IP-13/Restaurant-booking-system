@@ -58,3 +58,9 @@ spring.kafka:
     key-serializer: org.apache.kafka.common.serialization.StringSerializer
     value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     properties.spring.json.type.mapping: black-list-event:com.ip13.main.event.BlackListNotificationEvent
+
+springdoc:
+  api-docs:
+    path: /black-list/v3/api-docs
+  swagger-ui:
+    path: /black-list/swagger-ui.html

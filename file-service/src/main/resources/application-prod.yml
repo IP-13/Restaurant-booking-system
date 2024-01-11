@@ -40,11 +40,8 @@ logging.level:
 
 spring.jackson.serialization.indent_output: true
 
-management.endpoint.gateway.enabled: true
-management.endpoints.web.exposure.include:
-  - refresh
-  - health
-  - flyway
-  - beans
-  - metrics
-  - info
+springdoc:
+  api-docs:
+    path: /file/v3/api-docs
+  swagger-ui:
+    path: /file/swagger-ui.html

@@ -28,8 +28,7 @@ class SecurityConfiguration(
                 authorize("/auth/login/**", permitAll)
                 authorize("/auth/user/**", authenticated)
                 authorize("/user-actuator/**", hasAuthority(Role.ADMIN.name))
-                authorize("/swagger-ui/**", permitAll)
-                authorize("/v3/api-docs/**", permitAll)
+                authorize("/auth/v3/api-docs", permitAll)
                 authorize(anyRequest, authenticated)
             }
             sessionManagement {
