@@ -10,10 +10,13 @@ import com.ip13.main.service.RestaurantAddTicketService
 import com.ip13.main.service.RestaurantService
 import com.ip13.main.util.getLogger
 import jakarta.validation.Valid
+import org.springframework.cache.annotation.CacheConfig
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import java.security.Principal
 
+@CacheConfig(cacheNames = ["restaurants"])
 @Validated
 @RestController
 @RequestMapping("/restaurant")
@@ -49,11 +52,14 @@ class RestaurantController(
         return restaurantAddTicketService.processRestaurantAddTicket(request, principal.name, authHeader)
     }
 
+    @Cacheable(value = ["restaurants"], key = "#id", sync = true)
     @GetMapping("/id/{id}")
     fun getRestaurantById(
         @PathVariable
         id: Int,
     ): RestaurantResponse? {
+        log.debug("/restaurant/id/${id} endpoint invoked")
+
         return restaurantService.findByIdOrNull(id)?.toRestaurantResponse()
     }
 }
