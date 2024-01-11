@@ -1,6 +1,5 @@
 package com.ip13.main.security
 
-import com.ip13.main.security.model.enum.Role
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -24,6 +23,7 @@ class SecurityConfiguration(
         http {
             authorizeHttpRequests {
                 authorize("/chat", authenticated)
+                authorize("/chat/v3/api-docs", permitAll)
             }
             sessionManagement {
                 sessionCreationPolicy = SessionCreationPolicy.STATELESS

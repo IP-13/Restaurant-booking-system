@@ -39,3 +39,9 @@ spring.kafka:
     value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
     group-id: black-list
     properties.spring.json.type.mapping: black-list-event:com.ip13.main.event.BlackListNotificationEvent
+
+springdoc:
+  api-docs:
+    path: /chat/v3/api-docs
+  swagger-ui:
+    path: /chat/swagger-ui.html
