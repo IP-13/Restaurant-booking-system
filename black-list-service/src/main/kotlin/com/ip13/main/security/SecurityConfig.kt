@@ -22,8 +22,8 @@ class SecurityConfig(
             .authorizeExchange { exchanges ->
                 exchanges.pathMatchers("/black-list/get-all").hasAuthority(Role.ADMIN.name)
                 exchanges.pathMatchers("/black-list/add").hasAnyAuthority(Role.ADMIN.name, Role.MANAGER.name)
-                exchanges.pathMatchers("/black-list/**").authenticated()
                 exchanges.pathMatchers("/black-list/v3/api-docs").permitAll()
+                exchanges.pathMatchers("/black-list/**").authenticated()
             }
             .csrf { it.disable() }
             .httpBasic { it.disable() }
