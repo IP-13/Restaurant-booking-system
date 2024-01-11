@@ -89,3 +89,35 @@ eureka:
       defaultZone: http://localhost:8761/eureka
   instance:
     preferIpAddress: true
+
+springdoc:
+  enable-native-support: true
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway
+        primaryName: Api Gateway
+      - url: /auth/v3/api-docs
+        name: user-service
+        primaryName: user-service
+      - url: /restaurant/v3/api-docs
+        name: restaurant-service
+        primaryName: restaurant-service
+      - url: /grade/v3/api-docs
+        name: grade-service
+        primaryName: grade-service
+      - url: /black-list/v3/api-docs
+        name: black-list-service
+        primaryName: black-list-service
+      - url: /file/v3/api-docs
+        name: file-service
+        primaryName: file-service
+      - url: /chat/v3/api-docs
+        name: chat-service
+        primaryName: chat-service
+  swagger-ui.path: /swagger-ui/index.html
