@@ -81,7 +81,10 @@ dependencies {
     testImplementation("org.testcontainers:testcontainers:1.19.1")
     testImplementation("org.testcontainers:junit-jupiter:1.19.1")
     testImplementation("org.testcontainers:postgresql:1.19.1")
+    testImplementation("org.testcontainers:kafka:1.19.1")
+    testImplementation("org.awaitility:awaitility:4.2.0")
     testImplementation("org.springframework.security:spring-security-test:6.1.4")
+    testImplementation("org.springframework.kafka:spring-kafka-test")
     testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("org.mockito:mockito-core:5.8.0")
 }

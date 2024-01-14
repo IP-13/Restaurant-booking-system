@@ -1,0 +1,37 @@
+spring.application.name: black-list-service
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:tc:postgresql://test_db
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show_sql: true
+
+spring.cloud.config.enabled: false
+
+security:
+  secret: s2UowvHf2hU16VQCMvzESEzh+JCg8NN5OL0gqMpglCggh5OKE+lLmIGLSYqTuacu
+
+eureka.client.enabled: false
+
+server:
+  error:
+    includeStacktrace: ALWAYS
+
+spring.cloud.loadbalancer.ribbon.enabled: false
+
+spring.kafka:
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties.spring.json.type.mapping: black-list-event:com.ip13.main.event.BlackListNotificationEvent
+  consumer:
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    group-id: black-list
+    properties.spring.json.type.mapping: black-list-event:com.ip13.main.event.BlackListNotificationEvent
