@@ -6,7 +6,6 @@ import io.jsonwebtoken.io.Decoders
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
-import org.springframework.stereotype.Service
 import java.security.Key
 import java.util.*
 
@@ -19,7 +18,7 @@ class TokenUtils {
         return getAllClaims(token).subject
     }
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "kotlin:S6518")
     fun getRoles(token: String): List<String> {
         return getAllClaims(token).get("roles", List::class.java) as List<String>
     }

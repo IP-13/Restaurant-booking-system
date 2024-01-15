@@ -15,6 +15,7 @@ class UserService(
     /**
      * throw UserNotFoundException if user with that name doesn't exist
      */
+    @Suppress("kotlin:S6619")
     override fun loadUserByUsername(username: String): User {
         return userRepository.findByUsername(username) ?: throw UserNotFoundException("No user with name \'$username\'")
     }

@@ -14,7 +14,7 @@ class TokenService {
     @Value("\${security.secret}")
     private lateinit var secret: String
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "kotlin:S6518")
     fun getRoles(token: String): List<String> {
         return getAllClaims(token).get("roles", List::class.java) as List<String>
     }

@@ -18,7 +18,7 @@ class TokenUtils {
         return getAllClaims(token).subject
     }
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "kotlin:S6518")
     fun getRoles(token: String): List<String> {
         return getAllClaims(token).get("roles", List::class.java) as List<String>
     }

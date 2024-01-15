@@ -29,6 +29,7 @@ class RestaurantAddTicket(
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "restaurantAddTicket")
     val restaurant: Restaurant? = null,
 ) {
+    @Suppress("kotlin:S3776")
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

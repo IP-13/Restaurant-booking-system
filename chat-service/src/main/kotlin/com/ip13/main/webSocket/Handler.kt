@@ -43,6 +43,7 @@ class Handler : WebSocketHandler {
      * userTo - name of receiver
      * payload - message
      */
+    @Suppress("kotlin:S1481")
     override fun handleMessage(session: WebSocketSession, webSocketMessage: WebSocketMessage<*>) {
         val (receiver, payload) = try {
             parsePayload(webSocketMessage.payload as String)
