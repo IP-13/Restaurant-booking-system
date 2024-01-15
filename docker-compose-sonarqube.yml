@@ -7,7 +7,7 @@ services:
     depends_on:
       - postgres-sonar
     ports:
-      - "9000:9000"
+      - "10000:9000"
     networks:
       - sonar
     environment:
