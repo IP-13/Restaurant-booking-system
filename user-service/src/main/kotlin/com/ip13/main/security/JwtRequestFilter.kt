@@ -1,6 +1,5 @@
 package com.ip13.main.security
 
-import com.ip13.main.service.TokenService
 import com.ip13.main.service.UserService
 import com.ip13.main.util.getLogger
 import io.jsonwebtoken.ExpiredJwtException
@@ -32,13 +31,15 @@ class JwtRequestFilter(
 
             val jwt = tokenService.getTokenFromHeader(header)
 
-            val username = if (jwt != null) {
+            val username: String? = if (jwt != null) {
                 try {
                     tokenService.getUsername(jwt)
                 } catch (ex: ExpiredJwtException) {
                     log.debug("Jwt token has expired")
+                    null
                 } catch (ex: SignatureException) {
                     log.debug("Wrong signature")
+                    null
                 }
             } else {
                 null
@@ -47,7 +48,7 @@ class JwtRequestFilter(
             log.debug("username extracted: {}", username)
 
             if (username != null && SecurityContextHolder.getContext().authentication == null) {
-                val user = userService.loadUserByUsername(username as String)
+                val user = userService.loadUserByUsername(username)
 
                 val authentication = UsernamePasswordAuthenticationToken(
                     username,

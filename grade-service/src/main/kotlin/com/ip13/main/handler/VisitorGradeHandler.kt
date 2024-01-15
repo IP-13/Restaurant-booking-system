@@ -28,6 +28,7 @@ class VisitorGradeHandler(
 ) {
     private val log = getLogger(javaClass)
 
+    @Suppress("kotlin:S3776")
     fun gradeVisitor(request: ServerRequest): Mono<ServerResponse> {
         log.debug("in grade visitor method")
         return ServerResponse

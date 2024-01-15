@@ -1,4 +1,4 @@
-package com.ip13.main.service
+package com.ip13.main.security
 
 import com.ip13.main.model.entity.User
 import io.jsonwebtoken.Claims
@@ -37,7 +37,7 @@ class TokenService {
         return getAllClaims(token).subject
     }
 
-    @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST", "kotlin:S6518")
     fun getRoles(token: String): List<String> {
         return getAllClaims(token).get("roles", List::class.java) as List<String>
     }

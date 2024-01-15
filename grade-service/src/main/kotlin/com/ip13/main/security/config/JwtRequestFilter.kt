@@ -20,6 +20,7 @@ class JwtRequestFilter(
 ) : WebFilter {
     private val log = getLogger(javaClass)
 
+    @Suppress("kotlin:S6508")
     override fun filter(exchange: ServerWebExchange, chain: WebFilterChain): Mono<Void> {
         val authentication = try {
             val header = exchange.request.headers[HttpHeaders.AUTHORIZATION]?.first()
