@@ -4,7 +4,6 @@ import com.ip13.main.exceptionHandling.exception.UserNotFoundException
 import com.ip13.main.model.dto.request.RoleAddRequest
 import com.ip13.main.model.entity.User
 import com.ip13.main.repository.UserRepository
-import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 
