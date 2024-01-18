@@ -70,7 +70,7 @@ dependencies {
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
     // hazelcast
-    implementation("com.hazelcast:hazelcast:5.3.6")
+    implementation("com.hazelcast:hazelcast-spring:5.3.6")
 
     // tests
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")

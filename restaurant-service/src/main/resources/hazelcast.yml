@@ -1,4 +1,8 @@
 hazelcast:
+  cluster-name: restaurant-service
+  map:
+    restaurants:
+      max-idle-seconds: 15
   network:
     join:
       multicast:
