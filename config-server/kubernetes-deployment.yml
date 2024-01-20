@@ -17,5 +17,8 @@ spec:
       containers:
         - name: config-server
           image: ip13/config-server
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
           ports:
             - containerPort: 8888
