@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+  labels:
+    app: gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-deployment
+  template:
+    metadata:
+      labels:
+        app: gateway-deployment
+    spec:
+      containers:
+        - name: gateway
+          image: ip13/gateway
+          ports:
+            - containerPort: 8080
