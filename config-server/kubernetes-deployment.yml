@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: config-server
-          image: ip13/config-serverg
+          image: ip13/config-server
           ports:
             - containerPort: 8888
