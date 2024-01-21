@@ -124,3 +124,5 @@ springdoc:
   swagger-ui.path: /swagger-ui/index.html
 
 eureka.client.enabled: false
+
+spring.cloud.loadbalancer.ribbon.enabled: false
