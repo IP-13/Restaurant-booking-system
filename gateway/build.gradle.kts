@@ -32,6 +32,7 @@ dependencies {
 
     // cloud config
     implementation("org.springframework.cloud:spring-cloud-starter-config")
+
     // for retries to cloud config
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.retry:spring-retry:2.0.4")
@@ -43,6 +44,9 @@ dependencies {
 
     // open api
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
+
+    // kubernetes
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes:1.1.10.RELEASE")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
