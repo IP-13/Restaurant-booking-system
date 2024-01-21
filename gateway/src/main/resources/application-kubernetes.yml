@@ -122,3 +122,5 @@ springdoc:
         name: chat-service
         primaryName: chat-service
   swagger-ui.path: /swagger-ui/index.html
+
+eureka.client.enabled: false
