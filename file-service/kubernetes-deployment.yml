@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: file-service
+  labels:
+    app: file-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: file-service
+  template:
+    metadata:
+      labels:
+        app: file-service
+    spec:
+      containers:
+        - name: file-service
+          image: ip13/file-service
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"
+          ports:
+            - containerPort: 8888

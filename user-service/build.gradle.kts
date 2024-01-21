@@ -61,6 +61,8 @@ dependencies {
     // loadbalancer
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
 
+    // kubernetes
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes:1.1.10.RELEASE")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
