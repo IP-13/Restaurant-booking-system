@@ -39,9 +39,6 @@ dependencies {
     // actuator
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
-    // eureka
-    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-
     // config server
     implementation("org.springframework.cloud:spring-cloud-starter-config")
 
@@ -61,6 +58,8 @@ dependencies {
     // loadbalancer
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
 
+    // kubernetes
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
