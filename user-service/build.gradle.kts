@@ -62,7 +62,7 @@ dependencies {
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
 
     // kubernetes-discovery
-    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-all:3.1.0-M2")
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-all:3.1.0")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
