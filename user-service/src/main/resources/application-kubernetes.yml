@@ -14,7 +14,7 @@ spring:
 
 info.app.name: ${spring.application.name}
 
-server.port: 8500gi
+server.port: 8500
 
 spring.config.import: configserver:http://config-server-service:8888
 
