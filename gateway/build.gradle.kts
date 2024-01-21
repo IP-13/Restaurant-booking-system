@@ -24,14 +24,12 @@ dependencies {
     // actuator
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
-    // eureka
-    implementation("org.springframework.cloud:spring-cloud-starter-netflix-eureka-client")
-
     // gateway
     implementation("org.springframework.cloud:spring-cloud-starter-gateway")
 
     // cloud config
     implementation("org.springframework.cloud:spring-cloud-starter-config")
+
     // for retries to cloud config
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("org.springframework.retry:spring-retry:2.0.4")
@@ -43,6 +41,9 @@ dependencies {
 
     // open api
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
+
+    // kubernetes
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
