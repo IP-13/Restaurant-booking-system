@@ -19,6 +19,6 @@ spec:
           image: ip13/config-server
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: "kubernetes"
+              value: "prod"
           ports:
             - containerPort: 8888
