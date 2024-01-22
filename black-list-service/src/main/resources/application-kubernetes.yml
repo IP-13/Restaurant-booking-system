@@ -32,20 +32,12 @@ logging.level:
     retry: TRACE
 
 spring.jackson.serialization.indent_output: true
-
-management.endpoint.gateway.enabled: true
-management.endpoints.web.exposure.include:
-  - refresh
-  - health
-  - flyway
-  - beans
-  - metrics
-  - info
+spring.cloud.loadbalancer.ribbon.enabled: false
 
 springdoc.swagger-ui.path: /black-list/swagger
 
 spring.kafka:
-  bootstrap-servers: localhost:9092
+  bootstrap-servers: black-list-event-kafka-service:29092
   producer:
     key-serializer: org.apache.kafka.common.serialization.StringSerializer
     value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -56,7 +48,5 @@ springdoc:
     path: /black-list/v3/api-docs
   swagger-ui:
     path: /black-list/swagger-ui.html
-
-spring.cloud.loadbalancer.ribbon.enabled: false
 
 eureka.client.enabled: false
