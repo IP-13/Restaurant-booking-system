@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-grade-service-service
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: postgres-grade-service
