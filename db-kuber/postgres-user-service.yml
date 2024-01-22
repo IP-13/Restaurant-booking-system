@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-user-service
+  labels:
+    app: postgres-user-service
+spec:
+  serviceName: postgres-user-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres-user-service
+    spec:
+      containers:
+        - name: postgres-user-service
+          image: postgres:16.0
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /data
+              name: postgres-user-service-pvc
+          env:
+            - name: POSTGRES_DB
+              value: db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+  selector:
+    matchLabels:
+      app: postgres-user-service
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-user-service-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
