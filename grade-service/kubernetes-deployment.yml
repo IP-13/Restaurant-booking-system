@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grade-service
+  labels:
+    app: grade-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: grade-service
+  template:
+    metadata:
+      labels:
+        app: grade-service
+    spec:
+      containers:
+        - name: grade-service
+          image: ip13/grade-service
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "kubernetes"
+          ports:
+            - containerPort: 8500
