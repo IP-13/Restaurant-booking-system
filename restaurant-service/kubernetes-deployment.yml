@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: file-service
+  name: restaurant-service
   labels:
-    app: file-service
+    app: restaurant-service
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: file-service
+      app: restaurant-service
   template:
     metadata:
       labels:
-        app: file-service
+        app: restaurant-service
     spec:
       containers:
-        - name: file-service
-          image: ip13/file-service
+        - name: restaurant-service
+          image: ip13/restaurant-service
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"

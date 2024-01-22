@@ -1,0 +1,67 @@
+spring.application.name: restaurant-service
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres-restaurant-service-service:5432/db
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show_sql: true
+
+info.app.name: ${spring.application.name}
+
+server.port: 8500
+
+spring.config.import: configserver:http://config-server-service:8888
+
+spring.cloud:
+  config:
+    failFast: true
+    retry:
+      initialInterval: 3000
+      maxInterval: 5000
+      maxAttempts: 20
+
+logging.level:
+  org.springframework:
+    nodeValue: TRACE
+    retry: TRACE
+
+spring:cloud:openfeign:client:config:
+  user-service:
+    connect-timeout: 2000
+    read-timeout: 2000
+
+resilience4j:
+  retry:
+    instances:
+      user-service-retry:
+        max-attempts: 5
+        wait-duration: 3000
+
+  circuitbreaker:
+    instances:
+      user-service-breaker:
+        sliding-window-type: count-based
+        sliding-window-size: 5
+        failure-rate-threshold: 80
+        minimum-number-of-calls: 5
+        wait-duration-in-open-state: 10s
+        max-wait-duration-in-half-open-state: 5s
+        automatic-transition-from-open-to-half-open-enabled: true
+        permitted-number-of-calls-in-half-open-state: 2
+
+spring.jackson.serialization.indent_output: true
+spring.cloud.loadbalancer.ribbon.enabled: false
+
+springdoc:
+  api-docs:
+    path: /restaurant/v3/api-docs
+  swagger-ui:
+    path: /restaurant/swagger-ui.html
+
+eureka.client.enabled: false
