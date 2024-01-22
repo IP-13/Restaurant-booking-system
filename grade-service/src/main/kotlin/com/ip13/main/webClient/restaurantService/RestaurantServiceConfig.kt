@@ -30,7 +30,7 @@ class RestaurantServiceConfig {
             }
 
         return webClientBuilder
-            .baseUrl("http://restaurant-service")
+            .baseUrl("http://restaurant-service-service")
             .clientConnector(ReactorClientHttpConnector(httpClient))
             .build()
     }
