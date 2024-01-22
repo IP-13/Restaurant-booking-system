@@ -5,7 +5,7 @@ metadata:
   labels:
     app: file-service
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: file-service
@@ -21,4 +21,4 @@ spec:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"
           ports:
-            - containerPort: 8888
+            - containerPort: 8500
