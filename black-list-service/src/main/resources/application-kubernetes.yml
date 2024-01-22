@@ -1,0 +1,52 @@
+spring.application.name: black-list-service
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://postgres-black-list-service-service:5432/db
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show_sql: true
+
+info.app.name: ${spring.application.name}
+
+server.port: 8500
+
+spring.config.import: configserver:http://config-server-service:8888
+
+spring.cloud:
+  config:
+    failFast: true
+    retry:
+      initialInterval: 3000
+      maxInterval: 5000
+      maxAttempts: 20
+
+logging.level:
+  org.springframework:
+    nodeValue: TRACE
+    retry: TRACE
+
+spring.jackson.serialization.indent_output: true
+spring.cloud.loadbalancer.ribbon.enabled: false
+
+springdoc.swagger-ui.path: /black-list/swagger
+
+spring.kafka:
+  bootstrap-servers: black-list-event-kafka-service:29092
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties.spring.json.type.mapping: black-list-event:com.ip13.main.event.BlackListNotificationEvent
+
+springdoc:
+  api-docs:
+    path: /black-list/v3/api-docs
+  swagger-ui:
+    path: /black-list/swagger-ui.html
+
+eureka.client.enabled: false

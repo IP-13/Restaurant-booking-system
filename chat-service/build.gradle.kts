@@ -75,6 +75,9 @@ dependencies {
     // kafka
     implementation("org.springframework.kafka:spring-kafka:3.1.1")
 
+    // kubernetes-discovery
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-all:3.1.0")
+
     // tests
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

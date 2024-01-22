@@ -65,6 +65,9 @@ dependencies {
     // open api
     implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
 
+    // kubernetes-discovery
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-all:3.1.0")
+
     // tests
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")

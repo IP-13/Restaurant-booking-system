@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: file-service
+  name: chat-service
   labels:
-    app: file-service
+    app: chat-service
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: file-service
+      app: chat-service
   template:
     metadata:
       labels:
-        app: file-service
+        app: chat-service
     spec:
       containers:
-        - name: file-service
-          image: ip13/file-service
+        - name: chat-service
+          image: ip13/chat-service
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"

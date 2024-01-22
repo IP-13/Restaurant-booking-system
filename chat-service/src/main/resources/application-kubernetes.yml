@@ -1,0 +1,41 @@
+spring.application.name: chat-service
+
+info.app.name: ${spring.application.name}
+
+server.port: 8500
+
+spring.config.import: configserver:http://config-server-service:8888
+
+spring.cloud:
+  config:
+    failFast: true
+    retry:
+      initialInterval: 3000
+      maxInterval: 5000
+      maxAttempts: 20
+
+logging.level:
+  org.springframework:
+    nodeValue: TRACE
+    retry: TRACE
+
+spring.jackson.serialization.indent_output: true
+spring.cloud.loadbalancer.ribbon.enabled: false
+
+springdoc.swagger-ui.path: /swagger-ui/index.html
+
+spring.kafka:
+  bootstrap-servers: black-list-event-kafka-service:29092
+  consumer:
+    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+    group-id: black-list
+    properties.spring.json.type.mapping: black-list-event:com.ip13.main.event.BlackListNotificationEvent
+
+springdoc:
+  api-docs:
+    path: /chat/v3/api-docs
+  swagger-ui:
+    path: /chat/swagger-ui.html
+
+eureka.client.enabled: false
