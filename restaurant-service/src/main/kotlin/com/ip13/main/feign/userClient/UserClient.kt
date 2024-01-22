@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 @Retry(name = "user-service-retry")
 @CircuitBreaker(name = "user-service-breaker")
-@FeignClient(name = "user-service")
+@FeignClient(name = "user-service-service")
 interface UserClient {
     @GetMapping("/auth/user/{username}")
     fun getUserByUsername(
