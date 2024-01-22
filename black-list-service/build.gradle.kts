@@ -63,6 +63,9 @@ dependencies {
 
     // kafka
     implementation("org.springframework.kafka:spring-kafka:3.1.1")
+
+    // kubernetes-discovery
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-all:3.1.0")
 }
 
 extra["springCloudVersion"] = "2022.0.4"
