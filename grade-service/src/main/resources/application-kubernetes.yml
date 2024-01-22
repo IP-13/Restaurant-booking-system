@@ -1,0 +1,43 @@
+spring.application.name: grade-service
+
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://postgres-grade-service-service:5432/db
+    username: postgres
+    password: postgres
+  flyway:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://postgres-grade-service-service:5432/db
+
+info.app.name: ${spring.application.name}
+
+server.port: 8500
+
+spring.config.import: configserver:http://config-server-service:8888
+
+spring.cloud:
+  config:
+    failFast: true
+    retry:
+      initialInterval: 3000
+      maxInterval: 5000
+      maxAttempts: 20
+
+logging.level:
+  org.springframework:
+    nodeValue: TRACE
+    retry: TRACE
+
+spring.jackson.serialization.indent_output: true
+spring.cloud.loadbalancer.ribbon.enabled: false
+
+springdoc.swagger-ui.path: /swagger-ui/index.html
+
+springdoc:
+  api-docs:
+    path: /grade/v3/api-docs
+  swagger-ui:
+    path: /grade/swagger-ui.html
+
+eureka.client.enabled: false
