@@ -30,7 +30,7 @@ class BlackListServiceConfig {
             }
 
         return webClientBuilder
-            .baseUrl("http://black-list-service")
+            .baseUrl("http://black-list-service-service")
             .clientConnector(ReactorClientHttpConnector(httpClient))
             .build()
     }
