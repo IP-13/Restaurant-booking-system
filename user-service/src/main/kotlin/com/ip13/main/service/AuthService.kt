@@ -1,5 +1,6 @@
 package com.ip13.main.service
 
+import com.ip13.main.event.RegistrationEvent
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.model.dto.request.LoginRequest
 import com.ip13.main.model.dto.response.LoginResponse
@@ -9,6 +10,7 @@ import com.ip13.main.model.entity.User
 import com.ip13.main.security.TokenService
 import com.ip13.main.util.getLogger
 import org.springframework.http.HttpStatusCode
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
@@ -17,6 +19,7 @@ class AuthService(
     private val tokenService: TokenService,
     private val userService: UserService,
     private val passwordEncoder: BCryptPasswordEncoder,
+    private val kafkaTemplate: KafkaTemplate<String, RegistrationEvent>,
 ) {
     private val log = getLogger(javaClass)
 
@@ -34,6 +37,8 @@ class AuthService(
         )
 
         val savedUser = userService.save(user)
+
+        kafkaTemplate.send(TOPIC, RegistrationEvent(user.username))
 
         return RegisterResponse(
             token = tokenService.createToken(savedUser),
@@ -55,5 +60,9 @@ class AuthService(
         return LoginResponse(
             token = tokenService.createToken(user),
         )
+    }
+
+    companion object {
+        private const val TOPIC = "registration"
     }
 }

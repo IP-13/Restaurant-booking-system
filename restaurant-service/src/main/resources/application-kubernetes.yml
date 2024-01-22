@@ -58,6 +58,13 @@ resilience4j:
 spring.jackson.serialization.indent_output: true
 spring.cloud.loadbalancer.ribbon.enabled: false
 
+spring.kafka:
+  bootstrap-servers: restaurant-created-event-kafka-service:29092
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties.spring.json.type.mapping: restaurant-created-event:com.ip13.main.event.RestaurantCreatedEvent
+
 springdoc:
   api-docs:
     path: /restaurant/v3/api-docs

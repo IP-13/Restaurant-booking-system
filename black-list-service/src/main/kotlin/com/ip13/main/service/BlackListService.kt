@@ -28,12 +28,12 @@ class BlackListService(
             message = "You've been banned from our restaurant till ${blackListRequest.tillDate}"
         )
 
-        kafkaTemplate.send(topic, event)
+        kafkaTemplate.send(TOPIC, event)
 
         return blackListRepository.save(blackListRequest.toBlackList())
     }
 
     companion object {
-        private const val topic = "bad-people"
+        private const val TOPIC = "bad-people"
     }
 }

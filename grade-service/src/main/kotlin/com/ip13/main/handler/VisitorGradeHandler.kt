@@ -1,6 +1,7 @@
 package com.ip13.main.handler
 
 import com.ip13.main.exceptionHandling.exception.CommonException
+import com.ip13.main.exceptionHandling.exception.NotFoundException
 import com.ip13.main.exceptionHandling.exception.TableReserveTicketNotFound
 import com.ip13.main.model.dto.request.VisitorGradeRequest
 import com.ip13.main.model.entity.User
@@ -67,11 +68,9 @@ class VisitorGradeHandler(
                                                     Mono.just(it)
                                                 }
                                                 .switchIfEmpty(
-                                                    userHandler.save(
-                                                        User(
-                                                            username = principal.name,
-                                                            numOfGrades = 0,
-                                                            sumOfGrades = 0,
+                                                    Mono.error(
+                                                        NotFoundException(
+                                                            message = "Manager ${principal.name} not found"
                                                         )
                                                     )
                                                 )
@@ -84,34 +83,12 @@ class VisitorGradeHandler(
                                                 userHandler.addGrade(ticket.username, req.grade)
                                             }
                                             .switchIfEmpty(
-                                                userHandler.save(
-                                                    User(
-                                                        username = ticket.username,
-                                                        numOfGrades = 1,
-                                                        sumOfGrades = req.grade
+                                                Mono.error(
+                                                    NotFoundException(
+                                                        message = "User ${ticket.username} not found"
                                                     )
-                                                ).flatMap {
-                                                    log.debug("User not found. Saving user")
-                                                    Mono.just(it.sumOfGrades)
-                                                }
+                                                )
                                             )
-                                            .flatMap {
-                                                log.debug("Saving visitor grade to db")
-                                                request.principal().flatMap { principal ->
-                                                    visitorGradeRepository.save(
-                                                        VisitorGrade(
-                                                            managerName = principal.name,
-                                                            tableReserveTicketId = req.tableReserveTicketId,
-                                                            username = ticket.username,
-                                                            grade = req.grade,
-                                                            comment = req.comment,
-                                                        )
-                                                    ).log()
-                                                }.flatMap {
-                                                    log.debug("Getting updated grade from db")
-                                                    userHandler.getGrade(ticket.username)
-                                                }
-                                            }
                                     }.flatMap { grade ->
                                         if (grade < 3.0) {
                                             log.debug("Adding ${ticket.username} to black list")
