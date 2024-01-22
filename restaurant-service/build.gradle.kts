@@ -72,6 +72,9 @@ dependencies {
     // hazelcast
     implementation("com.hazelcast:hazelcast-spring:5.3.6")
 
+    // kubernetes-discovery
+    implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-all:3.1.0")
+
     // tests
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
