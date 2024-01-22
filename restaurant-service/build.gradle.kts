@@ -72,6 +72,9 @@ dependencies {
     // hazelcast
     implementation("com.hazelcast:hazelcast-spring:5.3.6")
 
+    // kafka
+    implementation("org.springframework.kafka:spring-kafka:3.1.1")
+
     // kubernetes-discovery
     implementation("org.springframework.cloud:spring-cloud-starter-kubernetes-fabric8-all:3.1.0")
 
