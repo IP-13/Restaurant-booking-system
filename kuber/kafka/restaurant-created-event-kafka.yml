@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restaurant-created-event-kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: restaurant-created-event-kafka
+  template:
+    metadata:
+      labels:
+        app: restaurant-created-event-kafka
+    spec:
+      hostname: restaurant-created-event-kafka
+      containers:
+        - env:
+            - name: KAFKA_BROKER_ID
+              value: "1"
+            - name: KAFKA_ZOOKEEPER_CONNECT
+              value: zookeeper-service:2181
+            - name: KAFKA_ADVERTISED_LISTENERS
+              value: PLAINTEXT://restaurant-created-event-kafka:9092,PLAINTEXT_INTERNAL://restaurant-created-event-kafka:29092
+            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+              value: PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+            - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
+              value: "2"
+          image: confluentinc/cp-kafka
+          imagePullPolicy: IfNotPresent
+          name: restaurant-created-event-kafka
+          ports:
+            - containerPort: 9092
