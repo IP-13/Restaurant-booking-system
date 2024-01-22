@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-black-list-service
+  labels:
+    app: postgres-black-list-service
+spec:
+  serviceName: postgres-black-list-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: postgres-black-list-service
+    spec:
+      containers:
+        - name: postgres-black-list-service
+          image: postgres:16.0
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /data
+              name: postgres-black-list-service-pvc
+          env:
+            - name: POSTGRES_DB
+              value: db
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PASSWORD
+              value: postgres
+  selector:
+    matchLabels:
+      app: postgres-black-list-service
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-black-list-service-pvc
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi

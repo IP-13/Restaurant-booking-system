@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-black-list-service-service
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: postgres-black-list-service
