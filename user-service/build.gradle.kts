@@ -58,6 +58,9 @@ dependencies {
     // open api
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
+    // kafka
+    implementation("org.springframework.kafka:spring-kafka:3.1.1")
+
     // loadbalancer
     implementation("org.springframework.cloud:spring-cloud-starter-loadbalancer")
 

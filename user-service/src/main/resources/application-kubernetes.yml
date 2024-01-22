@@ -44,6 +44,13 @@ management.endpoints.web.exposure.include:
 
 spring.cloud.loadbalancer.ribbon.enabled: false
 
+spring.kafka:
+  bootstrap-servers: registration-event-kafka-service:29092
+  producer:
+    key-serializer: org.apache.kafka.common.serialization.StringSerializer
+    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    properties.spring.json.type.mapping: registration-event:com.ip13.main.event.RegistrationEvent
+
 springdoc:
   api-docs:
     path: /auth/v3/api-docs
