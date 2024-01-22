@@ -1,5 +1,6 @@
 package com.ip13.main.service
 
+import com.ip13.main.event.RestaurantCreatedEvent
 import com.ip13.main.exceptionHandling.exception.CommonException
 import com.ip13.main.exceptionHandling.exception.RestaurantAddTicketNotFoundException
 import com.ip13.main.feign.userClient.UserClient
@@ -22,6 +23,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.HttpStatus
+import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Isolation
 import org.springframework.transaction.annotation.Transactional
@@ -31,6 +33,7 @@ class RestaurantAddTicketService(
     private val restaurantAddTicketRepository: RestaurantAddTicketRepository,
     private val restaurantService: RestaurantService,
     private val userClient: UserClient,
+    private val kafkaTemplate: KafkaTemplate<String, RestaurantCreatedEvent>,
 ) {
     private val log = getLogger(javaClass)
 
@@ -85,15 +88,15 @@ class RestaurantAddTicketService(
             val restaurant = processedRestaurantAddTicket.toRestaurant()
 
             try {
-                userClient.addRole(
-                    authHeader,
-                    RoleAddRequest(processedRestaurantAddTicket.username, Role.MANAGER)
-                )
-
                 val restaurantId =
                     saveRestaurantAddTicketAndRestaurantTransactional(processedRestaurantAddTicket, restaurant)
 
                 log.debug("after saving restaurant and updated restaurant add ticket. Restaurant id: {}", restaurantId)
+
+                kafkaTemplate.send(
+                    RESTAURANT_CREATED_TOPIC,
+                    RestaurantCreatedEvent(restaurantId, processedRestaurantAddTicket.username)
+                )
 
                 return RestaurantProcessTicketResponse(RestaurantAddStatus.ACCEPTED, restaurantId)
             } catch (_: FeignException) {
@@ -122,5 +125,9 @@ class RestaurantAddTicketService(
         val pageRequest = PageRequest.of(pageNumber, pageSize, Sort.unsorted())
 
         return restaurantAddTicketRepository.findAll(pageRequest).toList()
+    }
+
+    companion object {
+        private const val RESTAURANT_CREATED_TOPIC = "restaurant-created"
     }
 }
