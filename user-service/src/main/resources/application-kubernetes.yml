@@ -45,12 +45,12 @@ management.endpoints.web.exposure.include:
 spring.cloud.loadbalancer.ribbon.enabled: false
 
 kafka:
-  producer:
-    registration-event-producer:
-      bootstrap-servers: registration-event-kafka-service:29092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-      properties.spring.json.type.mapping: registration-event:com.ip13.main.event.RegistrationEvent
+#  producer:
+#    registration-event-producer:
+#      bootstrap-servers: registration-event-kafka-service:29092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      properties.spring.json.type.mapping: registration-event:com.ip13.main.event.RegistrationEvent
   consumer:
     restaurant-created-event-consumer:
       bootstrap-servers: restaurant-created-event-kafka-service:29092
