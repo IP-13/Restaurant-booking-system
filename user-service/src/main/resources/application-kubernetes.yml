@@ -44,18 +44,20 @@ management.endpoints.web.exposure.include:
 
 spring.cloud.loadbalancer.ribbon.enabled: false
 
-spring.kafka:
+kafka:
   producer:
-    bootstrap-servers: registration-event-kafka-service:29092
-    key-serializer: org.apache.kafka.common.serialization.StringSerializer
-    value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
-    properties.spring.json.type.mapping: registration-event:com.ip13.main.event.RegistrationEvent
+    registration-event-producer:
+      bootstrap-servers: registration-event-kafka-service:29092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties.spring.json.type.mapping: registration-event:com.ip13.main.event.RegistrationEvent
   consumer:
-    boostrap-servers: restaurant-created-event-kafka-service:29092
-    key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-    group-id: restaurant-created
-    properties.spring.json.type.mapping: restaurant-created-event:com.ip13.main.event.RestaurantCreatedEvent
+    restaurant-created-event-consumer:
+      boostrap-servers: restaurant-created-event-kafka-service:29092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      group-id: restaurant-created
+      properties.spring.json.type.mapping: restaurant-created-event:com.ip13.main.event.RestaurantCreatedEvent
 
 springdoc:
   api-docs:
