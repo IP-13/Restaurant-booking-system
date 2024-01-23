@@ -13,7 +13,8 @@ class RestaurantCreatedListener(
 ) {
     @KafkaListener(
         topics = [RESTAURANT_CREATED_TOPIC],
-        containerFactory = "restaurantCreatedEventConsumer"
+        containerFactory = "restaurantCreatedEventConsumer",
+        groupId = "restaurant-created",
     )
     fun addUser(event: RestaurantCreatedEvent) {
         userService.addRole(RoleAddRequest(username = event.managerName, role = Role.MANAGER))
