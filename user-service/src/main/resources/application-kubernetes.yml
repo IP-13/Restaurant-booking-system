@@ -53,7 +53,7 @@ kafka:
       properties.spring.json.type.mapping: registration-event:com.ip13.main.event.RegistrationEvent
   consumer:
     restaurant-created-event-consumer:
-      bootstrap-servers: restaurant-created-event-kafka-service:29092
+      bootstrap-servers: restaurant-created-event-kafka-bootstrap:9092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       group-id: restaurant-created

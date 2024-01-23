@@ -59,7 +59,7 @@ spring.jackson.serialization.indent_output: true
 spring.cloud.loadbalancer.ribbon.enabled: false
 
 spring.kafka:
-  bootstrap-servers: restaurant-created-event-kafka-service:29092
+  bootstrap-servers: restaurant-created-event-kafka-bootstrap:9092
   producer:
     key-serializer: org.apache.kafka.common.serialization.StringSerializer
     value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
