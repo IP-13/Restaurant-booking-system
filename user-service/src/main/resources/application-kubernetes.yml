@@ -47,7 +47,7 @@ spring.cloud.loadbalancer.ribbon.enabled: false
 kafka:
   producer:
     registration-event-producer:
-      bootstrap-servers: registration-event-kafka-service:29092
+      bootstrap-servers: registration-event-kafka-bootstrap:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
       properties.spring.json.type.mapping: registration-event:com.ip13.main.event.RegistrationEvent
