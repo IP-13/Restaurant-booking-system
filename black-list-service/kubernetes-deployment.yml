@@ -6,6 +6,11 @@ metadata:
     app: black-list-service
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: black-list-service
@@ -17,6 +22,7 @@ spec:
       containers:
         - name: black-list-service
           image: ip13/black-list-service
+          imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"

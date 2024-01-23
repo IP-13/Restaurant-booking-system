@@ -1,16 +1,16 @@
-name: push black-list-service image to dockerhub
+name: push grade-service image to dockerhub
 
 on:
   push:
     paths:
-      - black-list-service/**
-    branches: [ "main" ]
+      - grade-service/**
+    branches: [ "dev" ]
 
 env:
-  SERVICE_NAME: black-list-service
+  SERVICE_NAME: grade-service
 
 jobs:
-  dockerhub:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -40,10 +40,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ${{ secrets.PROJECT_DIR }}
-            ls -la
             git pull
-            docker container stop $(docker ps -a --format '{{.Names}}' | grep ^${{ env.SERVICE_NAME }})
-            docker container rm $(docker ps -a --filter name=${{ env.SERVICE_NAME }}* -aq)
-            docker pull ip13/${{ env.SERVICE_NAME }}
-            docker run --network=restaurant-booking-system_default -e "SPRING_PROFILES_ACTIVE=prod" \
-              --name ${{ env.SERVICE_NAME }} -d ip13/${{ env.SERVICE_NAME }}
+            cd grade-service
+            ls -la
+            kubectl apply -f kubernetes-deployment.yml
