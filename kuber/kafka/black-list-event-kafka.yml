@@ -1,7 +1,7 @@
 apiVersion: kafka.strimzi.io/v1beta2
 kind: Kafka
 metadata:
-  name: registration-event
+  name: black-list-event
 spec:
   kafka:
     version: 3.6.1
