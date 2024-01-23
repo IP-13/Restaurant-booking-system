@@ -10,9 +10,9 @@ import org.springframework.kafka.core.KafkaTemplate
 import org.springframework.kafka.core.ProducerFactory
 
 @Configuration
-@ConfigurationProperties(prefix = "kafka.producer")
+@ConfigurationProperties(prefix = "kafka")
 class RegistrationEventProducerProperties {
-    private lateinit var producerMap: Map<String, KafkaProperties.Producer>
+    private lateinit var producer: Map<String, KafkaProperties.Producer>
 
     @Bean
     fun registrationEventProducer(): KafkaTemplate<String, RegistrationEvent> {
@@ -20,7 +20,7 @@ class RegistrationEventProducerProperties {
     }
 
     private fun producerFactory(producerName: String): ProducerFactory<String, RegistrationEvent> {
-        val properties = producerMap[producerName]?.buildProperties()
+        val properties = producer[producerName]?.buildProperties()
             ?: throw RuntimeException("No properties found for producer $producerName")
         return DefaultKafkaProducerFactory(properties)
     }

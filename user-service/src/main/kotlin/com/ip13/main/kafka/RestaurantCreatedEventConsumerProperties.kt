@@ -9,9 +9,9 @@ import org.springframework.kafka.core.ConsumerFactory
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory
 
 @Configuration
-@ConfigurationProperties(prefix = "kafka.consumer")
+@ConfigurationProperties(prefix = "kafka")
 class RestaurantCreatedEventConsumerProperties {
-    private lateinit var consumerMap: Map<String, KafkaProperties.Consumer>
+    private lateinit var consumer: Map<String, KafkaProperties.Consumer>
 
     @Bean
     fun restaurantCreatedEventConsumer(): ConcurrentKafkaListenerContainerFactory<String, String> {
@@ -21,7 +21,7 @@ class RestaurantCreatedEventConsumerProperties {
     }
 
     private fun consumerFactory(consumerName: String): ConsumerFactory<String, Any> {
-        val properties = consumerMap[consumerName]?.buildProperties()
+        val properties = consumer[consumerName]?.buildProperties()
             ?: throw RuntimeException("No properties found for consumer $consumerName")
         return DefaultKafkaConsumerFactory(properties)
     }
