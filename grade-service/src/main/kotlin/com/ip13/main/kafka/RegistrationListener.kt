@@ -11,7 +11,10 @@ class RegistrationListener(
     private val userHandler: UserHandler,
 ) {
 
-    @KafkaListener(topics = [REGISTRATION_TOPIC])
+    @KafkaListener(
+        topics = [REGISTRATION_TOPIC],
+        groupId = "registration",
+    )
     fun addUser(event: RegistrationEvent) {
         userHandler.save(
             User(
