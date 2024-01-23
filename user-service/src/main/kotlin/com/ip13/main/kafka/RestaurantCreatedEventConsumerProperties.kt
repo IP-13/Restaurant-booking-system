@@ -1,5 +1,6 @@
 package com.ip13.main.kafka
 
+import com.ip13.main.event.RestaurantCreatedEvent
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
@@ -14,8 +15,9 @@ class RestaurantCreatedEventConsumerProperties {
     lateinit var consumer: Map<String, KafkaProperties.Consumer>
 
     @Bean
-    fun restaurantCreatedEventConsumer(): ConcurrentKafkaListenerContainerFactory<String, String> {
-        val factory: ConcurrentKafkaListenerContainerFactory<String, String> = ConcurrentKafkaListenerContainerFactory()
+    fun restaurantCreatedEventConsumer(): ConcurrentKafkaListenerContainerFactory<String, RestaurantCreatedEvent> {
+        val factory: ConcurrentKafkaListenerContainerFactory<String, RestaurantCreatedEvent> =
+            ConcurrentKafkaListenerContainerFactory()
         factory.consumerFactory = consumerFactory("restaurant-created-event-consumer")
         return factory
     }
