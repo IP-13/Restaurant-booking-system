@@ -4,10 +4,11 @@ import com.ip13.main.event.RestaurantCreatedEvent
 import com.ip13.main.model.dto.request.RoleAddRequest
 import com.ip13.main.model.enums.Role
 import com.ip13.main.service.UserService
+import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.annotation.KafkaListener
 import org.springframework.stereotype.Service
 
-@Service
+@Configuration
 class RestaurantCreatedListener(
     private val userService: UserService,
 ) {
