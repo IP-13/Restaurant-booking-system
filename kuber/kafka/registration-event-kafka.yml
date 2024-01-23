@@ -18,7 +18,7 @@ spec:
             - name: KAFKA_BROKER_ID
               value: "2"
             - name: KAFKA_ZOOKEEPER_CONNECT
-              value: zookeeper-service:2181
+              value: zookeeper-registration-event-service:2181
             - name: KAFKA_ADVERTISED_LISTENERS
               value: PLAINTEXT://registration-event-kafka:9092,PLAINTEXT_INTERNAL://registration-event-kafka:29092
             - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
