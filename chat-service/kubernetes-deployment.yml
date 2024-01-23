@@ -17,6 +17,7 @@ spec:
       containers:
         - name: chat-service
           image: ip13/chat-service
+          imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"

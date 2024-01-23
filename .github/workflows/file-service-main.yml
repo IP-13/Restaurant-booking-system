@@ -1,0 +1,29 @@
+name: push file-service image to dockerhub
+
+on:
+  push:
+    paths:
+      - file-service/**
+    branches: [ "main" ]
+
+env:
+  SERVICE_NAME: file-service
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_MAIN }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.PROJECT_DIR }}
+            git pull
+            cd file-service
+            ls -la
+            kubectl apply -f kubernetes-deployment.yml

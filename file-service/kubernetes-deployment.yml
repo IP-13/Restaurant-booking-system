@@ -6,6 +6,11 @@ metadata:
     app: file-service
 spec:
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
   selector:
     matchLabels:
       app: file-service
@@ -17,6 +22,7 @@ spec:
       containers:
         - name: file-service
           image: ip13/file-service
+          imagePullPolicy: Always
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "kubernetes"
