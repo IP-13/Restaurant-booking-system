@@ -12,7 +12,7 @@ import org.springframework.kafka.core.ProducerFactory
 @Configuration
 @ConfigurationProperties(prefix = "kafka")
 class RegistrationEventProducerProperties {
-    private lateinit var producer: Map<String, KafkaProperties.Producer>
+    lateinit var producer: Map<String, KafkaProperties.Producer>
 
     @Bean
     fun registrationEventProducer(): KafkaTemplate<String, RegistrationEvent> {
