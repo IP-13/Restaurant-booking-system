@@ -25,7 +25,7 @@ spring.cloud.loadbalancer.ribbon.enabled: false
 springdoc.swagger-ui.path: /swagger-ui/index.html
 
 spring.kafka:
-  bootstrap-servers: black-list-event-kafka-service:29092
+  bootstrap-servers: black-list-event-kafka-bootstrap:9092
   consumer:
     key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
     value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer

@@ -20,7 +20,10 @@ class Handler : WebSocketHandler {
     private val sessions = mutableMapOf<String, WebSocketSession>()
     val undeliveredMessages = mutableMapOf<String, MutableList<String>>()
 
-    @KafkaListener(topics = [BAD_PEOPLE_TOPIC])
+    @KafkaListener(
+        topics = [BAD_PEOPLE_TOPIC],
+        groupId = "black-list",
+    )
     fun handleNotification(event: BlackListNotificationEvent) {
         log.info("[${LocalDateTime.now()}] Event received: $event")
 
