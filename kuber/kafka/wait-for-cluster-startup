@@ -1,0 +1,2 @@
+#!/bin/bash
+kubectl wait kafka/$1 --for=condition=Ready --timeout=300s
