@@ -25,6 +25,8 @@ class RestaurantCreatedEventConsumerProperties {
     private fun consumerFactory(consumerName: String): ConsumerFactory<String, Any> {
         val properties = consumer[consumerName]?.buildProperties()
             ?: throw RuntimeException("No properties found for consumer $consumerName")
+        properties.putAll(KafkaProperties.Ssl().buildProperties())
+        properties.putAll(KafkaProperties.Security().buildProperties())
         return DefaultKafkaConsumerFactory(properties)
     }
 }

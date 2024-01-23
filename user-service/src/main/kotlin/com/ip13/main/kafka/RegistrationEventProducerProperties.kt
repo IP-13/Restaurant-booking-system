@@ -22,6 +22,8 @@ class RegistrationEventProducerProperties {
     private fun producerFactory(producerName: String): ProducerFactory<String, RegistrationEvent> {
         val properties = producer[producerName]?.buildProperties()
             ?: throw RuntimeException("No properties found for producer $producerName")
+        properties.putAll(KafkaProperties.Ssl().buildProperties())
+        properties.putAll(KafkaProperties.Security().buildProperties())
         return DefaultKafkaProducerFactory(properties)
     }
 }
