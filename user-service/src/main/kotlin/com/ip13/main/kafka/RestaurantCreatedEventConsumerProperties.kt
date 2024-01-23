@@ -11,7 +11,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory
 @Configuration
 @ConfigurationProperties(prefix = "kafka")
 class RestaurantCreatedEventConsumerProperties {
-    private lateinit var consumer: Map<String, KafkaProperties.Consumer>
+    lateinit var consumer: Map<String, KafkaProperties.Consumer>
 
     @Bean
     fun restaurantCreatedEventConsumer(): ConcurrentKafkaListenerContainerFactory<String, String> {
