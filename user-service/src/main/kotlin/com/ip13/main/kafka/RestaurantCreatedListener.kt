@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service
 class RestaurantCreatedListener(
     private val userService: UserService,
 ) {
-    @KafkaListener(topics = [RESTAURANT_CREATED_TOPIC])
+    @KafkaListener(
+        topics = [RESTAURANT_CREATED_TOPIC],
+        containerFactory = "restaurantCreatedEventConsumer"
+    )
     fun addUser(event: RestaurantCreatedEvent) {
         userService.addRole(RoleAddRequest(username = event.managerName, role = Role.MANAGER))
     }

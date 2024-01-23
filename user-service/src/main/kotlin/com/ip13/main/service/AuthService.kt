@@ -19,7 +19,7 @@ class AuthService(
     private val tokenService: TokenService,
     private val userService: UserService,
     private val passwordEncoder: BCryptPasswordEncoder,
-    private val kafkaTemplate: KafkaTemplate<String, RegistrationEvent>,
+    private val registrationEventProducer: KafkaTemplate<String, RegistrationEvent>,
 ) {
     private val log = getLogger(javaClass)
 
@@ -38,7 +38,7 @@ class AuthService(
 
         val savedUser = userService.save(user)
 
-        kafkaTemplate.send(TOPIC, RegistrationEvent(user.username))
+        registrationEventProducer.send(TOPIC, RegistrationEvent(user.username))
 
         return RegisterResponse(
             token = tokenService.createToken(savedUser),
