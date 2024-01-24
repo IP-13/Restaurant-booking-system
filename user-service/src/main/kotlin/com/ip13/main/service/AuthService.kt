@@ -2,6 +2,7 @@ package com.ip13.main.service
 
 import com.ip13.main.event.RegistrationEvent
 import com.ip13.main.exceptionHandling.exception.CommonException
+import com.ip13.main.kafka.RestaurantCreatedListener
 import com.ip13.main.model.dto.request.LoginRequest
 import com.ip13.main.model.dto.response.LoginResponse
 import com.ip13.main.model.dto.request.RegisterRequest

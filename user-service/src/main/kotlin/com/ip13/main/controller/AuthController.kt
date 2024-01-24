@@ -7,6 +7,7 @@ import com.ip13.main.model.dto.response.AddRoleResponse
 import com.ip13.main.model.dto.response.LoginResponse
 import com.ip13.main.model.dto.response.RegisterResponse
 import com.ip13.main.model.dto.response.UserResponse
+import com.ip13.main.model.enums.Role
 import com.ip13.main.model.toUserResponse
 import com.ip13.main.service.AuthService
 import com.ip13.main.service.UserService
@@ -54,9 +55,7 @@ class AuthController(
     ): UserResponse? {
         log.debug("/auth/user endpoint invoked")
 
-        workloadEmulator.emulateWorkload()
-
-        return userService.loadByUsernameOrNull(username)?.toUserResponse()
+        return UserResponse("THIS IT PREDEFINED RESPONSE", listOf(Role.MANAGER, Role.MANAGER, Role.MANAGER))
     }
 
     @PostMapping("/registration")
