@@ -55,6 +55,9 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
 
+    // for deserializing in web client
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.16.0")
+
     // open api
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
